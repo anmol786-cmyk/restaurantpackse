@@ -37,8 +37,8 @@ export function ArchiveTemplate({
   gridColumns = 3,
 }: ArchiveTemplateProps) {
   return (
-    <div className="min-h-screen bg-background overflow-x-hidden max-w-full">
-      <div className="w-full px-5 py-8 md:py-12 max-w-full">
+    <div className="min-h-screen bg-background overflow-x-hidden">
+      <div className="site-container py-8 md:py-12">
         {/* Archive Header - Responsive Layout */}
         <div className="mb-8 md:mb-12">
           {/* Mobile: Two Column Layout */}

@@ -10,7 +10,7 @@ export async function Footer() {
 
   return (
     <footer className="w-full bg-slate-50 border-t border-slate-200 mt-20">
-      <div className="max-w-[1400px] mx-auto px-6 py-16">
+      <div className="site-container py-16">
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-12 mb-16">
 
           {/* Column 1: Brand Identity */}

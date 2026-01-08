@@ -40,7 +40,7 @@ export function Hero({
                 </div>
             </div>
 
-            <div className="w-full max-w-[1400px] mx-auto relative z-20 px-4 sm:px-6 md:px-8 pt-16 md:pt-28">
+            <div className="site-container relative z-20 pt-16 md:pt-28">
                 <div className="max-w-2xl space-y-6 md:space-y-4">
                     {/* Badge */}
                     <motion.div

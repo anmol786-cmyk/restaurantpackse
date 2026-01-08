@@ -440,6 +440,8 @@ export interface Tax {
 // CUSTOMER TYPES
 // ============================================================================
 
+export type CustomerRole = 'customer' | 'business_basic' | 'business_verified';
+
 export interface Customer {
   id: number;
   date_created: string;
@@ -457,6 +459,50 @@ export interface Customer {
   avatar_url: string;
   meta_data: MetaData[];
   _links?: HATEOASLinks;
+}
+
+/**
+ * Business Customer Interface
+ * Extended customer type for B2B wholesale customers
+ */
+export interface BusinessCustomer extends Customer {
+  // Business Information
+  company_name: string;
+  vat_number: string;
+  business_type: 'restaurant' | 'cafe' | 'catering' | 'hotel' | 'pizzeria' | 'grocery' | 'other';
+
+  // Business Status
+  customer_role: CustomerRole;
+  business_verified: boolean;
+  verification_date?: string;
+
+  // Payment Terms
+  payment_terms?: 'immediate' | 'net_30' | 'net_60';
+  credit_limit?: number;
+
+  // Pricing
+  wholesale_tier?: 'basic' | 'standard' | 'premium';
+  discount_percentage?: number;
+
+  // Account Manager
+  account_manager_id?: number;
+  account_manager_name?: string;
+  account_manager_email?: string;
+}
+
+/**
+ * Helper type guards for customer roles
+ */
+export function isBusinessCustomer(customer: Customer): customer is BusinessCustomer {
+  return customer.meta_data?.some(
+    m => m.key === 'customer_type' && m.value === 'business'
+  ) || false;
+}
+
+export function isVerifiedBusinessCustomer(customer: Customer): boolean {
+  return customer.meta_data?.some(
+    m => m.key === 'business_verified' && (m.value === '1' || m.value === 'yes' || m.value === true)
+  ) || false;
 }
 
 // ============================================================================

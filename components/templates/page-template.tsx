@@ -3,7 +3,7 @@
 import { ReactNode } from 'react';
 import Image from 'next/image';
 import { Breadcrumbs, BreadcrumbItem } from '@/components/layout/breadcrumbs';
-import { decodeHtmlEntities } from '@/lib/utils';
+import { decodeHtmlEntities, cn } from '@/lib/utils';
 
 interface PageTemplateProps {
     title: string;
@@ -56,7 +56,7 @@ export function PageTemplate({
 
                             {/* Content Overlay */}
                             <div className="absolute inset-0 flex items-end">
-                                <div className="container mx-auto px-4 md:px-6 lg:px-8 max-w-screen-2xl pb-12 md:pb-16">
+                                <div className="site-container pb-12 md:pb-16">
                                     {breadcrumbs && breadcrumbs.length > 0 && (
                                         <Breadcrumbs items={breadcrumbs} className="mb-6" />
                                     )}
@@ -73,7 +73,7 @@ export function PageTemplate({
                         </div>
                     ) : (
                         // Text-Only Hero
-                        <div className="container mx-auto px-4 md:px-6 lg:px-8 max-w-screen-2xl py-12 md:py-16 lg:py-20">
+                        <div className="site-container py-12 md:py-16 lg:py-20">
                             {breadcrumbs && breadcrumbs.length > 0 && (
                                 <Breadcrumbs items={breadcrumbs} className="mb-6" />
                             )}
@@ -92,7 +92,7 @@ export function PageTemplate({
 
             {/* Content Section */}
             <section className="py-12 md:py-16 lg:py-20">
-                <div className={`container mx-auto px-4 md:px-6 lg:px-8 max-w-screen-2xl ${className}`}>
+                <div className={cn("site-container", className)}>
                     {/* Multi-column Content */}
                     <div
                         className={`

@@ -17,7 +17,7 @@ export function ProductShowcase({ title, products, moreLink = "/shop" }: Product
 
     return (
         <section className="w-full py-6 md:py-8">
-            <div className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 md:px-8">
+            <div className="site-container">
                 {/* Header */}
                 <div className="flex items-center justify-between mb-6">
                     <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-foreground">

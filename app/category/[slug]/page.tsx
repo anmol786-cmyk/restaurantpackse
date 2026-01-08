@@ -62,7 +62,7 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
     const { data: posts, headers } = await getPostsByCategoryPaginated(category.id, page, 12);
 
     return (
-        <div className="container mx-auto px-4 py-12">
+        <div className="site-container py-12">
             {/* Category Header */}
             <div className="mb-12">
                 <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">

@@ -14,6 +14,7 @@ import { getProductCategories } from '@/lib/woocommerce';
 import { brandConfig } from '@/config/brand.config';
 import { brandProfile } from '@/config/brand-profile';
 import { AiChatWidget, useAIChat } from '@/components/ai/ai-chat-widget';
+import { CurrencySelector } from '@/components/ui/currency-selector';
 
 interface HeaderProps {
   className?: string;
@@ -36,7 +37,7 @@ export function Header({ className, categories = [] }: HeaderProps) {
   return (
     <>
       <header className={cn("w-full bg-white border-b border-slate-100 sticky top-0 z-50 transition-all duration-300 shadow-sm", className)}>
-        <div className="max-w-[1400px] mx-auto px-4 xl:px-6">
+        <div className="site-container">
           {/* Desktop Header Row */}
           <div className="hidden lg:flex items-center h-20 gap-8">
 
@@ -84,6 +85,8 @@ export function Header({ className, categories = [] }: HeaderProps) {
                   <MessageCircle className="h-5 w-5" />
                 </button>
 
+                <CurrencySelector variant="compact" />
+
                 <UserNav />
                 <WishlistIcon />
 
@@ -112,7 +115,8 @@ export function Header({ className, categories = [] }: HeaderProps) {
               </Link>
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
+              <CurrencySelector variant="icon-only" />
               <SearchModal /> {/* Mobile version might need to be just an icon in the modal but it's fine for now */}
               <CartIcon />
             </div>

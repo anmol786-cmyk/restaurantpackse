@@ -20,7 +20,7 @@ export default function ContactPage() {
     <main className="min-h-screen bg-background">
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-muted/30 via-background to-background border-b">
-        <div className="container mx-auto px-4 py-16 md:py-20">
+        <div className="site-container py-16 md:py-20">
           <div className="max-w-3xl">
             <h1 style={{
               fontSize: '31.25px',
@@ -44,7 +44,7 @@ export default function ContactPage() {
 
       {/* Main Content & Sidebar */}
       <section className="py-16">
-        <div className="container mx-auto px-4">
+        <div className="site-container">
           <div className="grid lg:grid-cols-3 gap-12">
             {/* Main Content Area (2/3) */}
             <div className="lg:col-span-2 space-y-12">

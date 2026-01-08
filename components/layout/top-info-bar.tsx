@@ -36,7 +36,7 @@ export function TopInfoBar() {
 
   return (
     <div className="hidden lg:block w-full bg-primary text-white py-1.5 border-b border-white/10">
-      <div className="max-w-[1400px] mx-auto px-6 flex items-center justify-between text-[11px] font-medium tracking-tight">
+      <div className="site-container flex items-center justify-between text-[11px] font-medium tracking-tight">
         {/* Left: Store Status & Location */}
         <div className="flex items-center gap-6">
           {storeStatus && (

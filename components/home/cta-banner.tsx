@@ -9,8 +9,8 @@ import { brandProfile } from "@/config/brand-profile";
 
 export function CTASection() {
     return (
-        <section className="w-full py-20 px-6">
-            <div className="max-w-[1400px] mx-auto relative overflow-hidden rounded-[2.5rem] bg-[#A80E13] min-h-[500px] flex items-center">
+        <section className="w-full py-20">
+            <div className="site-container relative overflow-hidden rounded-[2.5rem] bg-[#A80E13] min-h-[500px] flex items-center">
 
                 <div className="absolute inset-0 z-0">
                     <div className="absolute inset-0 bg-gradient-to-r from-[#A80E13] via-[#A80E13]/90 to-transparent z-10" />

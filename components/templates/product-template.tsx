@@ -78,8 +78,8 @@ export function ProductTemplate({
       {/* SEO Schema */}
       <ProductSchema product={product} reviews={reviews} />
 
-      <div className="min-h-screen bg-background overflow-x-hidden max-w-full">
-        <div className="w-full px-5 py-6 md:py-8 max-w-full">
+      <div className="min-h-screen bg-background overflow-x-hidden">
+        <div className="site-container py-6 md:py-8">
           {/* Breadcrumbs */}
           {breadcrumbs && breadcrumbs.length > 0 && (
             <Breadcrumbs items={breadcrumbs} className="mb-4" />
@@ -530,7 +530,7 @@ export function ProductTemplate({
 
       {/* AI-Powered Recommendations */}
       <div className="bg-primary/5 py-12">
-        <div className="w-full px-5 max-w-full">
+        <div className="site-container">
           <ProductRecommendations currentProduct={product} maxRecommendations={4} />
         </div>
       </div>

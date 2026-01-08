@@ -35,7 +35,7 @@ export function CategoryGrid({ categories }: CategoryGridProps) {
 
     return (
         <section className="py-12 md:py-16 bg-background">
-            <div className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 md:px-8">
+            <div className="site-container">
                 <div className="flex items-center justify-between mb-6 md:mb-8">
                     <div className="space-y-1">
                         <span className="text-primary font-bold text-xs uppercase tracking-wider">Explore</span>

@@ -28,7 +28,7 @@ export function BlogPostTemplate({
   return (
     <>
       <Section>
-        <div className="container px-4 md:px-6">
+        <div className="site-container">
           {/* Breadcrumbs */}
           {breadcrumbs && breadcrumbs.length > 0 && (
             <Breadcrumbs items={breadcrumbs} className="mb-6" />
@@ -93,7 +93,7 @@ export function BlogPostTemplate({
       {/* Related Posts */}
       {showRelatedPosts && relatedPosts && relatedPosts.length > 0 && (
         <Section className="bg-muted/50">
-          <div className="container px-4 md:px-6">
+          <div className="site-container">
             <h2 className="mb-6 text-2xl font-bold">Related Posts</h2>
             <PostGrid posts={relatedPosts.slice(0, 3)} columns={3} showExcerpt={false} />
           </div>
