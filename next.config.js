@@ -1,3 +1,5 @@
+const path = require('path');
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     // Performance optimizations
@@ -20,6 +22,15 @@ const nextConfig = {
         'lucide-react': {
             transform: 'lucide-react/dist/esm/icons/{{kebabCase member}}',
         },
+    },
+
+    // Webpack configuration for path aliases (fixes Vercel build issues)
+    webpack: (config, { isServer }) => {
+        config.resolve.alias = {
+            ...config.resolve.alias,
+            '@': path.resolve(__dirname),
+        };
+        return config;
     },
 
     images: {
