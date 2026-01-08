@@ -12,6 +12,7 @@ import { ShoppingBag, Star, Plus } from 'lucide-react';
 import { useCartStore } from '@/store/cart-store';
 import { cn, decodeHtmlEntities } from '@/lib/utils';
 import { WishlistToggle } from '@/components/wishlist/wishlist-button';
+import { WholesalePriceDisplay } from '@/components/wholesale/wholesale-price-display';
 
 interface ProductCardProps {
   product: Product;
@@ -139,6 +140,8 @@ export function ProductCard({ product, className }: ProductCardProps) {
                 {decodeHtmlEntities(product.short_description.replace(/<[^>]*>/g, ''))}
               </p>
             )}
+
+            <WholesalePriceDisplay basePrice={product.price ? parseFloat(String(product.price)) : 0} />
 
             <div className="mt-auto flex items-center justify-between gap-3 pt-3 border-t border-border/50">
               {/* Price */}

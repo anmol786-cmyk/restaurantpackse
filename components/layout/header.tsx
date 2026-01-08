@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import Image from 'next/image';
 import { UserNav } from '@/components/layout/user-nav';
@@ -21,137 +23,98 @@ interface HeaderProps {
 const NavLink = ({ href, children }: { href: string; children: React.ReactNode }) => (
   <Link
     href={href}
-    className="group relative text-[0.70rem] xl:text-xs font-medium uppercase tracking-wider xl:tracking-widest text-foreground transition-colors hover:text-primary whitespace-nowrap"
+    className="text-sm font-semibold text-slate-600 hover:text-primary transition-colors whitespace-nowrap"
   >
     {children}
-    <span className="absolute -bottom-1 left-0 h-0.5 w-0 bg-primary transition-all duration-300 group-hover:w-full" />
   </Link>
 );
 
 export function Header({ className, categories = [] }: HeaderProps) {
-  // Configure your logo URL in brand.config.ts or use a local logo from /public folder
-  // Example: '/logo.png' for local logo or your WordPress logo URL
-  const logoUrl = '/logo.png'; // Update this to your logo path
-
-  // Chat functionality
-  const { isOpen, openChat, closeChat, ChatWidget } = useAIChat();
+  const logoUrl = 'https://crm.restaurantpack.se/wp-content/uploads/2025/03/ANMOL-WHOLESALE-1.png';
+  const { openChat, ChatWidget } = useAIChat();
 
   return (
     <>
-      <header className={cn("w-full bg-background/95 backdrop-blur-md sticky top-0 z-50 border-b border-border/10 transition-all duration-300 shadow-sm", className)}>
-        <div className="w-full px-3 xl:px-5 py-[3px]">
-          {/* Desktop Header Layout - Only show on XL screens (1280px+) */}
-          <div className="hidden xl:flex flex-col gap-2">
-            <div className="grid grid-cols-12 items-center h-24 gap-3">
+      <header className={cn("w-full bg-white border-b border-slate-100 sticky top-0 z-50 transition-all duration-300 shadow-sm", className)}>
+        <div className="max-w-[1400px] mx-auto px-4 xl:px-6">
+          {/* Desktop Header Row */}
+          <div className="hidden lg:flex items-center h-20 gap-8">
 
-              {/* Extreme Left: Location & AI Assistant */}
-              <div className="col-span-1 flex justify-start gap-2">
-                <a
-                  href={brandConfig.contact.googleMapsUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-foreground hover:text-primary transition-colors p-2 hover:bg-primary/5 rounded-full"
-                  aria-label="Location"
-                >
-                  <MapPin className="h-5 w-5" />
-                </a>
-                <button
-                  onClick={openChat}
-                  className="text-foreground hover:text-primary transition-colors p-2 hover:bg-primary/5 rounded-full"
-                  aria-label="AI Shopping Assistant"
-                  title="AI Shopping Assistant"
-                >
-                  <MessageCircle className="h-5 w-5" />
-                </button>
-              </div>
-
-              {/* Left Navigation - Spread Out */}
-              <div className="col-span-4 flex justify-between items-center px-2">
-                <NavLink href="/shop">Shop</NavLink>
-                <NavLink href="/brands">Brands</NavLink>
-              </div>
-
-              {/* Center: Logo */}
-              <div className="col-span-2 flex flex-col items-center justify-center">
-                <Link href="/" className="group">
-                  <div className="relative h-24 w-40 transition-transform duration-500 group-hover:scale-105">
-                    <Image
-                      src={logoUrl}
-                      alt={brandProfile.name}
-                      fill
-                      className="object-contain"
-                      sizes="160px"
-                      priority
-                    />
-                  </div>
-                </Link>
-              </div>
-
-              {/* Right Navigation - Spread Out */}
-              <div className="col-span-4 flex justify-between items-center px-2">
-                <NavLink href="/shop">Shop</NavLink>
-                <NavLink href="/blog">Blog</NavLink>
-                <NavLink href="/about">About</NavLink>
-                <NavLink href="/contact">Contact</NavLink>
-                <NavLink href="/bookings">Reservations</NavLink>
-              </div>
-
-              {/* Extreme Right: Shop/Cart */}
-              <div className="col-span-1 flex justify-end items-center gap-3">
-                <UserNav />
-                <WishlistIcon />
-                <CartIcon />
-              </div>
-            </div>
-
-            {/* Search Bar Row */}
-            <div className="pb-3">
-              <div className="max-w-2xl mx-auto">
-                <SearchModal />
-              </div>
-            </div>
-          </div>
-
-          {/* Mobile/Tablet Header Layout - Show below XL (below 1280px) */}
-          <div className="xl:hidden flex flex-col gap-3">
-            <div className="flex h-20 items-center justify-between">
-              {/* Mobile Menu & AI Assistant */}
-              <div className="flex items-center gap-2">
-                <MobileMenu />
-                <button
-                  onClick={openChat}
-                  className="text-foreground hover:text-primary transition-colors p-2 hover:bg-primary/5 rounded-full"
-                  aria-label="AI Shopping Assistant"
-                  title="AI Shopping Assistant"
-                >
-                  <MessageCircle className="h-5 w-5" />
-                </button>
-              </div>
-
-              {/* Center Logo */}
-              <Link href="/" className="flex items-center">
-                <div className="relative h-20 w-32 sm:h-22 sm:w-36 transition-transform duration-300 active:scale-95">
+            {/* Logo */}
+            <div className="flex-shrink-0">
+              <Link href="/" className="group block">
+                <div className="relative h-14 w-32 transition-transform duration-300 group-hover:scale-105">
                   <Image
                     src={logoUrl}
                     alt={brandProfile.name}
                     fill
-                    className="object-contain"
+                    className="object-contain object-left"
+                    sizes="128px"
                     priority
-                    sizes="(max-width: 640px) 128px, 144px"
                   />
                 </div>
               </Link>
-
-              {/* Right Actions */}
-              <div className="flex items-center gap-3">
-                <WishlistIcon />
-                <CartIcon />
-              </div>
             </div>
 
-            {/* Mobile Search Bar */}
-            <div className="pb-3">
+            {/* Search Bar area - Expands to fill space */}
+            <div className="flex-1 max-w-xl">
+              {/* We'll style the SearchModal trigger to look like a modern input */}
               <SearchModal />
+            </div>
+
+            {/* Right side navigation and actions */}
+            <div className="flex items-center gap-8">
+              {/* Navigation Links */}
+              <nav className="hidden xl:flex items-center gap-6">
+                <NavLink href="/shop">Products</NavLink>
+                <NavLink href="/wholesale">Wholesale</NavLink>
+                <NavLink href="/wholesale/quote">Quotes</NavLink>
+                <NavLink href="/wholesale/register">B2B Account</NavLink>
+              </nav>
+
+              <div className="h-6 w-px bg-slate-200 hidden xl:block" />
+
+              {/* Action Buttons */}
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={openChat}
+                  className="flex items-center justify-center p-2 text-slate-500 hover:text-primary hover:bg-slate-50 rounded-lg transition-all"
+                  title="AI Assistant"
+                >
+                  <MessageCircle className="h-5 w-5" />
+                </button>
+
+                <UserNav />
+                <WishlistIcon />
+
+                {/* Cart with distinct B2B look */}
+                <div className="pl-2">
+                  <CartIcon />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Mobile/Tablet Header Row */}
+          <div className="lg:hidden flex h-16 items-center justify-between gap-4">
+            <div className="flex items-center gap-2">
+              <MobileMenu />
+              <Link href="/">
+                <div className="relative h-10 w-24">
+                  <Image
+                    src={logoUrl}
+                    alt={brandProfile.name}
+                    fill
+                    className="object-contain object-left"
+                    priority
+                  />
+                </div>
+              </Link>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <SearchModal /> {/* Mobile version might need to be just an icon in the modal but it's fine for now */}
+              <CartIcon />
             </div>
           </div>
         </div>

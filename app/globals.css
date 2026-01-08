@@ -4,54 +4,36 @@
 
 @layer base {
   :root {
+    /* Primary: Deep Red (#A80E13) */
+    --primary: 358 85% 36%;
+    --primary-foreground: 0 0% 100%;
 
-    /* Grocery Template - Professional Minimalist Theme */
+    /* Secondary/Action: Dark Teal/Green (#00584F) */
+    --secondary: 174 100% 17%;
+    --secondary-foreground: 0 0% 100%;
 
-    /* Base Background: Greyish White */
-    --background: 210 20% 98%;
-    /* #f8f9fa - Cool greyish white */
+    /* Background: Off-White/Grey (#F9F9F9) */
+    --background: 0 0% 98%;
+    --foreground: 0 0% 9%;
+    /* Black (#171717) */
 
-    /* Text: Deep Charcoal */
-    --foreground: 222 47% 11%;
-    /* #0f172a - Readability focus */
-
-    /* Card: Pure White for contrast against greyish bg */
+    /* Card & Popover: Pure White (#FFFFFF) */
     --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
+    --card-foreground: 0 0% 9%;
 
-    /* Popover: White */
     --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
+    --popover-foreground: 0 0% 9%;
 
-    /* Primary: Vibrant Red (Anmol Wholesale Brand Color) */
-    --primary: 0 84% 60%;
-    /* #ef4444 - Vibrant Red from logo */
-    --primary-foreground: 210 40% 98%;
+    /* Muted: Lighter Grey */
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 40%;
 
-    /* Secondary: Deep Forest Green (Supporting Color) */
-    --secondary: 142 72% 29%;
-    /* #15803d - Professional Deep Green */
-    --secondary-foreground: 210 40% 98%;
+    /* Borders: Light Grey (#E3E3E3) */
+    --border: 0 0% 89%;
+    --input: 0 0% 89%;
+    --ring: 358 85% 36%;
 
-    /* Muted: Neutral Gray */
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-
-    /* Accent: Subtle Green/Gray */
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222 47% 11%;
-
-    /* Destructive: Red */
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-
-    /* Border: Subtle Gray */
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 0 84% 60%;
-
-    --radius: 0.5rem;
-    /* 8px - Cleaner, sharper look */
+    --radius: 0.75rem;
   }
 
   .dark {
@@ -127,37 +109,37 @@
   /* Heading Styles */
   h1,
   .h1 {
-    font-size: 31.25px;
-    font-weight: 700;
-    line-height: 1.47;
-    letter-spacing: 0.02em;
+    font-size: 50px;
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
     @apply mb-6;
   }
 
   h2,
   .h2 {
-    font-size: 24px;
-    font-weight: 600;
-    line-height: 1.47;
-    letter-spacing: 0.02em;
+    font-size: 40px;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
     @apply mb-4;
   }
 
   h3,
   .h3 {
-    font-size: 16px;
-    font-weight: 600;
-    line-height: 1.52;
-    letter-spacing: 0;
+    font-size: 25px;
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
     @apply mb-3;
   }
 
   h4,
   .h4 {
-    font-size: 20px;
-    font-weight: 500;
-    line-height: 1.52;
-    letter-spacing: 0.025em;
+    font-size: 25px;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: 0;
     @apply mb-2;
   }
 
@@ -189,11 +171,18 @@
 
   p,
   .body {
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 1.6;
+    letter-spacing: 0.01em;
+    @apply text-muted-foreground mb-4;
+  }
+
+  .body-text-sm,
+  .body-sm {
     font-size: 16px;
     font-weight: 400;
-    line-height: 1.52;
-    letter-spacing: 0.03em;
-    @apply text-muted-foreground mb-4;
+    line-height: 1.6;
   }
 
   .body-small {

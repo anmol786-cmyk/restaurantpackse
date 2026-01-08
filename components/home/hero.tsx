@@ -21,15 +21,14 @@ export function Hero({
         <section className="relative w-full h-[70vh] min-h-[450px] flex items-start justify-start overflow-hidden bg-muted/20">
             {/* Background Image with Overlay */}
             <div className="absolute inset-0 z-0">
-                {/* Fallback pattern if no image */}
-                <div className="absolute inset-0 bg-primary/5 pattern-grid-lg opacity-20" />
-                <div className="absolute inset-0 bg-gradient-to-r from-background via-background/95 to-background/70 md:via-background/80 md:to-transparent z-10" />
+                {/* Robust Overlay for Readability */}
+                <div className="absolute inset-0 bg-gradient-to-r from-white via-white/95 to-white/40 md:via-white/90 md:to-transparent z-10" />
 
                 {/* Hero Image - Right Aligned */}
-                <div className="absolute right-0 top-0 h-full w-full md:w-3/4 lg:w-2/3 ml-auto opacity-30 md:opacity-100">
-                    <div className="relative h-full w-full bg-muted">
+                <div className="absolute right-0 top-0 h-full w-full md:w-3/4 lg:w-2/3 ml-auto">
+                    <div className="relative h-full w-full">
                         <Image
-                            src="https://crm.restaurantpack.se/wp-content/uploads/2025/03/ANMOL-WHOLESALE-1.png"
+                            src="https://crm.restaurantpack.se/wp-content/uploads/2025/03/anmol-wholesale.png"
                             alt="Anmol Wholesale - Restaurant Supply"
                             fill
                             className="object-cover object-center"
@@ -59,11 +58,10 @@ export function Hero({
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-                        className="text-3xl md:text-5xl lg:text-6xl xl:text-[3.5rem] font-heading font-bold text-foreground tracking-tight"
-                        style={{ lineHeight: 1 }}
+                        className="text-3xl md:text-4xl lg:text-5xl xl:text-5xl font-extrabold text-slate-900 tracking-tight leading-[1.1]"
                     >
-                        Authentic Indian & Pakistani{' '}
-                        <span className="text-primary">Groceries in Stockholm</span>
+                        {title.split(' ').slice(0, -1).join(' ')}{' '}
+                        <span className="text-primary">{title.split(' ').slice(-1)}</span>
                     </motion.h1>
 
                     {/* Subtitle */}
@@ -71,7 +69,7 @@ export function Hero({
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.4 }}
-                        className="text-sm sm:text-base md:text-lg lg:text-xl text-muted-foreground leading-relaxed font-sans max-w-xl"
+                        className="text-sm sm:text-base md:text-base lg:text-lg text-slate-500 leading-relaxed font-sans max-w-xl"
                     >
                         {subtitle}
                     </motion.p>

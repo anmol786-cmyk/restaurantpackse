@@ -65,11 +65,11 @@ interface CartState {
   clearShipping: () => void;
 
   // Computed values
-  getTotalPrice: () => number;
+  getTotalPrice: (isWholesale?: boolean) => number;
   getTotalItems: () => number;
-  getSubtotal: () => number;
+  getSubtotal: (isWholesale?: boolean) => number;
   getShippingCost: () => number;
-  getTotal: () => number;
+  getTotal: (isWholesale?: boolean) => number;
 }
 
 // Generate unique key for cart item
@@ -128,6 +128,21 @@ export const useCartStore = create<CartState>()(
           }
         }
 
+        // Check MOQ
+        const moqRequirement = CommerceRules.getMOQ(product.id, product.categories?.map(c => c.name));
+        let finalQuantity = quantity;
+
+        if (currentQuantity === 0 && quantity < moqRequirement) {
+          finalQuantity = moqRequirement;
+          set({
+            notification: {
+              message: `Minimum order quantity for this item is ${moqRequirement} units.`,
+              type: 'info',
+              timestamp: Date.now(),
+            },
+          });
+        }
+
         set((state) => {
           const price = variation
             ? parseFloat(variation.price)
@@ -138,7 +153,7 @@ export const useCartStore = create<CartState>()(
             return {
               items: state.items.map((item) =>
                 item.key === key
-                  ? { ...item, quantity: item.quantity + quantity }
+                  ? { ...item, quantity: item.quantity + finalQuantity }
                   : item
               ),
             };
@@ -149,7 +164,7 @@ export const useCartStore = create<CartState>()(
             key,
             productId: product.id,
             variationId: variation?.id,
-            quantity,
+            quantity: finalQuantity,
             price,
             product,
             variation,
@@ -222,9 +237,12 @@ export const useCartStore = create<CartState>()(
         set({ notification: null });
       },
 
-      getTotalPrice: () => {
+      getTotalPrice: (isWholesale = false) => {
         const { items } = get();
-        return items.reduce((total, item) => total + item.price * item.quantity, 0);
+        return items.reduce((total, item) => {
+          const { unitPrice } = CommerceRules.getTieredPrice(item.price, item.quantity, isWholesale);
+          return total + unitPrice * item.quantity;
+        }, 0);
       },
 
       getTotalItems: () => {
@@ -232,9 +250,12 @@ export const useCartStore = create<CartState>()(
         return items.reduce((total, item) => total + item.quantity, 0);
       },
 
-      getSubtotal: () => {
+      getSubtotal: (isWholesale = false) => {
         const { items } = get();
-        return items.reduce((total, item) => total + item.price * item.quantity, 0);
+        return items.reduce((total, item) => {
+          const { unitPrice } = CommerceRules.getTieredPrice(item.price, item.quantity, isWholesale);
+          return total + unitPrice * item.quantity;
+        }, 0);
       },
 
       // Shipping actions
@@ -362,8 +383,8 @@ export const useCartStore = create<CartState>()(
         return selectedShippingMethod?.total_cost || 0;
       },
 
-      getTotal: () => {
-        const subtotal = get().getSubtotal();
+      getTotal: (isWholesale = false) => {
+        const subtotal = get().getSubtotal(isWholesale);
         const shipping = get().getShippingCost();
         return subtotal + shipping;
       },

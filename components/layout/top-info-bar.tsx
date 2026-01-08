@@ -5,6 +5,7 @@ import Link from "next/link";
 import { brandConfig } from "@/config/brand.config";
 import { useEffect, useState } from "react";
 import { getStoreStatus, type StoreStatus } from "@/lib/store-hours";
+import { cn } from "@/lib/utils";
 
 // WhatsApp Icon Component
 function WhatsAppIcon({ className }: { className?: string }) {
@@ -24,93 +25,60 @@ export function TopInfoBar() {
   const [storeStatus, setStoreStatus] = useState<StoreStatus | null>(null);
 
   useEffect(() => {
-    // Update store status on mount and every minute
     const updateStatus = () => setStoreStatus(getStoreStatus());
     updateStatus();
-
-    const interval = setInterval(updateStatus, 60000); // Update every minute
+    const interval = setInterval(updateStatus, 60000);
     return () => clearInterval(interval);
   }, []);
 
-  // Format phone number for links
   const phoneClean = contact.phone.replace(/\s+/g, '');
   const whatsappLink = `https://wa.me/${phoneClean.replace('+', '')}`;
 
   return (
-    <div className="hidden lg:block w-full bg-green-700 text-white py-2 px-6">
-      <div className="flex items-center justify-between text-xs md:text-sm font-medium">
-        {/* Left side - Contact info */}
+    <div className="hidden lg:block w-full bg-primary text-white py-1.5 border-b border-white/10">
+      <div className="max-w-[1400px] mx-auto px-6 flex items-center justify-between text-[11px] font-medium tracking-tight">
+        {/* Left: Store Status & Location */}
         <div className="flex items-center gap-6">
-          <div className="flex items-center gap-3">
-            {/* Call Button */}
-            <a
-              href={`tel:${phoneClean}`}
-              className="flex items-center gap-2 hover:bg-white/10 px-2 py-1 rounded-md transition-colors"
-              title="Call us"
-            >
-              <Phone className="h-4 w-4" />
-              <span>+46 728 494 801</span>
-            </a>
-
-            {/* WhatsApp Button */}
-            <a
-              href={whatsappLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1.5 bg-green-500 hover:bg-green-400 text-white px-2 py-1 rounded-md transition-colors shadow-sm"
-              title="Chat on WhatsApp"
-            >
-              <WhatsAppIcon className="h-4 w-4" />
-              <span className="hidden xl:inline">WhatsApp</span>
-            </a>
-          </div>
-
-          <div className="flex items-center gap-2 text-white/90">
-            <Mail className="h-4 w-4" />
-            <a href={`mailto:${contact.email}`} className="hover:underline hover:text-white">
-              {contact.email}
+          {storeStatus && (
+            <div className="flex items-center gap-2">
+              <span className={cn(
+                "w-1.5 h-1.5 rounded-full animate-pulse",
+                storeStatus.isOpen ? "bg-green-300" : "bg-red-300"
+              )} />
+              <span className="text-white">{storeStatus.statusText}</span>
+              <span className="text-white/40">|</span>
+              <span className="text-white/80">{storeStatus.todayHours}</span>
+            </div>
+          )}
+          <div className="flex items-center gap-1.5 group">
+            <MapPin className="h-3 w-3 text-white/60 group-hover:text-white transition-colors" />
+            <a href={contact.googleMapsUrl} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
+              Fagerstagatan 13, Spånga
             </a>
           </div>
         </div>
 
-        {/* Right side - Store hours, online orders & location */}
+        {/* Center: USP / Tagline */}
+        <div className="hidden xl:flex items-center gap-2 text-white/70">
+          <span className="text-white font-black uppercase tracking-widest text-[9px] bg-white/20 px-1.5 py-0.5 rounded">Anmol Advantage</span>
+          <span>•</span>
+          <span className="italic">"From Our Restaurant Kitchen to Yours"</span>
+        </div>
+
+        {/* Right: Contact & Delivery */}
         <div className="flex items-center gap-6">
-          {/* Physical Store Status */}
-          {storeStatus && (
-            <div className="flex items-center gap-2 text-white/90">
-              <Clock className="h-4 w-4" />
-              <div className="flex items-center gap-2">
-                <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs font-semibold ${
-                  storeStatus.isOpen
-                    ? 'bg-green-500/20 text-green-100 border border-green-400/30'
-                    : 'bg-red-500/20 text-red-100 border border-red-400/30'
-                }`}>
-                  <span className={`w-1.5 h-1.5 rounded-full ${storeStatus.isOpen ? 'bg-green-300' : 'bg-red-300'}`} />
-                  {storeStatus.statusText}
-                </span>
-                <span className="hidden xl:inline text-white/80">•</span>
-                <span className="hidden xl:inline">{storeStatus.todayHours}</span>
-              </div>
-            </div>
-          )}
-
-          {/* Online Orders 24/7 */}
-          <div className="flex items-center gap-2 bg-white/10 px-2 py-1 rounded-md border border-white/20">
-            <ShoppingCart className="h-4 w-4 text-green-300" />
-            <span className="text-white font-semibold text-xs">Orders 24/7</span>
-          </div>
-
-          {/* Location */}
-          <div className="flex items-center gap-2">
-            <MapPin className="h-4 w-4" />
-            <a
-              href={contact.googleMapsUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:underline hover:text-white"
-            >
-              Bandhagen, Stockholm
+          <div className="flex items-center gap-4">
+            <a href={`tel:${phoneClean}`} className="flex items-center gap-1.5 hover:text-white transition-colors">
+              <Phone className="h-3 w-3 text-white/60" />
+              <span>{contact.phone}</span>
             </a>
+            <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-green-300 hover:text-white transition-colors">
+              <WhatsAppIcon className="h-3.5 w-3.5" />
+              <span className="font-bold border-b border-green-300/50">Chat B2B</span>
+            </a>
+          </div>
+          <div className="flex items-center gap-2 bg-white/20 text-white px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-tighter border border-white/20">
+            Ex-Warehouse Pricing
           </div>
         </div>
       </div>

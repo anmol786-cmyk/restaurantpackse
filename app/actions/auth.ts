@@ -1,8 +1,80 @@
 'use server';
 
 import { WC_API_CONFIG } from '@/lib/woocommerce/config';
-import { RegisterData, LoginCredentials } from '@/lib/auth';
+import { RegisterData, LoginCredentials, BusinessRegisterData } from '@/lib/auth';
 import { getCustomerOrders } from '@/lib/woocommerce/orders';
+
+export async function registerBusinessAction(data: BusinessRegisterData) {
+    const baseUrl = WC_API_CONFIG.baseUrl;
+    const consumerKey = process.env.WORDPRESS_CONSUMER_KEY;
+    const consumerSecret = process.env.WORDPRESS_CONSUMER_SECRET;
+
+    if (!consumerKey || !consumerSecret) {
+        return { success: false, error: 'Server configuration error: Missing API keys' };
+    }
+
+    try {
+        const payload = {
+            email: data.email,
+            first_name: data.first_name,
+            last_name: data.last_name,
+            username: data.username,
+            password: data.password,
+            billing: {
+                first_name: data.first_name,
+                last_name: data.last_name,
+                company: data.company_name,
+                address_1: data.address,
+                city: data.city,
+                postcode: data.postcode,
+                country: data.country,
+                email: data.email,
+                phone: data.phone,
+            },
+            shipping: {
+                first_name: data.first_name,
+                last_name: data.last_name,
+                company: data.company_name,
+                address_1: data.address,
+                city: data.city,
+                postcode: data.postcode,
+                country: data.country,
+            },
+            meta_data: [
+                { key: 'is_wholesale_customer', value: 'pending' },
+                { key: 'company_name', value: data.company_name },
+                { key: 'vat_number', value: data.vat_number },
+                { key: 'business_type', value: data.business_type },
+                { key: 'customer_type', value: 'business' }
+            ]
+        };
+
+        const response = await fetch(`${baseUrl}/customers`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic ' + Buffer.from(`${consumerKey}:${consumerSecret}`).toString('base64'),
+            },
+            body: JSON.stringify(payload),
+        });
+
+        const responseData = await response.json();
+
+        if (!response.ok) {
+            console.error('WooCommerce Business Registration Error:', responseData);
+            return {
+                success: false,
+                error: responseData.message || 'Business registration failed',
+                code: responseData.code
+            };
+        }
+
+        return { success: true, data: responseData };
+    } catch (error: any) {
+        console.error('Business registration error:', error);
+        return { success: false, error: error.message || 'An unexpected error occurred' };
+    }
+}
 
 export async function registerUserAction(data: RegisterData) {
     const baseUrl = WC_API_CONFIG.baseUrl;

@@ -6,7 +6,10 @@ import { useCartStore } from '@/store/cart-store';
 import { Card } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
-import { ShoppingBag } from 'lucide-react';
+import { ShoppingBag, Tag } from 'lucide-react';
+import { useAuthStore } from '@/store/auth-store';
+import { CommerceRules } from '@/config/commerce-rules';
+import { CouponInput } from './coupon-input';
 
 interface OrderSummaryProps {
     shippingCost?: number;
@@ -17,8 +20,6 @@ interface OrderSummaryProps {
     appliedCoupon?: string;
 }
 
-import { CouponInput } from './coupon-input';
-
 export function OrderSummary({
     shippingCost: propShippingCost,
     taxRate = 25, // Swedish VAT is 25% for most goods
@@ -27,13 +28,17 @@ export function OrderSummary({
     onApplyCoupon,
     appliedCoupon
 }: OrderSummaryProps) {
+    const { user } = useAuthStore();
+    const isWholesale = user?.meta_data?.some(m => m.key === 'customer_type' && m.value === 'business') ||
+        user?.meta_data?.some(m => m.key === 'is_wholesale_customer' && (m.value === '1' || m.value === 'yes'));
+
     const { items, getTotalPrice, getShippingCost } = useCartStore();
 
     // Get shipping cost from cart store (DHL rates) or fallback to prop
     const shippingCost = propShippingCost !== undefined ? propShippingCost : getShippingCost();
 
     // Prices in WooCommerce already include tax (Swedish VAT requirement)
-    const totalWithTax = getTotalPrice();
+    const totalWithTax = getTotalPrice(isWholesale);
 
     // Calculate tax that's INCLUDED in the price
     // If total is 100 SEK with 25% tax, then: 100 / 1.25 = 80 (subtotal), tax = 20
@@ -98,9 +103,17 @@ export function OrderSummary({
                                         </p>
                                     )}
                                 </div>
-                                <p className="text-sm font-semibold text-primary-700 dark:text-primary-400">
-                                    {formatPrice(item.price * item.quantity, 'SEK')}
-                                </p>
+                                <div className="flex items-center justify-between">
+                                    <p className="text-sm font-semibold text-primary-700 dark:text-primary-400">
+                                        {formatPrice(CommerceRules.getTieredPrice(item.price, item.quantity, isWholesale).unitPrice * item.quantity, 'SEK')}
+                                    </p>
+                                    {isWholesale && CommerceRules.getTieredPrice(item.price, item.quantity, isWholesale).discount > 0 && (
+                                        <div className="flex items-center gap-1 text-[10px] text-green-600 font-bold bg-green-50 px-1.5 py-0.5 rounded border border-green-100 italic">
+                                            <Tag className="w-2.5 h-2.5" />
+                                            {CommerceRules.getTieredPrice(item.price, item.quantity, isWholesale).label}
+                                        </div>
+                                    )}
+                                </div>
                             </div>
                         </div>
                     ))}

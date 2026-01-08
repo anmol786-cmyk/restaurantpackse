@@ -3,15 +3,21 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useCartStore } from '@/store/cart-store';
+import { useAuthStore } from '@/store/auth-store';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetFooter } from '@/components/ui/sheet';
 import { formatPrice } from '@/lib/woocommerce';
 import { Minus, Plus, X, AlertCircle } from 'lucide-react';
 import { CartThresholdMessages } from './cart-threshold-messages';
 import { WhatsAppOrderButton } from '@/components/whatsapp/whatsapp-order-button';
+import { CommerceRules } from '@/config/commerce-rules';
 import { useEffect } from 'react';
 
 export function CartDrawer() {
+  const { user } = useAuthStore();
+  const isWholesale = user?.meta_data?.some(m => m.key === 'customer_type' && m.value === 'business') ||
+    user?.meta_data?.some(m => m.key === 'is_wholesale_customer' && (m.value === '1' || m.value === 'yes'));
+
   const { items, isOpen, closeCart, updateQuantity, removeItem, getTotalPrice, getTotalItems, notification, clearNotification } = useCartStore();
 
   // Auto-clear notification after 5 seconds
@@ -65,8 +71,8 @@ export function CartDrawer() {
               <WhatsAppOrderButton
                 context="cart"
                 cartItems={items}
-                cartTotal={getTotalPrice().toString()}
-                cartSubtotal={getTotalPrice().toString()}
+                cartTotal={getTotalPrice(isWholesale).toString()}
+                cartSubtotal={getTotalPrice(isWholesale).toString()}
                 requireCustomerInfo={true}
                 variant="outline"
                 size="sm"
@@ -106,9 +112,16 @@ export function CartDrawer() {
                           <h4 className="text-sm font-semibold line-clamp-2">
                             {item.product.name}
                           </h4>
-                          <p className="mt-1 text-sm text-muted-foreground">
-                            {formatPrice(item.price, 'SEK')}
-                          </p>
+                          <div className="flex items-center gap-2 mt-1">
+                            <p className="text-sm text-muted-foreground">
+                              {formatPrice(CommerceRules.getTieredPrice(item.price, item.quantity, isWholesale).unitPrice, 'SEK')}
+                            </p>
+                            {isWholesale && CommerceRules.getTieredPrice(item.price, item.quantity, isWholesale).discount > 0 && (
+                              <span className="text-[10px] font-bold text-green-600 bg-green-50 px-1 rounded border border-green-200">
+                                {CommerceRules.getTieredPrice(item.price, item.quantity, isWholesale).label}
+                              </span>
+                            )}
+                          </div>
                         </div>
                         <Button
                           variant="ghost"
@@ -139,8 +152,8 @@ export function CartDrawer() {
                         >
                           <Plus className="h-3 w-3" />
                         </Button>
-                        <span className="ml-auto text-sm font-semibold">
-                          {formatPrice(item.price * item.quantity, 'SEK')}
+                        <span className="ml-auto text-sm font-semibold text-primary">
+                          {formatPrice(CommerceRules.getTieredPrice(item.price, item.quantity, isWholesale).unitPrice * item.quantity, 'SEK')}
                         </span>
                       </div>
                     </div>
@@ -158,7 +171,7 @@ export function CartDrawer() {
             <SheetFooter className="flex-col gap-3">
               <div className="flex justify-between border-t pt-4 text-base font-bold">
                 <span>Total:</span>
-                <span>{formatPrice(getTotalPrice(), 'SEK')}</span>
+                <span>{formatPrice(getTotalPrice(isWholesale), 'SEK')}</span>
               </div>
 
               <div className="grid grid-cols-2 gap-3">

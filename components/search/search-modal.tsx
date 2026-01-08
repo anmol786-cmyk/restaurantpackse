@@ -96,19 +96,15 @@ export function SearchModal() {
 
     return (
         <>
-            {/* Search Trigger Button - Centered */}
-            <div className="w-full flex justify-center">
+            {/* Search Trigger Button - Styled as a clean input field */}
+            <div className="w-full">
                 <Button
-                    variant="outline"
-                    className="relative h-10 w-full max-w-md justify-start text-sm text-muted-foreground sm:pr-12 bg-background border border-border hover:bg-muted hover:border-primary/30 transition-all duration-300 rounded-full shadow-sm"
+                    variant="ghost"
+                    className="relative h-11 w-full justify-start text-sm text-slate-500 bg-slate-100/80 hover:bg-slate-100 border-none rounded-xl transition-all duration-200 group"
                     onClick={() => setIsOpen(true)}
                 >
-                    <Search className="mr-2 h-4 w-4 text-primary" />
-                    <span className="hidden sm:inline-flex text-foreground/70">Search products...</span>
-                    <span className="inline-flex sm:hidden text-foreground/70">Search...</span>
-                    <kbd className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 hidden h-6 select-none items-center gap-1 rounded-md border bg-muted px-1.5 font-mono text-[10px] font-medium sm:flex">
-                        <span className="text-xs">⌘</span>K
-                    </kbd>
+                    <Search className="mr-3 h-5 w-5 text-slate-400 group-hover:text-primary transition-colors" />
+                    <span className="text-slate-500/80 font-medium">Search for premium restaurant supplies, SKUs...</span>
                 </Button>
             </div>
 
@@ -121,7 +117,7 @@ export function SearchModal() {
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
-                            className="absolute inset-0 bg-black/60"
+                            className="absolute inset-0 bg-red-950/60 backdrop-blur-[2px]"
                             onClick={() => setIsOpen(false)}
                         />
 

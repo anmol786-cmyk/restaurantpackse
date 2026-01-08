@@ -13,6 +13,17 @@ export interface RegisterData {
     password?: string;
 }
 
+export interface BusinessRegisterData extends RegisterData {
+    company_name: string;
+    vat_number: string;
+    business_type: string;
+    phone: string;
+    address: string;
+    city: string;
+    postcode: string;
+    country: string;
+}
+
 export interface AuthResponse {
     token: string;
     user_email: string;

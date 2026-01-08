@@ -35,11 +35,26 @@ export const QUANTITY_LIMITS: QuantityLimit[] = [
 /**
  * Bulk pricing rules
  * Products with special pricing when buying multiple units
- * UPDATED: 2025-05-24 - Removed Shan and National promotions
  */
 export const BULK_PRICING_RULES: BulkPricingRule[] = [
-  // Bulk pricing promotions removed for Shan and National products
-  // Add new bulk pricing rules here if needed
+  // Specific product rules can go here
+];
+
+/**
+ * Global Wholesale Tiered Pricing
+ * Applied to all products unless overridden or restricted
+ */
+export const WHOLESALE_TIERS = [
+  { minQuantity: 10, discount: 0.10, label: 'Bulk (10+)' },
+  { minQuantity: 50, discount: 0.16, label: 'Wholesale (50+)' },
+  { minQuantity: 100, discount: 0.20, label: 'Commercial (100+)' },
+];
+
+/**
+ * Minimum Order Quantity (MOQ) Rules
+ */
+export const MOQ_RULES = [
+  // { categoryId: 'bulk-rice', minQuantity: 5 },
 ];
 
 /**
@@ -112,6 +127,62 @@ export const CommerceRules = {
     }
 
     return null;
+  },
+
+  /**
+   * Get tiered price based on quantity
+   * For wholesale customers
+   */
+  getTieredPrice(basePrice: number, quantity: number, isWholesaleUser: boolean = false): { unitPrice: number; discount: number; label: string | null } {
+    if (!isWholesaleUser) {
+      return { unitPrice: basePrice, discount: 0, label: null };
+    }
+
+    // Find the highest tier that applies
+    const applicableTier = [...WHOLESALE_TIERS]
+      .sort((a, b) => b.minQuantity - a.minQuantity)
+      .find(tier => quantity >= tier.minQuantity);
+
+    if (applicableTier) {
+      const discountAmount = basePrice * applicableTier.discount;
+      return {
+        unitPrice: basePrice - discountAmount,
+        discount: applicableTier.discount,
+        label: applicableTier.label
+      };
+    }
+
+    return { unitPrice: basePrice, discount: 0, label: null };
+  },
+
+  /**
+   * Calculate total with tiered pricing
+   */
+  calculateTotalWithTiers(items: { price: number; quantity: number }[], isWholesaleUser: boolean = false): number {
+    return items.reduce((total, item) => {
+      const { unitPrice } = this.getTieredPrice(item.price, item.quantity, isWholesaleUser);
+      return total + (unitPrice * item.quantity);
+    }, 0);
+  },
+
+  /**
+   * Get Minimum Order Quantity for a product
+   */
+  getMOQ(productId: number, categories?: string[]): number {
+    // Check specific product ID first
+    // For now returning 1 as default, but logic can be extended
+    return 1;
+  },
+
+  /**
+   * Check if quantity meets MOQ
+   */
+  checkMOQ(productId: number, quantity: number, categories?: string[]): { met: boolean; minRequired: number } {
+    const minRequired = this.getMOQ(productId, categories);
+    return {
+      met: quantity >= minRequired,
+      minRequired
+    };
   },
 
   /**

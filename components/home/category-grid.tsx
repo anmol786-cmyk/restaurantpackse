@@ -25,14 +25,12 @@ export function CategoryGrid({ categories }: CategoryGridProps) {
 
     // Gradient backgrounds for categories without images
     const gradientBackgrounds = [
-        'bg-gradient-to-br from-emerald-500 to-teal-600',
-        'bg-gradient-to-br from-blue-500 to-cyan-600',
-        'bg-gradient-to-br from-purple-500 to-pink-600',
-        'bg-gradient-to-br from-orange-500 to-red-600',
-        'bg-gradient-to-br from-amber-500 to-yellow-600',
-        'bg-gradient-to-br from-rose-500 to-pink-600',
-        'bg-gradient-to-br from-indigo-500 to-blue-600',
-        'bg-gradient-to-br from-green-500 to-emerald-600',
+        'bg-gradient-to-br from-primary to-primary/80',
+        'bg-gradient-to-br from-secondary to-secondary/80',
+        'bg-gradient-to-br from-slate-900 to-slate-800',
+        'bg-gradient-to-br from-primary/90 to-primary/70',
+        'bg-gradient-to-br from-secondary/90 to-secondary/70',
+        'bg-gradient-to-br from-slate-800 to-slate-700',
     ];
 
     return (
@@ -84,8 +82,8 @@ export function CategoryGrid({ categories }: CategoryGridProps) {
                                         )}
                                     </div>
 
-                                    {/* Overlay Gradient */}
-                                    <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                                    {/* Overlay Gradient - Uses Brand Primary Red dynamically */}
+                                    <div className="absolute inset-x-0 bottom-0 h-3/4 bg-gradient-to-t from-primary/95 via-primary/40 to-transparent" />
 
                                     {/* Content */}
                                     <div className="absolute bottom-0 left-0 p-4 w-full">
