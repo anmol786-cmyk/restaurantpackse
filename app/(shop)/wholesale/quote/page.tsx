@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import Link from 'next/link';
 import { QuoteRequestForm } from '@/components/wholesale/quote-request-form';
 import { ClipboardList, Phone, Mail, Clock, Building2 } from 'lucide-react';
 import { brandConfig } from '@/config/brand.config';
@@ -98,12 +99,12 @@ export default function WholesaleQuotePage() {
                             <p className="text-sm text-neutral-400 mb-4">
                                 Save time by creating a verified business account for instant wholesale pricing on standard items.
                             </p>
-                            <a
+                            <Link
                                 href="/wholesale/register"
                                 className="inline-flex items-center text-primary font-medium hover:underline"
                             >
                                 Register Business →
-                            </a>
+                            </Link>
                         </div>
                     </div>
                 </div>
