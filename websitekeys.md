@@ -1,0 +1,12 @@
+anmol wholesale keys 
+
+Fourlines MCP keys
+
+fmcp_50223426e2b1e86e6afa2e443ba579e13b4573db9d7a9437721dae4aa5e3c6bd
+FOURLINES_MCP_KEY=fmcp_1c5181b0a7559462b48932aaa1532169e3ba0b7ce5e7573a84d0aabd93b28431
+
+Rest api
+
+consumer key ck_110ab15b0734aa79faa2aa1b331caace0c11ea3f
+consumer secret    cs_cc8b959ab1b48a49778127dc13ae660b82b021a7
+https://crm.restaurantpack.se/wp-json

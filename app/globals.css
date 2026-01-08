@@ -1,0 +1,1273 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+
+    /* Grocery Template - Professional Minimalist Theme */
+
+    /* Base Background: Greyish White */
+    --background: 210 20% 98%;
+    /* #f8f9fa - Cool greyish white */
+
+    /* Text: Deep Charcoal */
+    --foreground: 222 47% 11%;
+    /* #0f172a - Readability focus */
+
+    /* Card: Pure White for contrast against greyish bg */
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+
+    /* Popover: White */
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+
+    /* Primary: Vibrant Red (Anmol Wholesale Brand Color) */
+    --primary: 0 84% 60%;
+    /* #ef4444 - Vibrant Red from logo */
+    --primary-foreground: 210 40% 98%;
+
+    /* Secondary: Deep Forest Green (Supporting Color) */
+    --secondary: 142 72% 29%;
+    /* #15803d - Professional Deep Green */
+    --secondary-foreground: 210 40% 98%;
+
+    /* Muted: Neutral Gray */
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    /* Accent: Subtle Green/Gray */
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222 47% 11%;
+
+    /* Destructive: Red */
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    /* Border: Subtle Gray */
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 0 84% 60%;
+
+    --radius: 0.5rem;
+    /* 8px - Cleaner, sharper look */
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 0 70% 55%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 142 70% 45%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 0 70% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground relative;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
+
+  html {
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
+
+  /* ==========================================
+     TYPOGRAPHY SYSTEM - Approved Scale
+     Based on Inter font with precise sizing
+     ========================================== */
+
+  /* Display Styles */
+  h1,
+  .display-large {
+    font-size: 39.06px;
+    font-weight: 800;
+    line-height: 1.47;
+    letter-spacing: 0.015em;
+    @apply mb-6;
+  }
+
+  .display-medium {
+    font-size: 34.94px;
+    font-weight: 800;
+    line-height: 1.47;
+    letter-spacing: 0.015em;
+  }
+
+  /* Heading Styles */
+  h1,
+  .h1 {
+    font-size: 31.25px;
+    font-weight: 700;
+    line-height: 1.47;
+    letter-spacing: 0.02em;
+    @apply mb-6;
+  }
+
+  h2,
+  .h2 {
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 1.47;
+    letter-spacing: 0.02em;
+    @apply mb-4;
+  }
+
+  h3,
+  .h3 {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.52;
+    letter-spacing: 0;
+    @apply mb-3;
+  }
+
+  h4,
+  .h4 {
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 1.52;
+    letter-spacing: 0.025em;
+    @apply mb-2;
+  }
+
+  h5,
+  .h5 {
+    font-size: 18.91px;
+    font-weight: 500;
+    line-height: 1.52;
+    letter-spacing: 0.03em;
+    @apply mb-2;
+  }
+
+  h6,
+  .h6 {
+    font-size: 17.89px;
+    font-weight: 500;
+    line-height: 1.52;
+    letter-spacing: 0.03em;
+    @apply mb-1;
+  }
+
+  /* Body Styles */
+  .body-xl {
+    font-size: 16.92px;
+    font-weight: 400;
+    line-height: 1.52;
+    letter-spacing: 0.03em;
+  }
+
+  p,
+  .body {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.52;
+    letter-spacing: 0.03em;
+    @apply text-muted-foreground mb-4;
+  }
+
+  .body-small {
+    font-size: 15.13px;
+    font-weight: 400;
+    line-height: 1.57;
+    letter-spacing: 0.03em;
+  }
+
+  /* Caption Styles */
+  .caption-large {
+    font-size: 14.31px;
+    font-weight: 400;
+    line-height: 1.57;
+    letter-spacing: 0.03em;
+  }
+
+  .caption {
+    font-size: 13.53px;
+    font-weight: 400;
+    line-height: 1.57;
+    letter-spacing: 0.03em;
+  }
+
+  .caption-small {
+    font-size: 12.8px;
+    font-weight: 300;
+    line-height: 1.57;
+    letter-spacing: 0.03em;
+  }
+
+  .overline {
+    font-size: 12.11px;
+    font-weight: 500;
+    line-height: 1.57;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+
+  /* Utilities for special text */
+  .text-gradient-gold {
+    @apply text-secondary;
+  }
+
+  .text-gradient-primary {
+    @apply text-primary;
+  }
+}
+
+@layer utilities {
+  .font-heading {
+    font-family: var(--font-heading), serif;
+  }
+
+  /* Custom Animations for Lunch Buffet Hero */
+  @keyframes slowZoom {
+    0% {
+      transform: scale(1);
+    }
+
+    100% {
+      transform: scale(1.1);
+    }
+  }
+
+  @keyframes fadeInDown {
+    0% {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeInUp {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes float {
+
+    0%,
+    100% {
+      transform: translateY(0px);
+    }
+
+    50% {
+      transform: translateY(-20px);
+    }
+  }
+
+  @keyframes scrollDown {
+    0% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    100% {
+      transform: translateY(12px);
+      opacity: 0;
+    }
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+
+    100% {
+      background-position: 200% 0;
+    }
+  }
+
+  .animate-shimmer {
+    animation: shimmer 3s infinite linear;
+  }
+
+  /* Custom Scrollbar Utilities */
+  .scrollbar-thin {
+    scrollbar-width: thin;
+  }
+
+  .scrollbar-track-transparent::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-thumb-muted-foreground\/20::-webkit-scrollbar-thumb {
+    background-color: hsl(var(--muted-foreground) / 0.2);
+    border-radius: 9999px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    height: 6px;
+    width: 6px;
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* ============================================
+   GLOBAL STATIC PAGE DESIGN SYSTEM
+   Apply consistent design across all static pages
+   ============================================ */
+
+@layer components {
+  /* ===========================================
+     SECTION STYLES
+     Consistent section spacing and structure
+     =========================================== */
+
+  .page-section {
+    @apply py-8 md:py-12;
+  }
+
+  .page-section-tight {
+    @apply py-6 md:py-8;
+  }
+
+  .page-section-spacious {
+    @apply py-12 md:py-16;
+  }
+
+  /* ===========================================
+     STATIC PAGE TYPOGRAPHY
+     Consistent heading styles for static pages
+     =========================================== */
+
+  /* Page Title - H1 for static pages */
+  .page-title {
+    @apply font-heading text-2xl md:text-3xl lg:text-4xl font-bold text-foreground tracking-tight;
+  }
+
+  /* Section Title - H2 for static pages */
+  .section-title {
+    @apply font-heading text-xl md:text-2xl font-bold text-foreground;
+  }
+
+  /* Subsection Title - H3 for static pages */
+  .subsection-title {
+    @apply font-heading text-lg md:text-xl font-semibold text-foreground;
+  }
+
+  /* Card Title - H4 level */
+  .card-title {
+    @apply font-heading text-base md:text-lg font-bold text-foreground;
+  }
+
+  /* Section Subtitle/Description */
+  .section-subtitle {
+    @apply text-sm md:text-base text-muted-foreground max-w-2xl;
+  }
+
+  /* Small Labels */
+  .label-text {
+    @apply text-[11px] uppercase tracking-wider text-muted-foreground font-medium;
+  }
+
+  /* ===========================================
+     BODY TEXT SYSTEM
+     Standardized text sizes for consistency
+     =========================================== */
+
+  /* Main Body Text - 16px for primary descriptions */
+  .body-text {
+    @apply text-base text-muted-foreground leading-relaxed;
+  }
+
+  /* Small Body Text - 14px for cards, secondary info */
+  .body-text-sm {
+    @apply text-sm text-muted-foreground leading-relaxed;
+  }
+
+  /* Extra Small Text - 13px for tertiary info */
+  .body-text-xs {
+    @apply text-[13px] text-muted-foreground leading-relaxed;
+  }
+
+  /* ===========================================
+     CARD STYLES
+     Consistent card styling for all components
+     Cards use same background color as page, separated only by shadows
+     =========================================== */
+
+  /* Standard Card - Same background, shadow separation */
+  .card-base {
+    @apply bg-card rounded-lg shadow-sm transition-all duration-200;
+  }
+
+  .card-base:hover {
+    @apply shadow-md;
+  }
+
+  /* Card with Highlight - For featured items */
+  .card-highlight {
+    @apply bg-card rounded-lg shadow-sm transition-all duration-200;
+  }
+
+  .card-highlight:hover {
+    @apply shadow-md;
+  }
+
+  /* Interactive Card - With hover lift */
+  .card-interactive {
+    @apply bg-card rounded-lg shadow-sm transition-all duration-200 hover:shadow-md hover:-translate-y-0.5;
+  }
+
+  /* Compact Card Padding */
+  .card-padding {
+    @apply p-4 md:p-5;
+  }
+
+  .card-padding-sm {
+    @apply p-3 md:p-4;
+  }
+
+  .card-padding-lg {
+    @apply p-5 md:p-6;
+  }
+
+  /* ===========================================
+     LIST STYLES
+     Consistent list styling
+     =========================================== */
+
+  /* List Item - Standard */
+  .list-item {
+    @apply py-1 border-b border-dashed border-border/30 last:border-0;
+  }
+
+  .list-item-tight {
+    @apply py-0.5 border-b border-dashed border-border/30 last:border-0;
+  }
+
+  /* Feature Item with Icon */
+  .feature-item {
+    @apply flex items-start gap-2.5 p-3 rounded-lg bg-card shadow-sm transition-all duration-200 hover:shadow-md;
+  }
+
+  /* Icon Container - Standard */
+  .icon-box {
+    @apply flex-shrink-0 flex items-center justify-center w-8 h-8 rounded-md bg-primary/10 text-primary;
+  }
+
+  .icon-box-lg {
+    @apply flex-shrink-0 flex items-center justify-center w-10 h-10 rounded-lg bg-primary/10 text-primary;
+  }
+
+  /* ===========================================
+     BADGE STYLES
+     Consistent badge styling
+     =========================================== */
+
+  .badge-base {
+    @apply inline-flex items-center px-3 py-1 text-xs font-medium rounded-full;
+  }
+
+  .badge-muted {
+    @apply badge-base bg-muted/60 text-muted-foreground;
+  }
+
+  .badge-primary {
+    @apply badge-base bg-primary/10 text-primary border border-primary/20;
+  }
+
+  .badge-highlight {
+    @apply badge-base bg-primary text-primary-foreground;
+  }
+
+  /* ===========================================
+     DIVIDER STYLES
+     Consistent dividers and underlines
+     =========================================== */
+
+  .section-divider {
+    @apply h-0.5 w-12 rounded-full bg-primary/60;
+  }
+
+  .section-divider-lg {
+    @apply h-1 w-16 rounded-full bg-primary;
+  }
+
+  /* ===========================================
+     HORIZONTAL SCROLL CONTAINER
+     For scrollable card sections
+     =========================================== */
+
+  .scroll-container {
+    @apply flex gap-4 overflow-x-auto pb-4 -mx-4 px-4;
+    scrollbar-width: thin;
+  }
+
+  .scroll-container::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .scroll-container::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scroll-container::-webkit-scrollbar-thumb {
+    background-color: hsl(var(--muted-foreground) / 0.2);
+    border-radius: 9999px;
+  }
+
+  /* ===========================================
+     PRICE DISPLAY
+     Consistent price styling
+     =========================================== */
+
+  .price-large {
+    @apply text-3xl md:text-4xl font-bold text-primary;
+  }
+
+  .price-medium {
+    @apply text-2xl font-bold text-primary;
+  }
+
+  .price-small {
+    @apply text-lg font-bold text-primary;
+  }
+
+  /* ===========================================
+     GRID LAYOUTS
+     Consistent grid structures
+     =========================================== */
+
+  .grid-2 {
+    @apply grid grid-cols-1 md:grid-cols-2 gap-4;
+  }
+
+  .grid-3 {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4;
+  }
+
+  .grid-4 {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4;
+  }
+
+  /* ===========================================
+     SPACING UTILITIES
+     Consistent margin/padding
+     =========================================== */
+
+  .section-gap {
+    @apply mb-8 md:mb-12;
+  }
+
+  .section-header-gap {
+    @apply mb-4 md:mb-6;
+  }
+
+  .content-gap {
+    @apply mb-6;
+  }
+
+  .item-gap {
+    @apply gap-2 md:gap-3;
+  }
+}
+
+/* =========================================
+   WORDPRESS CONTENT OVERRIDES
+   Force styling for content injected via dangerouslySetInnerHTML
+   ========================================= */
+
+/* 1. Remove background colors from WP Blocks (Group, Cover, etc.) */
+.prose .has-background,
+.prose .wp-block-group,
+.prose .wp-block-cover,
+.prose .wp-block-columns {
+  background: transparent !important;
+  background-color: transparent !important;
+  color: inherit !important;
+  padding: 0 !important;
+  margin-top: 2rem !important;
+  margin-bottom: 2rem !important;
+}
+
+/* Fix text color visibility if background was dark */
+.prose .has-background p,
+.prose .has-background h1,
+.prose .has-background h2,
+.prose .has-background h3,
+.prose .has-background li {
+  color: var(--foreground) !important;
+}
+
+/* 2. Styling for Products List -> convert to Horizontal Carousel */
+.prose ul.products,
+.prose ul.wc-block-grid__products,
+.prose .wc-block-grid ul,
+.prose .woocommerce ul.products {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  overflow-x: auto !important;
+  gap: 1.5rem !important;
+  padding: 1rem 0.5rem 2rem 0.5rem !important;
+  margin: 2rem 0 !important;
+  list-style: none !important;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+/* Hide scrollbar track */
+.prose ul.products::-webkit-scrollbar,
+.prose ul.wc-block-grid__products::-webkit-scrollbar {
+  height: 6px;
+}
+
+.prose ul.products::-webkit-scrollbar-thumb,
+.prose ul.wc-block-grid__products::-webkit-scrollbar-thumb {
+  background-color: hsl(var(--muted-foreground) / 0.3);
+  border-radius: 99px;
+}
+
+/* Individual Product Card Item */
+.prose ul.products li,
+.prose ul.wc-block-grid__products li,
+.prose .wc-block-grid ul li,
+.prose .woocommerce ul.products li {
+  flex: 0 0 auto !important;
+  width: 260px !important;
+  min-width: 260px !important;
+  background-color: var(--card) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 0.75rem !important;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1) !important;
+  overflow: hidden !important;
+  scroll-snap-align: start;
+  list-style-type: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  position: relative;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* Remove pseudo-elements (bullets) */
+.prose ul.products li::before,
+.prose ul.wc-block-grid__products li::before,
+.prose .wc-block-grid ul li::before {
+  content: none !important;
+  display: none !important;
+}
+
+/* Product Image */
+.prose ul.products li img,
+.prose ul.wc-block-grid__products li img,
+.prose .wc-block-grid ul li img {
+  width: 100% !important;
+  height: 200px !important;
+  object-fit: cover !important;
+  border-radius: 0 !important;
+  margin: 0 !important;
+}
+
+/* Product Link (wrapper) */
+.prose ul.products li a,
+.prose ul.wc-block-grid__products li a {
+  text-decoration: none !important;
+  display: flex !important;
+  flex-direction: column !important;
+  height: 100% !important;
+}
+
+/* Inner Text Styling */
+.prose ul.products li .woocommerce-loop-product__title,
+.prose ul.products li h2 {
+  font-family: var(--font-heading) !important;
+  font-size: 1rem !important;
+  /* 16px */
+  font-weight: 700 !important;
+  color: var(--foreground) !important;
+  padding: 1rem 1rem 0.5rem 1rem !important;
+  margin: 0 !important;
+  text-align: center !important;
+  line-height: 1.4 !important;
+}
+
+.prose ul.products li .price {
+  color: var(--primary) !important;
+  font-weight: 700 !important;
+  font-size: 1.125rem !important;
+  /* 18px */
+  text-align: center !important;
+  padding: 0 1rem 1rem 1rem !important;
+  margin: 0 !important;
+  display: block !important;
+}
+
+/* Star Rating */
+.prose ul.products li .star-rating {
+  margin: 0 auto 0.5rem auto !important;
+  font-size: 0.875rem !important;
+  color: var(--secondary) !important;
+  display: flex !important;
+  justify-content: center !important;
+}
+
+/* Hide unwanted elements */
+.prose ul.products li .button,
+.prose ul.products li .added_to_cart {
+  display: none !important;
+  /* Cleaner look */
+}
+
+/* ============================================ */
+/* PAGE CONTENT GLOBAL STYLES */
+/* ============================================ */
+
+/* Global Page Content Styling - Multi-column Layout Support */
+.page-content {
+  @apply text-foreground;
+}
+
+/* Prevent column breaks within elements */
+.page-content>* {
+  break-inside: avoid;
+  page-break-inside: avoid;
+  -webkit-column-break-inside: avoid;
+}
+
+/* Typography Hierarchy */
+.page-content h1 {
+  @apply font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-primary mb-6 mt-12 first:mt-0;
+  break-after: avoid;
+  page-break-after: avoid;
+}
+
+.page-content h2 {
+  @apply font-heading text-2xl md:text-3xl lg:text-4xl font-bold text-primary mb-5 mt-10 first:mt-0;
+  break-after: avoid;
+  page-break-after: avoid;
+}
+
+.page-content h3 {
+  @apply font-heading text-xl md:text-2xl lg:text-3xl font-semibold text-primary mb-4 mt-8 first:mt-0;
+  break-after: avoid;
+  page-break-after: avoid;
+}
+
+.page-content h4 {
+  @apply font-heading text-lg md:text-xl lg:text-2xl font-semibold text-foreground mb-3 mt-6 first:mt-0;
+  break-after: avoid;
+  page-break-after: avoid;
+}
+
+.page-content h5 {
+  @apply font-heading text-base md:text-lg lg:text-xl font-semibold text-foreground mb-3 mt-5 first:mt-0;
+  break-after: avoid;
+  page-break-after: avoid;
+}
+
+.page-content h6 {
+  @apply font-heading text-sm md:text-base lg:text-lg font-semibold text-foreground mb-2 mt-4 first:mt-0;
+  break-after: avoid;
+  page-break-after: avoid;
+}
+
+/* Paragraphs & Text */
+.page-content p {
+  @apply text-base md:text-lg leading-relaxed text-muted-foreground mb-5;
+}
+
+.page-content p:last-child {
+  @apply mb-0;
+}
+
+/* Strong & Em */
+.page-content strong,
+.page-content b {
+  @apply font-bold text-foreground;
+}
+
+.page-content em,
+.page-content i {
+  @apply italic;
+}
+
+/* Links */
+.page-content a {
+  @apply text-primary underline decoration-primary/30 hover:decoration-primary hover:text-primary/80 transition-colors;
+}
+
+/* Lists */
+.page-content ul,
+.page-content ol {
+  @apply mb-6 pl-6 space-y-2;
+}
+
+.page-content ul {
+  @apply list-disc;
+}
+
+.page-content ol {
+  @apply list-decimal;
+}
+
+.page-content li {
+  @apply text-base md:text-lg leading-relaxed text-muted-foreground;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.page-content li>ul,
+.page-content li>ol {
+  @apply mt-2 mb-0;
+}
+
+/* Blockquotes */
+.page-content blockquote {
+  @apply border-l-4 border-primary pl-6 py-4 my-8 italic text-lg text-muted-foreground bg-primary/5 rounded-r-lg;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+/* Code & Pre */
+.page-content code {
+  @apply bg-muted px-2 py-1 rounded text-sm font-mono text-foreground;
+}
+
+.page-content pre {
+  @apply bg-muted p-4 rounded-lg overflow-x-auto mb-6 text-sm;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.page-content pre code {
+  @apply bg-transparent p-0;
+}
+
+/* Tables */
+.page-content table {
+  @apply w-full border-collapse mb-8 text-sm md:text-base;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.page-content thead {
+  @apply bg-primary/5 border-b-2 border-primary;
+}
+
+.page-content th {
+  @apply font-heading font-semibold text-left px-4 py-3 text-foreground;
+}
+
+.page-content td {
+  @apply px-4 py-3 border-b border-border text-muted-foreground;
+}
+
+.page-content tbody tr:hover {
+  @apply bg-muted/30;
+}
+
+/* Images & Figures */
+.page-content img {
+  @apply rounded-lg shadow-md my-8 max-w-full h-auto;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.page-content figure {
+  @apply my-8;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.page-content figcaption {
+  @apply text-sm text-muted-foreground text-center mt-2 italic;
+}
+
+/* Horizontal Rule */
+.page-content hr {
+  @apply border-t border-border my-12;
+}
+
+/* WordPress Alignment Classes */
+.page-content .alignleft {
+  @apply float-left mr-6 mb-4;
+}
+
+.page-content .alignright {
+  @apply float-right ml-6 mb-4;
+}
+
+.page-content .aligncenter {
+  @apply mx-auto block text-center;
+}
+
+.page-content .alignwide {
+  @apply w-full;
+}
+
+.page-content .alignfull {
+  @apply w-screen relative left-1/2 right-1/2 -mx-[50vw];
+}
+
+/* WordPress Image Captions */
+.page-content .wp-caption {
+  @apply max-w-full;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.page-content .wp-caption-text {
+  @apply text-sm text-muted-foreground text-center mt-2 italic;
+}
+
+/* Responsive Embeds */
+.page-content iframe,
+.page-content embed,
+.page-content object,
+.page-content video {
+  @apply max-w-full rounded-lg my-8;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+/* Buttons & CTA in content */
+.page-content .wp-block-button__link,
+.page-content .button {
+  @apply inline-block px-6 py-3 bg-primary text-primary-foreground rounded-lg font-semibold hover:bg-primary/90 transition-colors no-underline;
+}
+
+/* Multi-column specific improvements */
+@media (min-width: 768px) {
+
+  .columns-2 .page-content h1:first-child,
+  .columns-3 .page-content h1:first-child {
+    column-span: all;
+    -webkit-column-span: all;
+    @apply mb-12;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .page-content {
+    column-count: 1 !important;
+  }
+}
+
+/* ============================================ */
+/* WORDPRESS AUTHOR BOX & SOCIAL ICONS FIX */
+/* ============================================ */
+
+/* Fix WordPress author box at bottom of posts */
+.page-content .author-box,
+.page-content .post-author,
+.page-content [class*="author-bio"],
+.page-content .entry-author {
+  @apply bg-muted/30 rounded-lg p-4 my-6 border border-border;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 1rem !important;
+}
+
+.page-content .author-box img,
+.page-content .post-author img,
+.page-content [class*="author-bio"] img,
+.page-content .entry-author img {
+  width: 60px !important;
+  height: 60px !important;
+  border-radius: 50% !important;
+  margin: 0 !important;
+  flex-shrink: 0 !important;
+}
+
+.page-content .author-box h3,
+.page-content .author-box h4,
+.page-content .post-author h3,
+.page-content .post-author h4,
+.page-content [class*="author-bio"] h3,
+.page-content [class*="author-bio"] h4 {
+  @apply text-base font-semibold text-foreground mb-1 mt-0;
+  font-weight: 600 !important;
+}
+
+.page-content .author-box p,
+.page-content .post-author p,
+.page-content [class*="author-bio"] p {
+  @apply text-sm text-muted-foreground mb-0;
+  font-weight: 400 !important;
+}
+
+/* Fix oversized social media icons */
+.page-content svg,
+.page-content .social-icon,
+.page-content [class*="social"] svg,
+.page-content [class*="share"] svg {
+  max-width: 24px !important;
+  max-height: 24px !important;
+  width: 24px !important;
+  height: 24px !important;
+  display: inline-block !important;
+}
+
+/* Social icons container */
+.page-content .social-icons,
+.page-content .social-links,
+.page-content [class*="social-share"],
+.page-content [class*="follow-us"] {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 0.5rem !important;
+  align-items: center !important;
+  margin: 1rem 0 !important;
+}
+
+.page-content .social-icons a,
+.page-content .social-links a,
+.page-content [class*="social-share"] a {
+  @apply inline-flex items-center justify-center;
+  width: 40px !important;
+  height: 40px !important;
+  padding: 8px !important;
+  border-radius: 8px !important;
+  transition: all 0.2s !important;
+  margin: 0 !important;
+}
+
+.page-content .social-icons a:hover,
+.page-content .social-links a:hover {
+  @apply scale-110;
+  opacity: 0.9 !important;
+}
+
+/* Author meta info in compact row */
+.page-content .author-meta,
+.page-content .post-meta {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 1rem !important;
+  align-items: center !important;
+  font-size: 0.875rem !important;
+  color: var(--muted-foreground) !important;
+  font-weight: 400 !important;
+}
+
+/* Fix any remaining large text in author sections */
+.page-content .author-box *,
+.page-content .post-author *,
+.page-content [class*="author-bio"] * {
+  font-weight: inherit !important;
+}
+
+.page-content .author-box strong,
+.page-content .post-author strong {
+  font-weight: 600 !important;
+}
+
+/* Hide map and "Visit us" from content area (shown in sidebar) */
+.page-content [class*="visit-us"],
+.page-content [class*="store-location"],
+.page-content [class*="google-map"],
+.page-content .map-container,
+.page-content iframe[src*="google.com/maps"] {
+  display: none !important;
+}
+
+/* Hide "Visit us" and similar headings that precede maps */
+.page-content h2:has(+ [class*="map"]),
+.page-content h3:has(+ [class*="map"]),
+.page-content h2:has(+ iframe[src*="google.com/maps"]),
+.page-content h3:has(+ iframe[src*="google.com/maps"]) {
+  display: none !important;
+}
+
+/* Style Related Articles as Horizontal Carousel */
+.page-content [class*="related-news"],
+.page-content [class*="related-articles"],
+.page-content .related-posts {
+  @apply my-12 py-8 bg-muted/30 rounded-xl;
+  overflow: visible !important;
+}
+
+.page-content [class*="related-news"] h2,
+.page-content [class*="related-news"] h3,
+.page-content [class*="related-articles"] h2,
+.page-content [class*="related-articles"] h3,
+.page-content .related-posts h2,
+.page-content .related-posts h3 {
+  @apply text-2xl font-heading font-bold text-primary mb-6 px-6;
+  margin-top: 0 !important;
+}
+
+/* Related articles list as horizontal carousel */
+.page-content [class*="related-news"] ul,
+.page-content [class*="related-news"] .posts-list,
+.page-content [class*="related-articles"] ul,
+.page-content [class*="related-articles"] .posts-list,
+.page-content .related-posts ul,
+.page-content .wp-block-latest-posts {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  overflow-x: auto !important;
+  gap: 1.5rem !important;
+  padding: 0 1.5rem 1.5rem !important;
+  margin: 0 !important;
+  list-style: none !important;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Individual article cards in carousel */
+.page-content [class*="related-news"] li,
+.page-content [class*="related-articles"] li,
+.page-content .related-posts li,
+.page-content .wp-block-latest-posts li {
+  flex: 0 0 320px !important;
+  min-width: 320px !important;
+  @apply bg-card border border-border rounded-xl overflow-hidden shadow-sm;
+  padding: 0 !important;
+  margin: 0 !important;
+  list-style-type: none !important;
+  display: flex !important;
+  flex-direction: column !important;
+  scroll-snap-align: start;
+  transition: transform 0.2s, box-shadow 0.2s !important;
+}
+
+.page-content [class*="related-news"] li:hover,
+.page-content [class*="related-articles"] li:hover,
+.page-content .related-posts li:hover,
+.page-content .wp-block-latest-posts li:hover {
+  @apply shadow-md scale-[1.02];
+}
+
+/* Article images in carousel */
+.page-content [class*="related-news"] li img,
+.page-content [class*="related-articles"] li img,
+.page-content .related-posts li img,
+.page-content .wp-block-latest-posts li img {
+  width: 100% !important;
+  height: 180px !important;
+  object-fit: cover !important;
+  border-radius: 0 !important;
+  margin: 0 !important;
+  display: block !important;
+}
+
+/* Article content in cards */
+.page-content [class*="related-news"] li a,
+.page-content [class*="related-articles"] li a,
+.page-content .related-posts li a,
+.page-content .wp-block-latest-posts li a {
+  @apply text-foreground no-underline;
+  display: block !important;
+  padding: 1rem !important;
+}
+
+.page-content [class*="related-news"] li a:hover,
+.page-content [class*="related-articles"] li a:hover,
+.page-content .related-posts li a:hover,
+.page-content .wp-block-latest-posts li a:hover {
+  @apply text-primary;
+}
+
+/* Article titles */
+.page-content [class*="related-news"] li h4,
+.page-content [class*="related-news"] li .post-title,
+.page-content [class*="related-articles"] li h4,
+.page-content [class*="related-articles"] li .post-title,
+.page-content .related-posts li h4,
+.page-content .wp-block-latest-posts li a {
+  @apply text-base font-semibold leading-snug;
+  margin: 0 !important;
+  padding: 0 !important;
+  font-size: 1rem !important;
+  line-height: 1.4 !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+}
+
+/* Article meta (date, author, etc.) */
+.page-content [class*="related-news"] li .post-meta,
+.page-content [class*="related-news"] li .entry-meta,
+.page-content [class*="related-articles"] li .post-meta,
+.page-content [class*="related-articles"] li .entry-meta,
+.page-content .related-posts li .post-meta,
+.page-content .wp-block-latest-posts__post-date {
+  @apply text-xs text-muted-foreground mt-2;
+  font-weight: 400 !important;
+  margin-bottom: 0 !important;
+}
+
+/* Scrollbar styling for carousel */
+.page-content [class*="related-news"] ul::-webkit-scrollbar,
+.page-content [class*="related-articles"] ul::-webkit-scrollbar,
+.page-content .related-posts ul::-webkit-scrollbar,
+.page-content .wp-block-latest-posts::-webkit-scrollbar {
+  height: 8px;
+}
+
+.page-content [class*="related-news"] ul::-webkit-scrollbar-track,
+.page-content [class*="related-articles"] ul::-webkit-scrollbar-track,
+.page-content .related-posts ul::-webkit-scrollbar-track,
+.page-content .wp-block-latest-posts::-webkit-scrollbar-track {
+  @apply bg-muted rounded-full;
+}
+
+.page-content [class*="related-news"] ul::-webkit-scrollbar-thumb,
+.page-content [class*="related-articles"] ul::-webkit-scrollbar-thumb,
+.page-content .related-posts ul::-webkit-scrollbar-thumb,
+.page-content .wp-block-latest-posts::-webkit-scrollbar-thumb {
+  @apply bg-primary/30 rounded-full;
+}
+
+.page-content [class*="related-news"] ul::-webkit-scrollbar-thumb:hover,
+.page-content [class*="related-articles"] ul::-webkit-scrollbar-thumb:hover,
+.page-content .related-posts ul::-webkit-scrollbar-thumb:hover,
+.page-content .wp-block-latest-posts::-webkit-scrollbar-thumb:hover {
+  @apply bg-primary/50;
+}

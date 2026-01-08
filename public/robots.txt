@@ -1,0 +1,25 @@
+# robots.txt for Anmol Wholesale - Restaurant Pack
+
+User-agent: *
+Allow: /
+
+# Disallow cart and checkout (no need to index)
+Disallow: /cart
+Disallow: /checkout
+Disallow: /my-account
+Disallow: /dashboard
+
+# Allow all product and content pages
+Allow: /shop
+Allow: /product
+Allow: /product-category
+Allow: /brand
+Allow: /posts
+Allow: /about
+Allow: /contact
+
+# Sitemap
+Sitemap: https://restaurantpack.se/sitemap.xml
+
+# Crawl-delay (optional, helps prevent server overload)
+Crawl-delay: 1

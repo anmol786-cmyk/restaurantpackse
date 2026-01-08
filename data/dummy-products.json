@@ -1,0 +1,89 @@
+{
+  "_comment": "⚠️ DUMMY DATA - FOR VISUALIZATION ONLY - SAFE TO DELETE ⚠️",
+  "_instructions": "This file contains dummy products for layout testing. Delete this entire file when connecting to real WooCommerce data.",
+  "_remove_instructions": [
+    "1. Delete this file: data/dummy-products.json",
+    "2. Remove import from any components using it",
+    "3. Connect to real WooCommerce products API"
+  ],
+  "products": [
+    {
+      "id": 999001,
+      "name": "Organic Fresh Apples",
+      "slug": "dummy-organic-apples",
+      "price": "4.99",
+      "regular_price": "5.99",
+      "sale_price": "4.99",
+      "on_sale": true,
+      "categories": [
+        {
+          "id": 1,
+          "name": "Fruits & Vegetables",
+          "slug": "fruits-vegetables"
+        }
+      ],
+      "images": [
+        {
+          "src": "https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?w=400&h=400&fit=crop",
+          "alt": "Fresh Red Apples"
+        }
+      ],
+      "short_description": "Crispy organic apples from local farms. Perfect for snacking or baking.",
+      "stock_status": "instock",
+      "featured": true,
+      "_dummy": true
+    },
+    {
+      "id": 999002,
+      "name": "Premium Grass-Fed Beef",
+      "slug": "dummy-grass-fed-beef",
+      "price": "18.99",
+      "regular_price": "18.99",
+      "sale_price": "",
+      "on_sale": false,
+      "categories": [
+        {
+          "id": 2,
+          "name": "Meat & Seafood",
+          "slug": "meat-seafood"
+        }
+      ],
+      "images": [
+        {
+          "src": "https://images.unsplash.com/photo-1603048588665-791ca8aea617?w=400&h=400&fit=crop",
+          "alt": "Fresh Beef Steak"
+        }
+      ],
+      "short_description": "Premium quality grass-fed beef. Rich in flavor and nutrients. Perfect for grilling.",
+      "stock_status": "instock",
+      "featured": true,
+      "_dummy": true
+    },
+    {
+      "id": 999003,
+      "name": "Artisan Sourdough Bread",
+      "slug": "dummy-sourdough-bread",
+      "price": "6.49",
+      "regular_price": "7.99",
+      "sale_price": "6.49",
+      "on_sale": true,
+      "categories": [
+        {
+          "id": 4,
+          "name": "Bakery",
+          "slug": "bakery"
+        }
+      ],
+      "images": [
+        {
+          "src": "https://images.unsplash.com/photo-1549931319-a545dcf3bc73?w=400&h=400&fit=crop",
+          "alt": "Fresh Sourdough Bread"
+        }
+      ],
+      "short_description": "Handcrafted sourdough bread baked fresh daily. Crispy crust, soft interior.",
+      "stock_status": "instock",
+      "featured": true,
+      "_dummy": true
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "keywords": {
+    "organic": ["organic", "natural", "bio"],
+    "fresh": ["fresh", "freshness"],
+    "delivery": ["delivery", "deliver", "shipping"],
+    "sale": ["sale", "discount", "offer", "deal"],
+    "hours": ["hours", "open", "close", "timing"],
+    "location": ["location", "where", "address", "directions"]
+  },
+  "faqs": [
+    {
+      "question": "Do you offer organic products?",
+      "answer": "Yes! We have a wide selection of organic products across all categories including fruits, vegetables, dairy, and pantry items.",
+      "category": "products"
+    },
+    {
+      "question": "What are your delivery options?",
+      "answer": "We offer same-day and next-day delivery. Free delivery on orders over $50!",
+      "category": "delivery"
+    },
+    {
+      "question": "Do you have fresh produce daily?",
+      "answer": "Yes! We receive fresh produce deliveries daily to ensure the highest quality.",
+      "category": "products"
+    }
+  ],
+  "popular_dishes": [
+    {
+      "name": "Organic Apples",
+      "description": "Fresh organic apples from local farms",
+      "category": "produce",
+      "dietary": ["organic", "vegan"],
+      "spice_level": "none"
+    },
+    {
+      "name": "Fresh Milk",
+      "description": "Farm-fresh whole milk delivered daily",
+      "category": "dairy",
+      "dietary": ["organic"],
+      "spice_level": "none"
+    },
+    {
+      "name": "Artisan Bread",
+      "description": "Freshly baked artisan bread",
+      "category": "bakery",
+      "dietary": ["vegetarian"],
+      "spice_level": "none"
+    }
+  ],
+  "dietary_options": {
+    "vegetarian": {
+      "available": true,
+      "description": "We have a wide range of vegetarian products including fresh produce, dairy, and plant-based alternatives.",
+      "examples": ["Fresh Vegetables", "Organic Fruits", "Plant-Based Milk", "Veggie Burgers"]
+    },
+    "vegan": {
+      "available": true,
+      "description": "Explore our vegan section with plant-based alternatives and fresh produce.",
+      "examples": ["Almond Milk", "Tofu", "Vegan Cheese", "Plant-Based Meats"]
+    },
+    "organic": {
+      "available": true,
+      "description": "All our organic products are certified and sourced from trusted suppliers.",
+      "examples": ["Organic Produce", "Organic Dairy", "Organic Grains"],
+      "note": "Look for the green organic label!"
+    },
+    "gluten_free": {
+      "available": true,
+      "description": "We stock a variety of gluten-free products.",
+      "examples": ["Gluten-Free Bread", "GF Pasta", "GF Snacks"]
+    }
+  }
+}
