@@ -42,7 +42,9 @@
       "Bash(find:*)",
       "Bash(git config:*)",
       "Bash(git init:*)",
-      "Bash(if exist nul del nul)"
+      "Bash(if exist nul del nul)",
+      "Bash(git branch:*)",
+      "Bash(git remote add:*)"
     ]
   }
 }
