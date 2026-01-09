@@ -44,7 +44,9 @@
       "Bash(git init:*)",
       "Bash(if exist nul del nul)",
       "Bash(git branch:*)",
-      "Bash(git remote add:*)"
+      "Bash(git remote add:*)",
+      "Bash(git ls-tree:*)",
+      "Bash(head:*)"
     ]
   }
 }

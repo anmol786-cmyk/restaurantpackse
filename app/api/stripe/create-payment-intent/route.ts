@@ -1,11 +1,27 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
-// Initialize Stripe with secret key
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '');
+// Lazy initialization to avoid build-time errors
+function getStripe(): Stripe | null {
+  const key = process.env.STRIPE_SECRET_KEY;
+  if (!key) {
+    return null;
+  }
+  return new Stripe(key);
+}
 
 export async function POST(request: NextRequest) {
   try {
+    const stripe = getStripe();
+
+    if (!stripe) {
+      console.error('STRIPE_SECRET_KEY is not configured');
+      return NextResponse.json(
+        { error: 'Stripe is not configured on the server. Please contact support.' },
+        { status: 503 }
+      );
+    }
+
     const {
       amount,
       currency = 'sek',
@@ -21,14 +37,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         { error: 'Invalid amount. Amount must be greater than 0.' },
         { status: 400 }
-      );
-    }
-
-    if (!process.env.STRIPE_SECRET_KEY) {
-      console.error('STRIPE_SECRET_KEY is not configured');
-      return NextResponse.json(
-        { error: 'Stripe is not configured on the server. Please contact support.' },
-        { status: 500 }
       );
     }
 

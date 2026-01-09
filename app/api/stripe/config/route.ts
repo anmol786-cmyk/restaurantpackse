@@ -1,14 +1,24 @@
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '');
+// Lazy initialization to avoid build-time errors
+function getStripe() {
+    const key = process.env.STRIPE_SECRET_KEY;
+    if (!key) {
+        return null;
+    }
+    return new Stripe(key);
+}
 
 export async function GET() {
     try {
-        if (!process.env.STRIPE_SECRET_KEY) {
+        const stripe = getStripe();
+
+        if (!stripe) {
             return NextResponse.json({
-                error: 'Stripe not configured'
-            }, { status: 500 });
+                error: 'Stripe not configured',
+                message: 'STRIPE_SECRET_KEY environment variable is not set'
+            }, { status: 503 });
         }
 
         // Get payment method configuration
