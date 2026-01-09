@@ -18,18 +18,14 @@ export const metadata: Metadata = {
 
 export default async function HomePage() {
   // Fetch data in parallel
-  const [categoriesRes, trendingRes, newArrivalsRes, dealsRes, haldiramRes] = await Promise.all([
+  const [categoriesRes, trendingRes, haldiramRes] = await Promise.all([
     getProductCategories({ per_page: 8, orderby: 'count', order: 'desc', parent: 0 }),
     getProducts({ per_page: 8, orderby: 'popularity' }),
-    getProducts({ per_page: 8, orderby: 'date' }),
-    getProducts({ per_page: 8, on_sale: true }),
     getProducts({ per_page: 8, brand: 'haldiram' }),
   ]);
 
   const categories = categoriesRes || [];
   const trendingProducts = trendingRes.data || [];
-  const newProducts = newArrivalsRes.data || [];
-  const dealProducts = dealsRes.data || [];
   const haldiramProducts = haldiramRes?.data || [];
 
   return (
@@ -61,25 +57,7 @@ export default async function HomePage() {
         />
       </div>
 
-      {/* 6. Promotional Deals */}
-      <div className="bg-primary/5 py-12 border-y border-primary/10">
-        <ProductShowcase
-          title="Volume Discounts & Deals"
-          products={dealProducts}
-          moreLink="/deals"
-        />
-      </div>
-
-      {/* 7. New in Catalog */}
-      <div className="py-12">
-        <ProductShowcase
-          title="New Catalog Arrivals"
-          products={newProducts}
-          moreLink="/shop?sort=new"
-        />
-      </div>
-
-      {/* 8. Brand Showcase */}
+      {/* 6. Brand Showcase */}
       <div className="py-12 bg-slate-50 border-y border-slate-100">
         <ProductShowcase
           title="Haldiram's Professional Range"

@@ -56,24 +56,24 @@ export function QuickOrder() {
             <div className="site-container relative z-10">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                     <div className="space-y-6">
-                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/20 border border-primary/30 text-primary text-xs font-bold uppercase tracking-widest">
+                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 border border-white/30 text-white text-xs font-bold uppercase tracking-widest">
                             B2B Efficiency
                         </div>
                         <h2 className="text-3xl md:text-4xl font-bold text-white tracking-tight">
                             Quick Order by SKU
                         </h2>
-                        <p className="text-slate-400 max-w-lg leading-relaxed text-lg">
+                        <p className="text-white/80 max-w-lg leading-relaxed text-lg">
                             Know exactly what you need? Enter the product SKU or name to instantly add it to your wholesale order. Streamlined for professional kitchen buyers.
                         </p>
 
                         <form onSubmit={handleQuickAdd} className="flex gap-4 max-w-md">
                             <div className="relative flex-1">
-                                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500" />
+                                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/50" />
                                 <Input
                                     value={sku}
                                     onChange={(e) => setSku(e.target.value)}
                                     placeholder="Enter SKU or name..."
-                                    className="h-14 pl-12 bg-white/5 border-white/10 text-white placeholder:text-slate-500 rounded-xl focus:ring-primary focus:border-primary text-lg"
+                                    className="h-14 pl-12 bg-white/10 border-white/20 text-white placeholder:text-white/50 rounded-xl focus:ring-white focus:border-white text-lg"
                                 />
                             </div>
                             <Button
@@ -101,7 +101,7 @@ export function QuickOrder() {
                                     "Repeat Previous Orders",
                                     "Managed Account Support"
                                 ].map((text, i) => (
-                                    <div key={i} className="flex items-center gap-4 text-slate-300">
+                                    <div key={i} className="flex items-center gap-4 text-white/90">
                                         <div className="size-6 rounded-full bg-secondary text-secondary-foreground flex items-center justify-center">
                                             <ShoppingCart className="size-3" />
                                         </div>
