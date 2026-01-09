@@ -32,9 +32,9 @@ export function CTASection() {
                         <div className="space-y-4">
                             <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight leading-[1.1]">
                                 Empower Your <br />
-                                <span className="text-secondary">Restaurant Kitchen</span>
+                                <span className="text-white">Restaurant Kitchen</span>
                             </h2>
-                            <p className="text-xl text-slate-400 max-w-lg leading-relaxed font-medium">
+                            <p className="text-xl text-white/90 max-w-lg leading-relaxed font-medium">
                                 Join hundreds of professional partners in Stockholm. Get access to wholesale pricing, dedicated support, and our premium product catalog.
                             </p>
                         </div>
@@ -58,7 +58,7 @@ export function CTASection() {
                                 asChild
                             >
                                 <a href={`tel:${brandProfile.contact.phone}`}>
-                                    <Phone className="mr-2 w-5 h-5 text-primary" />
+                                    <Phone className="mr-2 w-5 h-5 text-white" />
                                     {brandProfile.contact.phone}
                                 </a>
                             </Button>
@@ -72,7 +72,7 @@ export function CTASection() {
                             ].map((stat, i) => (
                                 <div key={i} className="space-y-1">
                                     <div className="text-2xl font-black text-white">{stat.value}</div>
-                                    <div className="text-xs font-bold uppercase tracking-widest text-slate-500">{stat.label}</div>
+                                    <div className="text-xs font-bold uppercase tracking-widest text-white/70">{stat.label}</div>
                                 </div>
                             ))}
                         </div>
