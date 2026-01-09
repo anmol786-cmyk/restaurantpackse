@@ -11,54 +11,59 @@ export const metadata: Metadata = {
 
 export default function WholesaleQuotePage() {
     return (
-        <div className="bg-background min-h-screen">
+        <div className="bg-slate-50 min-h-screen">
             {/* Hero Header */}
-            <div className="bg-neutral-900 py-16 text-white text-center">
-                <div className="container px-4">
-                    <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">Request a Wholesale Quote</h1>
-                    <p className="text-xl text-neutral-400 max-w-2xl mx-auto">
+            <div className="bg-[#A80E13] py-20 text-white text-center relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-[#A80E13] to-neutral-900 opacity-90" />
+                <div className="site-container px-4 relative z-10">
+                    <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-6 font-heading">Request a Wholesale Quote</h1>
+                    <p className="text-xl text-white/90 max-w-2xl mx-auto font-medium">
                         Get personalized pricing for bulk orders, pallet quantities, or recurring restaurant supplies.
                     </p>
                 </div>
             </div>
 
-            <div className="container px-4 py-12">
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+            <div className="site-container px-4 py-12 -mt-10 relative z-20">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
                     {/* Main Form Column */}
                     <div className="lg:col-span-2">
-                        <div className="bg-white rounded-xl shadow-sm border p-6 md:p-8">
+                        <div className="bg-white rounded-2xl shadow-xl shadow-black/5 border border-slate-100 p-6 md:p-10">
                             <QuoteRequestForm />
                         </div>
                     </div>
 
                     {/* Contact Info Column */}
                     <div className="space-y-6">
-                        <div className="bg-primary/5 rounded-xl border border-primary/10 p-6">
-                            <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
-                                <Clock className="w-5 h-5 text-primary" />
+                        <div className="bg-white rounded-2xl border border-slate-100 p-8 shadow-lg shadow-black/5">
+                            <h3 className="text-lg font-bold mb-4 flex items-center gap-2 font-heading text-[#A80E13]">
+                                <Clock className="w-5 h-5" />
                                 Response Time
                             </h3>
-                            <p className="text-sm text-muted-foreground mb-4">
+                            <p className="text-sm text-slate-500 mb-6 leading-relaxed">
                                 Our dedicated wholesale team reviews all requests within 24 hours (Monday - Friday).
                                 For urgent inquiries, please call us directly.
                             </p>
 
-                            <div className="space-y-4 pt-2 border-t border-primary/10">
-                                <div className="flex items-start gap-3">
-                                    <Phone className="w-5 h-5 text-primary mt-0.5" />
+                            <div className="space-y-5 pt-2">
+                                <div className="flex items-start gap-4 group cursor-pointer">
+                                    <div className="h-10 w-10 rounded-full bg-[#A80E13]/10 flex items-center justify-center text-[#A80E13] group-hover:bg-[#A80E13] group-hover:text-white transition-colors">
+                                        <Phone className="w-5 h-5" />
+                                    </div>
                                     <div>
-                                        <p className="text-sm font-semibold">Direct Wholesale Line</p>
-                                        <a href={`tel:${brandConfig.contact.phone}`} className="text-lg hover:text-primary">
+                                        <p className="text-sm font-semibold text-slate-700">Direct Wholesale Line</p>
+                                        <a href={`tel:${brandConfig.contact.phone}`} className="text-lg font-bold text-[#A80E13] hover:underline decoration-2 underline-offset-4">
                                             {brandConfig.contact.phone}
                                         </a>
                                     </div>
                                 </div>
 
-                                <div className="flex items-start gap-3">
-                                    <Mail className="w-5 h-5 text-primary mt-0.5" />
+                                <div className="flex items-start gap-4 group cursor-pointer">
+                                    <div className="h-10 w-10 rounded-full bg-[#A80E13]/10 flex items-center justify-center text-[#A80E13] group-hover:bg-[#A80E13] group-hover:text-white transition-colors">
+                                        <Mail className="w-5 h-5" />
+                                    </div>
                                     <div>
-                                        <p className="text-sm font-semibold">B2B Email</p>
-                                        <a href={`mailto:${brandConfig.contact.reservationEmail}`} className="text-lg hover:text-primary">
+                                        <p className="text-sm font-semibold text-slate-700">B2B Email</p>
+                                        <a href={`mailto:${brandConfig.contact.reservationEmail}`} className="text-base font-bold text-[#A80E13] hover:underline decoration-2 underline-offset-4">
                                             {brandConfig.contact.reservationEmail}
                                         </a>
                                     </div>
@@ -66,44 +71,40 @@ export default function WholesaleQuotePage() {
                             </div>
                         </div>
 
-                        <div className="bg-white rounded-xl border p-6 shadow-sm">
-                            <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
-                                <ClipboardList className="w-5 h-5 text-primary" />
+                        <div className="bg-white rounded-2xl border border-slate-100 p-8 shadow-lg shadow-black/5">
+                            <h3 className="text-lg font-bold mb-4 flex items-center gap-2 font-heading text-slate-900">
+                                <ClipboardList className="w-5 h-5 text-[#A80E13]" />
                                 What's Next?
                             </h3>
                             <ul className="space-y-4 text-sm">
-                                <li className="flex gap-3">
-                                    <span className="flex-none w-6 h-6 bg-muted rounded-full flex items-center justify-center font-bold text-xs">1</span>
-                                    <span>We receive your item list and check availability.</span>
-                                </li>
-                                <li className="flex gap-3">
-                                    <span className="flex-none w-6 h-6 bg-muted rounded-full flex items-center justify-center font-bold text-xs">2</span>
-                                    <span>We apply wholesale discounts based on your volumes.</span>
-                                </li>
-                                <li className="flex gap-3">
-                                    <span className="flex-none w-6 h-6 bg-muted rounded-full flex items-center justify-center font-bold text-xs">3</span>
-                                    <span>A draft order is sent to your email with the total quote.</span>
-                                </li>
-                                <li className="flex gap-3">
-                                    <span className="flex-none w-6 h-6 bg-muted rounded-full flex items-center justify-center font-bold text-xs">4</span>
-                                    <span>Once approved, we schedule your delivery or pickup.</span>
-                                </li>
+                                {[
+                                    "We receive your item list and check availability.",
+                                    "We apply wholesale discounts based on your volumes.",
+                                    "A draft order is sent to your email with the total quote.",
+                                    "Once approved, we schedule your delivery or pickup."
+                                ].map((step, i) => (
+                                    <li key={i} className="flex gap-4 items-start">
+                                        <span className="flex-none w-6 h-6 bg-slate-100 rounded-full flex items-center justify-center font-bold text-xs text-slate-600 border border-slate-200">{i + 1}</span>
+                                        <span className="text-slate-600 leading-snug pt-0.5">{step}</span>
+                                    </li>
+                                ))}
                             </ul>
                         </div>
 
-                        <div className="bg-neutral-900 rounded-xl p-6 text-white relative overflow-hidden">
-                            <div className="absolute top-0 right-0 p-4 opacity-10">
-                                <Building2 className="w-24 h-24" />
+                        <div className="bg-[#1a1a1a] rounded-2xl p-8 text-white relative overflow-hidden ring-1 ring-white/10">
+                            <div className="absolute -top-6 -right-6 opacity-10 rotate-12">
+                                <Building2 className="w-32 h-32" />
                             </div>
-                            <h3 className="text-lg font-bold mb-2">Business Account</h3>
-                            <p className="text-sm text-neutral-400 mb-4">
+                            <h3 className="text-xl font-bold mb-3 font-heading relative z-10">Business Account</h3>
+                            <p className="text-sm text-white/70 mb-6 relative z-10 leading-relaxed">
                                 Save time by creating a verified business account for instant wholesale pricing on standard items.
                             </p>
                             <Link
                                 href="/wholesale/register"
-                                className="inline-flex items-center text-primary font-medium hover:underline"
+                                className="inline-flex items-center text-white font-bold hover:text-[#A80E13] transition-colors relative z-10 group"
                             >
-                                Register Business →
+                                Register Business
+                                <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
                             </Link>
                         </div>
                     </div>

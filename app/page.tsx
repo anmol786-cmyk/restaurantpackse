@@ -4,6 +4,7 @@ import { Features } from "@/components/home/features";
 import { QuickOrder } from "@/components/home/quick-order";
 import { CTASection } from "@/components/home/cta-banner";
 import { ProductShowcase } from "@/components/home/product-showcase";
+import { TandoorShowcase } from "@/components/home/tandoor-showcase";
 import { getProducts, getProductCategories } from "@/lib/woocommerce";
 import type { Metadata } from "next";
 import { SchemaScript } from "@/lib/schema/schema-script";
@@ -44,6 +45,9 @@ export default async function HomePage() {
       <div className="bg-slate-50 border-y border-slate-100 pb-8">
         <CategoryGrid categories={categories} />
       </div>
+
+      {/* 4. Anmol Mini Tandoor Showcase */}
+      <TandoorShowcase />
 
       {/* 4. Efficiency Utility */}
       <QuickOrder />
