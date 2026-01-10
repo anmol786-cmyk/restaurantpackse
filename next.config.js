@@ -65,22 +65,12 @@ const nextConfig = {
                 source: '/sitemap-delivery.xml',
                 destination: '/api/sitemap/delivery',
             },
-            {
-                source: '/sitemap-posts.xml',
-                destination: '/api/sitemap/posts',
-            },
-            {
-                source: '/sitemap-post-categories.xml',
-                destination: '/api/sitemap/post-categories',
-            },
+
             {
                 source: '/sitemap-product-categories.xml',
                 destination: '/api/sitemap/product-categories',
             },
-            {
-                source: '/sitemap-product-brands.xml',
-                destination: '/api/sitemap/product-brands',
-            },
+
             {
                 source: '/sitemap-images.xml',
                 destination: '/api/sitemap/images',

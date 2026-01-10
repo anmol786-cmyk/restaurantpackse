@@ -157,8 +157,8 @@ export function wooCategorySchema(
       websiteId: options.websiteId,
     },
     {
-      brandName: options.brandName || 'Ideal Indiska LIVS',
-      sellerName: options.sellerName || 'Ideal Indiska LIVS',
+      brandName: options.brandName || 'Anmol Wholesale',
+      sellerName: options.sellerName || 'Anmol Wholesale',
     }
   );
 }

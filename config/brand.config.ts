@@ -28,8 +28,8 @@ export const brandConfig = {
     email: "info@restaurantpack.se",
     reservationEmail: "wholesale@restaurantpack.se",
     privacyEmail: "info@restaurantpack.se",
-    googleMapsUrl: "https://maps.google.com/?q=Fagerstagatan+13,+Spånga",
-    googleBusinessProfile: "https://maps.google.com/?q=Anmol+Wholesale+Spånga",
+    googleMapsUrl: "https://www.google.com/maps/place/Anmol+Sweets+%26+Restaurant/@59.3939289,17.8822457,17z",
+    googleBusinessProfile: "https://www.google.com/maps/place/Anmol+Sweets+%26+Restaurant/@59.3939289,17.8822457,17z",
   },
 
   // Business Hours

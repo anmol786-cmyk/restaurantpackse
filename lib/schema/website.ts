@@ -106,18 +106,7 @@ export function webpageSchema(config: {
   return cleanSchema(schema);
 }
 
-/**
- * Pre-configured Anmol Sweets WebSite Schema
- */
-export function anmolWebsiteSchema(baseUrl: string = 'https://anmolsweets.se'): WebSite {
-  return websiteSchema({
-    name: 'Anmol Sweets & Restaurant',
-    url: baseUrl,
-    description: 'Experience the authentic flavors of Pakistan & India in Stockholm. Famous for our Halwa Puri, fresh Mithai, and traditional curries.',
-    organizationId: generateSchemaId(baseUrl, 'organization'),
-    searchUrl: `${baseUrl}/shop`,
-  });
-}
+
 
 /**
  * Generate graph structure with multiple schemas

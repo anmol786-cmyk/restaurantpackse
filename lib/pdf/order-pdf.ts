@@ -4,7 +4,7 @@
  */
 
 import jsPDF from 'jspdf';
-import 'jspdf-autotable';
+import autoTable from 'jspdf-autotable';
 
 // Extend jsPDF type for autoTable plugin
 declare module 'jspdf' {
@@ -14,6 +14,11 @@ declare module 'jspdf' {
       finalY: number;
     };
   }
+}
+
+// Ensure autoTable is available
+if (typeof jsPDF !== 'undefined' && !jsPDF.prototype.autoTable) {
+  console.error('jsPDF autoTable plugin not loaded properly');
 }
 
 export interface OrderPDFData {

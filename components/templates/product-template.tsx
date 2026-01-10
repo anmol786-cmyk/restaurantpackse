@@ -257,39 +257,7 @@ export function ProductTemplate({
 
               {/* Title & SKU */}
               <div>
-                {/* Brand Display using WooCommerce Brands */}
-                {product.brands && product.brands.length > 0 && (
-                  <div className="mb-3">
-                    {product.brands.map((brand) => (
-                      <Link
-                        key={brand.id}
-                        href={`/brand/${brand.slug}`}
-                        className="inline-flex items-center gap-3 group"
-                      >
-                        {typeof brand.image === 'object' && brand.image?.src ? (
-                          <div className="relative w-12 h-12 bg-white rounded-full border border-border p-1 overflow-hidden shadow-sm group-hover:border-primary/50 transition-colors">
-                            <Image
-                              src={brand.image.src}
-                              alt={brand.name}
-                              fill
-                              className="object-contain"
-                              sizes="48px"
-                            />
-                          </div>
-                        ) : (
-                          <Badge variant="secondary" className="text-primary bg-primary/10 hover:bg-primary/20 transition-colors">
-                            {decodeHtmlEntities(brand.name)}
-                          </Badge>
-                        )}
-                        {typeof brand.image === 'object' && brand.image?.src && (
-                          <span style={{ fontSize: '15.13px', fontWeight: 400, lineHeight: 1.57, letterSpacing: '0.03em' }} className="text-muted-foreground group-hover:text-foreground transition-colors">
-                            {decodeHtmlEntities(brand.name)}
-                          </span>
-                        )}
-                      </Link>
-                    ))}
-                  </div>
-                )}
+                {/* Brand Display using WooCommerce Brands - Removed as per request */}
 
                 <h1 className="font-heading text-foreground text-2xl md:text-[27px] font-bold leading-tight">
                   {decodeHtmlEntities(product.name)}

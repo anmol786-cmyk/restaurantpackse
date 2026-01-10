@@ -6,7 +6,7 @@ export async function GET() {
 
     const pages = [
         { url: "/delivery-information", priority: 0.9, changefreq: "weekly" },
-        { url: "/delivery-goteborg-malmo", priority: 0.8, changefreq: "weekly" },
+
         { url: "/europe-delivery", priority: 0.8, changefreq: "weekly" },
     ];
 

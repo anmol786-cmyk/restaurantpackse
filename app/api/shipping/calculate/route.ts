@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const WP_API_BASE = process.env.NEXT_PUBLIC_WORDPRESS_API_URL || 'https://crm.ideallivs.com/wp-json';
+const WP_API_BASE = process.env.NEXT_PUBLIC_WORDPRESS_API_URL || 'https://crm.restaurantpack.se/wp-json';
 const MCP_KEY = process.env.FOURLINES_MCP_KEY;
 
 export async function POST(request: NextRequest) {

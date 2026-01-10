@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: DynamicPageProps): Promise<Me
           title: post.title.rendered,
           description: description.substring(0, 160),
           type: 'article',
-          url: `https://ideallivs.com/${post.slug}`,
+          url: `https://restaurantpack.se/${post.slug}`,
         },
       };
     }
@@ -48,7 +48,7 @@ export async function generateMetadata({ params }: DynamicPageProps): Promise<Me
           title: page.title.rendered,
           description: description,
           type: 'website',
-          url: `https://ideallivs.com/${page.slug}`,
+          url: `https://restaurantpack.se/${page.slug}`,
         },
         twitter: {
           card: 'summary_large_image',

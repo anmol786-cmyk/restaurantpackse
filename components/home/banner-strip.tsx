@@ -8,7 +8,7 @@ export function BannerStrip() {
     return (
         <section className="w-full pb-6 md:pb-8">
             <div className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 md:px-8">
-                <Link href="/deals" className="block group relative overflow-hidden rounded-2xl h-[130px] sm:h-[140px] md:h-[150px]">
+                <Link href="/shop" className="block group relative overflow-hidden rounded-2xl h-[130px] sm:h-[140px] md:h-[150px]">
                     {/* Background Image/Gradient Placeholder - Primary Theme */}
                     <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/80 to-primary/95 flex flex-col justify-center px-4 sm:px-6 md:px-10">
                         {/* Pattern overlay */}

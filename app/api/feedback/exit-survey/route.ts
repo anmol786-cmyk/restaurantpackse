@@ -51,7 +51,7 @@ export async function POST(request: NextRequest) {
           ...(smtpPort !== 465 && { requireTLS: true }),
         });
 
-        const adminEmail = process.env.ADMIN_EMAIL || 'info@ideallivs.com';
+        const adminEmail = process.env.ADMIN_EMAIL || 'info@restaurantpack.se';
         const secondaryEmail = process.env.SECONDARY_ADMIN_EMAIL;
         const recipients = secondaryEmail ? [adminEmail, secondaryEmail] : [adminEmail];
         const fromEmail = process.env.SMTP_USER;
@@ -63,7 +63,7 @@ export async function POST(request: NextRequest) {
 
         // Send email
         await transporter.sendMail({
-          from: `"Ideal Livs Exit Survey" <${fromEmail}>`,
+          from: `"Anmol Wholesale Exit Survey" <${fromEmail}>`,
           to: recipients,
           subject: `🚨 Exit Survey Feedback - ${new Date(timestamp).toLocaleDateString()}`,
           html: `
@@ -114,13 +114,13 @@ export async function POST(request: NextRequest) {
                               <tr>
                                 <td style="padding: 8px 0; font-size: 14px; color: #666666; font-weight: 600;">Timestamp:</td>
                                 <td style="padding: 8px 0; font-size: 14px; color: #333333;">${new Date(timestamp).toLocaleString('en-US', {
-                                  year: 'numeric',
-                                  month: 'long',
-                                  day: 'numeric',
-                                  hour: '2-digit',
-                                  minute: '2-digit',
-                                  timeZone: 'Europe/Stockholm'
-                                })} (Stockholm time)</td>
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            timeZone: 'Europe/Stockholm'
+          })} (Stockholm time)</td>
                               </tr>
                             </table>
                           </td>
@@ -128,7 +128,7 @@ export async function POST(request: NextRequest) {
                         <tr>
                           <td style="padding-top: 20px; border-top: 1px solid #e0e0e0;">
                             <p style="margin: 0; color: #999999; font-size: 12px; text-align: center;">
-                              This feedback was collected via exit-intent survey at <a href="https://ideallivs.com" style="color: #DC2626; text-decoration: none;">ideallivs.com</a>
+                              This feedback was collected via exit-intent survey at <a href="https://restaurantpack.se" style="color: #DC2626; text-decoration: none;">restaurantpack.se</a>
                             </p>
                           </td>
                         </tr>
@@ -138,7 +138,7 @@ export async function POST(request: NextRequest) {
                   <tr>
                     <td style="background-color: #DC2626; padding: 20px 30px; text-align: center;">
                       <p style="margin: 0; color: #FEE2E2; font-size: 12px;">
-                        © ${new Date().getFullYear()} Ideal Indiska Livs. All rights reserved.
+                        © ${new Date().getFullYear()} Anmol Wholesale. All rights reserved.
                       </p>
                     </td>
                   </tr>

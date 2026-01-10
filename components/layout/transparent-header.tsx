@@ -91,8 +91,8 @@ export function TransparentHeader({ categories, className }: TransparentHeaderPr
                 <button
                   onClick={openChat}
                   className="text-foreground hover:text-primary hover:bg-primary/10 transition-all p-2 rounded-full"
-                  aria-label="AI Ideal Indiska Assistant"
-                  title="AI Ideal Indiska Assistant"
+                  aria-label="AI Anmol Wholesale Assistant"
+                  title="AI Anmol Wholesale Assistant"
                 >
                   <MessageCircle className="h-5 w-5" />
                 </button>
@@ -101,7 +101,7 @@ export function TransparentHeader({ categories, className }: TransparentHeaderPr
               {/* Left Navigation - Spread Out */}
               <div className="col-span-4 flex justify-between items-center px-2">
                 <TransparentNavLink href="/shop" isTransparent={isTransparent}>Shop</TransparentNavLink>
-                <TransparentNavLink href="/brands" isTransparent={isTransparent}>Brands</TransparentNavLink>
+
               </div>
 
               {/* Center: Logo & Brand */}

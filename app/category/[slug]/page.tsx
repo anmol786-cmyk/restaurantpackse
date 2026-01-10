@@ -24,12 +24,12 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
         }
 
         return {
-            title: `${category.name} | Ideal Indiska LIVS Blog`,
+            title: `${category.name} | Anmol Wholesale Blog`,
             description: category.description || `Read articles about ${category.name}`,
             openGraph: {
                 title: category.name,
                 description: category.description || `Read articles about ${category.name}`,
-                url: `https://ideallivs.com/category/${resolvedParams.slug}`,
+                url: `https://restaurantpack.se/category/${resolvedParams.slug}`,
             },
             alternates: {
                 canonical: `/category/${resolvedParams.slug}`,

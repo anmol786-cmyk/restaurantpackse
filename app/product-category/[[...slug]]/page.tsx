@@ -32,15 +32,15 @@ export async function generateMetadata({ params }: ProductCategoryPageProps): Pr
 
         // Default fallback image if category has no image
         const defaultImage = {
-            url: 'https://crm.ideallivs.com/wp-content/uploads/2025/07/rice-and-flours-e1752149384409.jpg',
+            url: 'https://crm.restaurantpack.se/wp-content/uploads/2025/03/ANMOL-WHOLESALE-1.png',
             width: 1200,
             height: 630,
-            alt: 'Ideal Indiska LIVS - Indian & Pakistani Groceries in Stockholm',
+            alt: 'Anmol Wholesale - Restaurant Supply Stockholm',
         };
 
         return {
-            title: `${category.name} | Ideal Indiska LIVS`,
-            description: category.description?.replace(/\<[^>]*>/g, '').substring(0, 160) || `Shop ${category.name} products at Ideal Indiska LIVS`,
+            title: `${category.name} | Anmol Wholesale`,
+            description: category.description?.replace(/\<[^>]*>/g, '').substring(0, 160) || `Shop ${category.name} products at Anmol Wholesale`,
             openGraph: {
                 title: category.name,
                 description: category.description?.replace(/\<[^>]*>/g, '').substring(0, 160),

@@ -173,7 +173,7 @@ export default function TermsConditionsPage() {
                       <Mail className="h-4 w-4 text-primary" />
                       <span style={{ fontSize: '13.53px' }}>{brandProfile.contact.email}</span>
                     </a>
-                    <a href="https://wa.me/46728494801" className="flex items-center gap-3 p-3 rounded-lg border hover:bg-muted transition-colors">
+                    <a href="https://wa.me/46769178456" className="flex items-center gap-3 p-3 rounded-lg border hover:bg-muted transition-colors">
                       <MessageCircle className="h-4 w-4 text-primary" />
                       <span style={{ fontSize: '13.53px' }}>WhatsApp Support</span>
                     </a>

@@ -904,7 +904,7 @@ export default function CheckoutPage() {
                 <div className="flex justify-center">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                    src="https://crm.ideallivs.com/wp-content/uploads/2025/05/swish.jpg"
+                    src="https://crm.restaurantpack.se/wp-content/uploads/2025/05/swish.jpg"
                     alt="Swish QR Code"
                     className="max-w-full rounded-lg"
                     style={{ maxWidth: '250px' }}

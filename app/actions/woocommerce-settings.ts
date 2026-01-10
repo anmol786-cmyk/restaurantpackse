@@ -180,7 +180,7 @@ export async function getPaymentGatewaysAction() {
         // Add custom Swish QR code image to the description
         const enhancedGateways = enabledGateways.map((gateway: any) => {
             if (gateway.id === 'swish') {
-                const swishQRImage = 'https://crm.ideallivs.com/wp-content/uploads/2025/05/swish.jpg';
+                const swishQRImage = 'https://crm.restaurantpack.se/wp-content/uploads/2025/05/swish.jpg';
                 const customDescription = `
                     ${gateway.description || 'Pay with Swish'}
                     <div style="margin-top: 16px; text-align: center;">

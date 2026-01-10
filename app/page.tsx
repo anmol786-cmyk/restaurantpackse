@@ -13,7 +13,7 @@ import { anmolWholesaleOrganizationSchemaFull } from "@/lib/schema/organization"
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "Anmol Wholesale - B2B Restaurant Supply & Foodservice Distribution | Restaurant Pack",
+  title: "B2B Restaurant Supply & Foodservice Distribution",
   description: "Sweden's leading B2B wholesale supplier for restaurants, grocery stores & caterers. Authentic Indo-Pak products, bulk ingredients, competitive pricing. Manufacturer of Anmol Electric Tandoor. European shipping available.",
 };
 
@@ -66,7 +66,6 @@ export default async function HomePage() {
         <ProductShowcase
           title="Haldiram's Professional Range"
           products={haldiramProducts}
-          moreLink="/brand/haldiram"
         />
       </div>
 

@@ -51,12 +51,12 @@ export function brandSchema(
 }
 
 /**
- * Pre-configured Ideal Indiska LIVS Brand Schema
+ * Pre-configured Anmol Wholesale Brand Schema
  */
 export function idealIndiskaBrandSchema(): Brand {
-  return brandSchema('Ideal Indiska LIVS', {
-    url: 'https://www.ideallivs.com',
-    logo: 'https://crm.ideallivs.com/wp-content/uploads/2025/04/final-new-logo-black.png',
-    description: 'Stockholm\'s premier destination for authentic Pakistani & Indian cuisine, sweets, and grocery',
+  return brandSchema('Anmol Wholesale', {
+    url: 'https://restaurantpack.se',
+    logo: 'https://crm.restaurantpack.se/wp-content/uploads/2025/03/ANMOL-WHOLESALE-1.png',
+    description: 'Sweden\'s trusted B2B wholesale supplier for restaurants, grocery stores, and caterers. Manufacturer of Anmol Electric Tandoor.',
   });
 }

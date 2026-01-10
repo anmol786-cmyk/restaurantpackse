@@ -49,9 +49,12 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon.ico",
-    apple: "/apple-touch-icon.png",
+    icon: [
+      { url: '/icon.png', sizes: '512x512', type: 'image/png' },
+    ],
+    apple: [
+      { url: '/apple-icon.png', sizes: '180x180', type: 'image/png' },
+    ],
   },
   // verification: {
   //   google: "YOUR_GOOGLE_VERIFICATION_CODE",
@@ -82,14 +85,14 @@ export const metadata: Metadata = {
   },
   // Additional metadata
   keywords: [
-    "grocery store",
-    "online grocery",
-    "fresh produce",
-    "specialty foods",
-    "international groceries",
-    "grocery delivery",
-    "organic products",
-    "quality groceries",
+    "restaurant supply",
+    "wholesale food",
+    "B2B wholesale",
+    "restaurant pack",
+    "anmol wholesale",
+    "bulk ingredients",
+    "foodservice distributor",
+    "catering supplies",
   ],
   authors: [{ name: siteConfig.site_name }],
   creator: siteConfig.site_name,

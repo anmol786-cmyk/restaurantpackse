@@ -10,19 +10,19 @@ import { cleanSchema } from './base';
  * Generate Stockholm Delivery Service Schema
  * For /delivery-information page
  */
-export function stockholmDeliveryServiceSchema(baseUrl: string = 'https://www.ideallivs.com') {
+export function stockholmDeliveryServiceSchema(baseUrl: string = 'https://restaurantpack.se') {
   const schema: Service = {
     '@context': 'https://schema.org',
     '@type': 'Service',
     '@id': `${baseUrl}/#stockholm-delivery-service`,
-    name: 'Stockholm Grocery Delivery Service',
-    description: 'Free delivery on orders over 500 SEK to all of Stockholm. Same-day delivery available to nearby areas.',
+    name: 'Stockholm B2B Delivery Service',
+    description: 'Free delivery on bulk orders over 500 SEK to all of Stockholm. Same-day delivery available to nearby areas.',
     provider: {
       '@type': 'Organization',
       '@id': `${baseUrl}/#organization`,
-      name: 'Ideal Indiska LIVS',
+      name: 'Anmol Wholesale',
     },
-    serviceType: 'Grocery Delivery',
+    serviceType: 'Wholesale Delivery',
     areaServed: [
       {
         '@type': 'City',
@@ -115,7 +115,7 @@ export function stockholmDeliveryServiceSchema(baseUrl: string = 'https://www.id
     availableChannel: {
       '@type': 'ServiceChannel',
       serviceUrl: `${baseUrl}/shop`,
-      servicePhone: '+46728494801',
+      servicePhone: '+46769178456',
       availableLanguage: ['Swedish', 'English', 'Hindi', 'Urdu'],
     },
   };
@@ -127,19 +127,19 @@ export function stockholmDeliveryServiceSchema(baseUrl: string = 'https://www.id
  * Generate Europe Delivery Service Schema
  * For /europe-delivery page
  */
-export function europeDeliveryServiceSchema(baseUrl: string = 'https://www.ideallivs.com') {
+export function europeDeliveryServiceSchema(baseUrl: string = 'https://restaurantpack.se') {
   const schema: Service = {
     '@context': 'https://schema.org',
     '@type': 'Service',
     '@id': `${baseUrl}/#europe-delivery-service`,
-    name: 'Europe-Wide Grocery Delivery Service',
-    description: 'Authentic Indian & Pakistani groceries delivered across Europe via DHL. No minimum order, no customs hassle within EU.',
+    name: 'Europe-Wide B2B Delivery Service',
+    description: 'Authentic Indo-Pak products and restaurant supplies delivered across Europe via DHL. No minimum order, no customs hassle within EU.',
     provider: {
       '@type': 'Organization',
       '@id': `${baseUrl}/#organization`,
-      name: 'Ideal Indiska LIVS',
+      name: 'Anmol Wholesale',
     },
-    serviceType: 'International Grocery Delivery',
+    serviceType: 'International Wholesale Delivery',
     areaServed: {
       '@type': 'Continent',
       name: 'Europe',
@@ -159,7 +159,7 @@ export function europeDeliveryServiceSchema(baseUrl: string = 'https://www.ideal
     availableChannel: {
       '@type': 'ServiceChannel',
       serviceUrl: `${baseUrl}/shop`,
-      servicePhone: '+46728494801',
+      servicePhone: '+46769178456',
       availableLanguage: ['Swedish', 'English', 'Hindi', 'Urdu'],
     },
     additionalType: 'https://schema.org/DeliveryEvent',
@@ -172,72 +172,12 @@ export function europeDeliveryServiceSchema(baseUrl: string = 'https://www.ideal
   return cleanSchema(schema);
 }
 
-/**
- * Generate Göteborg & Malmö Delivery Service Schema
- * For /delivery-goteborg-malmo page
- */
-export function goteborgMalmoDeliveryServiceSchema(baseUrl: string = 'https://www.ideallivs.com') {
-  const schema: Service = {
-    '@context': 'https://schema.org',
-    '@type': 'Service',
-    '@id': `${baseUrl}/#goteborg-malmo-delivery-service`,
-    name: 'Göteborg & Malmö Grocery Delivery Service',
-    description: 'Scheduled delivery of Indian & Pakistani groceries to Göteborg and Malmö via DHL.',
-    provider: {
-      '@type': 'Organization',
-      '@id': `${baseUrl}/#organization`,
-      name: 'Ideal Indiska LIVS',
-    },
-    serviceType: 'Scheduled Grocery Delivery',
-    areaServed: [
-      {
-        '@type': 'City',
-        name: 'Göteborg',
-        address: {
-          '@type': 'PostalAddress',
-          addressLocality: 'Göteborg',
-          addressRegion: 'Västra Götaland County',
-          addressCountry: 'SE',
-        },
-      },
-      {
-        '@type': 'City',
-        name: 'Malmö',
-        address: {
-          '@type': 'PostalAddress',
-          addressLocality: 'Malmö',
-          addressRegion: 'Skåne County',
-          addressCountry: 'SE',
-        },
-      },
-    ],
-    offers: {
-      '@type': 'Offer',
-      name: 'DHL Delivery to Göteborg & Malmö',
-      description: 'Scheduled delivery on specific days. Göteborg: Tuesday, Thursday, Saturday. Malmö: Wednesday, Saturday.',
-      priceCurrency: 'SEK',
-      priceSpecification: {
-        '@type': 'UnitPriceSpecification',
-        price: '0.00',
-        priceCurrency: 'SEK',
-        description: 'DHL delivery rates calculated at checkout',
-      },
-    },
-    availableChannel: {
-      '@type': 'ServiceChannel',
-      serviceUrl: `${baseUrl}/shop`,
-      servicePhone: '+46728494801',
-      availableLanguage: ['Swedish', 'English', 'Hindi', 'Urdu'],
-    },
-  };
 
-  return cleanSchema(schema);
-}
 
 /**
  * Generate FAQ Page Schema for Delivery
  */
-export function deliveryFAQSchema(baseUrl: string = 'https://www.ideallivs.com') {
+export function deliveryFAQSchema(baseUrl: string = 'https://restaurantpack.se') {
   return {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',

@@ -133,7 +133,7 @@ export function StripePaymentForm({
                                 },
                                 // Business info for wallet payments
                                 business: {
-                                    name: 'Ideal Indiska LIVS',
+                                    name: 'Anmol Wholesale',
                                 },
                                 // Fields configuration - collect all required billing details
                                 fields: {

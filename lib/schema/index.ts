@@ -31,8 +31,8 @@ export * from './delivery';
  * ```tsx
  * import { wooCommerceProductSchema, breadcrumbSchema, productBreadcrumbs } from '@/lib/schema';
  *
- * const productJsonLd = wooCommerceProductSchema(product, { baseUrl: 'https://ideallivs.com' });
- * const breadcrumbJsonLd = breadcrumbSchema(productBreadcrumbs(product, 'https://ideallivs.com'));
+ * const productJsonLd = wooCommerceProductSchema(product, { baseUrl: 'https://restaurantpack.se' });
+ * const breadcrumbJsonLd = breadcrumbSchema(productBreadcrumbs(product, 'https://restaurantpack.se'));
  *
  * <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }} />
  * ```
@@ -41,17 +41,17 @@ export * from './delivery';
  * ```tsx
  * import { productCategorySchema, breadcrumbSchema, categoryBreadcrumbs } from '@/lib/schema';
  *
- * const categoryJsonLd = productCategorySchema(category, products, 'https://ideallivs.com');
- * const breadcrumbJsonLd = breadcrumbSchema(categoryBreadcrumbs(category, 'https://ideallivs.com'));
+ * const categoryJsonLd = productCategorySchema(category, products, 'https://restaurantpack.se');
+ * const breadcrumbJsonLd = breadcrumbSchema(categoryBreadcrumbs(category, 'https://restaurantpack.se'));
  * ```
  *
  * 3. Homepage with Organization:
  * ```tsx
- * import { idealIndiskaOrganizationSchemaFull, websiteSchema, schemaGraph } from '@/lib/schema';
+ * import { anmolWholesaleOrganizationSchemaFull, websiteSchema, schemaGraph } from '@/lib/schema';
  *
  * const graph = schemaGraph(
- *   idealIndiskaOrganizationSchemaFull(),
- *   websiteSchema({ name: 'Ideal Indiska LIVS', url: 'https://ideallivs.com' })
+ *   anmolWholesaleOrganizationSchemaFull(),
+ *   websiteSchema({ name: 'Anmol Wholesale', url: 'https://restaurantpack.se' })
  * );
  *
  * <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(graph) }} />
@@ -61,15 +61,15 @@ export * from './delivery';
  * ```tsx
  * import { wordPressArticleSchema } from '@/lib/schema';
  *
- * const articleJsonLd = wordPressArticleSchema(post, 'https://ideallivs.com');
+ * const articleJsonLd = wordPressArticleSchema(post, 'https://restaurantpack.se');
  * <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
  * ```
  *
  * 5. FAQ Page:
  * ```tsx
- * import { idealIndiskaFAQSchema } from '@/lib/schema';
+ * import { anmolWholesaleFAQSchema } from '@/lib/schema';
  *
- * const faqJsonLd = idealIndiskaFAQSchema('https://ideallivs.com');
+ * const faqJsonLd = anmolWholesaleFAQSchema('https://restaurantpack.se');
  * <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
  * ```
  */

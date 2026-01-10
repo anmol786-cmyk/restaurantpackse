@@ -400,9 +400,14 @@ export function QuickOrderFormEnhanced() {
               </DialogContent>
             </Dialog>
 
-            <Button onClick={addLine} size="sm" variant="outline" className="gap-2">
+            <Button
+              onClick={addLine}
+              size="sm"
+              variant="default"
+              className="gap-2 bg-primary hover:bg-primary/90 text-white font-semibold"
+            >
               <Plus className="h-4 w-4" />
-              Add Line
+              Add Product Line
             </Button>
           </div>
         </div>

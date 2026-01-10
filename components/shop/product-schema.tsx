@@ -14,8 +14,8 @@ export function ProductSchema({ product, reviews = [], breadcrumbs }: ProductSch
   // Generate product schema using standardized function
   const productSchema = wooCommerceProductSchema(product, {
     baseUrl,
-    brandName: 'Ideal Indiska LIVS',
-    sellerName: 'Ideal Indiska LIVS',
+    brandName: 'Anmol Wholesale',
+    sellerName: 'Anmol Wholesale',
   });
 
   // Add reviews to schema if available

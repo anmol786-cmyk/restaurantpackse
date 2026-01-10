@@ -167,16 +167,7 @@ export function ShopTopBar({ categories, brands = [], totalProducts, className }
                                     </div>
                                 )}
                             </div>
-                            <div className="p-2 border-t border-border bg-muted/30">
-                                <Button
-                                    variant="ghost"
-                                    size="sm"
-                                    className="w-full text-xs h-8"
-                                    onClick={() => router.push('/brands')}
-                                >
-                                    View All Brands Page
-                                </Button>
-                            </div>
+
                         </PopoverContent>
                     </Popover>
 

@@ -87,14 +87,14 @@ export function articleSchema(article: ArticleInput): BlogPosting {
  * @param baseUrl - Base URL of the site
  * @returns Complete Article schema object
  */
-export function wordPressArticleSchema(post: any, baseUrl: string = 'https://www.ideallivs.com'): BlogPosting {
+export function wordPressArticleSchema(post: any, baseUrl: string = 'https://restaurantpack.se'): BlogPosting {
     const url = `${baseUrl}/${post.slug}`;
 
     // Extract featured image
     const featuredImage = post._embedded?.['wp:featuredmedia']?.[0]?.source_url;
 
     // Extract author name
-    const authorName = post._embedded?.author?.[0]?.name || 'Ideal Indiska LIVS';
+    const authorName = post._embedded?.author?.[0]?.name || 'Anmol Wholesale';
 
     // Extract categories
     const categories = post._embedded?.['wp:term']?.[0] || [];
@@ -109,8 +109,8 @@ export function wordPressArticleSchema(post: any, baseUrl: string = 'https://www
         content: post.content.rendered,
         url,
         authorName,
-        publisherName: 'Ideal Indiska LIVS',
-        publisherLogo: 'https://crm.ideallivs.com/wp-content/uploads/2025/04/final-new-logo-black.png',
+        publisherName: 'Anmol Wholesale',
+        publisherLogo: 'https://crm.restaurantpack.se/wp-content/uploads/2025/03/ANMOL-WHOLESALE-1.png',
         datePublished: post.date,
         dateModified: post.modified,
         featuredImage,

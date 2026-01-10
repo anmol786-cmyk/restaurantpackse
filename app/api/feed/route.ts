@@ -61,7 +61,7 @@ function stripHtml(html: string): string {
 export async function GET() {
   try {
     // Use the correct WordPress API URL
-    const WORDPRESS_URL = process.env.NEXT_PUBLIC_WORDPRESS_URL || 'https://crm.ideallivs.com';
+    const WORDPRESS_URL = process.env.NEXT_PUBLIC_WORDPRESS_URL || 'https://crm.restaurantpack.se';
     const apiUrl = `${WORDPRESS_URL}/wp-json/wp/v2`;
 
     console.log('Fetching posts from:', `${apiUrl}/posts`);

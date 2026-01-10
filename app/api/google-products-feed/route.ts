@@ -10,7 +10,7 @@ import { fetchWooCommerceCached } from '@/lib/woocommerce/api';
 import { WC_API_CONFIG } from '@/lib/woocommerce/config';
 
 // Settings (match WordPress snippet defaults)
-const BRAND = 'Ideal Indiska Livs';
+const BRAND = 'Anmol Wholesale';
 const STOCKHOLM_FREE_THRESHOLD = 500;
 const STOCKHOLM_DELIVERY_COST = 30;
 const STOCKHOLM_DELIVERY_MIN = 300;

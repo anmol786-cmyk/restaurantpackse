@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const WOOCOMMERCE_URL = process.env.NEXT_PUBLIC_WORDPRESS_URL || 'https://crm.ideallivs.com';
+const WOOCOMMERCE_URL = process.env.NEXT_PUBLIC_WORDPRESS_URL || 'https://crm.restaurantpack.se';
 const CONSUMER_KEY = process.env.WORDPRESS_CONSUMER_KEY || '';
 const CONSUMER_SECRET = process.env.WORDPRESS_CONSUMER_SECRET || '';
 

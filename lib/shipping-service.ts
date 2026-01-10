@@ -1,9 +1,9 @@
 /**
- * Shipping Service for Ideal Indiska Livs
+ * Shipping Service for Anmol Wholesale / Restaurant Pack
  * Handles all shipping calculations and validations via WordPress REST API with DHL integration
  */
 
-const WP_API_BASE = process.env.NEXT_PUBLIC_WORDPRESS_API_URL || 'https://ideallivs.com';
+const WP_API_BASE = process.env.NEXT_PUBLIC_WORDPRESS_API_URL || 'https://restaurantpack.se';
 
 export interface ShippingMethod {
   id: string;
