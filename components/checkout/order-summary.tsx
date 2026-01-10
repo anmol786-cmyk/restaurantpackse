@@ -10,10 +10,10 @@ import { ShoppingBag, Tag } from 'lucide-react';
 import { useAuthStore } from '@/store/auth-store';
 import { CommerceRules } from '@/config/commerce-rules';
 import { CouponInput } from './coupon-input';
+import { calculateCartTax, getTaxBreakdownByRate } from '@/lib/tax/calculate-tax';
 
 interface OrderSummaryProps {
     shippingCost?: number;
-    taxRate?: number;
     className?: string;
     discountAmount?: number;
     onApplyCoupon?: (coupon: any) => void;
@@ -22,7 +22,6 @@ interface OrderSummaryProps {
 
 export function OrderSummary({
     shippingCost: propShippingCost,
-    taxRate = 25, // Swedish VAT is 25% for most goods
     className,
     discountAmount = 0,
     onApplyCoupon,
@@ -37,14 +36,21 @@ export function OrderSummary({
     // Get shipping cost from cart store (DHL rates) or fallback to prop
     const shippingCost = propShippingCost !== undefined ? propShippingCost : getShippingCost();
 
-    // Prices in WooCommerce already include tax (Swedish VAT requirement)
-    const totalWithTax = getTotalPrice(isWholesale);
+    // Calculate tax dynamically based on each product's tax_class
+    // This handles mixed carts (some items at 12% VAT, others at 25%)
+    const cartItemsWithPricing = items.map(item => ({
+        product: item.product,
+        variation: item.variation,
+        quantity: item.quantity,
+        price: CommerceRules.getTieredPrice(item.price, item.quantity, isWholesale).unitPrice,
+    }));
 
-    // Calculate tax that's INCLUDED in the price
-    // If total is 100 SEK with 25% tax, then: 100 / 1.25 = 80 (subtotal), tax = 20
-    const taxMultiplier = 1 + (taxRate / 100); // 1.25 for 25% tax
-    const subtotalWithoutTax = totalWithTax / taxMultiplier;
-    const includedTax = totalWithTax - subtotalWithoutTax;
+    const taxCalculation = calculateCartTax(cartItemsWithPricing, true);
+    const taxBreakdown = getTaxBreakdownByRate(cartItemsWithPricing, true);
+
+    const subtotalWithoutTax = taxCalculation.subtotalWithoutTax;
+    const includedTax = taxCalculation.taxAmount;
+    const totalWithTax = getTotalPrice(isWholesale);
 
     // Total = items total (already includes tax) + shipping - discount
     const total = Math.max(0, totalWithTax + shippingCost - discountAmount);
@@ -131,13 +137,35 @@ export function OrderSummary({
                         <span className="font-medium">{formatPrice(subtotalWithoutTax, 'SEK')}</span>
                     </div>
 
-                    {/* Tax included in prices */}
-                    <div className="flex justify-between text-sm">
-                        <span className="text-neutral-600 dark:text-neutral-400">
-                            Tax ({taxRate}% included)
-                        </span>
-                        <span className="font-medium">{formatPrice(includedTax, 'SEK')}</span>
-                    </div>
+                    {/* Tax included in prices - with breakdown for mixed rates */}
+                    {taxBreakdown.length === 1 ? (
+                        // Single tax rate - simple display
+                        <div className="flex justify-between text-sm">
+                            <span className="text-neutral-600 dark:text-neutral-400">
+                                Tax ({taxBreakdown[0].rate}% included)
+                            </span>
+                            <span className="font-medium">{formatPrice(includedTax, 'SEK')}</span>
+                        </div>
+                    ) : (
+                        // Multiple tax rates - show breakdown
+                        <div className="space-y-2">
+                            <div className="flex justify-between text-sm">
+                                <span className="text-neutral-600 dark:text-neutral-400">
+                                    Tax (mixed rates included)
+                                </span>
+                                <span className="font-medium">{formatPrice(includedTax, 'SEK')}</span>
+                            </div>
+                            {/* Show individual rates */}
+                            <div className="pl-4 space-y-1 border-l-2 border-neutral-200 dark:border-neutral-700">
+                                {taxBreakdown.map((item) => (
+                                    <div key={item.rate} className="flex justify-between text-xs text-neutral-500 dark:text-neutral-500">
+                                        <span>{item.rate}% VAT</span>
+                                        <span>{formatPrice(item.taxAmount, 'SEK')}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
 
                     {discountAmount > 0 && (
                         <div className="flex justify-between text-sm text-green-600 dark:text-green-400">

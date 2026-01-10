@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
 
         // Email Sending Logic
         try {
-            if (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS) {
+            if (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASSWORD) {
                 const smtpPort = Number(process.env.SMTP_PORT || 587);
                 const transporter = nodemailer.createTransport({
                     host: process.env.SMTP_HOST,
@@ -50,12 +50,14 @@ export async function POST(request: NextRequest) {
                     secure: smtpPort === 465,
                     auth: {
                         user: process.env.SMTP_USER,
-                        pass: process.env.SMTP_PASS,
+                        pass: process.env.SMTP_PASSWORD,
                     },
+                    ...(smtpPort !== 465 && { requireTLS: true }),
                 });
 
-                const adminEmail = process.env.ADMIN_EMAIL || 'info@restaurantpack.se';
-                const fromEmail = process.env.SMTP_USER;
+                const adminEmail = process.env.WHOLESALE_EMAIL || process.env.ADMIN_EMAIL || 'info@restaurantpack.se';
+                const fromEmail = process.env.SMTP_FROM || process.env.SMTP_USER;
+                const fromName = process.env.SMTP_FROM_NAME || 'Anmol Wholesale';
 
                 const itemsHtml = items.map((item: any) => `
           <tr>
@@ -66,7 +68,7 @@ export async function POST(request: NextRequest) {
         `).join('');
 
                 await transporter.sendMail({
-                    from: `"Anmol Wholesale Quotes" <${fromEmail}>`,
+                    from: `"${fromName} - Quote Request" <${fromEmail}>`,
                     to: adminEmail,
                     replyTo: email,
                     subject: `New Wholesale Quote Request: ${companyName}`,

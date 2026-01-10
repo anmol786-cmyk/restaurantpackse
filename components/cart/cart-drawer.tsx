@@ -7,6 +7,7 @@ import { useAuthStore } from '@/store/auth-store';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetFooter } from '@/components/ui/sheet';
 import { formatPrice } from '@/lib/woocommerce';
+import { useCurrency } from '@/hooks/use-currency';
 import { Minus, Plus, X, AlertCircle } from 'lucide-react';
 import { CartThresholdMessages } from './cart-threshold-messages';
 import { WhatsAppOrderButton } from '@/components/whatsapp/whatsapp-order-button';
@@ -15,6 +16,7 @@ import { useEffect } from 'react';
 
 export function CartDrawer() {
   const { user } = useAuthStore();
+  const { format: formatCurrency } = useCurrency();
   const isWholesale = user?.meta_data?.some(m => m.key === 'customer_type' && m.value === 'business') ||
     user?.meta_data?.some(m => m.key === 'is_wholesale_customer' && (m.value === '1' || m.value === 'yes'));
 
@@ -114,7 +116,7 @@ export function CartDrawer() {
                           </h4>
                           <div className="flex items-center gap-2 mt-1">
                             <p className="text-sm text-muted-foreground">
-                              {formatPrice(CommerceRules.getTieredPrice(item.price, item.quantity, isWholesale).unitPrice, 'SEK')}
+                              {formatCurrency(CommerceRules.getTieredPrice(item.price, item.quantity, isWholesale).unitPrice)}
                             </p>
                             {isWholesale && CommerceRules.getTieredPrice(item.price, item.quantity, isWholesale).discount > 0 && (
                               <span className="text-[10px] font-bold text-green-600 bg-green-50 px-1 rounded border border-green-200">
@@ -153,7 +155,7 @@ export function CartDrawer() {
                           <Plus className="h-3 w-3" />
                         </Button>
                         <span className="ml-auto text-sm font-semibold text-primary">
-                          {formatPrice(CommerceRules.getTieredPrice(item.price, item.quantity, isWholesale).unitPrice * item.quantity, 'SEK')}
+                          {formatCurrency(CommerceRules.getTieredPrice(item.price, item.quantity, isWholesale).unitPrice * item.quantity)}
                         </span>
                       </div>
                     </div>
@@ -171,7 +173,7 @@ export function CartDrawer() {
             <SheetFooter className="flex-col gap-3">
               <div className="flex justify-between border-t pt-4 text-base font-bold">
                 <span>Total:</span>
-                <span>{formatPrice(getTotalPrice(isWholesale), 'SEK')}</span>
+                <span>{formatCurrency(getTotalPrice(isWholesale))}</span>
               </div>
 
               <div className="grid grid-cols-2 gap-3">

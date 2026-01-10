@@ -1,0 +1,117 @@
+{
+  "common": {
+    "siteName": "Anmol Wholesale",
+    "tagline": "Fra Vores Restaurantkøkken til Dit",
+    "loading": "Indlæser...",
+    "error": "Fejl",
+    "success": "Succes",
+    "cancel": "Annuller",
+    "save": "Gem",
+    "delete": "Slet",
+    "edit": "Rediger",
+    "submit": "Indsend",
+    "search": "Søg",
+    "clear": "Ryd",
+    "close": "Luk",
+    "viewAll": "Vis Alle",
+    "learnMore": "Læs Mere",
+    "contactUs": "Kontakt Os"
+  },
+  "nav": {
+    "home": "Hjem",
+    "shop": "Produkter",
+    "wholesale": "Engros",
+    "quickOrder": "Hurtigbestilling",
+    "quotes": "Tilbud",
+    "b2bAccount": "B2B-konto",
+    "about": "Om Os",
+    "contact": "Kontakt",
+    "cart": "Kurv",
+    "account": "Konto",
+    "login": "Log Ind",
+    "register": "Registrer",
+    "logout": "Log Ud"
+  },
+  "hero": {
+    "title": "Sveriges Førende Grossistpartner til Restauranter",
+    "subtitle": "Autentiske Indo-Pak-produkter, bulkingredienser og professionelt foodservice-udstyr. Støttet af Anmol Sweets & Restaurant's kulinariske ekspertise.",
+    "ctaPrimary": "Gennemse Produkter",
+    "ctaSecondary": "Åbn B2B-konto"
+  },
+  "wholesale": {
+    "title": "Engros B2B-løsninger",
+    "subtitle": "Professionelle engrostjenester til restauranter, dagligvarebutikker og catering",
+    "benefits": {
+      "pricing": "Konkurrencedygtige B2B-priser",
+      "pricingDesc": "Mængderabatter og differentierede engrospriser",
+      "delivery": "Fleksibel Levering",
+      "deliveryDesc": "Egen flåde til Stockholm, DHL til Europa",
+      "support": "Dedikeret Support",
+      "supportDesc": "Personlig account manager og B2B-assistance",
+      "quality": "Ensartet Kvalitet",
+      "qualityDesc": "Premiumprodukter fra pålidelige leverandører"
+    }
+  },
+  "quickOrder": {
+    "title": "Hurtigbestillingsformular",
+    "subtitle": "Afgiv bulkordrer på få minutter",
+    "customerInfo": "Dine Oplysninger",
+    "products": "Produkter",
+    "addLine": "Tilføj Linje",
+    "uploadCSV": "Upload CSV",
+    "saveTemplate": "Gem Skabelon",
+    "loadTemplate": "Indlæs Skabelon",
+    "downloadPDF": "Download PDF",
+    "submitOrder": "Send Ordre",
+    "orderTotal": "Ordresum",
+    "productPlaceholder": "Skriv 3+ bogstaver for at søge produkter...",
+    "quantityLabel": "Antal",
+    "unitPrice": "Enhedspris",
+    "lineTotal": "I alt"
+  },
+  "shipping": {
+    "title": "Forsendelsesinformation",
+    "freeShipping": "Gratis Forsendelse",
+    "estimatedDelivery": "Estimeret Levering",
+    "shippingCost": "Forsendelsesomkostninger",
+    "sameDay": "Samme Dag",
+    "businessDays": "hverdage",
+    "zones": {
+      "domestic": "Sverige - Indenrigs",
+      "stockholm": "Stockholm-området - Samme Dag",
+      "nordic": "Nordiske Lande",
+      "euCore": "EU Kerneområder",
+      "euWest": "EU Vesteuropa",
+      "euSouth": "EU Sydeuropa",
+      "euEast": "EU Østeuropa",
+      "baltic": "Baltiske Stater"
+    }
+  },
+  "vat": {
+    "vatNumber": "Momsnummer",
+    "vatNumberPlaceholder": "f.eks., DK12345678",
+    "vatInvalid": "Ugyldigt momsregistreringsnummer",
+    "vatValid": "Momsregistreringsnummer gyldigt",
+    "reverseCharge": "Omvendt Betalingspligt Anvendt",
+    "vatIncluded": "Moms Inkluderet",
+    "vatRate": "Momssats",
+    "netAmount": "Nettobeløb",
+    "vatAmount": "Momsbeløb",
+    "grossAmount": "Bruttobeløb"
+  },
+  "contact": {
+    "phone": "Telefon",
+    "email": "E-mail",
+    "address": "Adresse",
+    "hours": "Åbningstider",
+    "getInTouch": "Kontakt Os"
+  },
+  "footer": {
+    "aboutUs": "Om Os",
+    "quickLinks": "Hurtige Links",
+    "customerService": "Kundeservice",
+    "followUs": "Følg Os",
+    "copyright": "© 2025 Anmol Wholesale. Alle rettigheder forbeholdes.",
+    "madeWithLove": "Lavet med ❤️ i Sverige"
+  }
+}

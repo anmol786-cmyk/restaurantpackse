@@ -1,13 +1,14 @@
 'use client';
 
-import { useState } from 'react';
-import { Check, ChevronDown, Globe } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Check, ChevronDown, Globe, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
 import { useCurrencyStore, CURRENCIES, type CurrencyCode } from '@/store/currency-store';
 import { cn } from '@/lib/utils';
@@ -18,14 +19,31 @@ interface CurrencySelectorProps {
 }
 
 export function CurrencySelector({ variant = 'default', className }: CurrencySelectorProps) {
-  const { selectedCurrency, setCurrency } = useCurrencyStore();
+  const { selectedCurrency, setCurrency, updateExchangeRates, lastUpdated, isLoading } =
+    useCurrencyStore();
   const [open, setOpen] = useState(false);
+
+  // Update rates on mount and every hour
+  useEffect(() => {
+    updateExchangeRates();
+    const interval = setInterval(() => {
+      updateExchangeRates();
+    }, 3600000); // 1 hour
+
+    return () => clearInterval(interval);
+  }, [updateExchangeRates]);
 
   const currentCurrency = CURRENCIES[selectedCurrency];
 
   const handleCurrencyChange = (currency: CurrencyCode) => {
     setCurrency(currency);
     setOpen(false);
+  };
+
+  const handleRefreshRates = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    updateExchangeRates();
   };
 
   // Icon-only variant (for mobile)
@@ -122,8 +140,16 @@ export function CurrencySelector({ variant = 'default', className }: CurrencySel
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[240px]">
-        <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground">
-          Select Currency
+        <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground flex items-center justify-between">
+          <span>Select Currency</span>
+          <button
+            onClick={handleRefreshRates}
+            disabled={isLoading}
+            className="p-1 hover:bg-muted rounded transition-colors disabled:opacity-50"
+            title="Refresh exchange rates"
+          >
+            <RefreshCw className={cn('h-3 w-3', isLoading && 'animate-spin')} />
+          </button>
         </div>
         {Object.values(CURRENCIES).map((currency) => (
           <DropdownMenuItem
@@ -145,6 +171,14 @@ export function CurrencySelector({ variant = 'default', className }: CurrencySel
             </div>
           </DropdownMenuItem>
         ))}
+        {lastUpdated && (
+          <>
+            <DropdownMenuSeparator />
+            <div className="px-2 py-1.5 text-[10px] text-muted-foreground text-center">
+              Rates updated: {lastUpdated}
+            </div>
+          </>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );

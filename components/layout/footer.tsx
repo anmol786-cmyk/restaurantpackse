@@ -80,8 +80,6 @@ export async function Footer() {
               {[
                 { label: 'Delivery Info', href: '/delivery-information' },
                 { label: 'Europe Shipping', href: '/europe-delivery' },
-                { label: 'Stockholm Fleet', href: '/delivery-information' },
-                { label: 'Free Over 5000 kr', href: '/delivery-information' },
                 { label: 'Ex-Warehouse', href: '/delivery-information' }
               ].map((link) => (
                 <li key={link.label}>

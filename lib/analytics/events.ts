@@ -30,7 +30,7 @@ export function trackViewContent(product: Product) {
           {
             item_id: product.id.toString(),
             item_name: product.name,
-            item_brand: product.brands?.[0]?.name || 'Ideal Indiska LIVS',
+            item_brand: product.brands?.[0]?.name || 'Anmol Wholesale',
             item_category: product.categories?.[0]?.name || '',
             price: parseFloat(product.price || '0'),
             quantity: 1,
@@ -70,7 +70,7 @@ export function trackAddToCart(product: Product, quantity: number = 1, variation
           {
             item_id: product.id.toString(),
             item_name: product.name,
-            item_brand: product.brands?.[0]?.name || 'Ideal Indiska LIVS',
+            item_brand: product.brands?.[0]?.name || 'Anmol Wholesale',
             item_category: product.categories?.[0]?.name || '',
             item_variant: variationId?.toString(),
             price: price,
@@ -107,7 +107,7 @@ export function trackInitiateCheckout(items: any[], totalValue: number) {
         items: items.map((item) => ({
           item_id: item.productId?.toString(),
           item_name: item.product?.name || '',
-          item_brand: item.product?.brands?.[0]?.name || 'Ideal Indiska LIVS',
+          item_brand: item.product?.brands?.[0]?.name || 'Anmol Wholesale',
           item_category: item.product?.categories?.[0]?.name || '',
           item_variant: item.variationId?.toString(),
           price: parseFloat(item.product?.price || '0'),
@@ -243,7 +243,7 @@ export function trackWhatsAppOrderInitiated(
             {
               item_id: product.id.toString(),
               item_name: product.name,
-              item_brand: product.brands?.[0]?.name || 'Ideal Indiska LIVS',
+              item_brand: product.brands?.[0]?.name || 'Anmol Wholesale',
               item_category: product.categories?.[0]?.name || '',
               price: parseFloat(product.price || '0'),
               quantity: 1,
@@ -252,7 +252,7 @@ export function trackWhatsAppOrderInitiated(
         : (cartItems || []).map((item) => ({
             item_id: item.productId?.toString() || item.product?.id?.toString(),
             item_name: item.product?.name || '',
-            item_brand: item.product?.brands?.[0]?.name || 'Ideal Indiska LIVS',
+            item_brand: item.product?.brands?.[0]?.name || 'Anmol Wholesale',
             item_category: item.product?.categories?.[0]?.name || '',
             item_variant: item.variationId?.toString(),
             price: parseFloat(item.product?.price || '0'),

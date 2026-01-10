@@ -4,8 +4,8 @@ import { FileText, ShoppingCart, CreditCard, Truck, Scale, Shield, Mail, Message
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Terms & Conditions | Ideal Indiska LIVS',
-  description: 'Terms and conditions for using ideallivs.com. Learn about our policies on orders, payments, delivery, and more.',
+  title: 'Terms & Conditions | Anmol Wholesale',
+  description: 'Terms and conditions for using restaurantpack.se. Learn about our B2B wholesale policies on orders, payments, delivery, and more.',
   alternates: {
     canonical: '/terms-conditions',
   },

@@ -9,8 +9,8 @@ import {
 import { MessageCircle, Mail, MapPin } from 'lucide-react';
 
 export const metadata: Metadata = {
-    title: 'Frequently Asked Questions | Ideal Indiska LIVS',
-    description: 'Get answers to common questions about ordering Indian and Pakistani groceries in Stockholm, delivery options across Sweden and Europe, payment methods, and our products.',
+    title: 'Frequently Asked Questions | Anmol Wholesale',
+    description: 'Get answers to common questions about wholesale ordering, B2B accounts, delivery options across Sweden and Europe, payment methods, and our products.',
     alternates: {
         canonical: '/faq',
     },
@@ -80,7 +80,7 @@ const faqs = [
             },
             {
                 q: "I'm looking for a specific brand or product not on your website.",
-                a: "We're always expanding our range! If there's a specific brand or item you'd love to see, email us at info@ideallivs.com. We value your suggestions!"
+                a: "We're always expanding our range! If there's a specific brand or item you'd love to see, email us at info@restaurantpack.se. We value your suggestions!"
             },
             {
                 q: "What grocery brands do you stock?",
@@ -231,7 +231,7 @@ export default function FAQPage() {
                                             </div>
                                         </a>
                                         <a
-                                            href="mailto:info@ideallivs.com"
+                                            href="mailto:info@restaurantpack.se"
                                             className="flex items-start gap-3 p-3 rounded-lg border hover:bg-muted/50 transition-colors group"
                                         >
                                             <Mail className="h-5 w-5 mt-0.5 flex-shrink-0" />
@@ -247,7 +247,7 @@ export default function FAQPage() {
                                                     fontWeight: 300,
                                                     lineHeight: 1.57,
                                                     letterSpacing: '0.03em'
-                                                }}>info@ideallivs.com</p>
+                                                }}>info@restaurantpack.se</p>
                                             </div>
                                         </a>
                                         <div className="flex items-start gap-3 p-3 rounded-lg border bg-muted/30">

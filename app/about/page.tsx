@@ -193,13 +193,13 @@ export default function AboutPage() {
                       </div>
                     </a>
                     <a
-                      href="mailto:info@ideallivs.com"
+                      href="mailto:info@restaurantpack.se"
                       className="flex items-start gap-3 p-3 rounded-lg border hover:bg-muted/50 transition-colors"
                     >
                       <Mail className="h-5 w-5 mt-0.5 flex-shrink-0" />
                       <div>
                         <p style={{ fontSize: '13.53px', fontWeight: 500 }}>Email</p>
-                        <p className="text-muted-foreground" style={{ fontSize: '12.8px' }}>info@ideallivs.com</p>
+                        <p className="text-muted-foreground" style={{ fontSize: '12.8px' }}>info@restaurantpack.se</p>
                       </div>
                     </a>
                     <div className="flex items-start gap-3 p-3 rounded-lg border bg-muted/30">

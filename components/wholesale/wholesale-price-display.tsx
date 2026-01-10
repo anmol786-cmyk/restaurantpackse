@@ -3,6 +3,7 @@
 import { useAuthStore } from '@/store/auth-store';
 import { WHOLESALE_TIERS } from '@/config/commerce-rules';
 import { formatPrice } from '@/lib/woocommerce';
+import { useCurrency } from '@/hooks/use-currency';
 import { Tag, Building2, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 
@@ -12,6 +13,7 @@ interface WholesalePriceDisplayProps {
 
 export function WholesalePriceDisplay({ basePrice }: WholesalePriceDisplayProps) {
     const { isAuthenticated, user } = useAuthStore();
+    const { format: formatCurrency } = useCurrency();
     const isWholesale = user?.meta_data?.some(m => m.key === 'customer_type' && m.value === 'business') ||
         user?.meta_data?.some(m => m.key === 'is_wholesale_customer' && (m.value === '1' || m.value === 'yes'));
 
@@ -43,7 +45,7 @@ export function WholesalePriceDisplay({ basePrice }: WholesalePriceDisplayProps)
                         return (
                             <div key={tier.minQuantity} className="flex flex-col items-center p-1 rounded bg-green-50 border border-green-100 italic">
                                 <span className="text-[9px] text-green-700 font-bold">{tier.minQuantity}+ qty</span>
-                                <span className="text-[10px] font-bold text-green-800">{formatPrice(discountedPrice, 'SEK')}</span>
+                                <span className="text-[10px] font-bold text-green-800">{formatCurrency(discountedPrice)}</span>
                             </div>
                         );
                     })}

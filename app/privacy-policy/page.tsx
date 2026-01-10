@@ -4,7 +4,7 @@ import { ShieldCheck, Lock, Eye, FileText, MessageCircle, Mail, MapPin } from 'l
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy | Ideal Indiska LIVS',
+  title: 'Privacy Policy | Anmol Wholesale',
   description: 'Our commitment to protecting your privacy and handling your personal data with transparency and care, in full GDPR compliance.',
   alternates: {
     canonical: '/privacy-policy',

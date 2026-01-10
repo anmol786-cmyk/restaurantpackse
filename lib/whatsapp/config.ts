@@ -13,7 +13,7 @@ export function getWhatsAppConfig(): WhatsAppConfig {
   return {
     phone: process.env.NEXT_PUBLIC_WHATSAPP_PHONE || '',
     businessName:
-      process.env.NEXT_PUBLIC_WHATSAPP_BUSINESS_NAME || 'Ideal Livs',
+      process.env.NEXT_PUBLIC_WHATSAPP_BUSINESS_NAME || 'Anmol Wholesale',
     contextPhones: {
       product: process.env.NEXT_PUBLIC_WHATSAPP_PHONE_PRODUCT,
       orders: process.env.NEXT_PUBLIC_WHATSAPP_PHONE_ORDERS,

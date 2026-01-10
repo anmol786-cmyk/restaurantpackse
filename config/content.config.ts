@@ -252,8 +252,8 @@ export const contentConfig = {
     email: brandConfig.contact.email,
     phone: brandConfig.contact.phone,
     address: brandConfig.contact.address,
-    location: 'Your City',
-    country: 'Your Country',
+    location: 'Spånga, Stockholm',
+    country: 'Sweden',
   },
 
   // Common Phrases (used across multiple pages)

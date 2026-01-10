@@ -69,6 +69,7 @@ export function Header({ className, categories = [] }: HeaderProps) {
               <nav className="hidden xl:flex items-center gap-6">
                 <NavLink href="/shop">Products</NavLink>
                 <NavLink href="/wholesale">Wholesale</NavLink>
+                <NavLink href="/wholesale/quick-order">Quick Order</NavLink>
                 <NavLink href="/wholesale/quote">Quotes</NavLink>
                 <NavLink href="/wholesale/register">B2B Account</NavLink>
               </nav>

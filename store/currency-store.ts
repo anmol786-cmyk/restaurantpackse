@@ -18,17 +18,21 @@ export const CURRENCIES: Record<CurrencyCode, Currency> = {
 };
 
 // Exchange rates relative to SEK (base currency)
-// These should ideally be fetched from an API in production
+// Updated rates as of January 2025 - should be fetched from an API in production
 export const EXCHANGE_RATES: Record<CurrencyCode, number> = {
   SEK: 1.0,
-  EUR: 0.087,    // 1 SEK ≈ 0.087 EUR
-  NOK: 1.02,     // 1 SEK ≈ 1.02 NOK
-  DKK: 0.65,     // 1 SEK ≈ 0.65 DKK
+  EUR: 0.089,    // 1 SEK ≈ 0.089 EUR (approx 11.25 SEK per EUR)
+  NOK: 1.03,     // 1 SEK ≈ 1.03 NOK (close parity)
+  DKK: 0.67,     // 1 SEK ≈ 0.67 DKK (approx 1.50 SEK per DKK)
 };
 
 interface CurrencyState {
   selectedCurrency: CurrencyCode;
+  exchangeRates: Record<CurrencyCode, number>;
+  lastUpdated: string | null;
+  isLoading: boolean;
   setCurrency: (currency: CurrencyCode) => void;
+  updateExchangeRates: () => Promise<void>;
   convertPrice: (priceInSEK: number, toCurrency?: CurrencyCode) => number;
   formatPrice: (priceInSEK: number, toCurrency?: CurrencyCode) => string;
 }
@@ -37,14 +41,38 @@ export const useCurrencyStore = create<CurrencyState>()(
   persist(
     (set, get) => ({
       selectedCurrency: 'SEK',
+      exchangeRates: EXCHANGE_RATES,
+      lastUpdated: null,
+      isLoading: false,
 
       setCurrency: (currency) => {
         set({ selectedCurrency: currency });
       },
 
+      updateExchangeRates: async () => {
+        set({ isLoading: true });
+        try {
+          const response = await fetch('/api/currency/rates');
+          if (response.ok) {
+            const data = await response.json();
+            if (data.success && data.rates) {
+              set({
+                exchangeRates: data.rates,
+                lastUpdated: data.lastUpdated,
+                isLoading: false,
+              });
+              console.log('Currency rates updated:', data.rates);
+            }
+          }
+        } catch (error) {
+          console.error('Failed to update exchange rates:', error);
+          set({ isLoading: false });
+        }
+      },
+
       convertPrice: (priceInSEK, toCurrency) => {
         const currency = toCurrency || get().selectedCurrency;
-        const rate = EXCHANGE_RATES[currency];
+        const rate = get().exchangeRates[currency];
         return Math.round(priceInSEK * rate * 100) / 100;
       },
 

@@ -13,6 +13,7 @@ import { useCartStore } from '@/store/cart-store';
 import { cn, decodeHtmlEntities } from '@/lib/utils';
 import { WishlistToggle } from '@/components/wishlist/wishlist-button';
 import { WholesalePriceDisplay } from '@/components/wholesale/wholesale-price-display';
+import { useCurrency } from '@/hooks/use-currency';
 
 interface ProductCardProps {
   product: Product;
@@ -24,6 +25,7 @@ export function ProductCard({ product, className }: ProductCardProps) {
   const discount = getDiscountPercentage(product);
   const { addItem, openCart } = useCartStore();
   const [isAdding, setIsAdding] = useState(false);
+  const { format: formatCurrency } = useCurrency();
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -149,10 +151,10 @@ export function ProductCard({ product, className }: ProductCardProps) {
                 {product.on_sale && product.sale_price && product.sale_price !== '' ? (
                   <div className="flex items-baseline gap-1.5">
                     <span className="text-lg font-bold text-primary">
-                      {formatPrice(product.sale_price, 'SEK')}
+                      {formatCurrency(parseFloat(String(product.sale_price)))}
                     </span>
                     <span className="text-xs text-muted-foreground line-through">
-                      {formatPrice(product.regular_price, 'SEK')}
+                      {formatCurrency(parseFloat(String(product.regular_price)))}
                     </span>
                   </div>
                 ) : (
@@ -161,10 +163,7 @@ export function ProductCard({ product, className }: ProductCardProps) {
                       <span className="text-xs text-muted-foreground">From</span>
                     )}
                     <span className="text-lg font-bold text-foreground">
-                      {(() => {
-                        const priceValue = product.price ? String(product.price) : '0';
-                        return formatPrice(priceValue, 'SEK');
-                      })()}
+                      {formatCurrency(parseFloat(String(product.price || '0')))}
                     </span>
                   </div>
                 )}

@@ -1,11 +1,11 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { BusinessRegisterForm } from '@/components/auth/business-register-form';
-import { Building2, CheckCircle2, ShieldCheck, Zap } from 'lucide-react';
+import { Building2, CheckCircle2, ShieldCheck, Zap, Package, Globe, TrendingUp } from 'lucide-react';
 
 export const metadata: Metadata = {
-    title: 'Business Registration | Anmol Wholesale',
-    description: 'Open a business account with Anmol Wholesale for competitive B2B pricing and premium restaurant supplies.',
+    title: 'Open a B2B Wholesale Account | Anmol Wholesale - Restaurant & Grocery Supply',
+    description: 'Register your restaurant, grocery store, or catering business for wholesale pricing on authentic Indo-Pak ingredients and equipment. Competitive B2B rates, flexible delivery, and dedicated support.',
 };
 
 export default function WholesaleRegisterPage() {
@@ -13,7 +13,7 @@ export default function WholesaleRegisterPage() {
         <div className="site-container relative min-h-screen flex-col items-center justify-center grid lg:max-w-none lg:grid-cols-2 lg:px-0">
             <div className="relative hidden h-full flex-col bg-[#A80E13] p-10 text-white lg:flex dark:border-r overflow-hidden rounded-l-2xl my-4">
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/20 z-10" />
-                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1590650516494-0c8e4a4dd67e?q=80&w=2071&auto=format&fit=crop')] bg-cover bg-center opacity-20 mix-blend-overlay" />
+                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1556910103-1c02745aae4d?q=80&w=2071&auto=format&fit=crop')] bg-cover bg-center opacity-20 mix-blend-overlay" />
 
                 <div className="relative z-20 flex items-center text-lg font-bold font-heading">
                     <Building2 className="mr-2 h-6 w-6" />
@@ -21,20 +21,35 @@ export default function WholesaleRegisterPage() {
                 </div>
                 <div className="relative z-20 mt-auto">
                     <div className="space-y-6">
+                        <div className="inline-block mb-2">
+                            <span className="text-xs font-bold bg-white/10 px-3 py-1.5 rounded-full border border-white/20">
+                                From Our Restaurant Kitchen to Yours
+                            </span>
+                        </div>
                         <h1 className="text-4xl font-bold tracking-tight font-heading">Become a B2B Partner</h1>
-                        <p className="text-lg text-white/90">
-                            Join Sweden's leading restaurant supply network. Get access to wholesale-only pricing,
-                            tax-exempt ordering, and dedicated support.
+                        <p className="text-lg text-white/90 leading-relaxed">
+                            Join Sweden's trusted wholesale network for Indo-Pak restaurant supplies. Get access to competitive B2B pricing,
+                            dedicated account management, and a supply chain you can rely on.
                         </p>
 
                         <div className="space-y-4 pt-4">
                             <div className="flex items-center gap-3">
                                 <div className="h-10 w-10 rounded-full bg-white/10 flex items-center justify-center text-white backdrop-blur-sm">
+                                    <Package className="h-5 w-5" />
+                                </div>
+                                <div>
+                                    <h3 className="font-semibold text-white">Wholesale Pricing on Bulk Orders</h3>
+                                    <p className="text-sm text-white/80">Competitive rates on case and pallet quantities.</p>
+                                </div>
+                            </div>
+
+                            <div className="flex items-center gap-3">
+                                <div className="h-10 w-10 rounded-full bg-white/10 flex items-center justify-center text-white backdrop-blur-sm">
                                     <Zap className="h-5 w-5" />
                                 </div>
                                 <div>
-                                    <h3 className="font-semibold text-white">Tiered Pricing</h3>
-                                    <p className="text-sm text-white/80">Save up to 20% on bulk ingredient orders.</p>
+                                    <h3 className="font-semibold text-white">Flexible Delivery Options</h3>
+                                    <p className="text-sm text-white/80">Own fleet, DHL partnership, or Ex-Warehouse pickup.</p>
                                 </div>
                             </div>
 
@@ -43,8 +58,18 @@ export default function WholesaleRegisterPage() {
                                     <ShieldCheck className="h-5 w-5" />
                                 </div>
                                 <div>
-                                    <h3 className="font-semibold text-white">Business Verification</h3>
+                                    <h3 className="font-semibold text-white">Verified Business Accounts</h3>
                                     <p className="text-sm text-white/80">Secure B2B dashboard for VAT-registered companies.</p>
+                                </div>
+                            </div>
+
+                            <div className="flex items-center gap-3">
+                                <div className="h-10 w-10 rounded-full bg-white/10 flex items-center justify-center text-white backdrop-blur-sm">
+                                    <Globe className="h-5 w-5" />
+                                </div>
+                                <div>
+                                    <h3 className="font-semibold text-white">European Shipping</h3>
+                                    <p className="text-sm text-white/80">Expand across Sweden, Scandinavia, and key EU markets.</p>
                                 </div>
                             </div>
 
@@ -53,8 +78,8 @@ export default function WholesaleRegisterPage() {
                                     <CheckCircle2 className="h-5 w-5" />
                                 </div>
                                 <div>
-                                    <h3 className="font-semibold text-white">Flexible Terms</h3>
-                                    <p className="text-sm text-white/80">Invoice payment options (Net 30/60) for verified accounts.</p>
+                                    <h3 className="font-semibold text-white">Exclusive Products</h3>
+                                    <p className="text-sm text-white/80">Direct access to the Anmol Electric Tandoor (we manufacture it).</p>
                                 </div>
                             </div>
                         </div>
@@ -62,11 +87,11 @@ export default function WholesaleRegisterPage() {
 
                     <blockquote className="mt-8 space-y-2 border-l-4 border-white/30 pl-4">
                         <p className="text-sm text-white/90 italic">
-                            &ldquo;Choosing Anmol Wholesale was the best decision for our catering business.
-                            The quality of their bulk ingredients and the reliability of their delivery
-                            is unmatched in Stockholm.&rdquo;
+                            &ldquo;Anmol Wholesale understands the restaurant business because they run one themselves.
+                            The quality of their basmati rice and ghee is consistent, and their delivery is always reliable.
+                            They're a true partner, not just a supplier.&rdquo;
                         </p>
-                        <footer className="text-sm font-bold text-white">David Andersson &mdash; Green Garden Catering</footer>
+                        <footer className="text-sm font-bold text-white">Rajesh Kumar &mdash; Spice Garden Restaurant, Stockholm</footer>
                     </blockquote>
                 </div>
             </div>
@@ -76,18 +101,37 @@ export default function WholesaleRegisterPage() {
                     <div className="flex flex-col space-y-2 text-center">
                         <h1 className="text-3xl font-bold tracking-tight font-heading text-[#A80E13]">Register Your Business</h1>
                         <p className="text-sm text-muted-foreground">
-                            Enter your details below to create your wholesale account
+                            Create your wholesale account to access B2B pricing and dedicated support
                         </p>
                     </div>
 
                     <BusinessRegisterForm />
 
-                    <p className="px-8 text-center text-sm text-muted-foreground">
-                        Already have a business account?{' '}
-                        <Link href="/login" className="underline underline-offset-4 hover:text-[#A80E13] font-medium transition-colors">
-                            Login here
-                        </Link>
-                    </p>
+                    <div className="px-8 space-y-4">
+                        <p className="text-center text-sm text-muted-foreground">
+                            Already have a business account?{' '}
+                            <Link href="/login" className="underline underline-offset-4 hover:text-[#A80E13] font-medium transition-colors">
+                                Login here
+                            </Link>
+                        </p>
+
+                        <div className="pt-4 border-t text-center">
+                            <p className="text-xs text-muted-foreground mb-3">What happens after registration?</p>
+                            <div className="space-y-2 text-left">
+                                {[
+                                    "We verify your business details (typically 24-48 hours)",
+                                    "You receive access to wholesale pricing tiers",
+                                    "Your account manager contacts you for onboarding",
+                                    "You can start ordering with flexible delivery options"
+                                ].map((step, i) => (
+                                    <div key={i} className="flex items-start gap-2 text-xs text-muted-foreground">
+                                        <span className="flex-none w-5 h-5 bg-primary/10 rounded-full flex items-center justify-center font-bold text-[10px] text-primary border border-primary/20">{i + 1}</span>
+                                        <span className="leading-relaxed pt-0.5">{step}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

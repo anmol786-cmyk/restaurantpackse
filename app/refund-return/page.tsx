@@ -4,8 +4,8 @@ import { RotateCcw, Package, Clock, CheckCircle2, XCircle, Mail, MessageCircle, 
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-    title: 'Refund & Return Policy | Ideal Indiska LIVS',
-    description: '14-day return policy for eligible items. Learn about our return process for customers in Sweden and Europe.',
+    title: 'Refund & Return Policy | Anmol Wholesale',
+    description: '14-day return policy for eligible items. Learn about our return process for wholesale customers in Sweden and Europe.',
     alternates: {
         canonical: '/refund-return',
     },

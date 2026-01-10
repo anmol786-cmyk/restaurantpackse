@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
 
     // Try to send email using Titan Email SMTP
     try {
-      if (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS) {
+      if (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASSWORD) {
         const smtpPort = Number(process.env.SMTP_PORT || 587);
         const transporter = nodemailer.createTransport({
           host: process.env.SMTP_HOST,
@@ -36,19 +36,20 @@ export async function POST(request: NextRequest) {
           secure: smtpPort === 465, // true for 465 (SSL), false for other ports (STARTTLS)
           auth: {
             user: process.env.SMTP_USER,
-            pass: process.env.SMTP_PASS,
+            pass: process.env.SMTP_PASSWORD,
           },
           ...(smtpPort !== 465 && { requireTLS: true }), // Only use requireTLS for non-SSL ports
         });
 
-        const adminEmail = process.env.ADMIN_EMAIL || 'info@ideallivs.com';
+        const adminEmail = process.env.ADMIN_EMAIL || process.env.CONTACT_EMAIL || 'info@restaurantpack.se';
         const secondaryEmail = process.env.SECONDARY_ADMIN_EMAIL;
         const recipients = secondaryEmail ? [adminEmail, secondaryEmail] : [adminEmail];
-        const fromEmail = process.env.SMTP_USER;
+        const fromEmail = process.env.SMTP_FROM || process.env.SMTP_USER;
+        const fromName = process.env.SMTP_FROM_NAME || 'Anmol Wholesale';
 
         // Send email to admin
         await transporter.sendMail({
-          from: `"IDeal Indiska livs Contact" <${fromEmail}>`,
+          from: `"${fromName} - Contact Form" <${fromEmail}>`,
           to: recipients,
           replyTo: email,
           subject: `Contact Form: ${subject}`,
@@ -65,7 +66,7 @@ export async function POST(request: NextRequest) {
                   <tr>
                     <td style="background: linear-gradient(135deg, #8B1538 0%, #5A0F25 100%); padding: 40px 30px; text-align: center;">
                       <h1 style="color: #ffffff; margin: 0; font-size: 24px; font-weight: 600;">New Contact Form Submission</h1>
-                      <p style="color: #f3d7a0; margin: 10px 0 0 0; font-size: 14px;">Anmol Sweets & Restaurant</p>
+                      <p style="color: #f3d7a0; margin: 10px 0 0 0; font-size: 14px;">Anmol Wholesale - Restaurant Pack</p>
                     </td>
                   </tr>
                   <tr>
@@ -108,7 +109,7 @@ export async function POST(request: NextRequest) {
                         <tr>
                           <td style="padding-top: 20px; border-top: 1px solid #e0e0e0;">
                             <p style="margin: 0; color: #999999; font-size: 12px; text-align: center;">
-                              This email was sent from the contact form at <a href="https://ideallivs.com" style="color: #8B1538; text-decoration: none;">ideallivs.com</a>
+                              This email was sent from the contact form at <a href="https://restaurantpack.se" style="color: #8B1538; text-decoration: none;">restaurantpack.se</a>
                             </p>
                             <p style="margin: 10px 0 0 0; color: #999999; font-size: 12px; text-align: center;">
                               Received on ${new Date().toLocaleString('en-US', {
@@ -128,7 +129,7 @@ export async function POST(request: NextRequest) {
                   <tr>
                     <td style="background-color: #8B1538; padding: 20px 30px; text-align: center;">
                       <p style="margin: 0; color: #f3d7a0; font-size: 12px;">
-                        © ${new Date().getFullYear()} Anmol Sweets & Restaurant. All rights reserved.
+                        © ${new Date().getFullYear()} Anmol Wholesale. All rights reserved.
                       </p>
                     </td>
                   </tr>

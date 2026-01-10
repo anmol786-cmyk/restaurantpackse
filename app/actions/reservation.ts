@@ -22,22 +22,23 @@ export async function submitReservation(data: ReservationFormData) {
 
     // Try to send email, but don't fail if it doesn't work
     try {
-        if (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS) {
+        if (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASSWORD) {
             const transporter = nodemailer.createTransport({
                 host: process.env.SMTP_HOST,
                 port: Number(process.env.SMTP_PORT || 587),
                 secure: false,
                 auth: {
                     user: process.env.SMTP_USER,
-                    pass: process.env.SMTP_PASS,
+                    pass: process.env.SMTP_PASSWORD,
                 },
                 requireTLS: true,
             });
 
-            const adminEmail = process.env.ADMIN_EMAIL || 'info@ideallivs.com';
+            const adminEmail = process.env.WHOLESALE_EMAIL || process.env.ADMIN_EMAIL || 'info@restaurantpack.se';
             const secondaryEmail = process.env.SECONDARY_ADMIN_EMAIL;
             const recipients = secondaryEmail ? [adminEmail, secondaryEmail] : [adminEmail];
-            const fromEmail = process.env.SMTP_USER;
+            const fromEmail = process.env.SMTP_FROM || process.env.SMTP_USER;
+            const fromName = process.env.SMTP_FROM_NAME || 'Anmol Wholesale';
 
             // Create admin email with beautiful template
             const adminEmailHtml = generateEmailTemplate({
@@ -74,7 +75,7 @@ export async function submitReservation(data: ReservationFormData) {
 
             // Try to send admin notification
             await transporter.sendMail({
-                from: `"Royal Sweets Reservations" <${fromEmail}>`,
+                from: `"${fromName} - Bulk Orders" <${fromEmail}>`,
                 to: recipients,
                 subject: `New Reservation: ${name} - ${date} @ ${time}`,
                 html: adminEmailHtml,

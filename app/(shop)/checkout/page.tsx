@@ -891,7 +891,6 @@ export default function CheckoutPage() {
 
               <OrderSummary
                 shippingCost={shippingCost}
-                taxRate={25}
                 discountAmount={calculateDiscount()}
                 onApplyCoupon={setCoupon}
                 appliedCoupon={coupon?.code}
