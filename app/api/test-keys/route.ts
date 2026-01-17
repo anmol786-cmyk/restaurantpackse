@@ -3,11 +3,22 @@ import { NextResponse } from 'next/server';
 /**
  * Quick API Key Test
  * Tests if WooCommerce credentials are working
+ * Shows exactly which environment variables are being checked
  */
 export async function GET() {
-    const wpUrl = process.env.NEXT_PUBLIC_WORDPRESS_URL;
+    // Check for server-side WORDPRESS_URL first, then fall back to NEXT_PUBLIC_
+    const wpUrl = process.env.WORDPRESS_URL || process.env.NEXT_PUBLIC_WORDPRESS_URL;
     const key = process.env.WORDPRESS_CONSUMER_KEY;
     const secret = process.env.WORDPRESS_CONSUMER_SECRET;
+
+    // Detailed debugging info
+    const debugInfo = {
+        WORDPRESS_URL: process.env.WORDPRESS_URL ? 'SET' : 'NOT SET',
+        NEXT_PUBLIC_WORDPRESS_URL: process.env.NEXT_PUBLIC_WORDPRESS_URL ? 'SET' : 'NOT SET',
+        WORDPRESS_CONSUMER_KEY: process.env.WORDPRESS_CONSUMER_KEY ? 'SET' : 'NOT SET',
+        WORDPRESS_CONSUMER_SECRET: process.env.WORDPRESS_CONSUMER_SECRET ? 'SET' : 'NOT SET',
+        NODE_ENV: process.env.NODE_ENV,
+    };
 
     if (!wpUrl || !key || !secret) {
         return NextResponse.json({
@@ -15,6 +26,12 @@ export async function GET() {
             has_url: !!wpUrl,
             has_key: !!key,
             has_secret: !!secret,
+            debug: debugInfo,
+            expected_vars: [
+                'WORDPRESS_URL (or NEXT_PUBLIC_WORDPRESS_URL)',
+                'WORDPRESS_CONSUMER_KEY',
+                'WORDPRESS_CONSUMER_SECRET'
+            ]
         }, { status: 500 });
     }
 
