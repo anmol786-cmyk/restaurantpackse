@@ -116,6 +116,11 @@ export const viewport = {
   userScalable: true,
 };
 
+// Force dynamic rendering to prevent build timeouts
+// The layout fetches categories from WooCommerce which can be slow
+export const dynamic = 'force-dynamic';
+export const revalidate = 3600; // Revalidate every hour
+
 export default async function RootLayout({
   children,
 }: {
