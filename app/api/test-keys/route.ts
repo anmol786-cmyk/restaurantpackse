@@ -6,17 +6,28 @@ import { NextResponse } from 'next/server';
  * Shows exactly which environment variables are being checked
  */
 export async function GET() {
-    // Check for server-side WORDPRESS_URL first, then fall back to NEXT_PUBLIC_
-    const wpUrl = process.env.WORDPRESS_URL || process.env.NEXT_PUBLIC_WORDPRESS_URL;
-    const key = process.env.WORDPRESS_CONSUMER_KEY;
-    const secret = process.env.WORDPRESS_CONSUMER_SECRET;
+    // Check all possible variable names (Hostinger only passes NEXT_PUBLIC_* to runtime)
+    const wpUrl = process.env.WORDPRESS_URL
+        || process.env.NEXT_PUBLIC_WORDPRESS_URL;
 
-    // Detailed debugging info
+    const key = process.env.WORDPRESS_CONSUMER_KEY
+        || process.env.NEXT_PUBLIC_WORDPRESS_CONSUMER_KEY
+        || process.env.NEXT_PUBLIC_WC_CONSUMER_KEY;
+
+    const secret = process.env.WORDPRESS_CONSUMER_SECRET
+        || process.env.NEXT_PUBLIC_WORDPRESS_CONSUMER_SECRET
+        || process.env.NEXT_PUBLIC_WC_CONSUMER_SECRET;
+
+    // Detailed debugging info - check ALL possible variable names
     const debugInfo = {
         WORDPRESS_URL: process.env.WORDPRESS_URL ? 'SET' : 'NOT SET',
         NEXT_PUBLIC_WORDPRESS_URL: process.env.NEXT_PUBLIC_WORDPRESS_URL ? 'SET' : 'NOT SET',
         WORDPRESS_CONSUMER_KEY: process.env.WORDPRESS_CONSUMER_KEY ? 'SET' : 'NOT SET',
+        NEXT_PUBLIC_WORDPRESS_CONSUMER_KEY: process.env.NEXT_PUBLIC_WORDPRESS_CONSUMER_KEY ? 'SET' : 'NOT SET',
+        NEXT_PUBLIC_WC_CONSUMER_KEY: process.env.NEXT_PUBLIC_WC_CONSUMER_KEY ? 'SET' : 'NOT SET',
         WORDPRESS_CONSUMER_SECRET: process.env.WORDPRESS_CONSUMER_SECRET ? 'SET' : 'NOT SET',
+        NEXT_PUBLIC_WORDPRESS_CONSUMER_SECRET: process.env.NEXT_PUBLIC_WORDPRESS_CONSUMER_SECRET ? 'SET' : 'NOT SET',
+        NEXT_PUBLIC_WC_CONSUMER_SECRET: process.env.NEXT_PUBLIC_WC_CONSUMER_SECRET ? 'SET' : 'NOT SET',
         NODE_ENV: process.env.NODE_ENV,
     };
 

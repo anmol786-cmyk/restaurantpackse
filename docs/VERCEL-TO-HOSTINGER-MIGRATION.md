@@ -147,8 +147,8 @@ images: {
 #### 1. WordPress/WooCommerce (Server-Side)
 ```bash
 WORDPRESS_URL=https://crm.restaurantpack.se
-WORDPRESS_CONSUMER_KEY=ck_110ab15b0734aa79faa2aa1b331caace0c11ea3f
-WORDPRESS_CONSUMER_SECRET=cs_cc8b959ab1b48a49778127dc13ae660b82b021a7
+WORDPRESS_CONSUMER_KEY=ck_8a752976c9bf7171588e051caf39297959a13145
+WORDPRESS_CONSUMER_SECRET=cs_f7b2dd2e9dabfbf9f4f185f90e8f076ce9e22343
 ```
 
 #### 2. Site Configuration (Public)

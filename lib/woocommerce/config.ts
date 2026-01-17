@@ -6,15 +6,22 @@
  */
 
 // WooCommerce API Base Configuration
+// Note: Hostinger only passes NEXT_PUBLIC_* variables to runtime, so we check both
 export const WC_API_CONFIG = {
-  // API Base URL - Use server-side env var for secure server-to-server calls
-  // IMPORTANT: Do NOT use NEXT_PUBLIC_* for server-side API calls
+  // API Base URL - Check server-side first, then NEXT_PUBLIC fallback
   baseUrl: `${process.env.WORDPRESS_URL || process.env.NEXT_PUBLIC_WORDPRESS_URL}/wp-json/wc/v3`,
 
-  // Authentication credentials (server-side only)
+  // Authentication credentials - Check server-side first, then NEXT_PUBLIC fallback
+  // (Hostinger doesn't pass non-NEXT_PUBLIC vars to Node.js runtime)
   auth: {
-    consumerKey: process.env.WORDPRESS_CONSUMER_KEY || '',
-    consumerSecret: process.env.WORDPRESS_CONSUMER_SECRET || '',
+    consumerKey: process.env.WORDPRESS_CONSUMER_KEY
+      || process.env.NEXT_PUBLIC_WORDPRESS_CONSUMER_KEY
+      || process.env.NEXT_PUBLIC_WC_CONSUMER_KEY
+      || '',
+    consumerSecret: process.env.WORDPRESS_CONSUMER_SECRET
+      || process.env.NEXT_PUBLIC_WORDPRESS_CONSUMER_SECRET
+      || process.env.NEXT_PUBLIC_WC_CONSUMER_SECRET
+      || '',
   },
 
   // WooCommerce REST API v3 Endpoints
