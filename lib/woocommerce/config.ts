@@ -129,20 +129,29 @@ export function getWooCommerceUrl(endpoint: string): string {
 /**
  * Generate Basic Auth header for WooCommerce API
  * Uses Base64 encoding of consumer_key:consumer_secret
+ * Note: Hostinger only passes NEXT_PUBLIC_* variables to runtime, so we check both
  */
 export function getWooCommerceAuthHeader(): string {
-  // Read environment variables directly to ensure they're available at runtime
-  const consumerKey = process.env.WORDPRESS_CONSUMER_KEY;
-  const consumerSecret = process.env.WORDPRESS_CONSUMER_SECRET;
+  // Read environment variables - check NEXT_PUBLIC_ versions as fallback (Hostinger compatible)
+  const consumerKey = process.env.WORDPRESS_CONSUMER_KEY
+    || process.env.NEXT_PUBLIC_WORDPRESS_CONSUMER_KEY
+    || process.env.NEXT_PUBLIC_WC_CONSUMER_KEY;
+
+  const consumerSecret = process.env.WORDPRESS_CONSUMER_SECRET
+    || process.env.NEXT_PUBLIC_WORDPRESS_CONSUMER_SECRET
+    || process.env.NEXT_PUBLIC_WC_CONSUMER_SECRET;
 
   if (!consumerKey || !consumerSecret) {
     console.error('Missing WC credentials:', {
       hasKey: !!consumerKey,
       hasSecret: !!consumerSecret,
-      nodeEnv: process.env.NODE_ENV
+      nodeEnv: process.env.NODE_ENV,
+      // Debug which vars are available
+      WORDPRESS_CONSUMER_KEY: !!process.env.WORDPRESS_CONSUMER_KEY,
+      NEXT_PUBLIC_WORDPRESS_CONSUMER_KEY: !!process.env.NEXT_PUBLIC_WORDPRESS_CONSUMER_KEY,
     });
     throw new Error(
-      'WooCommerce API credentials are not configured. Please set WORDPRESS_CONSUMER_KEY and WORDPRESS_CONSUMER_SECRET environment variables.'
+      'WooCommerce API credentials are not configured. Please set WORDPRESS_CONSUMER_KEY (or NEXT_PUBLIC_WORDPRESS_CONSUMER_KEY) environment variables.'
     );
   }
 

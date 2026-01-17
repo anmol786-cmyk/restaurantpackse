@@ -38,8 +38,11 @@ export async function GET() {
     }
 
     // Check WooCommerce connectivity
-    const wcConsumerKey = process.env.WORDPRESS_CONSUMER_KEY;
-    const wcConsumerSecret = process.env.WORDPRESS_CONSUMER_SECRET;
+    // Note: Hostinger only passes NEXT_PUBLIC_* vars to runtime
+    const wcConsumerKey = process.env.WORDPRESS_CONSUMER_KEY
+      || process.env.NEXT_PUBLIC_WORDPRESS_CONSUMER_KEY;
+    const wcConsumerSecret = process.env.WORDPRESS_CONSUMER_SECRET
+      || process.env.NEXT_PUBLIC_WORDPRESS_CONSUMER_SECRET;
 
     if (wpUrl && wcConsumerKey && wcConsumerSecret) {
       const wcResponse = await fetch(
