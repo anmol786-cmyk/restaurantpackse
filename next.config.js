@@ -6,6 +6,9 @@ const nextConfig = {
     compress: true,
     poweredByHeader: false,
 
+    // Increase timeout for static generation (helps with slow API calls during build)
+    staticGenerationTimeout: 180, // 3 minutes instead of default 60 seconds
+
     // Optimize bundle
     compiler: {
         removeConsole: process.env.NODE_ENV === 'production',
