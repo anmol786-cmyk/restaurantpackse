@@ -7,8 +7,9 @@
 
 // WooCommerce API Base Configuration
 export const WC_API_CONFIG = {
-  // API Base URL (will be constructed from environment variables)
-  baseUrl: `${process.env.NEXT_PUBLIC_WORDPRESS_URL}/wp-json/wc/v3`,
+  // API Base URL - Use server-side env var for secure server-to-server calls
+  // IMPORTANT: Do NOT use NEXT_PUBLIC_* for server-side API calls
+  baseUrl: `${process.env.WORDPRESS_URL || process.env.NEXT_PUBLIC_WORDPRESS_URL}/wp-json/wc/v3`,
 
   // Authentication credentials (server-side only)
   auth: {
@@ -173,8 +174,9 @@ export function validateWooCommerceConfig(): {
 } {
   const errors: string[] = [];
 
-  if (!process.env.NEXT_PUBLIC_WORDPRESS_URL) {
-    errors.push('NEXT_PUBLIC_WORDPRESS_URL is not set');
+  // Check for server-side WORDPRESS_URL (preferred) or fallback to NEXT_PUBLIC_WORDPRESS_URL
+  if (!process.env.WORDPRESS_URL && !process.env.NEXT_PUBLIC_WORDPRESS_URL) {
+    errors.push('WORDPRESS_URL (or NEXT_PUBLIC_WORDPRESS_URL) is not set');
   }
 
   if (!process.env.WORDPRESS_CONSUMER_KEY) {

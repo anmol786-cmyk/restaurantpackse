@@ -81,10 +81,27 @@ export async function fetchWooCommerceAPI<T>(
       ...options.headers,
     };
 
+    // Log the request (helps debug runtime issues)
+    if (process.env.NODE_ENV === 'development' || process.env.NEXT_PUBLIC_DEBUG === 'true') {
+      console.log('🔍 WooCommerce API Request:', {
+        url,
+        method: options.method || 'GET',
+        hasAuth: !!authHeader,
+      });
+    }
+
     // Make the request
     const response = await fetch(url, {
       ...options,
       headers,
+      cache: 'no-store', // Disable cache for debugging
+    });
+
+    // Log response status
+    console.log('📡 WooCommerce API Response:', {
+      url,
+      status: response.status,
+      ok: response.ok,
     });
 
     // Handle non-OK responses
@@ -93,8 +110,16 @@ export async function fetchWooCommerceAPI<T>(
       try {
         errorData = await response.json();
       } catch {
+        const text = await response.text();
+        console.error('❌ WooCommerce API Error (text):', text.substring(0, 200));
         errorData = { message: response.statusText };
       }
+
+      console.error('❌ WooCommerce API Error:', {
+        status: response.status,
+        statusText: response.statusText,
+        error: errorData,
+      });
 
       throw parseWooCommerceError(response.status, errorData);
     }

@@ -59,10 +59,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
     try {
         product = await getProductBySlug(resolvedParams.slug);
     } catch (error) {
+        console.error('Failed to fetch product:', resolvedParams.slug, error);
         notFound();
     }
 
     if (!product) {
+        console.error('Product not found:', resolvedParams.slug);
         notFound();
     }
 
