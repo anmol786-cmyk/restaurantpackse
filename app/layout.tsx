@@ -2,8 +2,6 @@ import "./globals.css";
 
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/theme/theme-provider";
-import { Analytics } from "@vercel/analytics/react";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import { TopInfoBar } from "@/components/layout/top-info-bar";
 import { SchemaScript } from "@/lib/schema/schema-script";
 import { websiteSchema } from "@/lib/schema";
@@ -185,8 +183,6 @@ export default async function RootLayout({
           <WishlistDrawer />
           <Toaster />
         </ThemeProvider>
-        <Analytics />
-        <SpeedInsights />
         <AiChatWidget />
 
         {/* Global WebSite Schema */}
