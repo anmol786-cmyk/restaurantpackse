@@ -15,7 +15,7 @@ type SiteConfig = {
 
 export const siteConfig: SiteConfig = {
   site_name: "Anmol Wholesale",
-  site_description: "B2B wholesale supplier for restaurants, grocery stores, and caterers in Sweden & Europe. Authentic Indo-Pak products, bulk ingredients, competitive pricing. Manufacturer of Anmol Electric Tandoor.",
+  site_description: "Sweden's premier B2B restaurant supplier & food wholesaler. 15% lower prices on authentic Indo-Pak ingredients, bulk staples & professional kitchen equipment. Stockholm-based manufacturer of the Electric Mini Tandoor.",
   site_domain: "https://restaurantpack.se",
-  site_tagline: "From Our Restaurant Kitchen to Yours",
+  site_tagline: "Restaurant Supplies Stockholm | 15% Lower Wholesale Prices",
 };

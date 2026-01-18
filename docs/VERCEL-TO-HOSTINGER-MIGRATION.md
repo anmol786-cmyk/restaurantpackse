@@ -100,7 +100,98 @@ export const WC_API_CONFIG = {
 
 ---
 
-### 4. Add Dynamic Rendering to Prevent Build Timeouts
+### 4. **CRITICAL FIX: WooCommerce API Environment Variables for Hostinger**
+
+**⚠️ THIS IS THE MOST COMMON ISSUE WHEN MIGRATING FROM VERCEL TO HOSTINGER!**
+
+**Problem:**
+- On Vercel, server-side environment variables (without `NEXT_PUBLIC_` prefix) work fine
+- On Hostinger VPS, the Node.js runtime may not have access to non-public environment variables
+- This causes WooCommerce API calls to fail with 401/404 errors even though credentials are set
+
+**Solution:**
+You need to add **BOTH** server-side AND public versions of your WooCommerce credentials:
+
+**Required Environment Variables (Add ALL THREE):**
+
+```bash
+# Server-side variables (preferred, more secure)
+WORDPRESS_URL=https://crm.restaurantpack.se
+WORDPRESS_CONSUMER_KEY=ck_dd63149d47a97ca80e3fcb136cf156542689e583
+WORDPRESS_CONSUMER_SECRET=cs_a31a6366c6a5ea5e89d8357bb7a2821352b71e83
+
+# Public variables (Hostinger fallback - REQUIRED!)
+NEXT_PUBLIC_WORDPRESS_URL=https://crm.restaurantpack.se
+NEXT_PUBLIC_WORDPRESS_CONSUMER_KEY=ck_dd63149d47a97ca80e3fcb136cf156542689e583
+NEXT_PUBLIC_WORDPRESS_CONSUMER_SECRET=cs_a31a6366c6a5ea5e89d8357bb7a2821352b71e83
+```
+
+**Code Changes Required:**
+
+**File:** `lib/woocommerce/config.ts`
+
+Update the configuration to check BOTH server-side and public variables:
+
+```typescript
+export const WC_API_CONFIG = {
+  // Check server-side first, then NEXT_PUBLIC fallback
+  baseUrl: `${process.env.WORDPRESS_URL || process.env.NEXT_PUBLIC_WORDPRESS_URL}/wp-json/wc/v3`,
+  
+  auth: {
+    consumerKey: process.env.WORDPRESS_CONSUMER_KEY
+      || process.env.NEXT_PUBLIC_WORDPRESS_CONSUMER_KEY
+      || '',
+    consumerSecret: process.env.WORDPRESS_CONSUMER_SECRET
+      || process.env.NEXT_PUBLIC_WORDPRESS_CONSUMER_SECRET
+      || '',
+  },
+};
+
+export function getWooCommerceAuthHeader(): string {
+  const consumerKey = process.env.WORDPRESS_CONSUMER_KEY
+    || process.env.NEXT_PUBLIC_WORDPRESS_CONSUMER_KEY;
+    
+  const consumerSecret = process.env.WORDPRESS_CONSUMER_SECRET
+    || process.env.NEXT_PUBLIC_WORDPRESS_CONSUMER_SECRET;
+
+  if (!consumerKey || !consumerSecret) {
+    throw new Error('WooCommerce API credentials are not configured');
+  }
+
+  const credentials = Buffer.from(`${consumerKey}:${consumerSecret}`).toString('base64');
+  return `Basic ${credentials}`;
+}
+```
+
+**Why This Works:**
+- Hostinger's Node.js runtime environment may not expose non-public env vars consistently
+- By adding `NEXT_PUBLIC_` versions, the credentials are embedded during build time
+- The code checks server-side vars first (more secure), then falls back to public vars
+- This ensures WooCommerce API works in both Vercel and Hostinger environments
+
+**Security Note:**
+- While `NEXT_PUBLIC_` variables are technically exposed in client bundles, WooCommerce REST API keys are already designed to be used in client-side applications
+- For maximum security, ensure your WooCommerce API keys have appropriate permissions (read/write only what's needed)
+- Consider using different API keys for production vs development
+
+**Testing:**
+After adding these variables, test the WooCommerce connection:
+```bash
+# Visit your health check endpoint
+https://your-domain.com/api/health
+
+# Should return:
+{
+  "status": "healthy",
+  "checks": {
+    "woocommerce": true  ← Should be true now!
+  }
+}
+```
+
+---
+
+### 5. Add Dynamic Rendering to Prevent Build Timeouts
 
 **File:** `app/layout.tsx` (or any layout that fetches data)
 
@@ -144,12 +235,19 @@ images: {
 
 **Add these in Hostinger hPanel → Environment Variables:**
 
-#### 1. WordPress/WooCommerce (Server-Side)
+#### 1. WordPress/WooCommerce (CRITICAL - Add BOTH Sets!)
 ```bash
+# Server-side variables (preferred, more secure)
 WORDPRESS_URL=https://crm.restaurantpack.se
 WORDPRESS_CONSUMER_KEY=ck_8a752976c9bf7171588e051caf39297959a13145
 WORDPRESS_CONSUMER_SECRET=cs_f7b2dd2e9dabfbf9f4f185f90e8f076ce9e22343
+
+# ⚠️ ALSO ADD THESE PUBLIC VERSIONS (Required for Hostinger!)
+NEXT_PUBLIC_WORDPRESS_URL=https://crm.restaurantpack.se
+NEXT_PUBLIC_WORDPRESS_CONSUMER_KEY=ck_8a752976c9bf7171588e051caf39297959a13145
+NEXT_PUBLIC_WORDPRESS_CONSUMER_SECRET=cs_f7b2dd2e9dabfbf9f4f185f90e8f076ce9e22343
 ```
+**Note:** You MUST add both the server-side (WORDPRESS_*) AND public (NEXT_PUBLIC_WORDPRESS_*) versions. The code uses server-side first, then falls back to public versions if not available.
 
 #### 2. Site Configuration (Public)
 ```bash
@@ -503,11 +601,13 @@ Use this checklist for your next migration:
 - [ ] Remove `@vercel/analytics` and `@vercel/speed-insights`
 - [ ] Remove Vercel imports from `layout.tsx`
 - [ ] Change `NEXT_PUBLIC_*` to server-side vars for API calls
+- [ ] **Add NEXT_PUBLIC_ versions of WooCommerce credentials (CRITICAL!)**
+- [ ] Update `lib/woocommerce/config.ts` to check both server-side and public env vars
 - [ ] Add `dynamic = 'force-dynamic'` to layouts fetching data
 - [ ] Verify `images.unoptimized = true` in `next.config.js`
 
 ### Hostinger Setup
-- [ ] Add all environment variables
+- [ ] Add all environment variables (including BOTH server-side AND NEXT_PUBLIC_ versions of WooCommerce credentials!)
 - [ ] Configure build settings
 - [ ] Set Node version to 20.x
 - [ ] Ensure start command is configured
@@ -573,11 +673,16 @@ npm run build
 
 ## 🎯 Key Takeaways
 
-1. **Never use `NEXT_PUBLIC_*` for server-side API calls**
-2. **Always use `dynamic = 'force-dynamic'` for data-fetching layouts**
-3. **Remove all Vercel-specific packages and imports**
-4. **Ensure start command is configured**
-5. **Test thoroughly before switching DNS**
+1. **CRITICAL: Add BOTH server-side AND NEXT_PUBLIC_ versions of WooCommerce credentials for Hostinger**
+   - This is the #1 issue that causes deployments to fail
+   - Hostinger's Node.js runtime needs the NEXT_PUBLIC_ fallback versions
+   - Update `lib/woocommerce/config.ts` to check both variable types
+2. **Never use `NEXT_PUBLIC_*` ONLY for server-side API calls**
+   - Use server-side vars first, with NEXT_PUBLIC_ as fallback
+3. **Always use `dynamic = 'force-dynamic'` for data-fetching layouts**
+4. **Remove all Vercel-specific packages and imports**
+5. **Ensure start command is configured**
+6. **Test thoroughly before switching DNS**
 
 ---
 

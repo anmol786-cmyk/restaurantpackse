@@ -6,8 +6,8 @@ import { ContactForm } from "@/components/forms/contact-form";
 import { GoogleMapCompact } from "@/components/shared/google-map";
 
 export const metadata: Metadata = {
-  title: `Contact Anmol Wholesale - B2B Support | Restaurant Supply Stockholm`,
-  description: `Contact Anmol Wholesale for bulk orders, wholesale pricing, and B2B inquiries. Visit our warehouse in Spånga, call ${brandConfig.contact.phone}, or email us. We're here to support your professional kitchen.`,
+  title: `Contact Anmol Wholesale | B2B Support & Spånga Warehouse`,
+  description: `Get in touch with Anmol Wholesale for bulk orders, 15% lower wholesale pricing, and B2B inquiries. Visit our Spånga warehouse or contact our expert team for professional restaurant supply in Scandinavia.`,
   alternates: {
     canonical: '/contact',
   },

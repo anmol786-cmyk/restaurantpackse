@@ -23,15 +23,18 @@ export function ProductImageGallery({
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [isZoomed, setIsZoomed] = useState(false);
 
-  const hasMultipleImages = images.length > 1;
-  const currentImage = images[selectedIndex] || images[0];
+  // Filter out invalid images and ensure we have valid image data
+  const validImages = images?.filter(img => img && img.src) || [];
+  const hasMultipleImages = validImages.length > 1;
+  const hasAnyImages = validImages.length > 0;
+  const currentImage = validImages[selectedIndex] || validImages[0];
 
   const handlePrevious = () => {
-    setSelectedIndex((prev) => (prev > 0 ? prev - 1 : images.length - 1));
+    setSelectedIndex((prev) => (prev > 0 ? prev - 1 : validImages.length - 1));
   };
 
   const handleNext = () => {
-    setSelectedIndex((prev) => (prev < images.length - 1 ? prev + 1 : 0));
+    setSelectedIndex((prev) => (prev < validImages.length - 1 ? prev + 1 : 0));
   };
 
   const handleThumbnailClick = (index: number) => {
@@ -101,7 +104,7 @@ export function ProductImageGallery({
               {/* Image Counter */}
               {hasMultipleImages && (
                 <div className="absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full bg-black/70 px-3 py-1 text-sm text-white">
-                  {selectedIndex + 1} / {images.length}
+                  {selectedIndex + 1} / {validImages.length}
                 </div>
               )}
             </>
@@ -132,7 +135,7 @@ export function ProductImageGallery({
         {/* Thumbnail Gallery */}
         {hasMultipleImages && (
           <div className="grid grid-cols-4 gap-3 sm:grid-cols-5 md:grid-cols-4 lg:grid-cols-5">
-            {images.map((image, index) => (
+            {validImages.map((image, index) => (
               <button
                 key={image.id || index}
                 onClick={() => handleThumbnailClick(index)}
@@ -172,19 +175,25 @@ export function ProductImageGallery({
             </Button>
 
             {/* Main Lightbox Image */}
-            <div className="relative aspect-square w-full md:aspect-video">
-              <Image
-                src={currentImage.src}
-                alt={currentImage.alt || productName}
-                fill
-                className={cn(
-                  'object-contain transition-transform duration-300',
-                  isZoomed ? 'scale-150 cursor-zoom-out' : 'cursor-zoom-in'
-                )}
-                quality={100}
-                onClick={() => setIsZoomed(!isZoomed)}
-              />
-            </div>
+            {currentImage && currentImage.src ? (
+              <div className="relative aspect-square w-full md:aspect-video">
+                <Image
+                  src={currentImage.src}
+                  alt={currentImage.alt || productName}
+                  fill
+                  className={cn(
+                    'object-contain transition-transform duration-300',
+                    isZoomed ? 'scale-150 cursor-zoom-out' : 'cursor-zoom-in'
+                  )}
+                  quality={100}
+                  onClick={() => setIsZoomed(!isZoomed)}
+                />
+              </div>
+            ) : (
+              <div className="flex h-96 items-center justify-center text-white">
+                <p>No image available</p>
+              </div>
+            )}
 
             {/* Lightbox Navigation */}
             {hasMultipleImages && (
@@ -208,16 +217,16 @@ export function ProductImageGallery({
 
                 {/* Lightbox Counter */}
                 <div className="absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full bg-black/70 px-4 py-2 text-white">
-                  {selectedIndex + 1} of {images.length}
+                  {selectedIndex + 1} of {validImages.length}
                 </div>
               </>
             )}
 
             {/* Lightbox Thumbnails */}
-            {hasMultipleImages && images.length > 1 && (
+            {hasMultipleImages && validImages.length > 1 && (
               <div className="border-t border-white/10 bg-black/90 p-4">
                 <div className="mx-auto flex max-w-4xl gap-2 overflow-x-auto">
-                  {images.map((image, index) => (
+                  {validImages.map((image, index) => (
                     <button
                       key={image.id || index}
                       onClick={() => handleThumbnailClick(index)}

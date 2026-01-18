@@ -22,17 +22,36 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
 
     if (!category) {
       return {
-        title: 'Category Not Found',
+        title: 'Category Not Found | Anmol Wholesale',
       };
     }
 
+    const seoTitle = `${category.name} Wholesale Stockholm | Anmol Wholesale`;
+    const plainDescription = category.description?.replace(/<[^>]*>/g, '').substring(0, 100) || '';
+    const seoDescription = `Browse our professional-grade ${category.name} at 15% lower wholesale prices. Anmol Wholesale: Stockholm-based B2B restaurant supplier with own Scandinavian delivery. ${plainDescription}`;
+
     return {
-      title: category.name,
-      description: category.description || `Browse our ${category.name} products`,
+      title: seoTitle,
+      description: seoDescription.substring(0, 160),
+      openGraph: {
+        title: seoTitle,
+        description: seoDescription.substring(0, 160),
+        type: 'website',
+        url: `https://restaurantpack.se/shop/category/${resolvedParams.slug}`,
+        siteName: 'Anmol Wholesale',
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: seoTitle,
+        description: seoDescription.substring(0, 160),
+      },
+      alternates: {
+        canonical: `https://restaurantpack.se/shop/category/${resolvedParams.slug}`,
+      },
     };
   } catch {
     return {
-      title: 'Category Not Found',
+      title: 'Category Not Found | Anmol Wholesale',
     };
   }
 }

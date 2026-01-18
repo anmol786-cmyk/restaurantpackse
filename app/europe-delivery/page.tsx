@@ -7,8 +7,8 @@ import { europeDeliveryServiceSchema } from '@/lib/schema';
 import { GoogleMapCompact } from "@/components/shared/google-map";
 
 export const metadata: Metadata = {
-    title: 'European B2B Wholesale Shipping | Anmol Wholesale - Indo-Pak Restaurant Supplies',
-    description: 'B2B wholesale shipping of authentic Indo-Pak ingredients & kitchen equipment across Europe via DHL. Serving restaurants, grocery stores & caterers in Germany, Norway, Finland, UK & Spain. Competitive freight rates for bulk orders.',
+    title: 'European B2B Wholesale Shipping | 15% Lower Prices | Anmol Wholesale',
+    description: 'Wholesale shipping of authentic Indo-Pak ingredients across Europe. 15% lower B2B pricing for Germany, Norway, Finland & EU. Reliable bulk logistics for professional kitchens.',
     alternates: {
         canonical: '/europe-delivery',
     },

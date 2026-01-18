@@ -13,8 +13,8 @@ import { anmolWholesaleOrganizationSchemaFull } from "@/lib/schema/organization"
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "B2B Restaurant Supply & Foodservice Distribution",
-  description: "Sweden's leading B2B wholesale supplier for restaurants, grocery stores & caterers. Authentic Indo-Pak products, bulk ingredients, competitive pricing. Manufacturer of Anmol Electric Tandoor. European shipping available.",
+  title: "Anmol Wholesale | Professional Restaurant Supply Stockholm | 15% Lower Prices",
+  description: "Sweden's leading B2B wholesale partner for restaurants & caterers. 15% lower prices on authentic Indo-Pak ingredients, bulk staples & professional equipment. Stockholm-based manufacturer of Anmol Electric Tandoor. Own Scandinavian delivery system.",
 };
 
 export default async function HomePage() {

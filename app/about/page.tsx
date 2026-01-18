@@ -5,8 +5,8 @@ import { brandConfig } from "@/config/brand.config";
 import { ShoppingBag, Heart, Users, Award, Truck, Globe, Warehouse, Building2 } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: `About ${brandConfig.businessName} - ${brandConfig.tagline}`,
-  description: `Learn about ${brandConfig.businessName}, Sweden's trusted B2B wholesale supplier for restaurants, grocery stores, and caterers. Backed by Anmol Sweets & Restaurant expertise. Manufacturer of Anmol Electric Tandoor.`,
+  title: `About Anmol Wholesale | Restaurant Expertise & Wholesale Power`,
+  description: `Discover Anmol Wholesale, Stockholm's leading B2B supplier. With 5+ years of restaurant experience, we provide authentic Indo-Pak ingredients and manufacture the Electric Mini Tandoor. Quality guaranteed by chefs, for chefs.`,
   alternates: {
     canonical: '/about',
   },

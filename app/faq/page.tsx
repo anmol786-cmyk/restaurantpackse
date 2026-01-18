@@ -10,8 +10,8 @@ import { MessageCircle, Mail, MapPin } from 'lucide-react';
 import { brandConfig } from '@/config/brand.config';
 
 export const metadata: Metadata = {
-    title: 'B2B Wholesale FAQ | Anmol Wholesale - Restaurant Supply Questions',
-    description: 'Answers to common questions about wholesale ordering, B2B accounts, bulk delivery across Sweden & Europe, payment terms, tiered pricing, and our Indo-Pak products for restaurants.',
+    title: 'B2B Wholesale FAQ | 15% Lower Prices | Anmol Wholesale Stockholm',
+    description: 'Expert answers to wholesale ordering, 15% lower B2B pricing, and bulk logistics. Serving restaurants across Sweden & Europe with authentic Indo-Pak ingredients and the Electric Mini Tandoor.',
     alternates: {
         canonical: '/faq',
     },

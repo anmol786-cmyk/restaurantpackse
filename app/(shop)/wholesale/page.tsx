@@ -22,8 +22,8 @@ import Image from 'next/image';
 import { brandProfile } from '@/config/brand-profile';
 
 export const metadata: Metadata = {
-    title: 'B2B Wholesale Solutions for Restaurants & Grocery Stores | Anmol Wholesale Sweden',
-    description: 'Sweden\'s trusted B2B wholesale supplier for Indo-Pak restaurants, grocery stores, and caterers. Authentic ingredients, bulk staples, Anmol Electric Tandoor, and competitive pricing. From our restaurant kitchen to yours.',
+    title: 'B2B Wholesale Hub | 15% Lower Prices | Anmol Wholesale Stockholm',
+    description: 'The primary B2B hub for authentic Indo-Pak ingredients & equipment. 15% lower prices, restaurateur-backed quality, and own delivery fleet. Direct manufacturer of Anmol Electric Tandoor. Partner with Stockholm\'s experts.',
 };
 
 export default function WholesaleLandingPage() {

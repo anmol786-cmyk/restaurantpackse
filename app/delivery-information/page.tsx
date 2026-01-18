@@ -7,8 +7,8 @@ import { stockholmDeliveryServiceSchema, deliveryFAQSchema } from "@/lib/schema"
 import { GoogleMapCompact } from "@/components/shared/google-map";
 
 export const metadata: Metadata = {
-    title: "B2B Wholesale Delivery & Logistics | Anmol Wholesale - Restaurant Supply Sweden",
-    description: "Flexible B2B wholesale delivery across Sweden & Scandinavia. Own fleet for Stockholm, DHL partnership for Europe, and Ex-Warehouse pickup options. Reliable supply chain for restaurants, grocery stores & caterers.",
+    title: "B2B Wholesale Delivery Stockholm | 15% Lower Prices | Anmol Wholesale",
+    description: "Reliable B2B delivery across Sweden & Scandinavia. Own fleet for Stockholm, 15% lower wholesale prices, and Ex-Warehouse pickup in Spånga. Built for professional kitchens.",
     alternates: {
         canonical: '/delivery-information',
     },

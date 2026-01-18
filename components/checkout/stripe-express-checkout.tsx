@@ -4,8 +4,13 @@ import { useStripe, Elements } from '@stripe/react-stripe-js';
 import { loadStripe, PaymentRequest, Stripe } from '@stripe/stripe-js';
 import { useState, useEffect, useRef } from 'react';
 
-// Initialize Stripe
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || '');
+// Initialize Stripe only if we have a valid publishable key
+const stripePublishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || '';
+const isValidStripeKey = stripePublishableKey &&
+    stripePublishableKey.startsWith('pk_') &&
+    !stripePublishableKey.includes('your_stripe');
+
+const stripePromise = isValidStripeKey ? loadStripe(stripePublishableKey) : null;
 
 interface ExpressCheckoutProps {
     amount: number;
@@ -211,6 +216,12 @@ export function StripeExpressCheckout(props: ExpressCheckoutProps) {
         console.log('🚀 StripeExpressCheckout mounting with amount:', amount);
         console.log('🚀 Stripe Key prefix:', process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY?.substring(0, 15));
     }, [amount]);
+
+    // Don't render if Stripe is not configured
+    if (!isValidStripeKey) {
+        console.log('⚠️ Stripe not configured - skipping express checkout');
+        return null;
+    }
 
     if (amount <= 0) {
         console.log('⚠️ Amount is 0 or negative');
