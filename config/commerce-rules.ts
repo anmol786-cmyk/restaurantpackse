@@ -89,7 +89,7 @@ export const WHOLESALE_TIERS = [
  * Global Minimum Order Quantity (MOQ)
  * Default MOQ applied to all products unless overridden
  */
-export const GLOBAL_MOQ = 5;
+export const GLOBAL_MOQ = 6;
 
 /**
  * Product-specific MOQ overrides
@@ -111,14 +111,15 @@ export const QUANTITY_DISCOUNT_RULES: QuantityDiscountRule[] = [
     basePrice: 450,
     floorPrice: 370,
     tiers: [
-      { minQuantity: 1, maxQuantity: 4, unitPrice: 450, label: 'Regular Price' },
-      { minQuantity: 5, maxQuantity: 49, unitPrice: 400, label: 'Bulk Price (5+)' },
-      { minQuantity: 50, maxQuantity: null, unitPrice: 400, label: 'Volume Price (50+)' },
+      { minQuantity: 1, maxQuantity: 5, unitPrice: 450, label: 'Regular Price' },
+      { minQuantity: 6, maxQuantity: 19, unitPrice: 420, label: 'MOQ Price (6+)' },
+      { minQuantity: 20, maxQuantity: 49, unitPrice: 400, label: 'Bulk Price (20+)' },
+      { minQuantity: 50, maxQuantity: null, unitPrice: 380, label: 'Volume Price (50+)' },
     ],
     progressiveDiscount: {
       startAfterQuantity: 50,  // Progressive discounts start after 50 units
       quantityStep: 10,        // Every 10 additional units
-      discountPercent: 5,      // Gives 5% additional discount
+      discountPercent: 2,      // Gives 2% additional discount
     },
   },
 ];

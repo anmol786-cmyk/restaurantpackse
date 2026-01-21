@@ -22,7 +22,8 @@ import { WhatsAppOrderButton } from '@/components/whatsapp/whatsapp-order-button
 import { formatPrice, getDiscountPercentage } from '@/lib/woocommerce';
 import { decodeHtmlEntities } from '@/lib/utils';
 import { trackViewContent } from '@/lib/analytics';
-import { CommerceRules } from '@/config/commerce-rules';
+import { CommerceRules, GLOBAL_MOQ } from '@/config/commerce-rules';
+import { QuantityDiscountDisplay } from '@/components/wholesale/quantity-discount-display';
 import type { Product, ProductReview, ProductVariation } from '@/types/woocommerce';
 
 interface ProductTemplateProps {
@@ -45,7 +46,7 @@ export function ProductTemplate({
   const [variations, setVariations] = useState<ProductVariation[]>([]);
   const [isLoadingVariations, setIsLoadingVariations] = useState(false);
   const [selectedVariation, setSelectedVariation] = useState<ProductVariation | null>(null);
-  const [quantity, setQuantity] = useState(1);
+  const [quantity, setQuantity] = useState(() => CommerceRules.getMOQ(product.id));
 
   // Track product view event
   useEffect(() => {
@@ -356,6 +357,15 @@ export function ProductTemplate({
                 />
               )}
 
+              {/* Quantity Discount Display - for products with volume pricing */}
+              <QuantityDiscountDisplay
+                productId={product.id}
+                basePrice={parseFloat(String(selectedVariation?.price || product.price || '0'))}
+                quantity={quantity}
+                onQuantityChange={setQuantity}
+                showTiersTable={true}
+              />
+
               {/* Product Variations */}
               {hasVariations && (
                 <div>
@@ -380,8 +390,8 @@ export function ProductTemplate({
                 <div className="flex items-center gap-4">
                   <span style={{ fontSize: '15.13px', fontWeight: 500, lineHeight: 1.57, letterSpacing: '0.03em' }} className="text-foreground">Quantity:</span>
                   <QuantitySelector
-                    initialQuantity={1}
-                    min={1}
+                    initialQuantity={CommerceRules.getMOQ(product.id)}
+                    min={CommerceRules.getMOQ(product.id)}
                     max={(() => {
                       // Check commerce rules quantity limit
                       const commerceLimit = CommerceRules.getQuantityLimit(product.id);
@@ -391,6 +401,8 @@ export function ProductTemplate({
                       return commerceLimit !== null ? Math.min(commerceLimit, stockLimit) : stockLimit;
                     })()}
                     onChange={setQuantity}
+                    productId={product.id}
+                    basePrice={parseFloat(String(selectedVariation?.price || product.price || '0'))}
                   />
                 </div>
 

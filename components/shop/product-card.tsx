@@ -14,6 +14,7 @@ import { cn, decodeHtmlEntities } from '@/lib/utils';
 import { WishlistToggle } from '@/components/wishlist/wishlist-button';
 import { WholesalePriceDisplay } from '@/components/wholesale/wholesale-price-display';
 import { useCurrency } from '@/hooks/use-currency';
+import { CommerceRules, GLOBAL_MOQ } from '@/config/commerce-rules';
 
 interface ProductCardProps {
   product: Product;
@@ -119,6 +120,11 @@ export function ProductCard({ product, className }: ProductCardProps) {
                   Sold Out
                 </Badge>
               )}
+              {CommerceRules.hasQuantityDiscount(product.id) && (
+                <Badge className="bg-green-600 text-white hover:bg-green-600 shadow-sm border-0">
+                  Volume Discount
+                </Badge>
+              )}
             </div>
           </div>
 
@@ -144,6 +150,15 @@ export function ProductCard({ product, className }: ProductCardProps) {
             )}
 
             <WholesalePriceDisplay basePrice={product.price ? parseFloat(String(product.price)) : 0} />
+
+            {/* MOQ Badge */}
+            {GLOBAL_MOQ > 1 && (
+              <div className="flex items-center gap-1.5 mt-2">
+                <span className="text-xs text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full font-medium">
+                  Min. {CommerceRules.getMOQ(product.id)} units
+                </span>
+              </div>
+            )}
 
             <div className="mt-auto flex items-center justify-between gap-3 pt-3 border-t border-border/50">
               {/* Price */}
