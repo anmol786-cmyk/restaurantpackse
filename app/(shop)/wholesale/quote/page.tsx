@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { QuoteRequestForm } from '@/components/wholesale/quote-request-form';
-import { ClipboardList, Phone, Mail, Clock, Building2, Package, TrendingUp, CheckCircle2 } from 'lucide-react';
+import { QuoteRequestFormPro } from '@/components/wholesale/quote-request-form-pro';
+import { ClipboardList, Phone, Mail, Clock, Building2, Package, CheckCircle2, Sparkles } from 'lucide-react';
 import { brandProfile } from '@/config/brand-profile';
 
 export const metadata: Metadata = {
@@ -35,14 +35,19 @@ export default function WholesaleQuotePage() {
                     {/* Main Form Column */}
                     <div className="lg:col-span-2">
                         <div className="bg-white rounded-2xl shadow-xl shadow-black/5 border border-slate-100 p-6 md:p-10">
-                            <div className="mb-8">
-                                <h2 className="text-2xl font-bold text-slate-900 mb-3 font-heading">What would you like to order?</h2>
-                                <p className="text-sm text-slate-600 leading-relaxed">
-                                    Tell us about your business needs. Our wholesale team will review your request and provide competitive pricing
-                                    based on order volumes, delivery location, and recurring order potential.
-                                </p>
+                            <div className="mb-6 flex items-center justify-between">
+                                <div>
+                                    <h2 className="text-2xl font-bold text-slate-900 mb-2 font-heading">Build Your Quote</h2>
+                                    <p className="text-sm text-slate-600">
+                                        Search products, set quantities, and submit for personalized B2B pricing.
+                                    </p>
+                                </div>
+                                <div className="hidden sm:flex items-center gap-2 text-xs text-primary bg-primary/5 px-3 py-1.5 rounded-full">
+                                    <Sparkles className="w-3 h-3" />
+                                    <span>Enhanced Form</span>
+                                </div>
                             </div>
-                            <QuoteRequestForm />
+                            <QuoteRequestFormPro />
                         </div>
                     </div>
 

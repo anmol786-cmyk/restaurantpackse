@@ -114,16 +114,29 @@ export function CartDrawer() {
                           <h4 className="text-sm font-semibold line-clamp-2">
                             {item.product.name}
                           </h4>
-                          <div className="flex items-center gap-2 mt-1">
-                            <p className="text-sm text-muted-foreground">
-                              {formatCurrency(CommerceRules.getTieredPrice(item.price, item.quantity, isWholesale).unitPrice)}
-                            </p>
-                            {isWholesale && CommerceRules.getTieredPrice(item.price, item.quantity, isWholesale).discount > 0 && (
-                              <span className="text-[10px] font-bold text-green-600 bg-green-50 px-1 rounded border border-green-200">
-                                {CommerceRules.getTieredPrice(item.price, item.quantity, isWholesale).label}
-                              </span>
-                            )}
-                          </div>
+                          {(() => {
+                            // Check for quantity discount first
+                            const quantityDiscount = CommerceRules.calculateQuantityDiscount(item.productId, item.quantity, item.price);
+                            const tieredPrice = CommerceRules.getTieredPrice(item.price, item.quantity, isWholesale);
+
+                            // Use quantity discount if available, otherwise use tiered pricing
+                            const unitPrice = quantityDiscount ? quantityDiscount.unitPrice : tieredPrice.unitPrice;
+                            const hasDiscount = quantityDiscount ? quantityDiscount.savingsPercent > 0 : (isWholesale && tieredPrice.discount > 0);
+                            const discountLabel = quantityDiscount ? quantityDiscount.currentTierLabel : tieredPrice.label;
+
+                            return (
+                              <div className="flex items-center gap-2 mt-1">
+                                <p className="text-sm text-muted-foreground">
+                                  {formatCurrency(unitPrice)}
+                                </p>
+                                {hasDiscount && discountLabel && (
+                                  <span className="text-[10px] font-bold text-green-600 bg-green-50 px-1 rounded border border-green-200">
+                                    {discountLabel}
+                                  </span>
+                                )}
+                              </div>
+                            );
+                          })()}
                         </div>
                         <Button
                           variant="ghost"
@@ -155,9 +168,32 @@ export function CartDrawer() {
                           <Plus className="h-3 w-3" />
                         </Button>
                         <span className="ml-auto text-sm font-semibold text-primary">
-                          {formatCurrency(CommerceRules.getTieredPrice(item.price, item.quantity, isWholesale).unitPrice * item.quantity)}
+                          {(() => {
+                            const quantityDiscount = CommerceRules.calculateQuantityDiscount(item.productId, item.quantity, item.price);
+                            if (quantityDiscount) {
+                              return formatCurrency(quantityDiscount.totalPrice);
+                            }
+                            const tieredPrice = CommerceRules.getTieredPrice(item.price, item.quantity, isWholesale);
+                            return formatCurrency(tieredPrice.unitPrice * item.quantity);
+                          })()}
                         </span>
                       </div>
+
+                      {/* Discount Hint for next tier */}
+                      {(() => {
+                        const quantityDiscount = CommerceRules.calculateQuantityDiscount(item.productId, item.quantity, item.price);
+                        if (quantityDiscount?.nextTierSuggestion && quantityDiscount.quantityToNextTier) {
+                          return (
+                            <button
+                              onClick={() => updateQuantity(item.key, item.quantity + (quantityDiscount.quantityToNextTier || 0))}
+                              className="mt-1 text-[10px] text-green-600 hover:underline cursor-pointer text-left"
+                            >
+                              + {quantityDiscount.nextTierSuggestion}
+                            </button>
+                          );
+                        }
+                        return null;
+                      })()}
                     </div>
                   </div>
                 ))}

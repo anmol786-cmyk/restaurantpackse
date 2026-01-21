@@ -6,7 +6,7 @@ import {
   type ShippingMethod,
   type RestrictedProduct,
 } from '@/lib/shipping-service';
-import { CommerceRules } from '@/config/commerce-rules';
+import { CommerceRules, GLOBAL_MOQ } from '@/config/commerce-rules';
 
 export interface CartItem {
   key: string;
@@ -128,7 +128,7 @@ export const useCartStore = create<CartState>()(
           }
         }
 
-        // Check MOQ
+        // Check MOQ - use global MOQ (5) or product-specific
         const moqRequirement = CommerceRules.getMOQ(product.id, product.categories?.map(c => c.name));
         let finalQuantity = quantity;
 
@@ -136,11 +136,25 @@ export const useCartStore = create<CartState>()(
           finalQuantity = moqRequirement;
           set({
             notification: {
-              message: `Minimum order quantity for this item is ${moqRequirement} units.`,
+              message: `Minimum order quantity is ${moqRequirement} units. Quantity adjusted automatically.`,
               type: 'info',
               timestamp: Date.now(),
             },
           });
+        }
+
+        // Check if product has quantity discount - show info
+        if (currentQuantity === 0 && CommerceRules.hasQuantityDiscount(product.id)) {
+          const discountInfo = CommerceRules.calculateQuantityDiscount(product.id, finalQuantity);
+          if (discountInfo?.nextTierSuggestion) {
+            set({
+              notification: {
+                message: `Tip: ${discountInfo.nextTierSuggestion}`,
+                type: 'info',
+                timestamp: Date.now(),
+              },
+            });
+          }
         }
 
         set((state) => {
@@ -183,36 +197,48 @@ export const useCartStore = create<CartState>()(
       },
 
       updateQuantity: (key, quantity) => {
-        if (quantity <= 0) {
-          get().removeItem(key);
-          return;
-        }
-
         const state = get();
         const item = state.items.find((i) => i.key === key);
 
-        if (item) {
-          // Check quantity limit
-          const maxQuantity = CommerceRules.getQuantityLimit(item.productId);
+        if (!item) return;
 
-          if (maxQuantity !== null && quantity > maxQuantity) {
-            // Set notification
-            set({
-              notification: {
-                message: `Maximum ${maxQuantity} units allowed for this product.`,
-                type: 'warning',
-                timestamp: Date.now(),
-              },
-            });
+        // Check MOQ - don't allow going below minimum
+        const moqRequirement = CommerceRules.getMOQ(item.productId);
 
-            // Cap at maximum
-            quantity = maxQuantity;
+        if (quantity < moqRequirement) {
+          // If trying to go below MOQ, remove the item instead
+          if (quantity <= 0) {
+            get().removeItem(key);
+            return;
           }
+          // Otherwise enforce MOQ
+          quantity = moqRequirement;
+          set({
+            notification: {
+              message: `Minimum order quantity is ${moqRequirement} units.`,
+              type: 'info',
+              timestamp: Date.now(),
+            },
+          });
+        }
+
+        // Check quantity limit (max)
+        const maxQuantity = CommerceRules.getQuantityLimit(item.productId);
+
+        if (maxQuantity !== null && quantity > maxQuantity) {
+          set({
+            notification: {
+              message: `Maximum ${maxQuantity} units allowed for this product.`,
+              type: 'warning',
+              timestamp: Date.now(),
+            },
+          });
+          quantity = maxQuantity;
         }
 
         set((state) => ({
-          items: state.items.map((item) =>
-            item.key === key ? { ...item, quantity } : item
+          items: state.items.map((cartItem) =>
+            cartItem.key === key ? { ...cartItem, quantity } : cartItem
           ),
         }));
       },
@@ -240,6 +266,18 @@ export const useCartStore = create<CartState>()(
       getTotalPrice: (isWholesale = false) => {
         const { items } = get();
         return items.reduce((total, item) => {
+          // First check for quantity discount (product-specific)
+          const quantityDiscount = CommerceRules.calculateQuantityDiscount(
+            item.productId,
+            item.quantity,
+            item.price
+          );
+
+          if (quantityDiscount) {
+            return total + quantityDiscount.totalPrice;
+          }
+
+          // Fall back to wholesale tiered pricing
           const { unitPrice } = CommerceRules.getTieredPrice(item.price, item.quantity, isWholesale);
           return total + unitPrice * item.quantity;
         }, 0);
@@ -253,6 +291,18 @@ export const useCartStore = create<CartState>()(
       getSubtotal: (isWholesale = false) => {
         const { items } = get();
         return items.reduce((total, item) => {
+          // First check for quantity discount (product-specific)
+          const quantityDiscount = CommerceRules.calculateQuantityDiscount(
+            item.productId,
+            item.quantity,
+            item.price
+          );
+
+          if (quantityDiscount) {
+            return total + quantityDiscount.totalPrice;
+          }
+
+          // Fall back to wholesale tiered pricing
           const { unitPrice } = CommerceRules.getTieredPrice(item.price, item.quantity, isWholesale);
           return total + unitPrice * item.quantity;
         }, 0);

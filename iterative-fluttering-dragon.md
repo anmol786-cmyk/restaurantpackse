@@ -500,3 +500,317 @@ This is an **8-10 week full-featured wholesale transformation** that will conver
 **Total Effort**: ~400-500 hours over 10 weeks
 **Launch Date**: Week 10-11 (full-featured release)
 **Post-Launch**: Iterative improvements based on customer feedback
+
+---
+
+## Project Structure & Current Implementation Status
+
+> **Last Updated**: January 2026
+
+### Project Overview
+
+```
+restaurantpack.se/
+├── app/                          # Next.js 15 App Router
+│   ├── (shop)/                   # Shop grouped routes (cart, checkout, dashboard, etc.)
+│   ├── api/                      # API endpoints (35+ routes)
+│   ├── posts/                    # Blog functionality
+│   ├── layout.tsx                # Root layout
+│   └── page.tsx                  # Homepage
+├── components/                   # React components
+│   ├── ai/                       # AI chat widget, recommendations
+│   ├── auth/                     # Login, register forms
+│   ├── cart/                     # Cart drawer, threshold messages
+│   ├── checkout/                 # Billing, shipping, payment forms
+│   ├── dashboard/                # User dashboard components
+│   ├── home/                     # Homepage sections (hero, features, etc.)
+│   ├── layout/                   # Header, footer, breadcrumbs
+│   ├── shop/                     # Product cards, filters, quantity selector
+│   ├── ui/                       # Radix UI component library
+│   ├── whatsapp/                 # WhatsApp order integration
+│   └── wholesale/                # Wholesale-specific components
+├── config/                       # Centralized configuration
+│   ├── brand.config.ts           # Business name, contact, features
+│   ├── commerce-rules.ts         # MOQ, quantity discounts, pricing tiers
+│   ├── content.config.ts         # Page copy, messaging
+│   ├── shipping-zones.ts         # International shipping configuration
+│   ├── theme.config.ts           # Color schemes, typography
+│   └── vat-rates.ts              # VAT by country
+├── lib/                          # Business logic & utilities
+│   ├── woocommerce/              # WooCommerce API integration
+│   ├── whatsapp/                 # WhatsApp messaging
+│   ├── schema/                   # SEO structured data
+│   ├── shipping-service.ts       # Shipping calculations
+│   └── ...
+├── store/                        # Zustand state management
+│   ├── cart-store.ts             # Shopping cart with MOQ/discounts
+│   ├── auth-store.ts             # User authentication
+│   ├── wishlist-store.ts         # Saved products
+│   └── currency-store.ts         # Currency preference
+├── types/                        # TypeScript definitions
+├── messages/                     # i18n translation files (en, sv, no, da)
+└── public/                       # Static assets
+```
+
+### Tech Stack
+
+| Layer | Technology |
+|-------|------------|
+| Framework | Next.js 15 (App Router) + React 19 |
+| Backend | WordPress + WooCommerce (headless REST API) |
+| State | Zustand with persistence |
+| Styling | Tailwind CSS + Radix UI |
+| Payments | Stripe (cards, Apple Pay, Google Pay, Klarna) |
+| i18n | next-intl (EN, SV, NO, DA) |
+| Currency | SEK, EUR, NOK, DKK with conversion API |
+
+---
+
+### Implementation Status Tracker
+
+#### ✅ COMPLETED Features
+
+| Feature | Key Files | Notes |
+|---------|-----------|-------|
+| **Core E-commerce** | `lib/woocommerce/`, `store/cart-store.ts` | Full WooCommerce integration |
+| **Stripe Payments** | `app/api/stripe/`, `components/checkout/` | Cards, Apple Pay, Google Pay |
+| **Shopping Cart** | `store/cart-store.ts`, `components/cart/` | Persistent, with notifications |
+| **Wishlist** | `store/wishlist-store.ts`, `components/wishlist/` | Fully functional |
+| **Shipping Zones** | `config/shipping-zones.ts`, `lib/shipping-service.ts` | Sweden, Nordic, EU zones |
+| **WhatsApp Orders** | `lib/whatsapp/`, `components/whatsapp/` | Order via WhatsApp with Stripe links |
+| **AI Shopping Assistant** | `components/ai/` | Product recommendations, chat |
+| **Multi-currency** | `store/currency-store.ts`, `hooks/use-currency.ts` | SEK/EUR/NOK/DKK |
+| **i18n Setup** | `i18n.ts`, `messages/` | Infrastructure ready |
+| **SEO & Schema** | `lib/schema/` | Organization, product, breadcrumb schemas |
+| **Global MOQ (5 units)** | `config/commerce-rules.ts:92` | All products require min 5 units |
+| **Quantity Discounts** | `config/commerce-rules.ts:107-123` | Product 161 (Mini Electric Tandoor) |
+| **Quote Request Flow** | `components/wholesale/quote-request-form-pro.tsx` | 3-step wizard, WC order creation, WhatsApp option |
+
+#### 🔄 PARTIALLY IMPLEMENTED
+
+| Feature | Status | Key Files | What's Done | What's Needed |
+|---------|--------|-----------|-------------|---------------|
+| **Business Registration** | 60% | `app/(shop)/wholesale/register/` | Page exists, basic form | VAT validation, WooCommerce integration |
+| **Quick Order** | 40% | `app/(shop)/wholesale/quick-order/` | Basic page | CSV upload, bulk add to cart |
+| **Wholesale Price Display** | 70% | `components/wholesale/wholesale-price-display.tsx` | Shows tiers | Better UI integration |
+
+#### ❌ NOT YET IMPLEMENTED
+
+| Feature | Priority | Phase | Key Files to Create |
+|---------|----------|-------|---------------------|
+| Payment Terms (Net 30/60) | High | 2 | `components/checkout/payment-terms-selector.tsx` |
+| Business Dashboard | Medium | 3 | `app/(shop)/dashboard/business/` |
+| Reorder Lists | Medium | 3 | `components/dashboard/reorder-lists.tsx` |
+| Invoice Tracking | Medium | 3 | `components/dashboard/invoice-list.tsx` |
+| VAT Number Validation | Medium | 4 | `lib/vat-validation.ts` |
+| Multi-language Translations | Lower | 4 | `messages/*.json` content |
+
+---
+
+### Key Configuration Files
+
+#### `config/commerce-rules.ts` - Commerce Logic Hub
+
+```typescript
+// Global MOQ
+export const GLOBAL_MOQ = 5;
+
+// Quantity Discount Rules (add products here)
+export const QUANTITY_DISCOUNT_RULES: QuantityDiscountRule[] = [
+  {
+    productId: 161,  // Mini Electric Tandoor
+    productName: 'Mini Electric Tandoor',
+    basePrice: 450,
+    floorPrice: 370,
+    tiers: [
+      { minQuantity: 1, maxQuantity: 4, unitPrice: 450, label: 'Regular Price' },
+      { minQuantity: 5, maxQuantity: 49, unitPrice: 400, label: 'Bulk Price (5+)' },
+      { minQuantity: 50, maxQuantity: null, unitPrice: 400, label: 'Volume Price (50+)' },
+    ],
+    progressiveDiscount: {
+      startAfterQuantity: 50,
+      quantityStep: 10,
+      discountPercent: 5,
+    },
+  },
+  // Add more products here...
+];
+
+// Wholesale Tiers (for business accounts)
+export const WHOLESALE_TIERS = [
+  { minQuantity: 10, discount: 0.10, label: 'Bulk (10+)' },
+  { minQuantity: 50, discount: 0.16, label: 'Wholesale (50+)' },
+  { minQuantity: 100, discount: 0.20, label: 'Commercial (100+)' },
+];
+```
+
+#### `config/shipping-zones.ts` - Shipping Configuration
+
+- **Stockholm Area**: Same-day, own fleet
+- **Sweden Domestic**: 1-2 days, PostNord
+- **Nordic**: 2-4 days, DHL (299 SEK, free over 5000 SEK)
+- **EU Core**: 3-6 days, DHL Express (499 SEK, free over 8000 SEK)
+
+#### `store/cart-store.ts` - Cart State
+
+- Handles MOQ enforcement
+- Applies quantity discounts automatically
+- Calculates tiered pricing for wholesale users
+- Shipping integration
+
+---
+
+### API Routes Reference
+
+| Endpoint | Purpose |
+|----------|---------|
+| `POST /api/stripe/create-payment-intent` | Create Stripe payment |
+| `GET /api/products/search` | Product search |
+| `POST /api/shipping/calculate` | Calculate shipping cost |
+| `POST /api/quotes/request` | Submit quote request |
+| `POST /api/wholesale/quick-order` | Quick order submission |
+| `GET /api/currency/rates` | Currency conversion rates |
+| `GET /api/sitemap/*` | SEO sitemaps |
+
+---
+
+### Recent Changes Log
+
+| Date | Changes |
+|------|---------|
+| **Jan 2026** | **Quote Request Flow Enhancement** |
+| | - Created `QuoteRequestFormPro` component with 3-step wizard |
+| | - Product search with autocomplete from catalog |
+| | - Quantity +/- controls with MOQ enforcement |
+| | - Two submission options: Website (creates WooCommerce order) or WhatsApp |
+| | - WooCommerce order creation with `_quote_request` meta flag |
+| | - Professional email templates for admin and customer |
+| | - Quote reference ID generation (QR-XXXXX-XXXX format) |
+| | - Success state with "What's Next" steps |
+| **Jan 2026** | Implemented Global MOQ (5 units) and Quantity Discounts for Product 161 |
+| | - Added `QUANTITY_DISCOUNT_RULES` system in commerce-rules.ts |
+| | - Created `QuantityDiscountDisplay` component |
+| | - Updated quantity-selector with MOQ enforcement and discount hints |
+| | - Updated cart-store to calculate discounted prices |
+| | - Updated cart-drawer to show quantity discount pricing |
+
+---
+
+### Quote Request Flow
+
+#### Overview
+The quote request system allows B2B customers to request pricing for bulk orders. Quotes create pending orders in WooCommerce for tracking.
+
+#### Flow Diagram
+```
+Customer visits /wholesale/quote
+         ↓
+Step 1: Select Products (search + quantity)
+         ↓
+Step 2: Business Information (company, contact)
+         ↓
+Step 3: Review & Choose Submission Method
+         ↓
+    ┌────┴────┐
+    ↓         ↓
+ Website    WhatsApp
+    ↓         ↓
+Creates WC   Opens WhatsApp
+Order #      with message
+    ↓         ↓
+Admin/Customer  Direct chat
+emails sent     with team
+    ↓
+Success screen with Quote Reference
+```
+
+#### Key Files
+
+| File | Purpose |
+|------|---------|
+| `components/wholesale/quote-request-form-pro.tsx` | Enhanced 3-step quote wizard |
+| `app/api/quotes/request/route.ts` | API endpoint (creates WC order, sends emails) |
+| `app/(shop)/wholesale/quote/page.tsx` | Quote request page |
+
+#### WooCommerce Integration
+
+When a quote is submitted via website:
+1. Order created with `status: 'pending'`
+2. Meta data includes:
+   - `_quote_id`: Unique quote reference
+   - `_quote_request`: 'yes'
+   - `_business_type`: Customer's business type
+   - `_vat_number`: VAT/Org number
+   - `_preferred_delivery`: Requested delivery date
+   - `_quote_message`: Customer notes
+
+#### Upcoming Features (Quote System)
+
+| Feature | Status | Description |
+|---------|--------|-------------|
+| Quote Templates | Planned | Save quotes as templates for recurring orders |
+| Quote Status Tracking | Planned | View quote status in customer dashboard |
+| Quote-to-Order Conversion | Planned | One-click convert accepted quote to order |
+| Quote Revisions | Planned | Request changes to quotes online |
+| PDF Quote Download | Planned | Generate and download PDF quotes |
+| Quote Expiry | Planned | Auto-expire quotes after X days |
+| Admin Quote Dashboard | Planned | WP admin panel for quote management |
+
+---
+
+### How to Add New Quantity Discounts
+
+1. Open `config/commerce-rules.ts`
+2. Add entry to `QUANTITY_DISCOUNT_RULES` array:
+
+```typescript
+{
+  productId: YOUR_PRODUCT_ID,
+  productName: 'Product Name',
+  basePrice: 100,      // Regular price
+  floorPrice: 70,      // Minimum price (never go below)
+  tiers: [
+    { minQuantity: 1, maxQuantity: 4, unitPrice: 100, label: 'Regular' },
+    { minQuantity: 5, maxQuantity: 49, unitPrice: 85, label: 'Bulk (5+)' },
+    { minQuantity: 50, maxQuantity: null, unitPrice: 75, label: 'Volume (50+)' },
+  ],
+  progressiveDiscount: {  // Optional
+    startAfterQuantity: 50,
+    quantityStep: 10,
+    discountPercent: 5,
+  },
+}
+```
+
+3. The system automatically:
+   - Shows pricing table on product page
+   - Enforces MOQ
+   - Calculates correct prices in cart
+   - Shows "add X more to save" suggestions
+
+---
+
+### Environment Variables Required
+
+```env
+# WooCommerce
+WOOCOMMERCE_URL=https://your-site.com
+WOOCOMMERCE_CONSUMER_KEY=ck_xxx
+WOOCOMMERCE_CONSUMER_SECRET=cs_xxx
+
+# Stripe
+STRIPE_SECRET_KEY=sk_xxx
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_xxx
+
+# WordPress
+WORDPRESS_URL=https://your-site.com
+```
+
+---
+
+### Next Priority Tasks
+
+1. **Complete Quote Request Flow** - Email notifications, admin dashboard
+2. **Business Registration** - VAT validation, WooCommerce customer meta
+3. **Payment Terms** - Net 30/60 for verified businesses
+4. **Business Dashboard** - Order history, reorder, invoices
