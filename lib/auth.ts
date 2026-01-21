@@ -92,6 +92,109 @@ export async function registerUser(data: RegisterData) {
 }
 
 /**
+ * Wholesale Customer Status Types
+ */
+export type WholesaleStatus = 'none' | 'pending' | 'approved' | 'rejected';
+
+export interface BusinessInfo {
+  isBusinessCustomer: boolean;
+  wholesaleStatus: WholesaleStatus;
+  companyName: string | null;
+  vatNumber: string | null;
+  businessType: string | null;
+}
+
+/**
+ * Get wholesale customer status from user metadata
+ */
+export function getWholesaleStatus(user: any): WholesaleStatus {
+  if (!user?.meta_data) return 'none';
+
+  const wholesaleMeta = user.meta_data.find((m: any) => m.key === 'is_wholesale_customer');
+  const customerTypeMeta = user.meta_data.find((m: any) => m.key === 'customer_type');
+
+  // Check if they're a business customer type
+  const isBusinessType = customerTypeMeta?.value === 'business';
+
+  if (!wholesaleMeta && !isBusinessType) return 'none';
+
+  const status = wholesaleMeta?.value;
+
+  if (status === 'pending') return 'pending';
+  if (status === 'yes' || status === '1' || status === 'approved') return 'approved';
+  if (status === 'no' || status === '0' || status === 'rejected') return 'rejected';
+
+  // If they're a business type but no explicit status, treat as pending
+  if (isBusinessType) return 'pending';
+
+  return 'none';
+}
+
+/**
+ * Check if user is an approved wholesale customer
+ */
+export function isApprovedWholesaleCustomer(user: any): boolean {
+  return getWholesaleStatus(user) === 'approved';
+}
+
+/**
+ * Check if user is a business customer (regardless of approval status)
+ */
+export function isBusinessCustomer(user: any): boolean {
+  const status = getWholesaleStatus(user);
+  return status !== 'none';
+}
+
+/**
+ * Get business info from user metadata
+ */
+export function getBusinessInfo(user: any): BusinessInfo {
+  const status = getWholesaleStatus(user);
+
+  if (status === 'none') {
+    return {
+      isBusinessCustomer: false,
+      wholesaleStatus: 'none',
+      companyName: null,
+      vatNumber: null,
+      businessType: null,
+    };
+  }
+
+  const getMeta = (key: string) => {
+    const meta = user?.meta_data?.find((m: any) => m.key === key);
+    return meta?.value || null;
+  };
+
+  return {
+    isBusinessCustomer: true,
+    wholesaleStatus: status,
+    companyName: getMeta('company_name'),
+    vatNumber: getMeta('vat_number'),
+    businessType: getMeta('business_type'),
+  };
+}
+
+/**
+ * Format business type for display
+ */
+export function formatBusinessType(type: string | null): string {
+  if (!type) return 'Business';
+
+  const types: Record<string, string> = {
+    restaurant: 'Restaurant',
+    cafe: 'Café',
+    catering: 'Catering Service',
+    hotel: 'Hotel / Hospitality',
+    pizzeria: 'Pizzeria',
+    grocery: 'Grocery Store',
+    other: 'Other Business',
+  };
+
+  return types[type] || type.charAt(0).toUpperCase() + type.slice(1);
+}
+
+/**
  * Get current user details
  */
 export async function getCurrentUser(token: string) {

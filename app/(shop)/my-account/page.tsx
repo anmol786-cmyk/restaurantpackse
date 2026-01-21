@@ -3,6 +3,7 @@
 import { useEffect, useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useAuthStore } from '@/store/auth-store';
 import { Section, Container } from '@/components/craft';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -11,8 +12,10 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
-import { Package, User, MapPin, LogOut, Loader2, Eye, LayoutDashboard, Download, CreditCard, Edit, Save, X } from 'lucide-react';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Package, User, MapPin, LogOut, Loader2, Eye, LayoutDashboard, Download, CreditCard, Edit, Save, X, Building2, Clock, CheckCircle2, FileText, AlertCircle } from 'lucide-react';
 import { getCustomerOrdersAction, updateCustomerAction } from '@/app/actions/auth';
+import { getBusinessInfo, formatBusinessType, type WholesaleStatus } from '@/lib/auth';
 import type { Order } from '@/types/woocommerce';
 import { format } from 'date-fns';
 import { toast } from 'sonner';
@@ -68,10 +71,13 @@ function MyAccountContent() {
   // Handle tab query parameter
   useEffect(() => {
     const tab = searchParams.get('tab');
-    if (tab && ['dashboard', 'orders', 'downloads', 'addresses', 'payment', 'profile'].includes(tab)) {
+    if (tab && ['dashboard', 'orders', 'downloads', 'addresses', 'payment', 'profile', 'business'].includes(tab)) {
       setActiveTab(tab);
     }
   }, [searchParams]);
+
+  // Get business info
+  const businessInfo = getBusinessInfo(user);
 
   // Initialize form data from user
   useEffect(() => {
@@ -257,30 +263,86 @@ function MyAccountContent() {
     }
   };
 
+  // Helper to get status badge
+  const getWholesaleStatusBadge = (status: WholesaleStatus) => {
+    switch (status) {
+      case 'approved':
+        return <Badge className="bg-green-500 hover:bg-green-600"><CheckCircle2 className="w-3 h-3 mr-1" /> Verified</Badge>;
+      case 'pending':
+        return <Badge className="bg-yellow-500 hover:bg-yellow-600"><Clock className="w-3 h-3 mr-1" /> Pending Verification</Badge>;
+      case 'rejected':
+        return <Badge variant="destructive"><AlertCircle className="w-3 h-3 mr-1" /> Not Approved</Badge>;
+      default:
+        return null;
+    }
+  };
+
   return (
     <Section className="bg-neutral-50 dark:bg-neutral-900/50">
       <Container>
-        <div className="mb-8 flex items-center justify-between">
+        {/* Verification Status Banner */}
+        {businessInfo.isBusinessCustomer && businessInfo.wholesaleStatus === 'pending' && (
+          <Alert className="mb-6 border-yellow-200 bg-yellow-50 dark:bg-yellow-900/20">
+            <Clock className="h-4 w-4 text-yellow-600" />
+            <AlertTitle className="text-yellow-800 dark:text-yellow-200">Account Verification Pending</AlertTitle>
+            <AlertDescription className="text-yellow-700 dark:text-yellow-300">
+              Your business account is under review. Our team will verify your details within 24-48 hours.
+              Once approved, you&apos;ll get access to wholesale pricing and payment terms.
+            </AlertDescription>
+          </Alert>
+        )}
+
+        {businessInfo.isBusinessCustomer && businessInfo.wholesaleStatus === 'approved' && (
+          <Alert className="mb-6 border-green-200 bg-green-50 dark:bg-green-900/20">
+            <CheckCircle2 className="h-4 w-4 text-green-600" />
+            <AlertTitle className="text-green-800 dark:text-green-200">Wholesale Account Active</AlertTitle>
+            <AlertDescription className="text-green-700 dark:text-green-300">
+              You have access to wholesale pricing, volume discounts, and business payment terms.
+            </AlertDescription>
+          </Alert>
+        )}
+
+        <div className="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="font-heading text-3xl font-bold text-primary-950 dark:text-primary-50">
-              My Account
-            </h1>
+            <div className="flex items-center gap-3 mb-1">
+              <h1 className="font-heading text-3xl font-bold text-primary-950 dark:text-primary-50">
+                My Account
+              </h1>
+              {businessInfo.isBusinessCustomer && (
+                <Badge variant="outline" className="border-primary text-primary">
+                  <Building2 className="w-3 h-3 mr-1" />
+                  Business
+                </Badge>
+              )}
+            </div>
             <p className="text-neutral-600 dark:text-neutral-400">
               Welcome back, {user.first_name}!
+              {businessInfo.companyName && (
+                <span className="ml-2 text-primary font-medium">({businessInfo.companyName})</span>
+              )}
             </p>
           </div>
-          <Button variant="outline" onClick={() => logout()} className="gap-2">
-            <LogOut className="h-4 w-4" />
-            Sign Out
-          </Button>
+          <div className="flex items-center gap-3">
+            {businessInfo.isBusinessCustomer && getWholesaleStatusBadge(businessInfo.wholesaleStatus)}
+            <Button variant="outline" onClick={() => logout()} className="gap-2">
+              <LogOut className="h-4 w-4" />
+              Sign Out
+            </Button>
+          </div>
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-6">
+          <TabsList className={`grid w-full ${businessInfo.isBusinessCustomer ? 'grid-cols-4 lg:grid-cols-7' : 'grid-cols-3 lg:grid-cols-6'}`}>
             <TabsTrigger value="dashboard" className="gap-2">
               <LayoutDashboard className="h-4 w-4" />
               <span className="hidden sm:inline">Dashboard</span>
             </TabsTrigger>
+            {businessInfo.isBusinessCustomer && (
+              <TabsTrigger value="business" className="gap-2">
+                <Building2 className="h-4 w-4" />
+                <span className="hidden sm:inline">Business</span>
+              </TabsTrigger>
+            )}
             <TabsTrigger value="orders" className="gap-2">
               <Package className="h-4 w-4" />
               <span className="hidden sm:inline">Orders</span>
@@ -368,6 +430,139 @@ function MyAccountContent() {
               </CardContent>
             </Card>
           </TabsContent>
+
+          {/* Business Account Tab - Only shown for business customers */}
+          {businessInfo.isBusinessCustomer && (
+            <TabsContent value="business">
+              <div className="space-y-6">
+                {/* Business Status Card */}
+                <Card>
+                  <CardHeader>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <CardTitle className="flex items-center gap-2">
+                          <Building2 className="h-5 w-5" />
+                          Business Account
+                        </CardTitle>
+                        <CardDescription>Your wholesale account details and benefits</CardDescription>
+                      </div>
+                      {getWholesaleStatusBadge(businessInfo.wholesaleStatus)}
+                    </div>
+                  </CardHeader>
+                  <CardContent className="space-y-6">
+                    {/* Business Info Grid */}
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <div className="rounded-lg border p-4">
+                        <h4 className="font-semibold mb-3 flex items-center gap-2">
+                          <Building2 className="h-4 w-4 text-primary" />
+                          Company Information
+                        </h4>
+                        <div className="space-y-2 text-sm">
+                          <div className="flex justify-between">
+                            <span className="text-muted-foreground">Company Name:</span>
+                            <span className="font-medium">{businessInfo.companyName || 'N/A'}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-muted-foreground">Business Type:</span>
+                            <span className="font-medium">{formatBusinessType(businessInfo.businessType)}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-muted-foreground">VAT Number:</span>
+                            <span className="font-medium font-mono">{businessInfo.vatNumber || 'N/A'}</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="rounded-lg border p-4">
+                        <h4 className="font-semibold mb-3 flex items-center gap-2">
+                          <FileText className="h-4 w-4 text-primary" />
+                          Account Benefits
+                        </h4>
+                        <ul className="space-y-2 text-sm">
+                          <li className="flex items-center gap-2">
+                            {businessInfo.wholesaleStatus === 'approved' ? (
+                              <CheckCircle2 className="h-4 w-4 text-green-500" />
+                            ) : (
+                              <Clock className="h-4 w-4 text-yellow-500" />
+                            )}
+                            <span>Wholesale pricing on all products</span>
+                          </li>
+                          <li className="flex items-center gap-2">
+                            {businessInfo.wholesaleStatus === 'approved' ? (
+                              <CheckCircle2 className="h-4 w-4 text-green-500" />
+                            ) : (
+                              <Clock className="h-4 w-4 text-yellow-500" />
+                            )}
+                            <span>Volume discounts</span>
+                          </li>
+                          <li className="flex items-center gap-2">
+                            {businessInfo.wholesaleStatus === 'approved' ? (
+                              <CheckCircle2 className="h-4 w-4 text-green-500" />
+                            ) : (
+                              <Clock className="h-4 w-4 text-yellow-500" />
+                            )}
+                            <span>Priority customer support</span>
+                          </li>
+                          <li className="flex items-center gap-2">
+                            <Clock className="h-4 w-4 text-muted-foreground" />
+                            <span className="text-muted-foreground">Payment terms (Coming soon)</span>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+
+                    {/* Quick Actions */}
+                    <div className="pt-4 border-t">
+                      <h4 className="font-semibold mb-3">Quick Actions</h4>
+                      <div className="flex flex-wrap gap-3">
+                        <Button asChild variant="outline">
+                          <Link href="/wholesale/quote">
+                            <FileText className="h-4 w-4 mr-2" />
+                            Request Quote
+                          </Link>
+                        </Button>
+                        <Button asChild variant="outline">
+                          <Link href="/shop">
+                            <Package className="h-4 w-4 mr-2" />
+                            Browse Products
+                          </Link>
+                        </Button>
+                        <Button asChild variant="outline">
+                          <Link href="/contact">
+                            <User className="h-4 w-4 mr-2" />
+                            Contact Sales
+                          </Link>
+                        </Button>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Pending Verification Notice */}
+                {businessInfo.wholesaleStatus === 'pending' && (
+                  <Card className="border-yellow-200 bg-yellow-50/50 dark:bg-yellow-900/10">
+                    <CardContent className="pt-6">
+                      <div className="flex items-start gap-4">
+                        <div className="rounded-full bg-yellow-100 p-3 dark:bg-yellow-900/30">
+                          <Clock className="h-6 w-6 text-yellow-600" />
+                        </div>
+                        <div>
+                          <h3 className="font-semibold text-yellow-800 dark:text-yellow-200">Verification In Progress</h3>
+                          <p className="text-sm text-yellow-700 dark:text-yellow-300 mt-1">
+                            Our team is reviewing your business details. This usually takes 24-48 business hours.
+                            You&apos;ll receive an email notification once your account is verified.
+                          </p>
+                          <p className="text-sm text-yellow-600 dark:text-yellow-400 mt-2">
+                            In the meantime, you can browse our products and prepare your first wholesale order.
+                          </p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                )}
+              </div>
+            </TabsContent>
+          )}
 
           <TabsContent value="downloads">
             <Card>

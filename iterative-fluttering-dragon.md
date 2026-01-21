@@ -814,3 +814,111 @@ WORDPRESS_URL=https://your-site.com
 2. **Business Registration** - VAT validation, WooCommerce customer meta
 3. **Payment Terms** - Net 30/60 for verified businesses
 4. **Business Dashboard** - Order history, reorder, invoices
+
+---
+
+## Business Registration System Documentation
+
+### Overview
+The wholesale business registration system allows B2B customers to register for wholesale pricing and benefits.
+
+### Registration Flow
+
+#### 1. Frontend Form (`/wholesale/register`)
+**Component:** `components/auth/business-register-form.tsx`
+
+3-step multi-step form:
+
+| Step | Fields |
+|------|--------|
+| **1. Account** | First name, Last name, Username, Email, Password |
+| **2. Business** | Company name, VAT/Org number, Business type |
+| **3. Address** | Phone, Delivery address, City, Postcode, Country |
+
+**Business Types:**
+- Restaurant
+- Café
+- Catering Service
+- Hotel / Hospitality
+- Pizzeria
+- Grocery Store / Retailer
+- Other
+
+**Supported Countries:** SE, NO, DK, FI, DE
+
+#### 2. Backend Registration
+**Server Action:** `app/actions/auth.ts` → `registerBusinessAction()`
+
+Creates WooCommerce customer via REST API with metadata:
+
+```javascript
+meta_data: [
+  { key: 'is_wholesale_customer', value: 'pending' },
+  { key: 'company_name', value: '...' },
+  { key: 'vat_number', value: '...' },
+  { key: 'business_type', value: 'restaurant|cafe|catering|hotel|pizzeria|grocery|other' },
+  { key: 'customer_type', value: 'business' }
+]
+```
+
+#### 3. Wholesale Status Values
+| Status | Meaning |
+|--------|---------|
+| `pending` | Awaiting admin verification |
+| `yes` or `1` | Approved wholesale customer |
+| `no` or `0` | Rejected/disabled |
+
+#### 4. How Wholesale Status is Checked
+**Component:** `components/wholesale/wholesale-price-display.tsx`
+
+```javascript
+const isWholesale = user?.meta_data?.some(m =>
+  m.key === 'customer_type' && m.value === 'business'
+) || user?.meta_data?.some(m =>
+  m.key === 'is_wholesale_customer' && (m.value === '1' || m.value === 'yes')
+);
+```
+
+#### 5. Admin Approval Workflow (WordPress)
+1. WP Admin → WooCommerce → Customers
+2. Find customer by email
+3. Edit → Meta Data section
+4. Change `is_wholesale_customer` from `pending` to `yes`
+5. Save
+
+### Dashboard Experience (`/my-account`)
+**Component:** `app/(shop)/my-account/page.tsx`
+
+All users (regular + business) see:
+- Dashboard overview (orders count, downloads, addresses)
+- Order history with status badges
+- Downloads section
+- Billing/Shipping address management
+- Payment methods
+- Profile settings
+
+### Wholesale-Specific Features
+- **Product Cards:** Show tiered pricing for verified wholesale customers
+- **Pricing Display:** `components/wholesale/wholesale-price-display.tsx`
+- **Quote System:** `components/wholesale/quote-request-form-pro.tsx`
+
+### Files Reference
+| File | Purpose |
+|------|---------|
+| `components/auth/business-register-form.tsx` | 3-step registration form |
+| `app/actions/auth.ts` | Server actions for registration |
+| `app/(shop)/my-account/page.tsx` | Customer dashboard |
+| `components/wholesale/wholesale-price-display.tsx` | Wholesale pricing display |
+| `components/wholesale/quote-request-form-pro.tsx` | Quote request form |
+| `store/auth-store.ts` | Auth state (Zustand) |
+| `lib/auth.ts` | Auth types and utilities |
+
+### Enhancement Roadmap
+- [x] Basic business registration form
+- [x] WooCommerce customer creation with metadata
+- [ ] Business account badge in dashboard
+- [ ] Verification status notice ("Pending Approval")
+- [ ] Wholesale-specific dashboard tab
+- [ ] Quote history in dashboard
+- [ ] Email notifications for approval
+- [ ] Payment terms (Net 30/60)
