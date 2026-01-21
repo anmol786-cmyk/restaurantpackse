@@ -22,6 +22,7 @@ import { cn } from '@/lib/utils';
 import { useCurrency } from '@/hooks/use-currency';
 import type { Product } from '@/types/woocommerce';
 import Image from 'next/image';
+import Link from 'next/link';
 import { CommerceRules, GLOBAL_MOQ } from '@/config/commerce-rules';
 
 // Schema for quote form
@@ -1110,10 +1111,10 @@ function QuoteSuccessState({
             Submit Another Quote
           </Button>
           <Button asChild>
-            <a href="/wholesale">
+            <Link href="/wholesale">
               Explore Wholesale
               <ArrowRight className="w-4 h-4 ml-2" />
-            </a>
+            </Link>
           </Button>
         </div>
 

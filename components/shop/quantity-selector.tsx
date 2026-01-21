@@ -46,9 +46,12 @@ export function QuantitySelector({
 
   // Update quantity when initialQuantity changes (for cart sync)
   useEffect(() => {
-    if (initialQuantity !== quantity) {
-      setQuantity(Math.max(initialQuantity, effectiveMin));
-    }
+    setQuantity(prev => {
+      if (initialQuantity !== prev) {
+        return Math.max(initialQuantity, effectiveMin);
+      }
+      return prev;
+    });
   }, [initialQuantity, effectiveMin]);
 
   const handleDecrease = () => {

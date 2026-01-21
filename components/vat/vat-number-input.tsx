@@ -36,38 +36,22 @@ export function VATNumberInput({
   useEffect(() => {
     if (!value) {
       setValidationResult(null);
-      if (onValidationChange) {
-        onValidationChange(false, null);
-      }
+      onValidationChange?.(false, null);
       return;
     }
 
     // Debounce validation
     const timeoutId = setTimeout(() => {
-      handleValidate();
+      setIsValidating(true);
+      const result = validateVATNumberFormat(value);
+      setValidationResult(result);
+      onValidationChange?.(result.valid, result.countryCode);
+      setIsValidating(false);
     }, 500);
 
     return () => clearTimeout(timeoutId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value]);
-
-  const handleValidate = () => {
-    if (!value) {
-      setValidationResult(null);
-      return;
-    }
-
-    setIsValidating(true);
-
-    // Perform format validation
-    const result = validateVATNumberFormat(value);
-    setValidationResult(result);
-
-    if (onValidationChange) {
-      onValidationChange(result.valid, result.countryCode);
-    }
-
-    setIsValidating(false);
-  };
 
   const getStatusIcon = () => {
     if (isValidating) {
