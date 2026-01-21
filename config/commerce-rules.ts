@@ -113,14 +113,9 @@ export const QUANTITY_DISCOUNT_RULES: QuantityDiscountRule[] = [
     tiers: [
       { minQuantity: 1, maxQuantity: 5, unitPrice: 450, label: 'Regular Price' },
       { minQuantity: 6, maxQuantity: 19, unitPrice: 420, label: 'MOQ Price (6+)' },
-      { minQuantity: 20, maxQuantity: 49, unitPrice: 400, label: 'Bulk Price (20+)' },
-      { minQuantity: 50, maxQuantity: null, unitPrice: 380, label: 'Volume Price (50+)' },
+      { minQuantity: 20, maxQuantity: 199, unitPrice: 400, label: 'Bulk Price (20+)' },
+      { minQuantity: 200, maxQuantity: null, unitPrice: 370, label: 'Volume Price (200+)' },
     ],
-    progressiveDiscount: {
-      startAfterQuantity: 50,  // Progressive discounts start after 50 units
-      quantityStep: 10,        // Every 10 additional units
-      discountPercent: 2,      // Gives 2% additional discount
-    },
   },
 ];
 
