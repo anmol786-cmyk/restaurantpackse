@@ -125,7 +125,7 @@ export async function loginUserAction(credentials: LoginCredentials) {
     console.log('Trying Simple JWT Login URL:', simpleJwtUrl);
 
     try {
-        const authKey = process.env.SIMPLE_JWT_AUTH_KEY || 'IdealIndiskaStockholmAuthKey';
+        const authKey = process.env.SIMPLE_JWT_AUTH_KEY || 'AnmolWholesaleAuthKeYs';
 
         const response = await fetch(simpleJwtUrl, {
             method: 'POST',
