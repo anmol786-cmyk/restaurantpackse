@@ -2,7 +2,7 @@
 
 import { WC_API_CONFIG } from '@/lib/woocommerce/config';
 import { RegisterData, LoginCredentials, BusinessRegisterData } from '@/lib/auth';
-import { getCustomerOrders } from '@/lib/woocommerce/orders';
+import { getCustomerOrders, getCustomerQuotes, getQuotesByEmail } from '@/lib/woocommerce/orders';
 
 export async function registerBusinessAction(data: BusinessRegisterData) {
     const baseUrl = WC_API_CONFIG.baseUrl;
@@ -495,5 +495,37 @@ export async function updateCustomerAction(customerId: number, data: any) {
     } catch (error: any) {
         console.error('Update customer error:', error);
         return { success: false, error: error.message || 'Failed to update customer' };
+    }
+}
+
+/**
+ * Get quote requests for the current logged-in customer
+ */
+export async function getCustomerQuotesAction(customerId: number, params?: {
+    per_page?: number;
+    page?: number;
+}) {
+    try {
+        const quotes = await getCustomerQuotes(customerId, params);
+        return { success: true, data: quotes };
+    } catch (error: any) {
+        console.error('Get customer quotes error:', error);
+        return { success: false, error: error.message || 'Failed to fetch quotes' };
+    }
+}
+
+/**
+ * Get quote requests by email (for users who submitted quotes before creating account)
+ */
+export async function getQuotesByEmailAction(email: string, params?: {
+    per_page?: number;
+    page?: number;
+}) {
+    try {
+        const quotes = await getQuotesByEmail(email, params);
+        return { success: true, data: quotes };
+    } catch (error: any) {
+        console.error('Get quotes by email error:', error);
+        return { success: false, error: error.message || 'Failed to fetch quotes' };
     }
 }

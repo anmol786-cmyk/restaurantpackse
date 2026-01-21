@@ -50,6 +50,7 @@ interface CartState {
 
   // Actions
   addItem: (product: Product, quantity?: number, variation?: ProductVariation) => void;
+  addItemFromLineItem: (lineItem: { product_id: number; name: string; price: string; quantity: number; image?: { src: string } }) => void;
   removeItem: (key: string) => void;
   updateQuantity: (key: string, quantity: number) => void;
   clearCart: () => void;
@@ -182,6 +183,111 @@ export const useCartStore = create<CartState>()(
             price,
             product,
             variation,
+          };
+
+          return {
+            items: [...state.items, newItem],
+          };
+        });
+      },
+
+      // Add item from order line item (for repeat orders)
+      addItemFromLineItem: (lineItem) => {
+        const key = generateCartKey(lineItem.product_id);
+        const state = get();
+        const existingItem = state.items.find((item) => item.key === key);
+
+        const price = parseFloat(lineItem.price) || 0;
+        const quantity = lineItem.quantity || 1;
+
+        // Create a minimal product object
+        const minimalProduct = {
+          id: lineItem.product_id,
+          name: lineItem.name,
+          price: lineItem.price,
+          regular_price: lineItem.price,
+          sale_price: '',
+          images: lineItem.image ? [{ id: 0, src: lineItem.image.src, name: '', alt: '' }] : [],
+          slug: lineItem.name.toLowerCase().replace(/\s+/g, '-'),
+          permalink: '',
+          date_created: '',
+          date_created_gmt: '',
+          date_modified: '',
+          date_modified_gmt: '',
+          date_on_sale_from: null,
+          date_on_sale_from_gmt: null,
+          date_on_sale_to: null,
+          date_on_sale_to_gmt: null,
+          price_html: '',
+          type: 'simple',
+          status: 'publish',
+          featured: false,
+          catalog_visibility: 'visible',
+          description: '',
+          short_description: '',
+          sku: '',
+          on_sale: false,
+          purchasable: true,
+          total_sales: 0,
+          virtual: false,
+          downloadable: false,
+          downloads: [],
+          download_limit: -1,
+          download_expiry: -1,
+          external_url: '',
+          button_text: '',
+          tax_status: 'taxable',
+          tax_class: '',
+          manage_stock: false,
+          stock_quantity: null,
+          stock_status: 'instock',
+          backorders: 'no',
+          backorders_allowed: false,
+          backordered: false,
+          sold_individually: false,
+          weight: '',
+          dimensions: { length: '', width: '', height: '' },
+          shipping_required: true,
+          shipping_taxable: true,
+          shipping_class: '',
+          shipping_class_id: 0,
+          reviews_allowed: true,
+          average_rating: '0',
+          rating_count: 0,
+          related_ids: [],
+          upsell_ids: [],
+          cross_sell_ids: [],
+          parent_id: 0,
+          purchase_note: '',
+          categories: [],
+          tags: [],
+          attributes: [],
+          default_attributes: [],
+          variations: [],
+          grouped_products: [],
+          menu_order: 0,
+          meta_data: [],
+        } as unknown as Product;
+
+        set((state) => {
+          if (existingItem) {
+            // Update quantity of existing item
+            return {
+              items: state.items.map((item) =>
+                item.key === key
+                  ? { ...item, quantity: item.quantity + quantity }
+                  : item
+              ),
+            };
+          }
+
+          // Add new item
+          const newItem: CartItem = {
+            key,
+            productId: lineItem.product_id,
+            quantity,
+            price,
+            product: minimalProduct,
           };
 
           return {

@@ -14,20 +14,28 @@ import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Package, User, MapPin, LogOut, Loader2, Eye, LayoutDashboard, Download, CreditCard, Edit, Save, X, Building2, Clock, CheckCircle2, FileText, AlertCircle } from 'lucide-react';
-import { getCustomerOrdersAction, updateCustomerAction } from '@/app/actions/auth';
+import { getCustomerOrdersAction, updateCustomerAction, getCustomerQuotesAction } from '@/app/actions/auth';
 import { getBusinessInfo, formatBusinessType, type WholesaleStatus } from '@/lib/auth';
+import { useCartStore } from '@/store/cart-store';
 import type { Order } from '@/types/woocommerce';
 import { format } from 'date-fns';
 import { toast } from 'sonner';
 
 function MyAccountContent() {
   const { user, isAuthenticated, logout, setUser } = useAuthStore();
+  const { addItemFromLineItem } = useCartStore();
   const router = useRouter();
   const searchParams = useSearchParams();
   const [orders, setOrders] = useState<Order[]>([]);
   const [isLoadingOrders, setIsLoadingOrders] = useState(true);
   const [ordersError, setOrdersError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState('dashboard');
+
+  // Quote history state
+  const [quotes, setQuotes] = useState<Order[]>([]);
+  const [isLoadingQuotes, setIsLoadingQuotes] = useState(true);
+  const [quotesError, setQuotesError] = useState<string | null>(null);
+  const [isReordering, setIsReordering] = useState<number | null>(null);
 
   // Profile editing state
   const [isEditingProfile, setIsEditingProfile] = useState(false);
@@ -155,6 +163,99 @@ function MyAccountContent() {
       setIsLoadingOrders(false);
     }
   }, [user?.id, user]);
+
+  // Fetch customer quotes (for business customers)
+  useEffect(() => {
+    async function fetchQuotes() {
+      if (!user?.id || user.id === 0) {
+        setIsLoadingQuotes(false);
+        return;
+      }
+
+      try {
+        setIsLoadingQuotes(true);
+        setQuotesError(null);
+        const result = await getCustomerQuotesAction(user.id, {
+          per_page: 20,
+          page: 1,
+        });
+
+        if (result.success && result.data) {
+          setQuotes(result.data);
+        } else {
+          setQuotesError(result.error || 'Failed to load quotes');
+        }
+      } catch (error) {
+        console.error('Error fetching quotes:', error);
+        setQuotesError('An unexpected error occurred');
+      } finally {
+        setIsLoadingQuotes(false);
+      }
+    }
+
+    if (user && businessInfo.isBusinessCustomer) {
+      fetchQuotes();
+    } else {
+      setIsLoadingQuotes(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.id, user]);
+
+  // Handle repeat order from quote
+  const handleRepeatOrder = async (quote: Order) => {
+    if (!quote.line_items || quote.line_items.length === 0) {
+      toast.error('No items found in this quote');
+      return;
+    }
+
+    setIsReordering(quote.id);
+
+    try {
+      let addedCount = 0;
+      for (const item of quote.line_items) {
+        if (item.product_id) {
+          addItemFromLineItem({
+            product_id: item.product_id,
+            name: item.name,
+            price: item.price?.toString() || '0',
+            quantity: item.quantity,
+            image: item.image,
+          });
+          addedCount++;
+        }
+      }
+
+      toast.success(`Added ${addedCount} item(s) from quote to cart`);
+      router.push('/cart');
+    } catch (error) {
+      console.error('Error adding quote items to cart:', error);
+      toast.error('Failed to add items to cart');
+    } finally {
+      setIsReordering(null);
+    }
+  };
+
+  // Get quote status from metadata
+  const getQuoteStatus = (quote: Order) => {
+    const quoteId = quote.meta_data?.find((m: any) => m.key === '_quote_id')?.value;
+    const status = quote.status;
+
+    // Map WooCommerce order status to quote status
+    if (status === 'pending') return { label: 'Pending Review', color: 'yellow' };
+    if (status === 'processing') return { label: 'Being Processed', color: 'blue' };
+    if (status === 'on-hold') return { label: 'Awaiting Response', color: 'orange' };
+    if (status === 'completed') return { label: 'Accepted', color: 'green' };
+    if (status === 'cancelled') return { label: 'Cancelled', color: 'red' };
+    if (status === 'failed') return { label: 'Declined', color: 'red' };
+
+    return { label: status || 'Unknown', color: 'gray' };
+  };
+
+  // Get quote reference ID from metadata
+  const getQuoteRef = (quote: Order): string => {
+    const quoteId = quote.meta_data?.find((m: any) => m.key === '_quote_id')?.value;
+    return typeof quoteId === 'string' ? quoteId : `#${quote.id}`;
+  };
 
   if (!user) return null;
 
@@ -560,6 +661,116 @@ function MyAccountContent() {
                     </CardContent>
                   </Card>
                 )}
+
+                {/* Quote History Section */}
+                <Card>
+                  <CardHeader>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <CardTitle className="flex items-center gap-2">
+                          <FileText className="h-5 w-5" />
+                          Quote History
+                        </CardTitle>
+                        <CardDescription>Your submitted quote requests and their status</CardDescription>
+                      </div>
+                      <Button asChild size="sm">
+                        <Link href="/wholesale/quote">
+                          <FileText className="h-4 w-4 mr-2" />
+                          New Quote
+                        </Link>
+                      </Button>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    {isLoadingQuotes ? (
+                      <div className="flex h-32 flex-col items-center justify-center">
+                        <Loader2 className="mb-2 h-6 w-6 animate-spin text-primary" />
+                        <p className="text-sm text-neutral-500">Loading your quotes...</p>
+                      </div>
+                    ) : quotesError ? (
+                      <div className="flex h-32 flex-col items-center justify-center text-center">
+                        <AlertCircle className="mb-2 h-6 w-6 text-red-400" />
+                        <p className="text-sm text-red-600">{quotesError}</p>
+                      </div>
+                    ) : quotes.length === 0 ? (
+                      <div className="flex h-32 flex-col items-center justify-center rounded-lg border border-dashed border-neutral-200 bg-neutral-50 text-center dark:border-neutral-800 dark:bg-neutral-900/50">
+                        <FileText className="mb-2 h-6 w-6 text-neutral-400" />
+                        <p className="text-sm text-neutral-500">No quotes submitted yet.</p>
+                        <Button asChild variant="link" size="sm">
+                          <Link href="/wholesale/quote">Request your first quote</Link>
+                        </Button>
+                      </div>
+                    ) : (
+                      <div className="space-y-3">
+                        {quotes.map((quote) => {
+                          const status = getQuoteStatus(quote);
+                          const quoteRef = getQuoteRef(quote);
+                          const totalItems = quote.line_items?.reduce((sum, item) => sum + item.quantity, 0) || 0;
+
+                          return (
+                            <div
+                              key={quote.id}
+                              className="rounded-lg border border-neutral-200 bg-white p-4 transition-shadow hover:shadow-md dark:border-neutral-800 dark:bg-neutral-900"
+                            >
+                              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                                <div className="flex-1">
+                                  <div className="flex items-center gap-2 mb-1">
+                                    <h4 className="font-semibold">Quote {quoteRef}</h4>
+                                    <Badge
+                                      className={`text-xs ${
+                                        status.color === 'green' ? 'bg-green-500 hover:bg-green-600' :
+                                        status.color === 'yellow' ? 'bg-yellow-500 hover:bg-yellow-600' :
+                                        status.color === 'blue' ? 'bg-blue-500 hover:bg-blue-600' :
+                                        status.color === 'orange' ? 'bg-orange-500 hover:bg-orange-600' :
+                                        status.color === 'red' ? 'bg-red-500 hover:bg-red-600' :
+                                        'bg-gray-500 hover:bg-gray-600'
+                                      }`}
+                                    >
+                                      {status.label}
+                                    </Badge>
+                                  </div>
+                                  <p className="text-sm text-muted-foreground">
+                                    Submitted {format(new Date(quote.date_created), 'MMM dd, yyyy')} • {totalItems} item(s) • {quote.currency} {quote.total}
+                                  </p>
+
+                                  {/* Show items preview */}
+                                  <div className="mt-2 flex flex-wrap gap-1">
+                                    {quote.line_items?.slice(0, 3).map((item, idx) => (
+                                      <span key={idx} className="text-xs bg-neutral-100 dark:bg-neutral-800 px-2 py-0.5 rounded">
+                                        {item.name} x{item.quantity}
+                                      </span>
+                                    ))}
+                                    {quote.line_items && quote.line_items.length > 3 && (
+                                      <span className="text-xs text-muted-foreground">
+                                        +{quote.line_items.length - 3} more
+                                      </span>
+                                    )}
+                                  </div>
+                                </div>
+
+                                <div className="flex items-center gap-2">
+                                  <Button
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={() => handleRepeatOrder(quote)}
+                                    disabled={isReordering === quote.id}
+                                  >
+                                    {isReordering === quote.id ? (
+                                      <Loader2 className="h-4 w-4 animate-spin mr-1" />
+                                    ) : (
+                                      <Package className="h-4 w-4 mr-1" />
+                                    )}
+                                    Repeat Order
+                                  </Button>
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
               </div>
             </TabsContent>
           )}

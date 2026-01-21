@@ -413,6 +413,86 @@ export async function validateShippingPostcode(postcode: string, country: string
 }
 
 /**
+ * Get quote requests for a specific customer
+ * Quotes are orders with meta_data _quote_request = 'yes'
+ */
+export async function getCustomerQuotes(customerId: number, params?: {
+    per_page?: number;
+    page?: number;
+}): Promise<Order[]> {
+    const queryParams = new URLSearchParams({
+        customer: customerId.toString(),
+        per_page: params?.per_page?.toString() || '20',
+        page: params?.page?.toString() || '1',
+        status: 'any', // Include all statuses
+    });
+
+    const response = await fetch(
+        getWooCommerceUrl(`/orders?${queryParams.toString()}`),
+        {
+            headers: {
+                'Authorization': getWooCommerceAuthHeader(),
+            },
+            cache: 'no-store',
+        }
+    );
+
+    if (!response.ok) {
+        throw new Error('Failed to fetch customer quotes');
+    }
+
+    const orders = await parseJsonResponse(response);
+
+    // Filter to only include orders that are quote requests
+    return orders.filter((order: Order) => {
+        const isQuote = order.meta_data?.some(
+            (meta: any) => meta.key === '_quote_request' && meta.value === 'yes'
+        );
+        return isQuote;
+    });
+}
+
+/**
+ * Get quote by email (for non-logged in users who submitted quotes)
+ */
+export async function getQuotesByEmail(email: string, params?: {
+    per_page?: number;
+    page?: number;
+}): Promise<Order[]> {
+    const queryParams = new URLSearchParams({
+        per_page: params?.per_page?.toString() || '20',
+        page: params?.page?.toString() || '1',
+        status: 'any',
+        search: email,
+    });
+
+    const response = await fetch(
+        getWooCommerceUrl(`/orders?${queryParams.toString()}`),
+        {
+            headers: {
+                'Authorization': getWooCommerceAuthHeader(),
+            },
+            cache: 'no-store',
+        }
+    );
+
+    if (!response.ok) {
+        throw new Error('Failed to fetch quotes by email');
+    }
+
+    const orders = await parseJsonResponse(response);
+
+    // Filter to only include orders that are quote requests and match the email
+    return orders.filter((order: Order) => {
+        const isQuote = order.meta_data?.some(
+            (meta: any) => meta.key === '_quote_request' && meta.value === 'yes'
+        );
+        const matchesEmail = order.billing?.email?.toLowerCase() === email.toLowerCase();
+        return isQuote && matchesEmail;
+    });
+}
+
+/**
  * Extract Stripe PaymentIntent client_secret from order metadata
  * WooCommerce Stripe plugin stores this in order meta
  */
