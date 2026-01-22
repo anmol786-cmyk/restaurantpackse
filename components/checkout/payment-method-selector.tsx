@@ -6,9 +6,11 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Card } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
-import { CreditCard, Banknote, Smartphone, Loader2, FileText, Building2 } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { CreditCard, Banknote, Smartphone, Loader2, FileText, Building2, Wallet } from 'lucide-react';
+import { cn, formatPrice } from '@/lib/utils';
 import { useAuthStore } from '@/store/auth-store';
+import { getCreditStatus, getCreditLimit, hasAvailableCredit } from '@/lib/auth';
+import { CREDIT_TERMS } from '@/config/commerce-rules';
 
 export interface PaymentMethod {
     id: string;
@@ -22,6 +24,7 @@ interface PaymentMethodSelectorProps {
     selectedMethod: string;
     onMethodChange: (methodId: string) => void;
     className?: string;
+    orderTotal?: number;
 }
 
 const getPaymentIcon = (methodId: string) => {
@@ -38,6 +41,8 @@ const getPaymentIcon = (methodId: string) => {
         case 'invoice_net30':
         case 'invoice_net60':
             return <FileText className="h-5 w-5" />;
+        case 'credit_net28':
+            return <Wallet className="h-5 w-5" />;
         default:
             return <CreditCard className="h-5 w-5" />;
     }
@@ -47,6 +52,7 @@ export function PaymentMethodSelector({
     selectedMethod,
     onMethodChange,
     className,
+    orderTotal = 0,
 }: PaymentMethodSelectorProps) {
     const { user } = useAuthStore();
     const [methods, setMethods] = useState<PaymentMethod[]>([]);
@@ -62,6 +68,16 @@ export function PaymentMethodSelector({
     ) || user?.meta_data?.some(
         m => m.key === 'is_wholesale_customer' && (m.value === '1' || m.value === 'yes')
     );
+
+    // Check credit status for approved business customers
+    const creditStatus = getCreditStatus(user);
+    const hasCreditApproved = creditStatus === 'approved';
+    const creditLimit = getCreditLimit(user);
+    const creditUsed = Number(user?.meta_data?.find(m => m.key === 'credit_used')?.value || 0);
+    const creditAvailable = creditLimit - creditUsed;
+    const canUseCredit = hasCreditApproved &&
+        orderTotal >= CREDIT_TERMS.minOrderForCredit &&
+        hasAvailableCredit(user, orderTotal);
 
     const fetchPaymentGateways = useCallback(async () => {
         setLoading(true);
@@ -102,6 +118,23 @@ export function PaymentMethodSelector({
                 });
             }
 
+            // Add credit payment method for approved credit customers
+            if (hasCreditApproved) {
+                const creditDescription = canUseCredit
+                    ? `Pay within ${CREDIT_TERMS.defaultCreditDays} days. Available credit: ${formatPrice(creditAvailable, 'SEK')}`
+                    : orderTotal < CREDIT_TERMS.minOrderForCredit
+                        ? `Minimum order ${formatPrice(CREDIT_TERMS.minOrderForCredit, 'SEK')} required for credit payment.`
+                        : `Insufficient credit. Available: ${formatPrice(creditAvailable, 'SEK')}`;
+
+                formattedMethods.push({
+                    id: 'credit_net28',
+                    title: `Credit (Net ${CREDIT_TERMS.defaultCreditDays})`,
+                    description: creditDescription,
+                    enabled: canUseCredit,
+                    icon: getPaymentIcon('credit_net28'),
+                });
+            }
+
             setMethods(formattedMethods);
 
             // Auto-select first method if none selected
@@ -126,7 +159,7 @@ export function PaymentMethodSelector({
         } finally {
             setLoading(false);
         }
-    }, [selectedMethod, onMethodChange, isBusinessVerified]);
+    }, [selectedMethod, onMethodChange, isBusinessVerified, hasCreditApproved, canUseCredit, creditAvailable, orderTotal]);
 
     useEffect(() => {
         fetchPaymentGateways();
@@ -190,6 +223,12 @@ export function PaymentMethodSelector({
                                                 <Badge variant="secondary" className="text-xs">
                                                     <Building2 className="w-3 h-3 mr-1" />
                                                     Business Only
+                                                </Badge>
+                                            )}
+                                            {method.id === 'credit_net28' && (
+                                                <Badge variant={canUseCredit ? "default" : "secondary"} className="text-xs">
+                                                    <Wallet className="w-3 h-3 mr-1" />
+                                                    {canUseCredit ? 'Credit Approved' : 'Credit Account'}
                                                 </Badge>
                                             )}
                                         </div>

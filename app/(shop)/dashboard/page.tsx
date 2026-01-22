@@ -10,8 +10,10 @@ import {
   LayoutDashboard,
   ShoppingCart,
   List,
-  Building2
+  Building2,
+  CreditCard
 } from "lucide-react";
+import { CreditApplication } from "@/components/dashboard/credit-application";
 
 export const metadata: Metadata = {
   title: "Business Dashboard - Anmol Wholesale",
@@ -47,7 +49,7 @@ export default function DashboardPage() {
         {/* Tabs for different sections */}
         <div className="mt-8">
           <Tabs defaultValue="orders" className="w-full">
-            <TabsList className="grid w-full grid-cols-3 lg:w-auto lg:inline-grid">
+            <TabsList className="grid w-full grid-cols-4 lg:w-auto lg:inline-grid">
               <TabsTrigger value="orders" className="gap-2">
                 <ShoppingCart className="w-4 h-4" />
                 <span>Orders</span>
@@ -55,6 +57,10 @@ export default function DashboardPage() {
               <TabsTrigger value="lists" className="gap-2">
                 <List className="w-4 h-4" />
                 <span>Reorder Lists</span>
+              </TabsTrigger>
+              <TabsTrigger value="credit" className="gap-2">
+                <CreditCard className="w-4 h-4" />
+                <span>Credit & Payments</span>
               </TabsTrigger>
               <TabsTrigger value="account" className="gap-2">
                 <LayoutDashboard className="w-4 h-4" />
@@ -72,6 +78,10 @@ export default function DashboardPage() {
               <Suspense fallback={<ListsSkeleton />}>
                 <ReorderLists />
               </Suspense>
+            </TabsContent>
+
+            <TabsContent value="credit" className="mt-6">
+              <CreditApplication />
             </TabsContent>
 
             <TabsContent value="account" className="mt-6">

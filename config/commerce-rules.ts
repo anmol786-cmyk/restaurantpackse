@@ -114,6 +114,16 @@ export const WHOLESALE_TIERS = [
 export const GLOBAL_MOQ = 6;
 
 /**
+ * Credit Terms Configuration
+ * For approved business customers with credit payment option
+ */
+export const CREDIT_TERMS = {
+  defaultCreditDays: 28,        // Payment due within 28 days
+  defaultCreditLimit: 50000,    // SEK - Default credit limit
+  minOrderForCredit: 5000,      // SEK - Minimum order value to use credit
+};
+
+/**
  * Products exempt from MOQ requirements
  * These products already come in bulk sets, so no MOQ needed
  */

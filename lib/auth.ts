@@ -176,6 +176,80 @@ export function getBusinessInfo(user: any): BusinessInfo {
 }
 
 /**
+ * Credit Status Types
+ */
+export type CreditStatus = 'none' | 'pending' | 'approved' | 'rejected';
+
+/**
+ * Get credit application status from user metadata
+ */
+export function getCreditStatus(user: any): CreditStatus {
+  if (!user?.meta_data) return 'none';
+
+  const creditMeta = user.meta_data.find((m: any) => m.key === 'credit_application_status');
+
+  if (!creditMeta) return 'none';
+
+  const status = creditMeta.value;
+
+  if (status === 'pending') return 'pending';
+  if (status === 'approved' || status === 'yes' || status === '1') return 'approved';
+  if (status === 'rejected' || status === 'no' || status === '0') return 'rejected';
+
+  return 'none';
+}
+
+/**
+ * Get credit limit from user metadata
+ * Returns 0 if user doesn't have approved credit
+ */
+export function getCreditLimit(user: any): number {
+  if (!user?.meta_data) return 0;
+
+  const creditStatus = getCreditStatus(user);
+  if (creditStatus !== 'approved') return 0;
+
+  const limitMeta = user.meta_data.find((m: any) => m.key === 'credit_limit');
+
+  if (limitMeta && limitMeta.value) {
+    const limit = Number(limitMeta.value);
+    return isNaN(limit) ? 50000 : limit; // Default to 50000 SEK if not set
+  }
+
+  return 50000; // Default credit limit
+}
+
+/**
+ * Check if user has available credit for a given order total
+ */
+export function hasAvailableCredit(user: any, orderTotal: number): boolean {
+  const creditStatus = getCreditStatus(user);
+  if (creditStatus !== 'approved') return false;
+
+  const creditLimit = getCreditLimit(user);
+  const creditUsed = Number(user?.meta_data?.find((m: any) => m.key === 'credit_used')?.value || 0);
+  const availableCredit = creditLimit - creditUsed;
+
+  return availableCredit >= orderTotal;
+}
+
+/**
+ * Get credit terms days from user metadata (or default)
+ */
+export function getCreditTermsDays(user: any): number {
+  if (!user?.meta_data) return 28;
+
+  const termsMeta = user.meta_data.find((m: any) => m.key === 'credit_terms_days');
+
+  if (termsMeta && termsMeta.value) {
+    const days = Number(termsMeta.value);
+    return isNaN(days) ? 28 : days;
+  }
+
+  return 28; // Default 28 days
+}
+
+/**
  * Format business type for display
  */
 export function formatBusinessType(type: string | null): string {
