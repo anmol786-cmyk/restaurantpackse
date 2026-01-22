@@ -24,6 +24,7 @@ import { cn, decodeHtmlEntities } from '@/lib/utils';
 import type { ProductCategoryFull } from '@/types/woocommerce';
 import type { ProductBrand } from '@/lib/woocommerce/brands';
 import { useDebounce } from 'use-debounce';
+import { FEATURED_CATEGORIES } from '@/config/commerce-rules';
 
 // Helper to build category tree
 type CategoryWithChildren = ProductCategoryFull & {
@@ -104,13 +105,21 @@ export function ShopTopBar({ categories, brands = [], totalProducts, className }
     // Organize Categories
     const categoryTree = useMemo(() => buildCategoryTree(categories), [categories]);
 
-    // Identify specific groups
-    const riceCategory = categoryTree.find(c => c.slug.toLowerCase().includes('rice') || c.name.toLowerCase().includes('rice'));
-    const flourCategory = categoryTree.find(c => c.slug.toLowerCase().includes('flour') || c.slug.toLowerCase().includes('atta') || c.name.toLowerCase().includes('flour'));
-    const spicesCategory = categoryTree.find(c => c.slug.toLowerCase().includes('spices') || c.name.toLowerCase().includes('spices') || c.name.toLowerCase().includes('masala'));
+    // Find featured categories based on config
+    const featuredCategories = useMemo(() => {
+        return FEATURED_CATEGORIES.map(config => {
+            const found = categoryTree.find(c =>
+                config.keywords.some(keyword =>
+                    c.slug.toLowerCase().includes(keyword.toLowerCase()) ||
+                    c.name.toLowerCase().includes(keyword.toLowerCase())
+                )
+            );
+            return found || null;
+        }).filter(Boolean) as CategoryWithChildren[];
+    }, [categoryTree]);
 
-    // "All Categories" is everything else (excluding Rice, Flour, Spices)
-    const excludedIds = [riceCategory?.id, flourCategory?.id, spicesCategory?.id].filter(Boolean) as number[];
+    // "All Categories" is everything else (excluding featured categories)
+    const excludedIds = featuredCategories.map(c => c.id);
     const otherCategories = categoryTree.filter(c =>
         !excludedIds.includes(c.id) &&
         !c.name.toLowerCase().includes('uncategorized')
@@ -173,71 +182,27 @@ export function ShopTopBar({ categories, brands = [], totalProducts, className }
 
                     <div className="h-6 w-px bg-border mx-1 hidden sm:block" />
 
-                    {/* Rice Dropdown */}
-                    {riceCategory && (
-                        <DropdownMenu>
+                    {/* Featured Category Dropdowns (from config) */}
+                    {featuredCategories.map((category) => (
+                        <DropdownMenu key={category.id}>
                             <DropdownMenuTrigger asChild>
                                 <Button variant="outline" className="h-10 px-4 gap-2 border-primary/20 hover:bg-primary/5 hover:text-primary">
-                                    {decodeHtmlEntities(riceCategory.name)} <ChevronDown className="h-4 w-4 opacity-50" />
+                                    {decodeHtmlEntities(category.name)} <ChevronDown className="h-4 w-4 opacity-50" />
                                 </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="start" className="w-56">
-                                <DropdownMenuItem onClick={() => handleCategoryClick(riceCategory.slug)} className="font-medium">
-                                    All {decodeHtmlEntities(riceCategory.name)}
+                                <DropdownMenuItem onClick={() => handleCategoryClick(category.slug)} className="font-medium text-sm">
+                                    All {decodeHtmlEntities(category.name)}
                                 </DropdownMenuItem>
-                                {riceCategory.children.length > 0 && <DropdownMenuSeparator />}
-                                {riceCategory.children.map((child) => (
-                                    <DropdownMenuItem key={child.id} onClick={() => handleCategoryClick(child.slug)}>
+                                {category.children.length > 0 && <DropdownMenuSeparator />}
+                                {category.children.map((child) => (
+                                    <DropdownMenuItem key={child.id} onClick={() => handleCategoryClick(child.slug)} className="text-sm">
                                         {decodeHtmlEntities(child.name)}
                                     </DropdownMenuItem>
                                 ))}
                             </DropdownMenuContent>
                         </DropdownMenu>
-                    )}
-
-                    {/* Flour Dropdown */}
-                    {flourCategory && (
-                        <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                                <Button variant="outline" className="h-10 px-4 gap-2 border-primary/20 hover:bg-primary/5 hover:text-primary">
-                                    {decodeHtmlEntities(flourCategory.name)} <ChevronDown className="h-4 w-4 opacity-50" />
-                                </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="start" className="w-56">
-                                <DropdownMenuItem onClick={() => handleCategoryClick(flourCategory.slug)} className="font-medium">
-                                    All {decodeHtmlEntities(flourCategory.name)}
-                                </DropdownMenuItem>
-                                {flourCategory.children.length > 0 && <DropdownMenuSeparator />}
-                                {flourCategory.children.map((child) => (
-                                    <DropdownMenuItem key={child.id} onClick={() => handleCategoryClick(child.slug)}>
-                                        {decodeHtmlEntities(child.name)}
-                                    </DropdownMenuItem>
-                                ))}
-                            </DropdownMenuContent>
-                        </DropdownMenu>
-                    )}
-
-                    {/* Spices Dropdown */}
-                    {spicesCategory && (
-                        <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                                <Button variant="outline" className="h-10 px-4 gap-2 border-primary/20 hover:bg-primary/5 hover:text-primary">
-                                    {decodeHtmlEntities(spicesCategory.name)} <ChevronDown className="h-4 w-4 opacity-50" />
-                                </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="start" className="w-56">
-                                <DropdownMenuItem onClick={() => handleCategoryClick(spicesCategory.slug)} className="font-medium">
-                                    All {decodeHtmlEntities(spicesCategory.name)}
-                                </DropdownMenuItem>
-                                {spicesCategory.children.length > 0 && <DropdownMenuSeparator />}
-                                {spicesCategory.children.map((child) => (
-                                    <DropdownMenuItem key={child.id} onClick={() => handleCategoryClick(child.slug)}>
-                                        {decodeHtmlEntities(child.name)}
-                                    </DropdownMenuItem>
-                                ))}
-                            </DropdownMenuContent>
-                        </DropdownMenu>
-                    )}
+                    ))}
 
                     {/* All Categories Dropdown (Popover for multi-column) */}
                     <Popover>
@@ -246,23 +211,23 @@ export function ShopTopBar({ categories, brands = [], totalProducts, className }
                                 All Categories <ChevronDown className="h-4 w-4 opacity-50" />
                             </Button>
                         </PopoverTrigger>
-                        <PopoverContent className="w-[600px] p-6" align="start">
-                            <div className="grid grid-cols-3 gap-6 max-h-[60vh] overflow-y-auto">
+                        <PopoverContent className="w-[600px] p-4" align="start">
+                            <div className="grid grid-cols-3 gap-4 max-h-[60vh] overflow-y-auto">
                                 {otherCategories.map((cat) => (
-                                    <div key={cat.id} className="space-y-2">
-                                        <h4
-                                            className="font-medium text-primary cursor-pointer hover:underline"
+                                    <div key={cat.id} className="space-y-1">
+                                        <button
+                                            className="text-sm font-semibold text-foreground cursor-pointer hover:text-foreground/80 transition-colors text-left"
                                             onClick={() => handleCategoryClick(cat.slug)}
                                         >
                                             {decodeHtmlEntities(cat.name)}
-                                        </h4>
+                                        </button>
                                         {cat.children.length > 0 && (
-                                            <ul className="space-y-1">
+                                            <ul className="space-y-0.5">
                                                 {cat.children.map((child) => (
                                                     <li key={child.id}>
                                                         <button
                                                             onClick={() => handleCategoryClick(child.slug)}
-                                                            className="text-sm text-muted-foreground hover:text-foreground transition-colors text-left"
+                                                            className="text-xs font-normal text-muted-foreground hover:text-foreground transition-colors text-left"
                                                         >
                                                             {decodeHtmlEntities(child.name)}
                                                         </button>

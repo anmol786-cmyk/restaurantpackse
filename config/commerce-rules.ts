@@ -22,6 +22,28 @@ export interface ShippingRestriction {
 }
 
 /**
+ * Featured Category for Shop Archive Filters
+ * Categories displayed as quick-access dropdowns in shop top bar
+ */
+export interface FeaturedCategory {
+  /** Keywords to match against category slug or name (case-insensitive) */
+  keywords: string[];
+  /** Fallback label if category not found */
+  fallbackLabel: string;
+}
+
+/**
+ * Featured Categories Configuration
+ * These categories appear as dedicated dropdown buttons in the shop archive filter bar
+ * Update this array to change which categories are prominently displayed
+ */
+export const FEATURED_CATEGORIES: FeaturedCategory[] = [
+  { keywords: ['electronics'], fallbackLabel: 'Electronics' },
+  { keywords: ['packing'], fallbackLabel: 'Packing' },
+  { keywords: ['food', 'beverages'], fallbackLabel: 'Food & Beverages' },
+];
+
+/**
  * Quantity Discount Rule Interface
  * For products with progressive quantity-based discounts
  */
@@ -90,6 +112,14 @@ export const WHOLESALE_TIERS = [
  * Default MOQ applied to all products unless overridden
  */
 export const GLOBAL_MOQ = 6;
+
+/**
+ * Products exempt from MOQ requirements
+ * These products already come in bulk sets, so no MOQ needed
+ */
+export const MOQ_EXEMPT_PRODUCTS: number[] = [
+  238, 234, 232, 230, 228, 224, 222, 220, 185, 184
+];
 
 /**
  * Product-specific MOQ overrides
@@ -228,10 +258,21 @@ export const CommerceRules = {
   },
 
   /**
+   * Check if product is exempt from MOQ (already comes in bulk sets)
+   */
+  isMOQExempt(productId: number): boolean {
+    return MOQ_EXEMPT_PRODUCTS.includes(productId);
+  },
+
+  /**
    * Get Minimum Order Quantity for a product
-   * Returns product-specific MOQ or global MOQ
+   * Returns 1 for exempt products, product-specific MOQ, or global MOQ
    */
   getMOQ(productId: number, _categories?: string[]): number {
+    // Check if product is exempt from MOQ (already comes in bulk sets)
+    if (MOQ_EXEMPT_PRODUCTS.includes(productId)) {
+      return 1;
+    }
     // Check for product-specific MOQ override
     const productMOQ = MOQ_RULES.find(r => r.productId === productId);
     if (productMOQ) {
