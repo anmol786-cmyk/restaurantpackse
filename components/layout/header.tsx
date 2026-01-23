@@ -39,12 +39,12 @@ export function Header({ className, categories = [] }: HeaderProps) {
       <header className={cn("w-full bg-white border-b border-slate-100 sticky top-0 z-50 transition-all duration-300 shadow-sm", className)}>
         <div className="site-container">
           {/* Desktop Header Row */}
-          <div className="hidden lg:flex items-center h-20 gap-8">
+          <div className="hidden xl:flex items-center h-20 gap-8">
 
             {/* Logo */}
             <div className="flex-shrink-0">
-              <Link href="/" className="group block">
-                <div className="relative h-14 w-32 transition-transform duration-300 group-hover:scale-105">
+              <Link href="/" className="group flex items-center gap-3">
+                <div className="relative h-14 w-[3.5rem] transition-transform duration-300 group-hover:scale-105">
                   <Image
                     src={logoUrl}
                     alt={brandProfile.name}
@@ -54,6 +54,9 @@ export function Header({ className, categories = [] }: HeaderProps) {
                     priority
                   />
                 </div>
+                <span className="font-heading font-bold text-lg text-primary uppercase tracking-wide">
+                  Anmol Wholesale
+                </span>
               </Link>
             </div>
 
@@ -66,7 +69,7 @@ export function Header({ className, categories = [] }: HeaderProps) {
             {/* Right side navigation and actions */}
             <div className="flex items-center gap-8">
               {/* Navigation Links */}
-              <nav className="hidden xl:flex items-center gap-6">
+              <nav className="flex items-center gap-6">
                 <NavLink href="/shop">Products</NavLink>
                 <NavLink href="/wholesale">Wholesale</NavLink>
                 <NavLink href="/wholesale/quick-order">Quick Order</NavLink>
@@ -100,11 +103,10 @@ export function Header({ className, categories = [] }: HeaderProps) {
           </div>
 
           {/* Mobile/Tablet Header Row */}
-          <div className="lg:hidden flex h-16 items-center justify-between gap-4">
+          <div className="xl:hidden flex h-16 items-center justify-between gap-4">
             <div className="flex items-center gap-2">
-              <MobileMenu />
-              <Link href="/">
-                <div className="relative h-10 w-24">
+              <Link href="/" className="flex items-center gap-2">
+                <div className="relative h-9 w-[2.25rem]">
                   <Image
                     src={logoUrl}
                     alt={brandProfile.name}
@@ -113,13 +115,17 @@ export function Header({ className, categories = [] }: HeaderProps) {
                     priority
                   />
                 </div>
+                <span className="font-heading font-bold text-sm text-primary uppercase tracking-wide leading-none">
+                  Anmol <br /> Wholesale
+                </span>
               </Link>
             </div>
 
             <div className="flex items-center gap-2">
               <CurrencySelector variant="icon-only" />
-              <SearchModal /> {/* Mobile version might need to be just an icon in the modal but it's fine for now */}
+              <SearchModal variant="icon" />
               <CartIcon />
+              <MobileMenu />
             </div>
           </div>
         </div>

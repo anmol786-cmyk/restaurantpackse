@@ -15,16 +15,19 @@ export async function Footer() {
 
           {/* Column 1: Brand Identity */}
           <div className="col-span-2 lg:col-span-2 space-y-6">
-            <Link href="/" className="inline-block transition-transform hover:scale-105">
-              <div className="relative h-16 w-36">
+            <Link href="/" className="inline-flex items-center gap-3 transition-transform hover:scale-105">
+              <div className="relative h-14 w-14">
                 <Image
                   src="https://crm.restaurantpack.se/wp-content/uploads/2025/03/ANMOL-WHOLESALE-1.png"
                   alt={brandProfile.name}
                   fill
-                  className="object-contain object-left"
-                  sizes="144px"
+                  className="object-contain"
+                  sizes="56px"
                 />
               </div>
+              <span className="font-heading font-bold text-lg text-primary uppercase tracking-wide">
+                Anmol Wholesale
+              </span>
             </Link>
             <p className="text-sm text-slate-500 max-w-sm leading-relaxed">
               {brandProfile.description}

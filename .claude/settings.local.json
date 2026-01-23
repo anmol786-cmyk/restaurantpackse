@@ -49,7 +49,8 @@
       "Bash(head:*)",
       "Bash(git remote set-url:*)",
       "Bash(git fetch:*)",
-      "Bash(identify:*)"
+      "Bash(identify:*)",
+      "Bash(cd:*)"
     ]
   }
 }

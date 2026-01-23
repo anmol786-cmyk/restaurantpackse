@@ -19,7 +19,9 @@ import {
     ClipboardList,
     Facebook,
     Instagram,
-    Youtube
+    Youtube,
+    Zap,
+    UserPlus
 } from 'lucide-react';
 import { brandConfig } from '@/config/brand.config';
 import { brandProfile } from '@/config/brand-profile';
@@ -36,7 +38,9 @@ const menuItems = [
     { href: '/', label: 'Home', icon: Home },
     { href: '/shop', label: 'Shop', icon: ShoppingBag },
     { href: '/wholesale', label: 'Wholesale', icon: Building2 },
+    { href: '/wholesale/quick-order', label: 'Quick Order', icon: Zap },
     { href: '/wholesale/quote', label: 'Bulk Quote', icon: ClipboardList },
+    { href: '/wholesale/register', label: 'B2B Account', icon: UserPlus },
     { href: '/blog', label: 'Blog', icon: BookOpen },
     { href: '/about', label: 'About', icon: Info },
     { href: '/contact', label: 'Contact', icon: Mail },
@@ -58,27 +62,30 @@ export function MobileMenu() {
     return (
         <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="lg:hidden hover:bg-slate-100 transition-colors">
+                <Button variant="ghost" size="icon" className="hover:bg-slate-100 transition-colors">
                     <Menu className="h-6 w-6 text-slate-700" />
                     <span className="sr-only">Toggle menu</span>
                 </Button>
             </SheetTrigger>
             <SheetContent
-                side="left"
-                className="w-full max-w-[300px] p-0 bg-white border-r border-slate-100"
+                side="right"
+                className="w-full max-w-[300px] p-0 bg-white border-l border-slate-100"
             >
                 {/* Header with Logo */}
                 <div className="p-6 border-b border-slate-50">
                     <SheetHeader>
-                        <div className="flex items-center justify-start">
-                            <div className="relative h-12 w-28">
+                        <div className="flex flex-col items-center justify-center gap-2">
+                            <div className="relative h-16 w-16">
                                 <Image
                                     src={logoUrl}
                                     alt={brandProfile.name}
                                     fill
-                                    className="object-contain object-left"
+                                    className="object-contain"
                                 />
                             </div>
+                            <span className="font-heading font-bold text-lg text-primary uppercase tracking-wide text-center">
+                                Anmol Wholesale
+                            </span>
                         </div>
                     </SheetHeader>
                 </div>
@@ -92,9 +99,9 @@ export function MobileMenu() {
                                 key={item.href}
                                 href={item.href}
                                 onClick={() => setOpen(false)}
-                                className="flex items-center gap-4 px-4 py-3 rounded-lg text-slate-600 hover:text-primary hover:bg-slate-50 transition-all font-medium"
+                                className="flex items-center gap-4 px-4 py-3 rounded-lg text-sm text-slate-600 hover:text-primary hover:bg-slate-50 transition-all font-medium"
                             >
-                                <Icon className="h-5 w-5 opacity-70" />
+                                <Icon className="h-4 w-4" />
                                 {item.label}
                             </Link>
                         );

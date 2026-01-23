@@ -20,7 +20,7 @@ interface SearchResult {
     relevance: number;
 }
 
-export function SearchModal() {
+export function SearchModal({ variant = 'default' }: { variant?: 'default' | 'icon' }) {
     const router = useRouter();
     const [isOpen, setIsOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
@@ -96,17 +96,23 @@ export function SearchModal() {
 
     return (
         <>
-            {/* Search Trigger Button - Styled as a clean input field */}
-            <div className="w-full">
-                <Button
-                    variant="ghost"
-                    className="relative h-11 w-full justify-start text-sm text-slate-500 bg-slate-100/80 hover:bg-slate-100 border-none rounded-xl transition-all duration-200 group"
-                    onClick={() => setIsOpen(true)}
-                >
-                    <Search className="mr-3 h-5 w-5 text-slate-400 group-hover:text-primary transition-colors" />
-                    <span className="text-slate-500/80 font-medium">Search for premium restaurant supplies, SKUs...</span>
+            {/* Search Trigger Button */}
+            {variant === 'icon' ? (
+                <Button variant="ghost" size="icon" onClick={() => setIsOpen(true)}>
+                    <Search className="h-5 w-5" />
                 </Button>
-            </div>
+            ) : (
+                <div className="w-full">
+                    <Button
+                        variant="ghost"
+                        className="relative h-11 w-full justify-start text-sm text-slate-500 bg-slate-100/80 hover:bg-slate-100 border-none rounded-xl transition-all duration-200 group"
+                        onClick={() => setIsOpen(true)}
+                    >
+                        <Search className="mr-3 h-5 w-5 text-slate-400 group-hover:text-primary transition-colors" />
+                        <span className="text-slate-500/80 font-medium">Search for premium restaurant supplies, SKUs...</span>
+                    </Button>
+                </div>
+            )}
 
             {/* Search Modal Overlay */}
             <AnimatePresence>
