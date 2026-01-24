@@ -100,8 +100,8 @@ export function organizationSchema(config: OrganizationInput): Organization {
 export function anmolWholesaleOrganizationSchema(baseUrl: string = 'https://restaurantpack.se'): Organization {
   return organizationSchema({
     name: 'Anmol Wholesale',
-    alternateName: 'Restaurant Pack',
-    description: 'Sweden\'s trusted B2B wholesale supplier for restaurants, grocery stores, and caterers. Backed by Anmol Sweets & Restaurant\'s culinary expertise. Authentic Indo-Pak products, bulk ingredients, and manufacturer of the Anmol Electric Tandoor.',
+    alternateName: 'Anmol AB',
+    description: 'Anmol Wholesale (part of Anmol Sweets & Restaurant) is Sweden\'s leading B2B wholesale supplier. Operated by Anmol AB, we specialize in authentic Indo-Pak ingredients, bulk restaurant supplies, and are the official manufacturer of the Anmol Electric Tandoor.',
     url: baseUrl,
     logo: 'https://crm.restaurantpack.se/wp-content/uploads/2025/03/ANMOL-WHOLESALE-1.png',
     image: 'https://crm.restaurantpack.se/wp-content/uploads/2025/03/ANMOL-WHOLESALE-1.png',
@@ -118,14 +118,14 @@ export function anmolWholesaleOrganizationSchema(baseUrl: string = 'https://rest
       { day: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], opens: '10:00', closes: '20:00' },
       { day: ['Saturday', 'Sunday'], opens: '11:00', closes: '19:00' },
     ],
-    priceRange: '$$-$$$',
+    priceRange: '$$$',
     socialMedia: [
       'https://www.facebook.com/anmolwholesale',
       'https://www.instagram.com/anmolwholesale',
       'https://www.youtube.com/@anmolwholesale',
     ],
     foundingDate: '2010',
-    types: ['Organization', 'WholesaleStore', 'LocalBusiness'],
+    types: ['WholesaleStore', 'Organization', 'LocalBusiness'],
   });
 }
 
@@ -201,8 +201,9 @@ export function anmolWholesaleOrganizationSchemaFull(baseUrl: string = 'https://
 
     // Affiliated organization
     parentOrganization: {
-      '@type': 'Restaurant',
+      '@type': 'Organization',
       name: 'Anmol Sweets & Restaurant',
+      legalName: 'Anmol AB',
       url: 'https://anmolsweets.se',
     },
 

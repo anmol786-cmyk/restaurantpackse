@@ -1,5 +1,7 @@
 import { Metadata } from 'next';
 import { brandProfile } from '@/config/brand-profile';
+import { CTASection } from "@/components/home/cta-banner";
+import Image from 'next/image';
 import { Truck, Package, Clock, ShieldCheck, MapPin, ExternalLink, Globe, Info, Warehouse } from 'lucide-react';
 import Link from 'next/link';
 import { SchemaScript } from "@/lib/schema/schema-script";
@@ -18,306 +20,250 @@ export default function DeliveryInformationPage() {
     return (
         <main className="min-h-screen bg-background">
             {/* Hero Section */}
-            <section className="bg-gradient-to-br from-muted/30 via-background to-background border-b">
-                <div className="site-container py-16 md:py-20 text-center md:text-left">
-                    <div className="max-w-3xl">
-                        <h1 style={{
-                            fontSize: '31.25px',
-                            fontWeight: 700,
-                            lineHeight: 1.47,
-                            letterSpacing: '0.02em'
-                        }} className="mb-4">
-                            B2B Wholesale Delivery & Logistics Solutions
+            <section className="relative h-[60vh] min-h-[500px] flex items-center overflow-hidden bg-neutral-900">
+                <div className="absolute inset-0 z-0">
+                    <Image
+                        src="https://images.unsplash.com/photo-1586769852044-692d6e3703f0?q=80&w=2070&auto=format&fit=crop"
+                        alt="Logistics and Delivery"
+                        fill
+                        className="object-cover opacity-40"
+                        priority
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-r from-neutral-900 via-neutral-900/80 to-transparent" />
+                </div>
+
+                <div className="site-container relative z-10">
+                    <div className="max-w-4xl">
+                        <div className="inline-block mb-6">
+                            <span className="text-sm font-bold text-primary bg-primary/10 px-4 py-2 rounded-full border border-primary/20 backdrop-blur-sm">
+                                Logistics & Supply Chain
+                            </span>
+                        </div>
+                        <h1 className="text-5xl md:text-7xl font-bold text-white tracking-tight leading-tight mb-6">
+                            B2B Wholesale <br />
+                            <span className="text-primary">Delivery & Logistics</span>
                         </h1>
-                        <p className="text-muted-foreground" style={{
-                            fontSize: '16px',
-                            fontWeight: 400,
-                            lineHeight: 1.52,
-                            letterSpacing: '0.03em'
-                        }}>
-                            From Our Restaurant Kitchen to Yours. Reliable wholesale distribution across Sweden, Scandinavia, and Europe with flexible delivery options tailored for professional kitchens.
+                        <p className="text-xl md:text-2xl text-neutral-300 max-w-2xl leading-relaxed font-light">
+                            From Our Restaurant Kitchen to Yours. Reliable wholesale distribution across Sweden and Scandinavia.
                         </p>
                     </div>
                 </div>
             </section>
 
             {/* Main Content & Sidebar */}
-            <section className="py-16">
+            <section className="py-20 bg-neutral-50">
                 <div className="site-container">
                     <div className="grid lg:grid-cols-3 gap-12">
                         {/* Main Content Area (2/3) */}
                         <div className="lg:col-span-2 space-y-12">
                             {/* Introduction */}
-                            <section className="prose prose-lg dark:prose-invert max-w-none text-muted-foreground" style={{
-                                fontSize: '16px',
-                                fontWeight: 400,
-                                lineHeight: 1.52,
-                                letterSpacing: '0.03em'
-                            }}>
-                                <p className="text-foreground font-medium" style={{ fontSize: '18px' }}>
+                            <div className="prose prose-lg max-w-none text-neutral-600">
+                                <p className="text-xl font-medium text-neutral-900 leading-relaxed">
                                     Welcome to Anmol Wholesale – your trusted B2B partner for authentic Indo-Pak ingredients and professional kitchen equipment.
                                 </p>
-                                <p>
+                                <p className="leading-relaxed">
                                     As restaurateurs ourselves, we understand the critical importance of a reliable supply chain. We offer a hybrid distribution model combining our own dedicated delivery fleet for the Stockholm region with strategic partnerships with DHL, DB Schenker, PostNord, and other freight carriers to serve restaurants, grocery stores, caterers, and food chains across Sweden, Scandinavia, and Europe.
                                 </p>
-                            </section>
+                            </div>
 
                             {/* Delivery Options Overview */}
-                            <section className="space-y-6">
-                                <h2 style={{ fontSize: '25px', fontWeight: 600 }} className="flex items-center gap-3">
-                                    <Truck className="h-6 w-6 text-primary" />
-                                    Flexible Distribution Options for Your Business
-                                </h2>
-                                <p className="text-muted-foreground" style={{ fontSize: '16px' }}>
-                                    Choose the logistics solution that best fits your business operations – whether you need regular bulk deliveries, prefer to arrange your own freight, or want to pick up directly from our warehouse.
-                                </p>
-                            </section>
-
-                            {/* 1. Own Fleet Delivery */}
-                            <section className="space-y-6">
-                                <div className="p-6 rounded-xl border bg-card/50">
-                                    <h3 style={{ fontSize: '20px', fontWeight: 600 }} className="mb-4 flex items-center gap-2">
-                                        <MapPin className="h-5 w-5 text-primary" />
-                                        1. Anmol Wholesale Fleet – Stockholm & Surrounding Areas
-                                    </h3>
-                                    <div className="space-y-4 text-muted-foreground" style={{ fontSize: '15.13px' }}>
-                                        <p className="font-medium text-foreground">Our own delivery service provides personalized, flexible delivery for B2B clients in the greater Stockholm region.</p>
-
-                                        <div className="bg-muted/20 p-4 rounded-lg">
-                                            <h4 className="font-semibold text-foreground mb-3">Coverage Areas:</h4>
-                                            <p className="mb-2">Comprehensive coverage across Stockholm and surrounding municipalities including:</p>
-                                            <ul className="grid grid-cols-2 gap-2 text-sm">
-                                                <li>• Central Stockholm</li>
-                                                <li>• Spånga (Warehouse Hub)</li>
-                                                <li>• Solna & Sundbyberg</li>
-                                                <li>• Kista & Järfälla</li>
-                                                <li>• Nacka & Värmdö</li>
-                                                <li>• Huddinge & Flemingsberg</li>
-                                                <li>• Södertälje region</li>
-                                                <li>• Märsta & Arlanda area</li>
-                                            </ul>
-                                        </div>
-
-                                        <div className="bg-muted/20 p-4 rounded-lg">
-                                            <h4 className="font-semibold text-foreground mb-3">Delivery Schedule:</h4>
-                                            <ul className="space-y-2">
-                                                <li><strong>Operating Days:</strong> Monday - Friday, 10 AM - 8 PM</li>
-                                                <li><strong>Weekend Delivery:</strong> Saturday - Sunday, 11 AM - 7 PM</li>
-                                                <li><strong>Bulk Orders:</strong> Schedule can be arranged based on your receiving hours</li>
-                                            </ul>
-                                        </div>
-
-                                        <div className="bg-primary/5 p-4 rounded-lg border border-primary/20">
-                                            <h4 className="font-semibold text-foreground mb-2">Bulk & Pallet Delivery:</h4>
-                                            <p className="text-sm">For case and pallet-level orders, contact us to schedule convenient delivery times that align with your kitchen operations. We understand professional kitchens operate on tight schedules.</p>
-                                        </div>
+                            <div className="space-y-8">
+                                <div className="flex items-center gap-4">
+                                    <div className="w-12 h-12 rounded-xl bg-primary text-white flex items-center justify-center shadow-lg shadow-primary/20">
+                                        <Truck className="h-6 w-6" />
                                     </div>
+                                    <h2 className="text-3xl font-bold text-neutral-900 tracking-tight">
+                                        Distribution Options
+                                    </h2>
                                 </div>
-                            </section>
 
-                            {/* 2. Sweden-Wide & Scandinavian Shipping */}
-                            <section className="space-y-6">
-                                <div className="p-6 rounded-xl border bg-card/50">
-                                    <h3 style={{ fontSize: '20px', fontWeight: 600 }} className="mb-4 flex items-center gap-2">
-                                        <Globe className="h-5 w-5 text-primary" />
-                                        2. Sweden & Scandinavia – DHL Partnership
-                                    </h3>
-                                    <div className="space-y-4 text-muted-foreground" style={{ fontSize: '15.13px' }}>
-                                        <p className="font-medium text-foreground">For wholesale clients outside the Stockholm area, we partner with DHL for reliable nationwide delivery.</p>
+                                {/* 1. Own Fleet Delivery */}
+                                <div className="bg-white p-8 rounded-2xl border border-neutral-100 shadow-sm hover:shadow-md transition-all duration-300 group">
+                                    <div className="flex items-start gap-6">
+                                        <div className="w-14 h-14 rounded-2xl bg-primary/10 text-primary flex items-center justify-center flex-shrink-0 group-hover:bg-primary group-hover:text-white transition-colors">
+                                            <MapPin className="h-7 w-7" />
+                                        </div>
+                                        <div className="space-y-4 flex-1">
+                                            <h3 className="text-2xl font-bold text-neutral-900">
+                                                Anmol Fleet – Stockholm Region
+                                            </h3>
+                                            <p className="text-neutral-600">
+                                                Our own delivery service provides personalized, flexible delivery for B2B clients in the greater Stockholm region. Direct from our Spånga warehouse to your kitchen.
+                                            </p>
 
-                                        <div className="grid sm:grid-cols-2 gap-4">
-                                            <div className="bg-muted/20 p-4 rounded-lg">
-                                                <p className="font-semibold text-foreground mb-2">Coverage:</p>
-                                                <ul className="text-sm space-y-1">
-                                                    <li>• All of Sweden</li>
-                                                    <li>• Norway</li>
-                                                    <li>• Denmark</li>
-                                                    <li>• Finland</li>
-                                                </ul>
-                                            </div>
-                                            <div className="bg-muted/20 p-4 rounded-lg">
-                                                <p className="font-semibold text-foreground mb-2">Delivery:</p>
-                                                <ul className="text-sm space-y-1">
-                                                    <li>• Weight-based rates</li>
-                                                    <li>• Calculated at checkout</li>
-                                                    <li>• Fully tracked shipments</li>
-                                                    <li>• Business-day delivery</li>
-                                                </ul>
+                                            <div className="grid sm:grid-cols-2 gap-6 pt-2">
+                                                <div className="bg-neutral-50 p-4 rounded-xl border border-neutral-100">
+                                                    <h4 className="font-bold text-neutral-900 mb-2 flex items-center gap-2">
+                                                        <ShieldCheck className="w-4 h-4 text-primary" /> Coverage Areas
+                                                    </h4>
+                                                    <ul className="text-sm text-neutral-600 space-y-1">
+                                                        <li>• Central Stockholm & City</li>
+                                                        <li>• Spånga, Kista, Järfälla</li>
+                                                        <li>• Solna, Sundbyberg, Bromma</li>
+                                                        <li>• Nacka, Värmdö, Huddinge</li>
+                                                        <li>• Södertälje & Märsta/Arlanda</li>
+                                                    </ul>
+                                                </div>
+                                                <div className="bg-neutral-50 p-4 rounded-xl border border-neutral-100">
+                                                    <h4 className="font-bold text-neutral-900 mb-2 flex items-center gap-2">
+                                                        <Clock className="w-4 h-4 text-primary" /> Delivery Schedule
+                                                    </h4>
+                                                    <ul className="text-sm text-neutral-600 space-y-1">
+                                                        <li><span className="font-medium">Mon-Fri:</span> 10:00 - 20:00</li>
+                                                        <li><span className="font-medium">Sat-Sun:</span> 11:00 - 19:00</li>
+                                                        <li className="pt-2 text-xs italic">Flexible slots for bulk orders.</li>
+                                                    </ul>
+                                                </div>
                                             </div>
                                         </div>
-
-                                        <p className="text-sm">Shipping costs are automatically calculated based on order weight and destination. For high-volume recurring orders, please contact us for preferential freight rates.</p>
                                     </div>
                                 </div>
-                            </section>
 
-                            {/* 3. Third-Party & Customer-Arranged Freight */}
-                            <section className="space-y-6">
-                                <div className="p-6 rounded-xl border bg-card/50">
-                                    <h3 style={{ fontSize: '20px', fontWeight: 600 }} className="mb-4 flex items-center gap-2">
-                                        <Package className="h-5 w-5 text-primary" />
-                                        3. Third-Party Freight & Custom Logistics
-                                    </h3>
-                                    <div className="space-y-4 text-muted-foreground" style={{ fontSize: '15.13px' }}>
-                                        <p className="font-medium text-foreground">For businesses with existing freight contracts or specific logistics needs, we offer full flexibility.</p>
-
-                                        <div className="bg-muted/20 p-4 rounded-lg">
-                                            <h4 className="font-semibold text-foreground mb-3">Supported Services:</h4>
-                                            <ul className="space-y-2 text-sm">
-                                                <li>• <strong>Your Own Freight:</strong> Use your existing logistics partner</li>
-                                                <li>• <strong>DB Schenker:</strong> We can arrange pickup for large shipments</li>
-                                                <li>• <strong>PostNord:</strong> Available for standard freight</li>
-                                                <li>• <strong>Custom Carriers:</strong> Coordinate with any freight company of your choice</li>
-                                            </ul>
+                                {/* 2. Sweden & Scandinavia */}
+                                <div className="bg-white p-8 rounded-2xl border border-neutral-100 shadow-sm hover:shadow-md transition-all duration-300 group">
+                                    <div className="flex items-start gap-6">
+                                        <div className="w-14 h-14 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center flex-shrink-0 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                                            <Globe className="h-7 w-7" />
                                         </div>
+                                        <div className="space-y-4 flex-1">
+                                            <h3 className="text-2xl font-bold text-neutral-900">
+                                                Sweden & Scandinavia – DHL
+                                            </h3>
+                                            <p className="text-neutral-600">
+                                                For wholesale clients outside Stockholm, we partner with DHL for reliable nationwide delivery across Sweden, Norway, Denmark, and Finland.
+                                            </p>
 
-                                        <p className="text-sm italic">All third-party freight orders are priced Ex-Warehouse from our facility at Fagerstagatan 13, Spånga. Your carrier can schedule pickup during our operating hours.</p>
-                                    </div>
-                                </div>
-                            </section>
-
-                            {/* 4. Ex-Warehouse Pickup */}
-                            <section className="space-y-6">
-                                <div className="p-6 rounded-xl border bg-primary/5 border-primary/20">
-                                    <h3 style={{ fontSize: '20px', fontWeight: 600 }} className="mb-4 flex items-center gap-2">
-                                        <Warehouse className="h-5 w-5 text-primary" />
-                                        4. Ex-Warehouse Pickup – Direct from Spånga
-                                    </h3>
-                                    <div className="space-y-4 text-muted-foreground" style={{ fontSize: '15.13px' }}>
-                                        <p className="font-medium text-foreground">For maximum cost efficiency and immediate availability, collect your orders directly from our warehouse.</p>
-
-                                        <div className="bg-background/80 p-4 rounded-lg">
-                                            <h4 className="font-semibold text-foreground mb-3">Warehouse Details:</h4>
-                                            <ul className="space-y-2">
-                                                <li><strong>Address:</strong> Fagerstagatan 13, 163 53 Spånga, Sweden</li>
-                                                <li><strong>Hours:</strong> Mon-Fri: 10 AM - 8 PM | Sat-Sun: 11 AM - 7 PM</li>
-                                                <li><strong>Pickup:</strong> Place your order online, receive confirmation, and collect at your convenience</li>
-                                                <li><strong>Benefits:</strong> Zero shipping costs, immediate order fulfillment, inspect products on-site</li>
-                                            </ul>
-                                        </div>
-
-                                        <p className="text-sm font-medium text-primary">Ideal for local restaurants and grocery stores looking to minimize freight costs and maintain complete control over pickup timing.</p>
-                                    </div>
-                                </div>
-                            </section>
-
-                            {/* European Shipping CTA */}
-                            <section className="p-8 rounded-2xl bg-muted/20 border">
-                                <h2 style={{ fontSize: '22.36px', fontWeight: 600 }} className="mb-4">
-                                    Expanding Across Europe?
-                                </h2>
-                                <p style={{ fontSize: '16px' }} className="text-muted-foreground mb-4">
-                                    We serve B2B clients across Germany, Norway, Finland, and key European markets with our DHL partnership. Competitive rates for bulk wholesale orders.
-                                </p>
-                                <Link href="/europe-delivery" className="inline-flex items-center gap-2 text-primary hover:underline font-medium">
-                                    View European Shipping Details <ExternalLink className="w-4 h-4" />
-                                </Link>
-                            </section>
-
-                            {/* Our Commitment */}
-                            <section className="p-8 rounded-2xl bg-card border">
-                                <h2 style={{ fontSize: '22.36px', fontWeight: 600 }} className="mb-4">
-                                    Why Choose Anmol Wholesale Logistics?
-                                </h2>
-                                <div className="grid sm:grid-cols-2 gap-4 text-muted-foreground" style={{ fontSize: '15.13px' }}>
-                                    <div className="flex gap-3">
-                                        <ShieldCheck className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                                        <div>
-                                            <p className="font-semibold text-foreground">Restaurateur Experience</p>
-                                            <p className="text-sm">We operate Anmol Sweets & Restaurant. We understand your supply chain needs.</p>
-                                        </div>
-                                    </div>
-                                    <div className="flex gap-3">
-                                        <Package className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                                        <div>
-                                            <p className="font-semibold text-foreground">Case & Pallet Quantities</p>
-                                            <p className="text-sm">Wholesale pricing on bulk orders. Competitive rates for high-volume clients.</p>
-                                        </div>
-                                    </div>
-                                    <div className="flex gap-3">
-                                        <Truck className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                                        <div>
-                                            <p className="font-semibold text-foreground">Flexible Logistics</p>
-                                            <p className="text-sm">Choose our fleet, DHL, your own carrier, or warehouse pickup.</p>
-                                        </div>
-                                    </div>
-                                    <div className="flex gap-3">
-                                        <Globe className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                                        <div>
-                                            <p className="font-semibold text-foreground">Scandinavian & European Reach</p>
-                                            <p className="text-sm">Serving B2B clients from Stockholm to Germany, Norway, and beyond.</p>
+                                            <div className="flex flex-wrap gap-2 pt-2">
+                                                {['Weight-based Rates', 'Tracked Shipments', 'Business Day Delivery', 'Pallet Freight'].map((tag, i) => (
+                                                    <span key={i} className="px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-bold uppercase tracking-wide">
+                                                        {tag}
+                                                    </span>
+                                                ))}
+                                            </div>
+                                            <div className="mt-4 pt-4 border-t border-neutral-100">
+                                                <Link href="/europe-delivery" className="inline-flex items-center text-blue-600 font-bold hover:underline">
+                                                    View European Shipping Rates <ExternalLink className="ml-2 w-4 h-4" />
+                                                </Link>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </section>
+
+                                {/* 3. Third Party */}
+                                <div className="bg-white p-8 rounded-2xl border border-neutral-100 shadow-sm hover:shadow-md transition-all duration-300 group">
+                                    <div className="flex items-start gap-6">
+                                        <div className="w-14 h-14 rounded-2xl bg-neutral-100 text-neutral-600 flex items-center justify-center flex-shrink-0 group-hover:bg-neutral-800 group-hover:text-white transition-colors">
+                                            <Package className="h-7 w-7" />
+                                        </div>
+                                        <div className="space-y-4 flex-1">
+                                            <h3 className="text-2xl font-bold text-neutral-900">
+                                                Third-Party Freight
+                                            </h3>
+                                            <p className="text-neutral-600">
+                                                Have your own logistics contract? We support Ex-Works pickup by your preferred carrier (DB Schenker, PostNord, etc.) directly from our loading dock.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* 4. Warehouse Pickup */}
+                                <div className="bg-white p-8 rounded-2xl border border-primary/20 shadow-sm hover:shadow-md transition-all duration-300 group relative overflow-hidden">
+                                    <div className="absolute top-0 right-0 p-4 opacity-10">
+                                        <Warehouse className="w-32 h-32 text-primary" />
+                                    </div>
+                                    <div className="flex items-start gap-6 relative z-10">
+                                        <div className="w-14 h-14 rounded-2xl bg-primary text-white flex items-center justify-center flex-shrink-0 shadow-lg shadow-primary/20">
+                                            <Warehouse className="h-7 w-7" />
+                                        </div>
+                                        <div className="space-y-4 flex-1">
+                                            <h3 className="text-2xl font-bold text-neutral-900">
+                                                Ex-Warehouse Pickup
+                                            </h3>
+                                            <p className="text-neutral-600">
+                                                Pickup directly from our Spånga warehouse for maximum cost efficiency. Order online, receive confirmation, and collect at your convenience.
+                                            </p>
+
+                                            <div className="bg-neutral-900 text-white p-5 rounded-xl mt-2">
+                                                <div className="flex items-start gap-4">
+                                                    <MapPin className="w-5 h-5 text-primary flex-shrink-0 mt-1" />
+                                                    <div>
+                                                        <p className="font-bold text-lg">Fagerstagatan 13</p>
+                                                        <p className="text-neutral-400">163 53 Spånga, Sweden</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         {/* Sidebar (1/3) */}
                         <div className="lg:col-span-1">
                             <div className="sticky top-24 space-y-6">
                                 {/* Operating Hours */}
-                                <div className="border rounded-lg p-6 bg-card">
-                                    <h3 style={{ fontSize: '18.91px', fontWeight: 500 }} className="mb-4">Operating Hours</h3>
-                                    <ul className="space-y-4">
-                                        <li className="flex gap-3">
-                                            <Clock className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                                            <div>
-                                                <p style={{ fontSize: '13.53px', fontWeight: 500 }}>Monday - Friday</p>
-                                                <p style={{ fontSize: '12.8px' }} className="text-muted-foreground">10:00 AM - 8:00 PM</p>
-                                            </div>
-                                        </li>
-                                        <li className="flex gap-3">
-                                            <Clock className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                                            <div>
-                                                <p style={{ fontSize: '13.53px', fontWeight: 500 }}>Saturday - Sunday</p>
-                                                <p style={{ fontSize: '12.8px' }} className="text-muted-foreground">11:00 AM - 7:00 PM</p>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                <div className="bg-white p-6 rounded-2xl border border-neutral-100 shadow-sm">
+                                    <h3 className="text-lg font-bold text-neutral-900 mb-4 flex items-center gap-2">
+                                        <Clock className="w-5 h-5 text-primary" /> Operating Hours
+                                    </h3>
+                                    <div className="space-y-4">
+                                        <div className="flex justify-between items-center pb-3 border-b border-dashed border-neutral-100">
+                                            <span className="text-neutral-600 font-medium">Mon - Fri</span>
+                                            <span className="text-neutral-900 font-bold">10:00 - 20:00</span>
+                                        </div>
+                                        <div className="flex justify-between items-center">
+                                            <span className="text-neutral-600 font-medium">Sat - Sun</span>
+                                            <span className="text-neutral-900 font-bold">11:00 - 19:00</span>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 {/* Quick Links */}
-                                <div className="border rounded-lg p-6 bg-card">
-                                    <h3 style={{ fontSize: '18.91px', fontWeight: 500 }} className="mb-4">More Information</h3>
-                                    <div className="space-y-2">
-                                        <Link href="/europe-delivery" className="flex items-center justify-between p-2 rounded hover:bg-muted transition-colors text-sm">
-                                            European Shipping <ExternalLink className="w-3 h-3" />
-                                        </Link>
-                                        <Link href="/wholesale" className="flex items-center justify-between p-2 rounded hover:bg-muted transition-colors text-sm">
-                                            B2B Wholesale Hub <ExternalLink className="w-3 h-3" />
-                                        </Link>
-                                        <Link href="/wholesale/register" className="flex items-center justify-between p-2 rounded hover:bg-muted transition-colors text-sm">
-                                            Open Wholesale Account <ExternalLink className="w-3 h-3" />
-                                        </Link>
-                                    </div>
+                                <div className="bg-white p-6 rounded-2xl border border-neutral-100 shadow-sm">
+                                    <h3 className="text-lg font-bold text-neutral-900 mb-4">Quick Links</h3>
+                                    <nav className="space-y-2">
+                                        {[
+                                            { label: 'European Shipping', url: '/europe-delivery' },
+                                            { label: 'Wholesale Application', url: '/wholesale/register' },
+                                            { label: 'Request Price List', url: '/wholesale/quote' }
+                                        ].map((link, i) => (
+                                            <Link key={i} href={link.url} className="flex items-center justify-between p-3 rounded-xl hover:bg-neutral-50 transition-colors group">
+                                                <span className="text-sm font-medium text-neutral-600 group-hover:text-primary transition-colors">{link.label}</span>
+                                                <ExternalLink className="w-4 h-4 text-neutral-400 group-hover:text-primary" />
+                                            </Link>
+                                        ))}
+                                    </nav>
                                 </div>
 
-                                {/* Warehouse Location Map */}
-                                <div className="bg-card">
+                                {/* Warehouse Map */}
+                                <div className="bg-white rounded-2xl border border-neutral-100 shadow-sm overflow-hidden">
                                     <GoogleMapCompact />
-                                    <div className="p-4 border border-t-0 rounded-b-lg bg-muted/10">
-                                        <p className="text-xs text-center text-muted-foreground">
-                                            Warehouse: Fagerstagatan 13, 163 53 Spånga
-                                        </p>
+                                    <div className="p-4 bg-neutral-50 border-t border-neutral-100 text-center">
+                                        <p className="text-xs font-bold text-neutral-500 uppercase tracking-widest">Warehouse Location</p>
                                     </div>
                                 </div>
 
-                                {/* Contact Support */}
-                                <div className="border rounded-lg p-6 bg-muted/30 text-center">
-                                    <h3 style={{ fontSize: '18.91px', fontWeight: 500 }} className="mb-2">Logistics Questions?</h3>
-                                    <p style={{ fontSize: '13.53px' }} className="text-muted-foreground mb-4">Contact our B2B team for bulk orders and custom freight solutions.</p>
-                                    <a href={`mailto:${brandProfile.contact.email}`} className="inline-block w-full py-2 bg-primary text-primary-foreground rounded-lg font-medium text-sm mb-2">
-                                        Email Us
-                                    </a>
-                                    <a href={`tel:${brandProfile.contact.phone}`} className="inline-block w-full py-2 border border-primary text-primary rounded-lg font-medium text-sm">
-                                        {brandProfile.contact.phone}
-                                    </a>
+                                {/* Contact Card */}
+                                <div className="bg-[#A80E13] p-6 rounded-2xl text-white shadow-lg shadow-primary/20 text-center">
+                                    <h3 className="text-xl font-bold mb-2">Have Questions?</h3>
+                                    <p className="text-white/80 text-sm mb-6">Our B2B logistics team is here to help with bulk orders and freight quotes.</p>
+                                    <div className="space-y-3">
+                                        <a href={`tel:${brandProfile.contact.phone}`} className="block w-full py-3 bg-white text-[#A80E13] rounded-xl font-bold hover:bg-neutral-100 transition-colors">
+                                            Call {brandProfile.contact.phone}
+                                        </a>
+                                        <a href={`mailto:${brandProfile.contact.email}`} className="block w-full py-3 bg-[#005c4b] text-white rounded-xl font-bold hover:bg-[#004a3c] transition-colors">
+                                            Email Support
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
+
+            {/* CTA Section */}
+            <CTASection />
 
             {/* SEO Structured Data */}
             <SchemaScript
@@ -328,6 +274,6 @@ export default function DeliveryInformationPage() {
                 id="delivery-faq-schema"
                 schema={deliveryFAQSchema()}
             />
-        </main>
+        </main >
     );
 }

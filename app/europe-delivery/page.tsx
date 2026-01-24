@@ -18,24 +18,29 @@ export default function EuropeDeliveryPage() {
     return (
         <main className="min-h-screen bg-background">
             {/* Hero Section */}
-            <section className="bg-gradient-to-br from-primary/5 via-background to-background border-b">
-                <div className="site-container py-16 md:py-20 text-center md:text-left">
+            {/* Hero Section */}
+            <section className="relative h-[400px] flex items-center overflow-hidden bg-neutral-900">
+                <div className="absolute inset-0 z-0">
+                    <img
+                        src="https://images.unsplash.com/photo-1557821552-17105176677c?q=80&w=2069&auto=format&fit=crop"
+                        alt="European Logistics"
+                        className="object-cover w-full h-full opacity-40"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-r from-neutral-900 via-neutral-900/80 to-transparent" />
+                </div>
+
+                <div className="site-container relative z-10">
                     <div className="max-w-3xl">
-                        <h1 style={{
-                            fontSize: '31.25px',
-                            fontWeight: 700,
-                            lineHeight: 1.47,
-                            letterSpacing: '0.02em'
-                        }} className="mb-4">
+                        <div className="inline-block mb-4">
+                            <span className="text-sm font-bold text-primary bg-primary/10 px-4 py-2 rounded-full border border-primary/20">
+                                European Export
+                            </span>
+                        </div>
+                        <h1 className="text-4xl md:text-5xl font-bold text-white tracking-tight leading-tight mb-6">
                             European B2B Wholesale Shipping
                         </h1>
-                        <p className="text-muted-foreground" style={{
-                            fontSize: '16px',
-                            fontWeight: 400,
-                            lineHeight: 1.52,
-                            letterSpacing: '0.03em'
-                        }}>
-                            Authentic Indo-Pak ingredients and professional kitchen equipment delivered across Europe. Reliable wholesale distribution from Stockholm to your business, anywhere in the EU.
+                        <p className="text-xl text-neutral-300 max-w-2xl leading-relaxed">
+                            Authentic Indo-Pak ingredients and professional kitchen equipment delivered across Europe. Reliable wholesale distribution from Stockholm to your business.
                         </p>
                     </div>
                 </div>

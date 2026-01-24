@@ -34,7 +34,7 @@ export function CartIcon() {
       onClick={openCart}
       aria-label="Open shopping cart"
     >
-      <Icon className="h-6 w-6 transition-all duration-300" />
+      <Icon className="h-5 w-5 transition-all duration-300" />
       {mounted && itemCount > 0 && (
         <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs text-primary-foreground animate-in zoom-in duration-300">
           {itemCount > 9 ? '9+' : itemCount}

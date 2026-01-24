@@ -62,43 +62,43 @@ export function anmolWholesaleFAQSchema(baseUrl: string = 'https://restaurantpac
         faqs: [
             {
                 question: 'Do you offer free delivery in Stockholm?',
-                answer: 'Yes! We offer FREE delivery in Stockholm for orders over 500 SEK. For orders between 300-499 SEK, delivery costs 30 SEK. Minimum order is 300 SEK.',
+                answer: 'Yes! We offer FREE delivery in the Stockholm area for wholesale orders over 5,000 SEK using our own fleet. For smaller orders, pallet freight rates apply or you can choose Ex-Warehouse pickup.',
             },
             {
                 question: 'Do you deliver outside Stockholm?',
-                answer: 'Yes, we deliver across Sweden and all of Europe with DHL, PostNord, and DB Schenker. There is no minimum order value for European delivery. Rates are calculated at checkout based on your location and order weight.',
+                answer: 'Yes, we deliver across Sweden and all of Europe via DHL Freight and DB Schenker. We specialize in B2B logistics for bulk restaurant supplies. Shipping rates are calculated based on weight and destination at checkout.',
             },
             {
-                question: 'Do you offer same-day delivery?',
-                answer: 'Yes! We offer same-day delivery to nearby areas in Stockholm. Orders must be placed before 4 PM (16:00) for same-day delivery.',
+                question: 'Can I pick up my order from the warehouse?',
+                answer: 'Yes! We offer Ex-Warehouse pickup from our facility in Spånga. This is a popular option for local restaurants and grocery stores. Please select "Pickup" at checkout or contact your account manager.',
             },
             {
                 question: 'Are your products Halal certified?',
-                answer: 'Yes, we specialize in Halal certified products. Our meat and many other products are Halal certified for your peace of mind.',
+                answer: 'Yes, we specialize in Halal certified products. Our bulk ingredients and many other restaurant supplies are Halal certified for the professional kitchen.',
             },
             {
-                question: 'What types of products do you sell?',
-                answer: 'We offer a wide range of Indo-Pak products for restaurants and grocery stores including Basmati rice, spices and masalas, lentils and pulses, frozen foods, cooking oils, and the Anmol Electric Tandoor.',
+                question: 'What types of wholesale products do you sell?',
+                answer: 'We provide a complete range of Indo-Pak products for the foodservice industry, including bulk Basmati rice (20kg+), large-format spices, cooking oils, dairy, and the professional-grade Anmol Electric Tandoor.',
             },
             {
-                question: 'What are your warehouse hours?',
-                answer: 'We are open Monday to Friday from 10:00 to 20:00, and Saturday to Sunday from 11:00 to 19:00.',
+                question: 'What are your warehouse operating hours?',
+                answer: 'Our Spånga warehouse is open Monday to Friday from 10:00 to 20:00, and Saturday to Sunday from 11:00 to 19:00 for pickups and inquiries.',
             },
             {
-                question: 'What payment methods do you accept?',
-                answer: 'We accept Credit Cards, Debit Cards, Stripe, Apple Pay, Google Pay, Bank Transfer, and Invoice for verified B2B accounts.',
+                question: 'What B2B payment methods do you accept?',
+                answer: 'We accept Credit/Debit Cards, Stripe, Apple/Google Pay, and Bank Transfer. Verified business accounts can also apply for Invoice terms (Net 30).',
             },
             {
-                question: 'Can I return or exchange products?',
-                answer: 'Yes, we have a 14-day return policy for unopened products. Please contact us at info@restaurantpack.se or call +46769178456 for return arrangements.',
+                question: 'How do you handle large pallet orders?',
+                answer: 'We are experts in pallet logistics. Bulk orders are securely packed on standard pallets and delivered via tail-lift trucks to ensure easy unloading at your establishment.',
             },
             {
-                question: 'Do you have a physical location I can visit?',
-                answer: 'Yes! Our warehouse is located at Fagerstagatan 13, 163 53 Spånga, Stockholm. You are welcome to visit us during our operating hours.',
+                question: 'Do you manufacture the Anmol Electric Tandoor?',
+                answer: 'Yes, Anmol AB is the official manufacturer. We supply these professional tandoors directly to restaurants across Scandinavia and Europe.',
             },
             {
-                question: 'How can I contact you?',
-                answer: 'You can reach us by phone at +46769178456 or email at info@restaurantpack.se. We are also available on WhatsApp for quick responses.',
+                question: 'How can I contact the wholesale team?',
+                answer: 'You can reach our B2B team by phone at +46769178456 or email at wholesale@restaurantpack.se. We are also available on WhatsApp for wholesale inquiries.',
             },
         ],
     });

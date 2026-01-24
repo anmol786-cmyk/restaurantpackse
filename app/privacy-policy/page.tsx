@@ -54,7 +54,7 @@ export default function PrivacyPolicyPage() {
                   letterSpacing: '0.03em'
                 }}>
                   <p>
-                    At {brandProfile.name} (part of Sheikh Global Trading), we are deeply committed to protecting your privacy and handling your personal data with transparency and care. This Privacy Policy explains how we collect, use, store, and safeguard your information when you visit our website, {brandProfile.website.url}, or interact with our services.
+                    At {brandProfile.name} (part of Anmol Sweets & Restaurant), we are deeply committed to protecting your privacy and handling your personal data with transparency and care. This Privacy Policy explains how we collect, use, store, and safeguard your information when you visit our website, {brandProfile.website.url}, or interact with our services.
                   </p>
                   <p>
                     We operate in full compliance with the General Data Protection Regulation (GDPR) (EU) 2016/679 and applicable Swedish data protection laws. Our goal is to ensure you feel secure and confident when you shop with us, whether you are in Stockholm, Sweden, or anywhere else in Europe.
@@ -71,7 +71,7 @@ export default function PrivacyPolicyPage() {
                 <div className="space-y-4 text-muted-foreground" style={{ fontSize: '16px' }}>
                   <p>We collect information that is necessary to provide you with our services and to improve your shopping experience:</p>
                   <ul className="list-disc pl-6 space-y-4">
-                    <li><strong>Identity & Contact Data:</strong> Your first name, last name, email address, phone number, and delivery address, which you provide when creating an account or placing an order.</li>
+                    <li><strong>Identity & Contact Data:</strong> Your first name, last name, trade name (for businesses), email address, phone number, and delivery address, which you provide when creating a B2B account or placing a wholesale order.</li>
                     <li><strong>Transactional Data:</strong> Details about products you have purchased and the payment method used. We do not store your full credit card details (processed securely via Stripe).</li>
                     <li><strong>Technical Data:</strong> IP address, browser type, device information, and general location collected automatically when you browse our site.</li>
                     <li><strong>Communication Data:</strong> Information you provide when contacting us via email, WhatsApp, or our contact form.</li>
@@ -87,7 +87,7 @@ export default function PrivacyPolicyPage() {
                 </h2>
                 <div className="space-y-4 text-muted-foreground" style={{ fontSize: '16px' }}>
                   <ul className="list-disc pl-6 space-y-4">
-                    <li><strong>Order Fulfillment:</strong> To process payments, pack orders, and arrange delivery.</li>
+                    <li><strong>Order Fulfillment:</strong> To process payments, pack bulk orders, and arrange freight delivery.</li>
                     <li><strong>Customer Service:</strong> To communicate status and respond to inquiries.</li>
                     <li><strong>Improvements:</strong> To analyze how customers use our site and improve the user experience.</li>
                     <li><strong>Marketing:</strong> With your consent, we send info about new products and special offers.</li>
@@ -137,7 +137,7 @@ export default function PrivacyPolicyPage() {
                 <div className="border rounded-lg p-6 bg-card">
                   <h3 style={{ fontSize: '18.91px', fontWeight: 500 }} className="mb-4">Data Controller</h3>
                   <div className="space-y-2 text-muted-foreground" style={{ fontSize: '13.53px' }}>
-                    <p className="font-bold text-foreground">Sheikh Global Trading</p>
+                    <p className="font-bold text-foreground">Anmol AB</p>
                     <p>{brandProfile.address.street}</p>
                     <p>{brandProfile.address.postalCode} {brandProfile.address.area}</p>
                     <p>{brandProfile.address.city}, {brandProfile.address.country}</p>

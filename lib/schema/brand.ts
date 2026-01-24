@@ -53,7 +53,7 @@ export function brandSchema(
 /**
  * Pre-configured Anmol Wholesale Brand Schema
  */
-export function idealIndiskaBrandSchema(): Brand {
+export function anmolWholesaleBrandSchema(): Brand {
   return brandSchema('Anmol Wholesale', {
     url: 'https://restaurantpack.se',
     logo: 'https://crm.restaurantpack.se/wp-content/uploads/2025/03/ANMOL-WHOLESALE-1.png',

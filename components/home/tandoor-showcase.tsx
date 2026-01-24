@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 
 export function TandoorShowcase() {
     return (
-        <section className="py-12 bg-white">
+        <section className="py-12 md:py-20 bg-white">
             <div className="site-container">
                 <div className="rounded-[2.5rem] overflow-hidden bg-[#A80E13] shadow-2xl">
                     <div className="grid grid-cols-1 lg:grid-cols-2">

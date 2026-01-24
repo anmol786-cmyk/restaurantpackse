@@ -248,8 +248,8 @@ export function wooCommerceProductSchema(
 
   return productSchema(productInput, {
     baseUrl: options?.baseUrl,
-    brandName: options?.brandName || 'Anmol Sweets & Restaurant',
-    sellerName: options?.sellerName || 'Anmol Sweets & Restaurant',
+    brandName: options?.brandName || 'Anmol Wholesale',
+    sellerName: options?.sellerName || 'Anmol Wholesale',
   });
 }
 

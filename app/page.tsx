@@ -42,7 +42,7 @@ export default async function HomePage() {
       <Features />
 
       {/* 3. Strategic Category Access */}
-      <div className="bg-slate-50 border-y border-slate-100 pb-8">
+      <div className="pt-0 pb-12 md:pb-20">
         <CategoryGrid categories={categories} />
       </div>
 
@@ -53,7 +53,7 @@ export default async function HomePage() {
       <QuickOrder />
 
       {/* 5. Popular Wholesale Items */}
-      <div className="py-12">
+      <div className="py-12 md:py-20">
         <ProductShowcase
           title="Premium Bestsellers"
           products={trendingProducts}
@@ -62,7 +62,7 @@ export default async function HomePage() {
       </div>
 
       {/* 6. Brand Showcase */}
-      <div className="py-12 bg-slate-50 border-y border-slate-100">
+      <div className="py-12 md:py-20">
         <ProductShowcase
           title="Haldiram's Professional Range"
           products={haldiramProducts}

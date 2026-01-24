@@ -48,7 +48,7 @@ export function QuickOrder() {
     };
 
     return (
-        <section className="w-full py-16 bg-primary overflow-hidden relative">
+        <section className="w-full py-12 md:py-20 bg-primary overflow-hidden relative">
             {/* Background elements */}
             <div className="absolute top-0 right-0 w-1/2 h-full bg-white/5 -skew-x-12 translate-x-1/2" />
             <div className="absolute bottom-0 left-0 w-64 h-64 bg-primary/20 rounded-full blur-3xl -translate-x-1/2 translate-y-1/2" />

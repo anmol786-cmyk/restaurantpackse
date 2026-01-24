@@ -30,27 +30,11 @@ export function stockholmDeliveryServiceSchema(baseUrl: string = 'https://restau
       },
       {
         '@type': 'Place',
-        name: 'Södermalm',
+        name: 'Spånga',
       },
       {
         '@type': 'Place',
-        name: 'Kungsholmen',
-      },
-      {
-        '@type': 'Place',
-        name: 'Norrmalm',
-      },
-      {
-        '@type': 'Place',
-        name: 'Vasastan',
-      },
-      {
-        '@type': 'Place',
-        name: 'Östermalm',
-      },
-      {
-        '@type': 'Place',
-        name: 'Gamla Stan',
+        name: 'Kista',
       },
       {
         '@type': 'Place',
@@ -62,54 +46,40 @@ export function stockholmDeliveryServiceSchema(baseUrl: string = 'https://restau
       },
       {
         '@type': 'Place',
-        name: 'Huddinge',
+        name: 'Bromma',
       },
       {
         '@type': 'Place',
-        name: 'Nacka',
+        name: 'Järfälla',
+      },
+      {
+        '@type': 'Place',
+        name: 'Vällingby',
+      },
+      {
+        '@type': 'Place',
+        name: 'Hässelby',
       },
     ],
     offers: [
       {
         '@type': 'Offer',
-        name: 'FREE Stockholm Delivery',
-        description: 'Free delivery for orders 500 SEK and above',
+        name: 'FREE Stockholm B2B Delivery',
+        description: 'Free delivery for wholesale orders 5,000 SEK and above in our primary coverage zone',
         price: '0',
         priceCurrency: 'SEK',
         eligibleTransactionVolume: {
           '@type': 'PriceSpecification',
-          minPrice: 500,
+          minPrice: 5000,
           priceCurrency: 'SEK',
         },
       },
       {
         '@type': 'Offer',
-        name: 'Standard Stockholm Delivery',
-        description: 'Flat delivery fee for orders between 300-499 SEK',
-        price: '30',
+        name: 'Standard B2B Pallet Freight',
+        description: 'Fixed rate pallet shipping for businesses within greater Stockholm',
+        price: '495',
         priceCurrency: 'SEK',
-        eligibleTransactionVolume: {
-          '@type': 'PriceSpecification',
-          minPrice: 300,
-          maxPrice: 499.99,
-          priceCurrency: 'SEK',
-        },
-      },
-      {
-        '@type': 'Offer',
-        name: 'Same-Day Evening Delivery',
-        description: 'Same-day delivery to nearby areas (order before 4 PM)',
-        price: '30',
-        priceCurrency: 'SEK',
-        areaServed: [
-          { '@type': 'Place', name: 'Bandhagen' },
-          { '@type': 'Place', name: 'Högdalen' },
-          { '@type': 'Place', name: 'Hagsätra' },
-          { '@type': 'Place', name: 'Rågsved' },
-          { '@type': 'Place', name: 'Stureby' },
-          { '@type': 'Place', name: 'Farsta' },
-          { '@type': 'Place', name: 'Älvsjö' },
-        ],
       },
     ],
     availableChannel: {
@@ -184,42 +154,42 @@ export function deliveryFAQSchema(baseUrl: string = 'https://restaurantpack.se')
     mainEntity: [
       {
         '@type': 'Question',
-        name: 'What is the minimum order for delivery in Stockholm?',
+        name: 'What is the minimum order for wholesale delivery in Stockholm?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'The minimum order for our local delivery service in Stockholm is 300 SEK. Orders between 300-499 SEK have a flat delivery fee of 30 SEK. Orders 500 SEK and above get FREE delivery.',
+          text: 'For our own Anmol fleet delivery in Stockholm, we offer free shipping on wholesale orders over 5,000 SEK. For smaller orders, pallet freight rates apply or you can choose Ex-Warehouse pickup from Spånga.',
         },
       },
       {
         '@type': 'Question',
-        name: 'Do you offer same-day delivery?',
+        name: 'Can I pick up my wholesale order directly?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'Yes! We offer same-day evening delivery to nearby areas including Bandhagen, Högdalen, Hagsätra, Rågsved, Stureby, Farsta, and Älvsjö. Place your order before 4 PM (16:00) to receive delivery the same evening between 7 PM - 10 PM (19:00 - 22:00).',
+          text: 'Absolutely. We offer Ex-Warehouse pickup from our facility at Fagerstagatan 13, Spånga. This is often the most cost-effective option for local restaurants and grocery stores.',
         },
       },
       {
         '@type': 'Question',
-        name: 'Do you deliver to all of Europe?',
+        name: 'Do you deliver bulk supplies to all of Europe?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'Yes, we deliver to all European countries via DHL. There is no minimum order amount for European deliveries. Shipping costs are calculated at checkout based on weight and destination. Since we ship from Sweden (an EU member), customers in EU countries will not face additional customs fees or import duties.',
+          text: 'Yes, we ship wholesale quantities across Europe via DHL Freight. Minimum order for international shipping is 5,000 SEK. Since we are based in Sweden, there are no customs duties for EU destinations.',
         },
       },
       {
         '@type': 'Question',
-        name: 'How long does delivery take?',
+        name: 'How do you handle pallet shipments?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'For Stockholm: 1-2 days for standard delivery, same-day for nearby areas. For rest of Sweden via DHL: 2-5 business days. For Europe: 2-4 business days for nearby countries (Denmark, Germany), 4-7 business days for further destinations.',
+          text: 'We are experts in pallet logistics. Bulk orders are securely packed on standard Euro-pallets and shipped via DHL or our own fleet with tail-lift trucks for easy unloading at your restaurant or warehouse.',
         },
       },
       {
         '@type': 'Question',
-        name: 'Can I track my delivery?',
+        name: 'Can I track my wholesale freight?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'Yes, all orders are trackable. You will receive a tracking number via email once your order is dispatched. DHL deliveries include full DHL tracking.',
+          text: 'Yes, all shipments including pallet freight are fully trackable. You will receive a tracking link via our B2B portal or email as soon as the carrier scans the shipment.',
         },
       },
     ],

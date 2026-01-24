@@ -121,7 +121,7 @@ export function ProductRecommendations({
                 <div className="grid gap-4 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
                     {recommendations.map(({ product, reason, confidence }) => (
                         <Card key={product.id} className="group relative overflow-hidden transition-all hover:shadow-lg">
-                            <Link href={`/${product.slug}`}>
+                            <Link href={`/product/${product.slug}`}>
                                 {/* Image */}
                                 <div className="relative aspect-square overflow-hidden bg-neutral-100 dark:bg-neutral-800">
                                     {product.images && product.images.length > 0 ? (

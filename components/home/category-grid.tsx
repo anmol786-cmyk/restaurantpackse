@@ -39,7 +39,7 @@ export function CategoryGrid({ categories }: CategoryGridProps) {
                 <div className="flex items-center justify-between mb-6 md:mb-8">
                     <div className="space-y-1">
                         <span className="text-primary font-bold text-xs uppercase tracking-wider">Explore</span>
-                        <h2 className="text-2xl md:text-3xl font-heading font-bold text-foreground">Top Categories</h2>
+                        <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">Top Categories</h2>
                     </div>
                     <Link
                         href="/shop"

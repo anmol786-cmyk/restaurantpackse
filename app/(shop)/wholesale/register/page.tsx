@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function WholesaleRegisterPage() {
     return (
-        <div className="site-container relative min-h-screen flex-col items-center justify-center grid lg:max-w-none lg:grid-cols-2 lg:px-0">
+        <div className="site-container relative min-h-[80vh] grid lg:grid-cols-2 gap-8 py-10">
             <div className="relative hidden h-full flex-col bg-[#A80E13] p-10 text-white lg:flex dark:border-r overflow-hidden rounded-l-2xl my-4">
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/20 z-10" />
                 <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1556910103-1c02745aae4d?q=80&w=2071&auto=format&fit=crop')] bg-cover bg-center opacity-20 mix-blend-overlay" />

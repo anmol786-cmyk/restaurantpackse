@@ -20,7 +20,7 @@ export function ProductShowcase({ title, products, moreLink = "/shop" }: Product
             <div className="site-container">
                 {/* Header */}
                 <div className="flex items-center justify-between mb-6">
-                    <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-foreground">
+                    <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">
                         {title}
                     </h2>
                     <Button variant="outline" size="sm" className="rounded-full text-xs h-8" asChild>

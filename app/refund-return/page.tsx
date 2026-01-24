@@ -96,8 +96,8 @@ export default function RefundReturnPage() {
                                 </h2>
                                 <div className="space-y-6">
                                     <div className="p-6 rounded-xl border bg-card/50">
-                                        <h3 style={{ fontSize: '18px', fontWeight: 600 }} className="mb-3">In-Store (Stockholm)</h3>
-                                        <p style={{ fontSize: '15.13px' }} className="text-muted-foreground">You are welcome to return eligible items directly to our physical store at Bandhagsplan 4. Please bring your proof of purchase (order confirmation or receipt) with you.</p>
+                                        <h3 style={{ fontSize: '18px', fontWeight: 600 }} className="mb-3">In-Person (Stockholm Warehouse)</h3>
+                                        <p style={{ fontSize: '15.13px' }} className="text-muted-foreground">You are welcome to return eligible items directly to our warehouse at Fagerstagatan 13, Spånga. Please bring your proof of purchase (invoice or order confirmation) with you.</p>
                                     </div>
                                     <div className="p-6 rounded-xl border bg-card/50">
                                         <h3 style={{ fontSize: '18px', fontWeight: 600 }} className="mb-3">By Post (Sweden & Europe)</h3>

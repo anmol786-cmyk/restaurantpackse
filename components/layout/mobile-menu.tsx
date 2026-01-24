@@ -63,7 +63,7 @@ export function MobileMenu() {
         <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
                 <Button variant="ghost" size="icon" className="hover:bg-slate-100 transition-colors">
-                    <Menu className="h-6 w-6 text-slate-700" />
+                    <Menu className="h-5 w-5 text-slate-700" />
                     <span className="sr-only">Toggle menu</span>
                 </Button>
             </SheetTrigger>

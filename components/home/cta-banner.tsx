@@ -42,7 +42,7 @@ export function CTASection() {
                         <div className="flex flex-col sm:flex-row gap-4">
                             <Button
                                 size="lg"
-                                className="h-14 px-8 bg-primary hover:bg-primary/90 text-white rounded-xl text-lg font-bold shadow-2xl shadow-primary/20 transition-all hover:-translate-y-1"
+                                className="h-14 px-8 bg-[#005c4b] hover:bg-[#004a3c] text-white rounded-xl text-lg font-bold shadow-2xl shadow-primary/20 transition-all hover:-translate-y-1"
                                 asChild
                             >
                                 <Link href="/wholesale/register">

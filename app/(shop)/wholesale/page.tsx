@@ -342,39 +342,71 @@ export default function WholesaleLandingPage() {
             </section>
 
             {/* CTA Section */}
-            <section className="py-24 bg-primary text-white text-center">
-                <div className="container px-4 max-w-3xl space-y-8">
-                    <h2 className="text-4xl md:text-5xl font-bold tracking-tight">Ready to Partner with Anmol Wholesale?</h2>
-                    <p className="text-xl text-primary-foreground/90">
-                        Join our network of professional chefs, restaurateurs, grocery stores, and caterers. Experience the difference of working with suppliers who truly understand the food business.
-                    </p>
-                    <div className="flex flex-wrap justify-center gap-4">
-                        <Button asChild size="lg" variant="secondary" className="h-14 px-10 text-lg font-bold">
-                            <Link href="/wholesale/register">Open B2B Account</Link>
-                        </Button>
-                        <Button asChild size="lg" variant="outline" className="h-14 px-10 text-lg font-bold bg-white/10 border-white/20 hover:bg-white/20">
-                            <Link href="/wholesale/quote">Request Price List</Link>
-                        </Button>
-                    </div>
-                    <div className="pt-8 border-t border-white/10 grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div className="flex items-center justify-center gap-4">
-                            <PhoneCall className="w-6 h-6" />
-                            <div className="text-left">
-                                <p className="text-xs uppercase tracking-widest text-primary-foreground/60 font-bold">B2B Sales Team</p>
-                                <p className="text-lg font-bold">{brandProfile.contact.phone}</p>
-                            </div>
-                        </div>
-                        <div className="flex items-center justify-center gap-4">
-                            <Mail className="w-6 h-6" />
-                            <div className="text-left">
-                                <p className="text-xs uppercase tracking-widest text-primary-foreground/60 font-bold">Wholesale Email</p>
-                                <p className="text-lg font-bold">{brandProfile.contact.email}</p>
-                            </div>
+            <section className="py-24 bg-[#A80E13] text-white">
+                <div className="container px-4">
+                    <div className="max-w-4xl mx-auto text-center space-y-8 mb-16">
+                        <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-white mb-6">
+                            Ready to Partner with Anmol Wholesale?
+                        </h2>
+                        <p className="text-xl text-white/90 max-w-2xl mx-auto leading-relaxed">
+                            Join our network of professional chefs, restaurateurs, grocery stores, and caterers. Experience the difference of working with suppliers who truly understand the food business.
+                        </p>
+                        <div className="flex flex-wrap justify-center gap-4 pt-4">
+                            <Button asChild size="lg" className="h-14 px-10 text-lg font-bold bg-[#005c4b] hover:bg-[#004a3c] text-white border-0 shadow-lg">
+                                <Link href="/wholesale/register">Open B2B Account</Link>
+                            </Button>
+                            <Button asChild size="lg" variant="outline" className="h-14 px-10 text-lg font-bold bg-[#bf2026] text-white border-white/20 hover:bg-[#a61b21] hover:text-white">
+                                <Link href="/wholesale/quote">Request Price List</Link>
+                            </Button>
                         </div>
                     </div>
-                    <div className="pt-6 text-sm text-primary-foreground/70">
-                        <p><strong>Operating Hours:</strong> Mon-Fri: 10 AM - 8 PM | Sat-Sun: 11 AM - 7 PM</p>
-                        <p className="mt-2"><strong>Warehouse:</strong> Fagerstagatan 13, 163 53 Spånga, Sweden</p>
+
+                    <div className="border-t border-white/10 pt-12">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-center md:text-left">
+                            {/* Column 1: Sales Team */}
+                            <div className="space-y-3">
+                                <div className="flex items-center justify-center md:justify-start gap-3 text-white/80 mb-2">
+                                    <PhoneCall className="w-5 h-5" />
+                                    <span className="text-xs font-bold uppercase tracking-widest">B2B Sales Team</span>
+                                </div>
+                                <p className="text-lg font-bold text-white">{brandProfile.contact.phone}</p>
+                                <p className="text-sm text-white/60">Mon-Fri: 10am - 8pm</p>
+                            </div>
+
+                            {/* Column 2: Email */}
+                            <div className="space-y-3">
+                                <div className="flex items-center justify-center md:justify-start gap-3 text-white/80 mb-2">
+                                    <Mail className="w-5 h-5" />
+                                    <span className="text-xs font-bold uppercase tracking-widest">Wholesale Email</span>
+                                </div>
+                                <p className="text-lg font-bold text-white">{brandProfile.contact.email}</p>
+                                <p className="text-sm text-white/60">Response within 24h</p>
+                            </div>
+
+                            {/* Column 3: Hours */}
+                            <div className="space-y-3">
+                                <div className="flex items-center justify-center md:justify-start gap-3 text-white/80 mb-2">
+                                    <Building2 className="w-5 h-5" />
+                                    <span className="text-xs font-bold uppercase tracking-widest">Operating Hours</span>
+                                </div>
+                                <div className="space-y-1">
+                                    <p className="text-sm text-white">Mon-Fri: 10 AM - 8 PM</p>
+                                    <p className="text-sm text-white">Sat-Sun: 11 AM - 7 PM</p>
+                                </div>
+                            </div>
+
+                            {/* Column 4: Warehouse */}
+                            <div className="space-y-3">
+                                <div className="flex items-center justify-center md:justify-start gap-3 text-white/80 mb-2">
+                                    <Truck className="w-5 h-5" />
+                                    <span className="text-xs font-bold uppercase tracking-widest">Warehouse Pickup</span>
+                                </div>
+                                <p className="text-sm text-white leading-relaxed">
+                                    Fagerstagatan 13,<br />
+                                    163 53 Spånga, Sweden
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>

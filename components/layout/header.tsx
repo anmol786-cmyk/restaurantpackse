@@ -105,8 +105,8 @@ export function Header({ className, categories = [] }: HeaderProps) {
           {/* Mobile/Tablet Header Row */}
           <div className="xl:hidden flex h-16 items-center justify-between gap-4">
             <div className="flex items-center gap-2">
-              <Link href="/" className="flex items-center gap-2">
-                <div className="relative h-9 w-[2.25rem]">
+              <Link href="/">
+                <div className="relative h-12 w-32">
                   <Image
                     src={logoUrl}
                     alt={brandProfile.name}
@@ -115,9 +115,6 @@ export function Header({ className, categories = [] }: HeaderProps) {
                     priority
                   />
                 </div>
-                <span className="font-heading font-bold text-sm text-primary uppercase tracking-wide leading-none">
-                  Anmol <br /> Wholesale
-                </span>
               </Link>
             </div>
 

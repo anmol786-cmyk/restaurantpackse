@@ -158,7 +158,7 @@ export default function TermsConditionsPage() {
                 <div className="border rounded-lg p-6 bg-card">
                   <h3 style={{ fontSize: '18.91px', fontWeight: 500 }} className="mb-4">Legal Entity</h3>
                   <div className="space-y-2 text-muted-foreground" style={{ fontSize: '13.53px' }}>
-                    <p className="font-bold text-foreground">Sheikh Global Trading</p>
+                    <p className="font-bold text-foreground">Anmol Sweets & Restaurant (Anmol AB)</p>
                     <p>{brandProfile.address.street}</p>
                     <p>{brandProfile.address.postalCode} {brandProfile.address.area}</p>
                     <p>{brandProfile.address.city}, {brandProfile.address.country}</p>
