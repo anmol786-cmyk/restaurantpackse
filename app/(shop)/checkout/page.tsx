@@ -33,7 +33,6 @@ import {
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Card } from '@/components/ui/card';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Progress } from '@/components/ui/progress';
 import { Separator } from '@/components/ui/separator';
 import { motion, AnimatePresence } from 'framer-motion';
 import { StripeProvider } from '@/components/providers/stripe-provider';
@@ -59,27 +58,7 @@ interface AddressData {
   country: string;
 }
 
-// Fallback shipping methods if API fails
-const FALLBACK_SHIPPING_METHODS: ShippingMethod[] = [
-  {
-    id: 'flat_rate:1',
-    method_id: 'flat_rate',
-    label: 'Standard Shipping',
-    cost: 99,
-    total_cost: 99,
-    tax: 0,
-    meta_data: {},
-  },
-  {
-    id: 'local_pickup:2',
-    method_id: 'local_pickup',
-    label: 'Store Pickup (Stockholm)',
-    cost: 0,
-    total_cost: 0,
-    tax: 0,
-    meta_data: {},
-  },
-];
+
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -128,12 +107,7 @@ export default function CheckoutPage() {
   const [stripeClientSecret, setStripeClientSecret] = useState<string | null>(null);
   const [isStripePayment, setIsStripePayment] = useState(false);
 
-  // Free shipping threshold
-  const FREE_SHIPPING_THRESHOLD = 500;
   const cartTotal = getTotalPrice();
-  const qualifiesForFreeShipping = cartTotal >= FREE_SHIPPING_THRESHOLD;
-  const amountToFreeShipping = Math.max(0, FREE_SHIPPING_THRESHOLD - cartTotal);
-  const freeShippingProgress = Math.min((cartTotal / FREE_SHIPPING_THRESHOLD) * 100, 100);
 
   // Track initiate checkout
   useEffect(() => {
@@ -164,15 +138,8 @@ export default function CheckoutPage() {
       if (result.success && result.available_methods && result.available_methods.length > 0) {
         setShippingMethods(result.available_methods);
 
-        // Auto-select best shipping method
-        const freeShipping = result.available_methods.find((m) => m.method_id === 'free_shipping');
-        if (freeShipping && qualifiesForFreeShipping) {
-          setSelectedShippingMethod(freeShipping);
-        } else {
-          // Select first non-free method or first method
-          const firstPaidMethod = result.available_methods.find((m) => m.method_id !== 'free_shipping');
-          setSelectedShippingMethod(firstPaidMethod || result.available_methods[0]);
-        }
+        // Select first method by default
+        setSelectedShippingMethod(result.available_methods[0]);
 
         // Check for restricted products
         if (result.restricted_products && result.restricted_products.length > 0) {
@@ -185,20 +152,19 @@ export default function CheckoutPage() {
           );
         }
       } else {
-        // Use fallback methods
-        console.warn('No shipping methods from API, using fallback');
-        setShippingMethods(FALLBACK_SHIPPING_METHODS);
-        setSelectedShippingMethod(FALLBACK_SHIPPING_METHODS[0]);
+        setShippingMethods([]);
+        setSelectedShippingMethod(null);
+        setShippingError('No shipping methods found for this address in WooCommerce.');
       }
     } catch (err) {
       console.error('Shipping calculation failed:', err);
-      setShippingError('Could not calculate shipping. Using standard rates.');
-      setShippingMethods(FALLBACK_SHIPPING_METHODS);
-      setSelectedShippingMethod(FALLBACK_SHIPPING_METHODS[0]);
+      setShippingError('Could not fetch shipping rates from WooCommerce.');
+      setShippingMethods([]);
+      setSelectedShippingMethod(null);
     } finally {
       setIsCalculatingShipping(false);
     }
-  }, [items, qualifiesForFreeShipping]);
+  }, [items]);
 
   // Handle postcode blur to trigger shipping calculation
   const handlePostcodeBlur = () => {
@@ -535,8 +501,8 @@ export default function CheckoutPage() {
                       currentStep === step.id
                         ? 'bg-primary-600 text-white ring-4 ring-primary-100'
                         : index === 0 && currentStep === 'payment'
-                        ? 'bg-green-600 text-white'
-                        : 'bg-neutral-200 text-neutral-500'
+                          ? 'bg-green-600 text-white'
+                          : 'bg-neutral-200 text-neutral-500'
                     )}
                   >
                     {index === 0 && currentStep === 'payment' ? (
@@ -751,30 +717,7 @@ export default function CheckoutPage() {
                   <Card className="p-6">
                     <h2 className="font-heading text-xl font-bold mb-4">Shipping Method</h2>
 
-                    {/* Free Shipping Progress */}
-                    {!qualifiesForFreeShipping && (
-                      <div className="mb-4 p-4 bg-green-50 border border-green-200 rounded-lg">
-                        <div className="flex items-center justify-between text-sm mb-2">
-                          <span className="flex items-center gap-2 font-medium text-green-800">
-                            <Gift className="h-4 w-4" />
-                            Free shipping at {formatPrice(FREE_SHIPPING_THRESHOLD, 'SEK')}
-                          </span>
-                          <span className="font-semibold text-green-700">
-                            {formatPrice(amountToFreeShipping, 'SEK')} to go!
-                          </span>
-                        </div>
-                        <Progress value={freeShippingProgress} className="h-2" />
-                      </div>
-                    )}
-
-                    {qualifiesForFreeShipping && (
-                      <div className="mb-4 p-4 bg-green-50 border border-green-200 rounded-lg">
-                        <div className="flex items-center gap-2 text-green-800">
-                          <Gift className="h-5 w-5" />
-                          <span className="font-semibold">You qualify for free shipping!</span>
-                        </div>
-                      </div>
-                    )}
+                    {/* Shipping methods list below */}
 
                     {isCalculatingShipping ? (
                       <div className="flex items-center justify-center py-8">

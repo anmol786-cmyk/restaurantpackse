@@ -3,10 +3,11 @@ import Image from 'next/image';
 import Script from 'next/script';
 import { brandProfile } from '@/config/brand-profile';
 import { Facebook, Instagram, Twitter, MapPin, Phone, Mail, Clock, Youtube, ExternalLink, Linkedin } from 'lucide-react';
-import { getOnSaleProducts } from '@/lib/woocommerce/products-direct';
+import { getOnSaleProducts, getProductCategories } from '@/lib/woocommerce';
 
 export async function Footer() {
   const saleProducts = await getOnSaleProducts(3);
+  const categories = await getProductCategories({ parent: 0, per_page: 5, hide_empty: true });
 
   return (
     <footer className="w-full bg-slate-50 border-t border-slate-200 mt-20">
@@ -58,16 +59,15 @@ export async function Footer() {
               Catalog
             </h4>
             <ul className="space-y-4">
-              {[
-                { label: 'All Products', href: '/shop' },
-                { label: 'Bulk Staples', href: '/product-category/staples' },
-                { label: 'Oils & Ghee', href: '/product-category/oils-ghee' },
-                { label: 'Basmati Rice', href: '/product-category/rice' },
-                { label: 'Electric Tandoor', href: '/product-category/equipment' }
-              ].map((link) => (
-                <li key={link.label}>
-                  <Link href={link.href} className="text-sm text-slate-500 hover:text-primary transition-colors">
-                    {link.label}
+              <li>
+                <Link href="/shop" className="text-sm text-slate-500 hover:text-primary transition-colors">
+                  All Products
+                </Link>
+              </li>
+              {categories?.map((category) => (
+                <li key={category.id}>
+                  <Link href={`/product-category/${category.slug}`} className="text-sm text-slate-500 hover:text-primary transition-colors">
+                    {category.name}
                   </Link>
                 </li>
               ))}
