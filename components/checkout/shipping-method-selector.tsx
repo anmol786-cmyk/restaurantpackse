@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Progress } from '@/components/ui/progress';
-import { AlertTriangle, Gift, Loader2, Truck, Package } from 'lucide-react';
+import { AlertTriangle, Loader2, Truck, Package } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { formatPrice } from '@/lib/woocommerce';
 import { ShippingMethod } from '@/lib/shipping-service';
@@ -37,8 +37,6 @@ export function ShippingMethodSelector({
     selectedShippingMethod,
     restrictedProducts,
     isCalculatingShipping,
-    freeShippingThreshold,
-    amountToFreeShipping,
     selectShippingMethod,
     getSubtotal,
   } = useCartStore();
@@ -46,41 +44,11 @@ export function ShippingMethodSelector({
   // Use props if provided, otherwise fall back to cart store
   const effectivePostcode = postcode || shippingAddress?.postcode;
   const subtotal = cartTotal !== undefined ? cartTotal : getSubtotal();
-  const freeShippingProgress = Math.min((subtotal / freeShippingThreshold) * 100, 100);
-  const qualifiesForFreeShipping = subtotal >= freeShippingThreshold;
-
-  // FIX: Auto-notify parent when cart store selects free shipping AND customer qualifies
-  useEffect(() => {
-    if (selectedShippingMethod && onMethodChange && !selectedMethod) {
-      // Only auto-select free shipping if customer qualifies (cart >= 500 SEK)
-      if (selectedShippingMethod.method_id === 'free_shipping') {
-        if (qualifiesForFreeShipping) {
-          console.log('✅ Auto-selecting free shipping (qualifies):', subtotal, '>=', freeShippingThreshold);
-          onMethodChange(selectedShippingMethod);
-          if (onShippingCostChange) {
-            onShippingCostChange(selectedShippingMethod.cost);
-          }
-        } else {
-          console.log('⚠️ Not auto-selecting free shipping (does not qualify):', subtotal, '<', freeShippingThreshold);
-          // Don't auto-select - let user choose another method
-        }
-      } else {
-        // For non-free shipping methods (like store pickup), auto-select them
-        console.log('✅ Auto-selecting shipping method:', selectedShippingMethod.label);
-        onMethodChange(selectedShippingMethod);
-        if (onShippingCostChange) {
-          onShippingCostChange(selectedShippingMethod.cost);
-        }
-      }
-    }
-  }, [selectedShippingMethod, onMethodChange, onShippingCostChange, selectedMethod, qualifiesForFreeShipping, subtotal, freeShippingThreshold]);
 
   const getMethodIcon = (methodId: string) => {
     switch (methodId) {
       case 'local_pickup':
         return <Package className="h-5 w-5" />;
-      case 'free_shipping':
-        return <Gift className="h-5 w-5 text-green-600" />;
       default:
         return <Truck className="h-5 w-5" />;
     }
@@ -144,7 +112,7 @@ export function ShippingMethodSelector({
     );
   }
 
-  // 5. Show methods with free shipping progress
+  // 5. Show methods
   return (
     <div className={cn('space-y-4', className)}>
       <div>
@@ -156,36 +124,6 @@ export function ShippingMethodSelector({
           {shippingAddress?.city && `, ${shippingAddress.city}`}
         </p>
       </div>
-
-      {/* Free Shipping Progress Bar */}
-      {subtotal < freeShippingThreshold && (
-        <Card className="border-green-200 bg-green-50 p-4 dark:border-green-900 dark:bg-green-950/20">
-          <div className="space-y-2">
-            <div className="flex items-center justify-between text-sm">
-              <span className="flex items-center gap-2 font-medium text-green-800 dark:text-green-300">
-                <Gift className="h-4 w-4" />
-                Free shipping at {formatPrice(freeShippingThreshold, 'SEK')}
-              </span>
-              <span className="font-semibold text-green-700 dark:text-green-400">
-                {formatPrice(amountToFreeShipping, 'SEK')} to go!
-              </span>
-            </div>
-            <Progress value={freeShippingProgress} className="h-2" />
-          </div>
-        </Card>
-      )}
-
-      {/* Shipping achieved message */}
-      {subtotal >= freeShippingThreshold && (
-        <Card className="border-green-200 bg-green-50 p-4 dark:border-green-900 dark:bg-green-950/20">
-          <div className="flex items-center gap-2 text-green-800 dark:text-green-300">
-            <Gift className="h-5 w-5" />
-            <p className="font-semibold">
-              Congratulations! You qualify for free shipping!
-            </p>
-          </div>
-        </Card>
-      )}
 
       {/* Shipping Methods */}
       <RadioGroup

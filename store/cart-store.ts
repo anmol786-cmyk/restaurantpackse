@@ -43,8 +43,6 @@ interface CartState {
   selectedShippingMethod: ShippingMethod | null;
   restrictedProducts: RestrictedProduct[];
   isCalculatingShipping: boolean;
-  freeShippingThreshold: number;
-  amountToFreeShipping: number;
   minimumOrder: number;
   minimumOrderMet: boolean;
 
@@ -93,8 +91,6 @@ export const useCartStore = create<CartState>()(
       selectedShippingMethod: null,
       restrictedProducts: [],
       isCalculatingShipping: false,
-      freeShippingThreshold: 500,
-      amountToFreeShipping: 0,
       minimumOrder: 300,
       minimumOrderMet: false,
 
@@ -474,8 +470,6 @@ export const useCartStore = create<CartState>()(
             set({
               availableShippingMethods: result.available_methods || [],
               restrictedProducts: result.restricted_products || [],
-              freeShippingThreshold: result.free_shipping_threshold || 500,
-              amountToFreeShipping: result.amount_to_free_shipping || 0,
               // No minimum order - set to 0
               minimumOrder: result.minimum_order || 0,
               minimumOrderMet: result.minimum_order_met ?? true,
@@ -484,22 +478,11 @@ export const useCartStore = create<CartState>()(
 
             // Auto-select shipping method intelligently
             const methods = result.available_methods || [];
-            const freeShipping = methods.find((m) => m.method_id === 'free_shipping');
-            const cartSubtotal = result.cart_subtotal || get().getSubtotal();
-            const threshold = result.free_shipping_threshold || 500;
-
-            // Only auto-select free shipping if cart meets threshold
-            let defaultMethod = null;
-            if (freeShipping && cartSubtotal >= threshold) {
-              defaultMethod = freeShipping;
-              console.log('✅ Auto-selecting free shipping (cart:', cartSubtotal, '>= threshold:', threshold, ')');
-            } else {
-              // Otherwise, select the first available paid method
-              defaultMethod = methods[0];
-              console.log('ℹ️ Auto-selecting first method:', defaultMethod?.label);
-            }
+            // Select the first available method by default
+            const defaultMethod = methods[0];
 
             if (defaultMethod) {
+              console.log('ℹ️ Auto-selecting first method:', defaultMethod.label);
               set({ selectedShippingMethod: defaultMethod });
             }
           } else {
@@ -530,7 +513,6 @@ export const useCartStore = create<CartState>()(
           availableShippingMethods: [],
           selectedShippingMethod: null,
           restrictedProducts: [],
-          amountToFreeShipping: 0,
         });
       },
 

@@ -68,24 +68,13 @@ export async function POST(request: NextRequest) {
 
     // Transform response to match expected format
     const cartTotal = data.cart_total || 0;
-    const freeShippingThreshold = 500;
-    let availableMethods = data.available_methods || [];
-
-    // CRITICAL: Filter out free shipping if cart doesn't qualify
-    // This is a safeguard in case WordPress returns it incorrectly
-    if (cartTotal < freeShippingThreshold) {
-      availableMethods = availableMethods.filter(
-        (method: any) => method.method_id !== 'free_shipping'
-      );
-    }
+    const availableMethods = data.available_methods || [];
 
     return NextResponse.json({
       success: true,
       available_methods: availableMethods,
       restricted_products: data.restricted_products || [],
       cart_subtotal: cartTotal,
-      free_shipping_threshold: freeShippingThreshold,
-      amount_to_free_shipping: Math.max(0, freeShippingThreshold - cartTotal),
       // NO minimum order requirement - users can order any amount
       minimum_order: 0,
       minimum_order_met: true,  // Always met since no minimum
