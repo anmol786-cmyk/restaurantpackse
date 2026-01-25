@@ -111,8 +111,8 @@ function ExpressCheckoutButtonInner({
                     },
                 ] : [
                     {
-                        id: 'dhl_home',
-                        label: 'DHL Home Delivery',
+                        id: 'standard_shipping',
+                        label: 'Standard Shipping',
                         detail: '2-4 business days',
                         amount: 24279,
                     },

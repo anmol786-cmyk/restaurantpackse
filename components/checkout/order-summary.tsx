@@ -33,7 +33,7 @@ export function OrderSummary({
 
     const { items, getTotalPrice, getShippingCost } = useCartStore();
 
-    // Get shipping cost from cart store (DHL rates) or fallback to prop
+    // Get shipping cost from cart store or fallback to prop
     const shippingCost = propShippingCost !== undefined ? propShippingCost : getShippingCost();
 
     // Calculate tax dynamically based on each product's tax_class

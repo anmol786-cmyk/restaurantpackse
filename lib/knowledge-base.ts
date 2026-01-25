@@ -16,61 +16,49 @@ export function searchKnowledgeBase(query: string): KnowledgeBaseResponse {
     // Check for keyword matches
     const matchedKeywords = findMatchingKeywords(lowerQuery);
 
-    // Check for specific intents based on keywords
-    if (matchedKeywords.includes('spicy') || matchedKeywords.includes('heat')) {
-        return getSpiceInfo(lowerQuery);
+    // Prioritize specific intents
+    if (matchedKeywords.includes('shipping') || lowerQuery.includes('deliver')) {
+        return getShippingInfo(lowerQuery);
     }
 
-    if (matchedKeywords.includes('sweet') || matchedKeywords.includes('dessert')) {
-        return getSweetsInfo();
+    if (matchedKeywords.includes('payment') || lowerQuery.includes('pay')) {
+        return getPaymentInfo();
     }
 
-    if (matchedKeywords.includes('vegetarian') || matchedKeywords.includes('veg')) {
-        return getDietaryInfo('vegetarian');
+    if (matchedKeywords.includes('order') || lowerQuery.includes('bulk') || lowerQuery.includes('quick order')) {
+        return getOrderingInfo(lowerQuery);
     }
 
-    if (matchedKeywords.includes('vegan')) {
-        return getDietaryInfo('vegan');
+    if (matchedKeywords.includes('price') || lowerQuery.includes('wholesale')) {
+        return getPricingInfo();
+    }
+
+    if (matchedKeywords.includes('tandoor') || lowerQuery.includes('oven')) {
+        return getTandoorInfo();
     }
 
     if (matchedKeywords.includes('halal')) {
         return getDietaryInfo('halal');
     }
 
-    if (matchedKeywords.includes('gluten')) {
-        return getDietaryInfo('gluten_free');
+    if (matchedKeywords.includes('rice') || matchedKeywords.includes('flour') || matchedKeywords.includes('oil')) {
+        return getProductInfo(lowerQuery);
     }
 
-    if (matchedKeywords.includes('buffet')) {
-        return getBuffetInfo();
-    }
-
-    if (matchedKeywords.includes('catering') || matchedKeywords.includes('event') || matchedKeywords.includes('party')) {
-        return getCateringInfo();
-    }
-
-    if (matchedKeywords.includes('reservation') || matchedKeywords.includes('book') || matchedKeywords.includes('table')) {
-        return getReservationInfo();
-    }
-
-    if (matchedKeywords.includes('location') || matchedKeywords.includes('where') || matchedKeywords.includes('address')) {
+    if (matchedKeywords.includes('location') || lowerQuery.includes('warehouse') || lowerQuery.includes('visit')) {
         return getLocationInfo();
     }
 
-    if (matchedKeywords.includes('hours') || matchedKeywords.includes('open') || matchedKeywords.includes('timing')) {
+    if (matchedKeywords.includes('hours') || lowerQuery.includes('open')) {
         return getHoursInfo();
     }
 
-    if (matchedKeywords.includes('menu') || matchedKeywords.includes('dishes')) {
-        return getMenuInfo();
+    if (matchedKeywords.includes('account') || lowerQuery.includes('register') || lowerQuery.includes('business')) {
+        return getAccountInfo();
     }
 
-    if (matchedKeywords.includes('delivery')) {
-        return getDeliveryInfo();
-    }
-
-    if (matchedKeywords.includes('price') || matchedKeywords.includes('cost')) {
-        return getPriceInfo();
+    if (matchedKeywords.includes('packaging')) {
+        return getPackagingInfo();
     }
 
     // Try to find FAQ match
@@ -83,10 +71,9 @@ export function searchKnowledgeBase(query: string): KnowledgeBaseResponse {
         };
     }
 
-    // Check for specific dish mentions
-    const dishMatch = findDishMatch(lowerQuery);
-    if (dishMatch) {
-        return dishMatch;
+    // Check for greetings
+    if (lowerQuery.includes('hello') || lowerQuery.includes('hi') || lowerQuery.includes('hey')) {
+        return getGreetingResponse();
     }
 
     // Default response
@@ -95,77 +82,163 @@ export function searchKnowledgeBase(query: string): KnowledgeBaseResponse {
 
 function findMatchingKeywords(query: string): string[] {
     const matched: string[] = [];
-    Object.entries(knowledgeBase.keywords).forEach(([category, keywords]) => {
-        if (keywords.some(keyword => query.includes(keyword.toLowerCase()))) {
+    const keywords = knowledgeBase.keywords as Record<string, string[]>;
+
+    Object.entries(keywords).forEach(([category, keywordList]) => {
+        if (keywordList.some(keyword => query.includes(keyword.toLowerCase()))) {
             matched.push(category);
         }
     });
     return matched;
 }
 
-function findFAQMatch(query: string): any {
-    return knowledgeBase.faqs.find(faq =>
+function findFAQMatch(query: string): { answer: string; category: string } | null {
+    const faqs = knowledgeBase.faqs as Array<{ question: string; answer: string; category: string }>;
+
+    return faqs.find(faq =>
         query.includes(faq.question.toLowerCase()) ||
         faq.question.toLowerCase().includes(query) ||
-        calculateSimilarity(query, faq.question.toLowerCase()) > 0.6
-    );
+        calculateSimilarity(query, faq.question.toLowerCase()) > 0.5
+    ) || null;
 }
 
-function findDishMatch(query: string): KnowledgeBaseResponse | null {
-    const dish = knowledgeBase.popular_dishes.find(d =>
-        query.includes(d.name.toLowerCase())
-    );
+function getShippingInfo(query: string): KnowledgeBaseResponse {
+    const shipping = knowledgeBase.shipping;
 
-    if (dish) {
-        const dietaryInfo = dish.dietary.length > 0 ? ` (${dish.dietary.join(', ')})` : '';
+    if (query.includes('stockholm')) {
         return {
-            answer: `**${dish.name}** - ${dish.description}. Spice level: ${dish.spice_level}${dietaryInfo}. Would you like to see our full menu?`,
+            answer: `**Stockholm Delivery:**\n\n🚚 **Same-day delivery** available via our own fleet\n📍 **Pickup available** at Fagerstagatan 13, Spånga\n💰 **Free shipping** for wholesale orders\n\nFor the fastest service, schedule a pickup from our warehouse!`,
             confidence: 'high',
-            category: 'dish'
+            category: 'shipping'
         };
     }
 
-    return null;
-}
+    if (query.includes('europe') || query.includes('eu') || query.includes('international')) {
+        const euZones = shipping.zones.filter(z => z.name.includes('EU'));
+        const zoneInfo = euZones.map(z => `• **${z.name}**: ${z.delivery}, ${z.cost}`).join('\n');
 
-function getSpiceInfo(query: string): KnowledgeBaseResponse {
-    if (query.includes('not spicy') || query.includes('mild')) {
         return {
-            answer: "Looking for mild options? Try our **Butter Chicken**, **Korma**, or **Palak Paneer** - they're flavorful but not spicy. We can always adjust the spice level to your preference!",
+            answer: `**European Shipping:**\n\n${zoneInfo}\n\nWe ship to all EU countries! No customs hassle within the EU.`,
             confidence: 'high',
-            category: 'spice'
+            category: 'shipping'
         };
     }
+
+    // General shipping info
+    const zoneInfo = shipping.zones.slice(0, 4).map(z => `• **${z.name}**: ${z.delivery}`).join('\n');
+
     return {
-        answer: "For a spicy kick, I recommend our **Chicken Tikka**, **Vindaloo**, or **Chili Chicken**! We can adjust the spice level from mild to extra hot - just let us know your preference when ordering.",
+        answer: `**Shipping Options:**\n\n${zoneInfo}\n\n📍 **Warehouse Pickup:** ${shipping.pickup}\n\nWe deliver across Sweden and all of Europe! [View shipping details](/delivery-information)`,
         confidence: 'high',
-        category: 'spice'
+        category: 'shipping'
     };
 }
 
-function getSweetsInfo(): KnowledgeBaseResponse {
-    const sweets = knowledgeBase.popular_dishes
-        .filter(d => d.category === 'sweets')
-        .map(d => `**${d.name}**`)
-        .join(', ');
+function getPaymentInfo(): KnowledgeBaseResponse {
+    const methods = knowledgeBase.payment.methods;
+    const methodList = methods.map(m => `• **${m.name}**: ${m.description}`).join('\n');
 
     return {
-        answer: `Our traditional Indian sweets are legendary! Popular choices: ${sweets}. All made fresh daily. Visit our [Sweets Menu](/menu/sweets) to see the full selection!`,
+        answer: `**Payment Methods:**\n\n${methodList}\n\n💡 **Tip:** Business accounts can apply for invoice payment and credit terms! [Register here](/wholesale/register)`,
         confidence: 'high',
-        category: 'sweets'
+        category: 'payment'
     };
+}
+
+function getOrderingInfo(query: string): KnowledgeBaseResponse {
+    if (query.includes('quick') || query.includes('fast') || query.includes('bulk')) {
+        const quickOrder = knowledgeBase.quickOrder;
+        const benefits = quickOrder.benefits.map(b => `• ${b}`).join('\n');
+
+        return {
+            answer: `**Quick Order Feature:**\n\n${quickOrder.description}\n\n**Benefits:**\n${benefits}\n\n[Start Quick Order](/wholesale/quick-order) | [Browse Products](/shop)`,
+            confidence: 'high',
+            category: 'ordering'
+        };
+    }
+
+    return {
+        answer: `**How to Order:**\n\n1. Browse our [product catalog](/shop)\n2. Add items to cart\n3. Checkout with your preferred payment method\n\n💡 **For bulk orders:** Use our [Quick Order](/wholesale/quick-order) feature or contact us at wholesale@restaurantpack.se\n\n📞 Phone: ${knowledgeBase.contact.phone}`,
+        confidence: 'high',
+        category: 'ordering'
+    };
+}
+
+function getPricingInfo(): KnowledgeBaseResponse {
+    return {
+        answer: `**Wholesale Pricing:**\n\nWe offer competitive B2B pricing - typically **15% lower** than market rates!\n\n**How to get wholesale pricing:**\n1. Register for a [Business Account](/wholesale/register)\n2. Get verified (usually within 24 hours)\n3. Access wholesale prices on all products\n\n**No minimum order required!** Order any amount.\n\nQuantity discounts apply automatically at checkout.`,
+        confidence: 'high',
+        category: 'pricing'
+    };
+}
+
+function getTandoorInfo(): KnowledgeBaseResponse {
+    const tandoor = knowledgeBase.products.featured[0];
+
+    return {
+        answer: `**Anmol Mini Electric Tandoor**\n\n🔥 Our flagship product - **manufactured by us in Stockholm!**\n\n• Price: **${tandoor.price} kr**\n• Perfect for naan, roti, chapati, and tandoori dishes\n• Compact design for European kitchens\n• Professional-grade quality\n• **15% lower** than market price (we're the manufacturer!)\n\n[View Product](/product/mini-electric-tandoor-oven) | [Contact for bulk orders](mailto:wholesale@restaurantpack.se)`,
+        confidence: 'high',
+        category: 'products'
+    };
+}
+
+function getProductInfo(query: string): KnowledgeBaseResponse {
+    const categories = knowledgeBase.products.categories;
+
+    let matchedCategory = null;
+    if (query.includes('rice')) {
+        matchedCategory = categories.find(c => c.name.includes('Rice'));
+    } else if (query.includes('flour') || query.includes('atta') || query.includes('besan')) {
+        matchedCategory = categories.find(c => c.name.includes('Rice')); // Rice & Grains includes flour
+    } else if (query.includes('oil') || query.includes('ghee')) {
+        matchedCategory = categories.find(c => c.name.includes('Oils'));
+    }
+
+    if (matchedCategory) {
+        const examples = matchedCategory.examples.join(', ');
+        return {
+            answer: `**${matchedCategory.name}:**\n\n${matchedCategory.description}\n\n**Popular products:** ${examples}\n\n[Browse all ${matchedCategory.name}](/shop)`,
+            confidence: 'high',
+            category: 'products'
+        };
+    }
+
+    // General product info
+    const categoryList = categories.slice(0, 5).map(c => `• ${c.name}`).join('\n');
+
+    return {
+        answer: `**Our Product Categories:**\n\n${categoryList}\n• ...and more!\n\n[Browse all products](/shop) | [Quick Order](/wholesale/quick-order)`,
+        confidence: 'medium',
+        category: 'products'
+    };
+}
+
+function getPackagingInfo(): KnowledgeBaseResponse {
+    const packagingCategory = knowledgeBase.products.categories.find(c => c.name === 'Packaging');
+
+    if (packagingCategory) {
+        const examples = packagingCategory.examples.join(', ');
+        return {
+            answer: `**Packaging Supplies:**\n\n${packagingCategory.description}\n\n**Available products:** ${examples}\n\nPerfect for sweet shops, restaurants, and catering businesses!\n\n[Browse Packaging](/product-category/packing)`,
+            confidence: 'high',
+            category: 'products'
+        };
+    }
+
+    return getDefaultResponse();
 }
 
 function getDietaryInfo(type: string): KnowledgeBaseResponse {
-    const info = knowledgeBase.dietary_options[type as keyof typeof knowledgeBase.dietary_options];
+    const dietary = knowledgeBase.dietary_options as Record<string, { available: boolean; description: string; note?: string; examples?: string[] }>;
+    const info = dietary[type];
+
     if (info && info.available) {
-        const examples = 'examples' in info ? (info.examples as string[]).join(', ') : '';
         let answer = info.description;
-        if (examples) {
-            answer += ` Try: ${examples}.`;
+        if (info.examples) {
+            answer += `\n\n**Examples:** ${info.examples.join(', ')}`;
         }
-        if ('note' in info) {
-            answer += ` ${info.note}`;
+        if (info.note) {
+            answer += `\n\n💡 ${info.note}`;
         }
         return {
             answer,
@@ -173,78 +246,50 @@ function getDietaryInfo(type: string): KnowledgeBaseResponse {
             category: 'dietary'
         };
     }
+
     return getDefaultResponse();
 }
 
-function getBuffetInfo(): KnowledgeBaseResponse {
-    return {
-        answer: `We offer special buffet options! Visit our store during business hours to enjoy our buffet. [Learn more](/lunch-buffet-in-stockholm) | [Weekend Brunch](/weekend-brunch-buffet)`,
-        confidence: 'high',
-        category: 'buffet'
-    };
-}
-
-function getCateringInfo(): KnowledgeBaseResponse {
-    return {
-        answer: `We offer full-service catering for weddings, parties, and corporate events with customizable menus and a price calculator.\n\nVisit our [Catering Page](/special-order) to explore packages and get a quote!`,
-        confidence: 'high',
-        category: 'catering'
-    };
-}
-
-function getReservationInfo(): KnowledgeBaseResponse {
-    return {
-        answer: `You can book a table easily online! For group bookings or special events, please contact us directly.\n\n[Book Now](/bookings) or email us at ${brandConfig.contact.reservationEmail}.`,
-        confidence: 'high',
-        category: 'reservations'
-    };
-}
-
 function getLocationInfo(): KnowledgeBaseResponse {
+    const contact = knowledgeBase.contact;
+    const hours = knowledgeBase.hours;
+
     return {
-        answer: `We're located at **${brandConfig.contact.address}**.\n\nFind us on [Google Maps](${brandConfig.contact.googleMapsUrl}) for directions!`,
+        answer: `**Visit Our Warehouse:**\n\n📍 **Address:** ${contact.address}\n\n📞 **Phone:** ${contact.phone}\n📧 **Email:** ${contact.email}\n\n**Opening Hours:**\n${hours.weekday}\n${hours.saturday}\n${hours.sunday}\n\n[Get Directions](${brandConfig.contact.googleMapsUrl})`,
         confidence: 'high',
         category: 'location'
     };
 }
 
 function getHoursInfo(): KnowledgeBaseResponse {
+    const hours = knowledgeBase.hours;
+
     return {
-        answer: `**Opening Hours:**\n\n${brandConfig.hours.weekday}\n${brandConfig.hours.saturday}\n${brandConfig.hours.sunday}`,
+        answer: `**Opening Hours:**\n\n📅 ${hours.weekday}\n📅 ${hours.saturday}\n📅 ${hours.sunday}\n\n📍 Location: ${knowledgeBase.contact.address}\n\nWarehouse pickup available during these hours!`,
         confidence: 'high',
         category: 'hours'
     };
 }
 
-function getMenuInfo(): KnowledgeBaseResponse {
-    const categories = ["Starters", "Main Course (Lamb, Beef, Chicken)", "Vegetarian", "Tandoor", "Biryani", "Sweets"];
-
+function getAccountInfo(): KnowledgeBaseResponse {
     return {
-        answer: `Explore our menu with: ${categories.join(', ')}.\n\nView full menu: [Restaurant Food](/menu/restaurant) | [Sweets](/menu/sweets) | [Bakery](/menu/bakery)`,
+        answer: `**Business Account Benefits:**\n\n✅ Wholesale pricing (15% lower than retail)\n✅ Invoice payment (Net 28 days)\n✅ Credit terms for established partners\n✅ Dedicated account management\n✅ Priority support\n\n**How to register:**\n1. Visit [Business Registration](/wholesale/register)\n2. Fill in your company details\n3. Get verified within 24 hours\n4. Start ordering at wholesale prices!\n\nAlready have an account? [Login here](/login)`,
         confidence: 'high',
-        category: 'menu'
+        category: 'account'
     };
 }
 
-function getDeliveryInfo(): KnowledgeBaseResponse {
+function getGreetingResponse(): KnowledgeBaseResponse {
     return {
-        answer: `**Delivery:** ${brandConfig.features.hasDelivery ? "Yes, we offer delivery!" : "Currently we do not offer delivery."}\n\nCheck our website for online ordering options or call us at ${brandConfig.contact.phone} for delivery details!`,
+        answer: `Hello! Welcome to **Anmol Wholesale** - Sweden's trusted B2B supplier for restaurants and caterers. 👋\n\nHow can I help you today? I can assist with:\n• 📦 Product information\n• 🚚 Shipping & delivery\n• 💳 Payment options\n• 🏪 Wholesale pricing\n• 📍 Warehouse location`,
         confidence: 'high',
-        category: 'delivery'
-    };
-}
-
-function getPriceInfo(): KnowledgeBaseResponse {
-    return {
-        answer: `Our prices are competitive and offer great value for ${brandConfig.cuisineDescription}! For specific pricing, please check our [Menu](/menu/restaurant) or use our [Catering Calculator](/special-order) for event pricing. Feel free to call us for any pricing questions!`,
-        confidence: 'medium',
-        category: 'pricing'
+        category: 'greeting'
     };
 }
 
 function getDefaultResponse(): KnowledgeBaseResponse {
     return {
-        answer: `I'd be happy to help! At **${brandConfig.businessName}**, we offer ${brandConfig.cuisineDescription}, traditional sweets, catering services, and more.\n\nYou can:\n- Browse our [Menu](/menu/restaurant)\n- Book a [Reservation](/bookings)\n- Explore [Catering Options](/special-order)\n- Try our lunch or weekend buffets\n\nWhat would you like to know more about?`,
+        answer: `Thanks for your question! At **${knowledgeBase.business.name}**, we're here to help.\n\nQuick links:\n• [Browse Products](/shop)\n• [Quick Order](/wholesale/quick-order)\n• [Business Registration](/wholesale/register)\n• [Contact Us](/contact)\n\n📞 Call us: ${knowledgeBase.contact.phone}\n📧 Email: ${knowledgeBase.contact.email}\n\nWhat would you like to know more about?`,
         confidence: 'low'
     };
 }
@@ -258,5 +303,5 @@ function calculateSimilarity(str1: string, str2: string): number {
 }
 
 export function getGreeting(): string {
-    return `Hello! I'm your **Anmol Assistant**. I can help you with:\n\n✨ Menu recommendations\n🍽️ Reservations\n🎉 Catering & events\n📍 Location & hours\n💬 Any questions about our food\n\nWhat can I help you with today?`;
+    return `Hello! I'm your **Anmol Wholesale Assistant**. 👋\n\nI can help you with:\n\n🛒 **Products** - Rice, flour, oils, tandoor ovens & more\n🚚 **Shipping** - Sweden & Europe delivery info\n💳 **Payments** - Card, Swish, Invoice options\n🏪 **Wholesale** - Business account & pricing\n📍 **Location** - Warehouse visit & pickup\n\nWhat can I help you with today?`;
 }

@@ -20,6 +20,7 @@ import { useCartStore } from '@/store/cart-store';
 import type { Order } from '@/types/woocommerce';
 import { format } from 'date-fns';
 import { toast } from 'sonner';
+import { CreditApplication } from '@/components/dashboard/credit-application';
 
 function MyAccountContent() {
   const { user, isAuthenticated, logout, setUser } = useAuthStore();
@@ -251,10 +252,27 @@ function MyAccountContent() {
     return { label: status || 'Unknown', color: 'gray' };
   };
 
-  // Get quote reference ID from metadata
+  // Get quote/order reference ID from metadata
   const getQuoteRef = (quote: Order): string => {
+    // Check for quick order first
+    const quickOrderId = quote.meta_data?.find((m: any) => m.key === '_quick_order_id')?.value;
+    if (typeof quickOrderId === 'string') return quickOrderId;
+
+    // Then check for quote
     const quoteId = quote.meta_data?.find((m: any) => m.key === '_quote_id')?.value;
-    return typeof quoteId === 'string' ? quoteId : `#${quote.id}`;
+    if (typeof quoteId === 'string') return quoteId;
+
+    return `#${quote.id}`;
+  };
+
+  // Determine if order is a quick order or quote request
+  const isQuickOrder = (order: Order): boolean => {
+    return order.meta_data?.some((m: any) => m.key === '_quick_order_request' && m.value === 'yes') || false;
+  };
+
+  // Get order type label
+  const getOrderTypeLabel = (order: Order): string => {
+    return isQuickOrder(order) ? 'Quick Order' : 'Quote';
   };
 
   if (!user) return null;
@@ -662,16 +680,16 @@ function MyAccountContent() {
                   </Card>
                 )}
 
-                {/* Quote History Section */}
+                {/* Orders & Quotes History Section */}
                 <Card>
                   <CardHeader>
                     <div className="flex items-center justify-between">
                       <div>
                         <CardTitle className="flex items-center gap-2">
                           <FileText className="h-5 w-5" />
-                          Quote History
+                          Orders & Quotes
                         </CardTitle>
-                        <CardDescription>Your submitted quote requests and their status</CardDescription>
+                        <CardDescription>Your submitted orders, quote requests, and their status</CardDescription>
                       </div>
                       <Button asChild size="sm">
                         <Link href="/wholesale/quote">
@@ -685,7 +703,7 @@ function MyAccountContent() {
                     {isLoadingQuotes ? (
                       <div className="flex h-32 flex-col items-center justify-center">
                         <Loader2 className="mb-2 h-6 w-6 animate-spin text-primary" />
-                        <p className="text-sm text-neutral-500">Loading your quotes...</p>
+                        <p className="text-sm text-neutral-500">Loading your orders...</p>
                       </div>
                     ) : quotesError ? (
                       <div className="flex h-32 flex-col items-center justify-center text-center">
@@ -695,7 +713,7 @@ function MyAccountContent() {
                     ) : quotes.length === 0 ? (
                       <div className="flex h-32 flex-col items-center justify-center rounded-lg border border-dashed border-neutral-200 bg-neutral-50 text-center dark:border-neutral-800 dark:bg-neutral-900/50">
                         <FileText className="mb-2 h-6 w-6 text-neutral-400" />
-                        <p className="text-sm text-neutral-500">No quotes submitted yet.</p>
+                        <p className="text-sm text-neutral-500">No orders or quotes submitted yet.</p>
                         <Button asChild variant="link" size="sm">
                           <Link href="/wholesale/quote">Request your first quote</Link>
                         </Button>
@@ -706,6 +724,8 @@ function MyAccountContent() {
                           const status = getQuoteStatus(quote);
                           const quoteRef = getQuoteRef(quote);
                           const totalItems = quote.line_items?.reduce((sum, item) => sum + item.quantity, 0) || 0;
+                          const orderType = getOrderTypeLabel(quote);
+                          const isQuick = isQuickOrder(quote);
 
                           return (
                             <div
@@ -715,16 +735,18 @@ function MyAccountContent() {
                               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                                 <div className="flex-1">
                                   <div className="flex items-center gap-2 mb-1">
-                                    <h4 className="font-semibold">Quote {quoteRef}</h4>
+                                    <span className={`text-xs px-2 py-0.5 rounded ${isQuick ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300' : 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300'}`}>
+                                      {isQuick ? '\u26a1 Quick Order' : '\ud83d\udcdd Quote'}
+                                    </span>
+                                    <h4 className="font-semibold">{quoteRef}</h4>
                                     <Badge
-                                      className={`text-xs ${
-                                        status.color === 'green' ? 'bg-green-500 hover:bg-green-600' :
+                                      className={`text-xs ${status.color === 'green' ? 'bg-green-500 hover:bg-green-600' :
                                         status.color === 'yellow' ? 'bg-yellow-500 hover:bg-yellow-600' :
-                                        status.color === 'blue' ? 'bg-blue-500 hover:bg-blue-600' :
-                                        status.color === 'orange' ? 'bg-orange-500 hover:bg-orange-600' :
-                                        status.color === 'red' ? 'bg-red-500 hover:bg-red-600' :
-                                        'bg-gray-500 hover:bg-gray-600'
-                                      }`}
+                                          status.color === 'blue' ? 'bg-blue-500 hover:bg-blue-600' :
+                                            status.color === 'orange' ? 'bg-orange-500 hover:bg-orange-600' :
+                                              status.color === 'red' ? 'bg-red-500 hover:bg-red-600' :
+                                                'bg-gray-500 hover:bg-gray-600'
+                                        }`}
                                     >
                                       {status.label}
                                     </Badge>
@@ -771,6 +793,9 @@ function MyAccountContent() {
                     )}
                   </CardContent>
                 </Card>
+
+                {/* Credit Terms Section */}
+                <CreditApplication />
               </div>
             </TabsContent>
           )}

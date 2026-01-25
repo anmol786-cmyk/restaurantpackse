@@ -1,9 +1,7 @@
 /**
- * Shipping Service for Anmol Wholesale / Restaurant Pack
- * Handles all shipping calculations and validations via WordPress REST API with DHL integration
+ * Shipping Service for Restaurant Pack
+ * Handles all shipping calculations and validations via WooCommerce REST API
  */
-
-const WP_API_BASE = process.env.NEXT_PUBLIC_WORDPRESS_API_URL || 'https://restaurantpack.se';
 
 export interface ShippingMethod {
   id: string;
@@ -65,7 +63,7 @@ export interface ShippingValidationResult {
 }
 
 /**
- * Calculate shipping for cart items and address (with DHL rates via Fourlines MCP)
+ * Calculate shipping for cart items and address via WooCommerce
  */
 export async function calculateShipping(
   items: CartItem[],
@@ -132,17 +130,16 @@ export async function calculateShipping(
 }
 
 /**
- * Get all available shipping zones via Fourlines MCP
+ * Get all available shipping zones via WooCommerce REST API
+ * Note: This function is primarily used server-side. For client-side, use the API routes.
  */
 export async function getShippingZones(): Promise<ShippingZonesResult> {
   try {
-    const mcpKey = process.env.FOURLINES_MCP_KEY || process.env.NEXT_PUBLIC_FOURLINES_MCP_KEY;
-
-    const response = await fetch(`${WP_API_BASE}/wp-json/fourlines-mcp/v1/shipping/zones`, {
+    // Use internal API route for shipping zones
+    const response = await fetch('/api/shipping/zones', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'X-Fourlines-Key': mcpKey || '',
       },
     });
 
@@ -169,7 +166,7 @@ export async function getShippingZones(): Promise<ShippingZonesResult> {
 }
 
 /**
- * Validate shipping for cart items and address
+ * Validate shipping for cart items and address via WooCommerce postcode validation
  */
 export async function validateShipping(
   items: CartItem[],
@@ -178,15 +175,14 @@ export async function validateShipping(
   country: string = 'SE'
 ): Promise<ShippingValidationResult> {
   try {
-    const response = await fetch(`${WP_API_BASE}/wp-json/ideal-livs/v1/shipping/validate`, {
+    // Use the internal API route for postcode validation
+    const response = await fetch('/api/shipping/validate-postcode', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        items,
         postcode,
-        city,
         country,
       }),
     });
@@ -202,7 +198,13 @@ export async function validateShipping(
     }
 
     const data = await response.json();
-    return data;
+    return {
+      success: true,
+      valid: data.valid || false,
+      restricted_products: [],
+      minimum_order_met: true,
+      minimum_order_required: 0,
+    };
   } catch (error) {
     console.error('Failed to validate shipping:', error);
     return {

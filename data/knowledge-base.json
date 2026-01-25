@@ -1,73 +1,261 @@
 {
+  "business": {
+    "name": "Anmol Wholesale",
+    "tagline": "From Our Restaurant Kitchen to Yours",
+    "description": "Sweden's trusted B2B wholesale supplier for restaurants, grocery stores, and caterers. Backed by Anmol Sweets & Restaurant's culinary expertise.",
+    "website": "restaurantpack.se",
+    "type": "B2B Wholesale Food Supplier"
+  },
+  "contact": {
+    "address": "Fagerstagatan 13, 163 53 Spånga, Sweden",
+    "phone": "+46769178456",
+    "email": "info@restaurantpack.se",
+    "wholesaleEmail": "wholesale@restaurantpack.se"
+  },
+  "hours": {
+    "weekday": "Monday - Friday: 10:00 – 20:00",
+    "saturday": "Saturday: 11:00 – 19:00",
+    "sunday": "Sunday: 11:00 – 19:00"
+  },
   "keywords": {
-    "organic": ["organic", "natural", "bio"],
-    "fresh": ["fresh", "freshness"],
-    "delivery": ["delivery", "deliver", "shipping"],
-    "sale": ["sale", "discount", "offer", "deal"],
-    "hours": ["hours", "open", "close", "timing"],
-    "location": ["location", "where", "address", "directions"]
+    "shipping": ["shipping", "delivery", "deliver", "freight", "transport", "send"],
+    "payment": ["payment", "pay", "card", "swish", "invoice", "credit"],
+    "order": ["order", "buy", "purchase", "quick order", "bulk"],
+    "product": ["product", "item", "stock", "inventory", "sell"],
+    "price": ["price", "cost", "discount", "wholesale price", "bulk price"],
+    "hours": ["hours", "open", "close", "timing", "when"],
+    "location": ["location", "where", "address", "directions", "visit", "warehouse"],
+    "account": ["account", "register", "login", "business account", "wholesale account"],
+    "tandoor": ["tandoor", "oven", "electric tandoor", "naan", "roti"],
+    "halal": ["halal", "certification"],
+    "rice": ["rice", "basmati", "biryani"],
+    "flour": ["flour", "atta", "besan", "gram flour", "wheat"],
+    "oil": ["oil", "ghee", "cooking oil", "frying oil"],
+    "spices": ["spice", "masala", "rangkat", "food colour"],
+    "packaging": ["packaging", "box", "container", "pack"]
   },
   "faqs": [
     {
-      "question": "Do you offer organic products?",
-      "answer": "Yes! We have a wide selection of organic products across all categories including fruits, vegetables, dairy, and pantry items.",
+      "question": "What is Anmol Wholesale?",
+      "answer": "Anmol Wholesale is Sweden's trusted B2B wholesale supplier for restaurants, grocery stores, and caterers. We're backed by 5+ years of experience running Anmol Sweets & Restaurant in Stockholm. We specialize in authentic Indo-Pak products, bulk ingredients, and manufacture the Anmol Electric Tandoor.",
+      "category": "about"
+    },
+    {
+      "question": "Do you deliver to my location?",
+      "answer": "Yes! We deliver across Sweden and all of Europe. **Stockholm area** gets same-day delivery via our own fleet. **All of Sweden** gets 1-2 day delivery. **Nordic countries** (Norway, Denmark, Finland) take 2-4 days. **EU countries** take 3-10 days depending on location. Free shipping thresholds apply!",
+      "category": "shipping"
+    },
+    {
+      "question": "What payment methods do you accept?",
+      "answer": "We accept: **Card payments** (Visa, Mastercard via Stripe), **Swish** for Swedish customers, **Cash on Delivery** for Stockholm pickups, and **Invoice (Net 28)** for approved business accounts. Business customers can also apply for credit terms.",
+      "category": "payment"
+    },
+    {
+      "question": "How do I place a bulk order?",
+      "answer": "You can place orders through our website, use our **Quick Order** feature for fast bulk ordering, or contact us directly at wholesale@restaurantpack.se. For large orders, we recommend creating a business account for wholesale pricing and invoice payment options.",
+      "category": "ordering"
+    },
+    {
+      "question": "Do you have minimum order requirements?",
+      "answer": "No, we don't have a minimum order requirement! You can order any amount. However, wholesale pricing and free shipping thresholds apply for larger orders. Business account customers get access to special pricing tiers.",
+      "category": "ordering"
+    },
+    {
+      "question": "How can I get wholesale pricing?",
+      "answer": "Register for a **Business Account** on our website. Once verified, you'll get access to wholesale pricing, invoice payment options, and dedicated account management. Visit [/wholesale/register](/wholesale/register) to apply.",
+      "category": "pricing"
+    },
+    {
+      "question": "What is the Anmol Electric Tandoor?",
+      "answer": "The **Anmol Mini Electric Tandoor** is our flagship product - manufactured by us in Stockholm! It's a compact, professional-grade tandoor oven perfect for restaurants, cafes, and bakeries. It makes authentic naan, roti, and tandoori dishes. We offer it at 15% lower prices than competitors since we're the direct manufacturer.",
       "category": "products"
     },
     {
-      "question": "What are your delivery options?",
-      "answer": "We offer same-day and next-day delivery. Free delivery on orders over $50!",
-      "category": "delivery"
+      "question": "Are your products halal?",
+      "answer": "Yes! We prioritize **halal-certified** products for our meat and food items. Our products are sourced to meet the requirements of halal-conscious restaurants and customers.",
+      "category": "dietary"
     },
     {
-      "question": "Do you have fresh produce daily?",
-      "answer": "Yes! We receive fresh produce deliveries daily to ensure the highest quality.",
-      "category": "products"
+      "question": "Can I visit your warehouse?",
+      "answer": "Yes! Our warehouse is located at **Fagerstagatan 13, 163 53 Spånga, Sweden**. You can visit during business hours for ex-warehouse pickup and better rates. Contact us to arrange a visit.",
+      "category": "location"
+    },
+    {
+      "question": "What shipping options are available for Stockholm?",
+      "answer": "For **Stockholm area**, we offer same-day delivery using our own delivery fleet. Pickup from our Spånga warehouse is also available with ex-warehouse pricing. This is the fastest and most economical option!",
+      "category": "shipping"
     }
   ],
-  "popular_dishes": [
-    {
-      "name": "Organic Apples",
-      "description": "Fresh organic apples from local farms",
-      "category": "produce",
-      "dietary": ["organic", "vegan"],
-      "spice_level": "none"
-    },
-    {
-      "name": "Fresh Milk",
-      "description": "Farm-fresh whole milk delivered daily",
-      "category": "dairy",
-      "dietary": ["organic"],
-      "spice_level": "none"
-    },
-    {
-      "name": "Artisan Bread",
-      "description": "Freshly baked artisan bread",
-      "category": "bakery",
-      "dietary": ["vegetarian"],
-      "spice_level": "none"
-    }
-  ],
+  "products": {
+    "categories": [
+      {
+        "name": "Kitchen Equipment",
+        "description": "Professional kitchen equipment including our signature Anmol Electric Tandoor",
+        "examples": ["Mini Electric Tandoor Oven (450 kr)"]
+      },
+      {
+        "name": "Rice & Grains",
+        "description": "Premium basmati rice and grains for professional kitchens",
+        "examples": ["Ocean Pearl Basmati Rice 5kg (115 kr)", "Wheat Flour Type 550 25kg (165 kr)", "TRS Gram Flour 6x2kg (390 kr)"]
+      },
+      {
+        "name": "Oils & Fats",
+        "description": "Cooking oils, ghee, and frying oils for commercial use",
+        "examples": ["Professional Frying Oil 10L (187 kr)", "All-Purpose Cooking Oil 10L (186 kr)", "Khanum Pure Ghee 6x2kg (1794 kr)"]
+      },
+      {
+        "name": "Dairy & Milk Products",
+        "description": "Milk powder and dairy ingredients for sweets and bakery",
+        "examples": ["Dried Whole Milk Powder 26% 25kg (2165 kr)", "Skimmed Milk Powder 1% 25kg (2065 kr)"]
+      },
+      {
+        "name": "Sugar & Sweeteners",
+        "description": "Bulk sugar and glucose for bakeries and confectioneries",
+        "examples": ["Nordic Sugar 25kg (265 kr)", "Glucose Syrup 12.5kg (345 kr)"]
+      },
+      {
+        "name": "Spices & Flavoring",
+        "description": "Food colors and spices for authentic dishes",
+        "examples": ["Rangkat Food Colour 1kg (175 kr)"]
+      },
+      {
+        "name": "Fruits & Specialty",
+        "description": "Mango pulp, dates, and specialty ingredients",
+        "examples": ["Kesar Mango Pulp 6x850g (145 kr)", "Medjool Dates 12x900g (960 kr)"]
+      },
+      {
+        "name": "Beverages",
+        "description": "Juices and nectars",
+        "examples": ["Mango Chaunsa Nectar 12x1L (182 kr)", "Mango Nectar 24x200ml (78 kr)"]
+      },
+      {
+        "name": "Packaging",
+        "description": "Food packaging, containers, and supplies",
+        "examples": ["Sweet Box 500g 50pcs (175 kr)", "Sweet Box 1kg 50pcs (225 kr)", "Microform PP 750ml 50pcs (49 kr)"]
+      },
+      {
+        "name": "Baking Supplies",
+        "description": "Leavening agents and baking essentials",
+        "examples": ["Baker's Ammonia 2kg (218 kr)"]
+      }
+    ],
+    "featured": [
+      {
+        "name": "Mini Electric Tandoor Oven",
+        "sku": "AE-1001",
+        "price": 450,
+        "description": "Professional-grade electric tandoor manufactured in Stockholm. Perfect for naan, roti, and tandoori dishes.",
+        "highlight": "Manufactured by us - 15% lower than market price"
+      },
+      {
+        "name": "Ocean Pearl Basmati Rice 5kg",
+        "sku": "AW-RB-001",
+        "price": 115,
+        "description": "Premium long-grain basmati rice for authentic biryani and pulao"
+      },
+      {
+        "name": "Nordic Sugar 25kg",
+        "sku": "AW-F-S-001",
+        "price": 265,
+        "description": "High-quality bulk granulated sugar for bakeries and restaurants"
+      }
+    ]
+  },
+  "shipping": {
+    "zones": [
+      {
+        "name": "Stockholm Area",
+        "delivery": "Same day",
+        "cost": "Free for wholesale",
+        "courier": "Own Delivery Fleet"
+      },
+      {
+        "name": "Sweden Domestic",
+        "delivery": "1-2 business days",
+        "cost": "Free for wholesale",
+        "courier": "Own Fleet / PostNord"
+      },
+      {
+        "name": "Nordic (NO, DK, FI)",
+        "delivery": "2-4 business days",
+        "cost": "299 kr (Free over 5000 kr)",
+        "courier": "Standard Shipping"
+      },
+      {
+        "name": "EU Core (DE, NL, BE, AT)",
+        "delivery": "3-6 business days",
+        "cost": "499 kr (Free over 8000 kr)",
+        "courier": "Express Shipping"
+      },
+      {
+        "name": "EU West (FR, GB, IE)",
+        "delivery": "4-7 business days",
+        "cost": "599 kr (Free over 10000 kr)",
+        "courier": "Express Shipping"
+      },
+      {
+        "name": "EU South (IT, ES, PT, GR)",
+        "delivery": "5-9 business days",
+        "cost": "699 kr (Free over 12000 kr)",
+        "courier": "Standard Shipping"
+      }
+    ],
+    "pickup": "Available at Fagerstagatan 13, Spånga - Ex-warehouse pricing"
+  },
+  "payment": {
+    "methods": [
+      {
+        "name": "Card Payment",
+        "description": "Visa, Mastercard via Stripe - secure online payment",
+        "available": "All customers"
+      },
+      {
+        "name": "Swish",
+        "description": "Instant mobile payment for Swedish customers",
+        "available": "Swedish customers"
+      },
+      {
+        "name": "Cash on Delivery",
+        "description": "Pay when you pick up from our Stockholm warehouse",
+        "available": "Stockholm pickup only"
+      },
+      {
+        "name": "Invoice (Net 28)",
+        "description": "Pay within 28 days - for approved business accounts",
+        "available": "Verified business accounts"
+      },
+      {
+        "name": "Credit Terms",
+        "description": "Extended credit for established business partners",
+        "available": "Approved credit customers"
+      }
+    ]
+  },
+  "quickOrder": {
+    "description": "Our Quick Order feature lets you rapidly add multiple products to your cart using SKU codes or product search. Perfect for repeat orders and bulk purchasing.",
+    "url": "/wholesale/quick-order",
+    "benefits": [
+      "Fast bulk ordering with SKU codes",
+      "Save and reorder from previous orders",
+      "Quantity discounts applied automatically",
+      "Perfect for weekly restaurant restocking"
+    ]
+  },
   "dietary_options": {
+    "halal": {
+      "available": true,
+      "description": "We prioritize halal-certified products. Our meat and food products are sourced to meet halal requirements for restaurants and customers.",
+      "note": "Check individual product listings for specific certifications."
+    },
     "vegetarian": {
       "available": true,
-      "description": "We have a wide range of vegetarian products including fresh produce, dairy, and plant-based alternatives.",
-      "examples": ["Fresh Vegetables", "Organic Fruits", "Plant-Based Milk", "Veggie Burgers"]
+      "description": "We have many vegetarian products including rice, flour, oils, dairy, spices, and packaging materials.",
+      "examples": ["Basmati Rice", "Gram Flour", "Cooking Oils", "Milk Powder", "Mango Pulp"]
     },
     "vegan": {
       "available": true,
-      "description": "Explore our vegan section with plant-based alternatives and fresh produce.",
-      "examples": ["Almond Milk", "Tofu", "Vegan Cheese", "Plant-Based Meats"]
-    },
-    "organic": {
-      "available": true,
-      "description": "All our organic products are certified and sourced from trusted suppliers.",
-      "examples": ["Organic Produce", "Organic Dairy", "Organic Grains"],
-      "note": "Look for the green organic label!"
-    },
-    "gluten_free": {
-      "available": true,
-      "description": "We stock a variety of gluten-free products.",
-      "examples": ["Gluten-Free Bread", "GF Pasta", "GF Snacks"]
+      "description": "Many of our products are vegan-friendly including grains, oils, fruits, and packaging.",
+      "examples": ["Basmati Rice", "Wheat Flour", "Cooking Oil", "Mango Nectar", "Sugar"]
     }
   }
 }

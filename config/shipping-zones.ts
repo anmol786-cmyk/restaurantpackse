@@ -50,7 +50,7 @@ export const SHIPPING_ZONES: ShippingZone[] = [
     baseRate: 299, // SEK
     freeShippingThreshold: 5000,
     estimatedDays: { min: 2, max: 4 },
-    courierService: 'DHL / PostNord',
+    courierService: 'Standard Shipping',
     enabled: true,
   },
 
@@ -62,7 +62,7 @@ export const SHIPPING_ZONES: ShippingZone[] = [
     baseRate: 499, // SEK
     freeShippingThreshold: 8000,
     estimatedDays: { min: 3, max: 6 },
-    courierService: 'DHL Express',
+    courierService: 'Express Shipping',
     enabled: true,
   },
 
@@ -74,7 +74,7 @@ export const SHIPPING_ZONES: ShippingZone[] = [
     baseRate: 599, // SEK
     freeShippingThreshold: 10000,
     estimatedDays: { min: 4, max: 7 },
-    courierService: 'DHL Express',
+    courierService: 'Express Shipping',
     enabled: true,
   },
 
@@ -86,7 +86,7 @@ export const SHIPPING_ZONES: ShippingZone[] = [
     baseRate: 699, // SEK
     freeShippingThreshold: 12000,
     estimatedDays: { min: 5, max: 9 },
-    courierService: 'DHL Express / DB Schenker',
+    courierService: 'Standard Shipping',
     enabled: true,
   },
 
@@ -98,7 +98,7 @@ export const SHIPPING_ZONES: ShippingZone[] = [
     baseRate: 799, // SEK
     freeShippingThreshold: 15000,
     estimatedDays: { min: 6, max: 10 },
-    courierService: 'DHL / DB Schenker',
+    courierService: 'Standard Shipping',
     enabled: true,
   },
 
@@ -110,7 +110,7 @@ export const SHIPPING_ZONES: ShippingZone[] = [
     baseRate: 599, // SEK
     freeShippingThreshold: 10000,
     estimatedDays: { min: 4, max: 7 },
-    courierService: 'DHL / DB Schenker',
+    courierService: 'Standard Shipping',
     enabled: true,
   },
 ];

@@ -72,7 +72,7 @@ export function ShippingMethodSelector({
         <div className="flex items-center justify-center space-x-2">
           <Loader2 className="h-5 w-5 animate-spin text-primary-600" />
           <span className="text-neutral-600">
-            Calculating shipping rates with DHL...
+            Calculating shipping rates...
           </span>
         </div>
       </Card>
@@ -192,12 +192,6 @@ export function ShippingMethodSelector({
                         )}
                       </span>
                     </div>
-                    {/* Show DHL info if available */}
-                    {method.method_id.includes('dhl') && (
-                      <p className="mt-1 text-xs text-neutral-500 dark:text-neutral-400">
-                        Powered by DHL eCommerce Sweden
-                      </p>
-                    )}
                   </div>
                 </div>
               </div>

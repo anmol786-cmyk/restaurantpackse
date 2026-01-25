@@ -17,8 +17,8 @@ interface Message {
     timestamp: Date;
 }
 
-// Anmol logo URL
-const LOGO_URL = 'https://anmolsweets.se/wp-content/uploads/2021/01/logo.png';
+// Restaurant Pack / Anmol Wholesale logo URL
+const LOGO_URL = 'https://crm.restaurantpack.se/wp-content/uploads/2025/03/anmol-wholesale-logo.png';
 
 // Main export component that handles state and rendering
 export function AiChatWidget() {
@@ -149,8 +149,8 @@ function ChatWidget({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
                         />
                     </div>
                     <div className="flex-1 min-w-0 flex flex-col justify-center">
-                        <h3 className="font-semibold text-sm text-primary-foreground truncate mb-0">Anmol Assistant</h3>
-                        {!isMinimized && <p className="text-[12px] text-primary-foreground/80 leading-none">Always here to help</p>}
+                        <h3 className="font-semibold text-sm text-primary-foreground truncate mb-0">Wholesale Assistant</h3>
+                        {!isMinimized && <p className="text-[12px] text-primary-foreground/80 leading-none">B2B support for restaurants</p>}
                     </div>
                     <div className="flex items-center shrink-0">
                         <Button
@@ -243,7 +243,7 @@ function ChatWidget({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
                                         <Input
                                             value={chatInput}
                                             onChange={(e) => setChatInput(e.target.value)}
-                                            placeholder="Ask about menu, booking..."
+                                            placeholder="Ask about products, shipping..."
                                             className="flex-1 h-9 rounded-full bg-muted border-transparent text-sm focus:border-primary/50 focus:bg-background transition-all"
                                             disabled={isTyping}
                                         />

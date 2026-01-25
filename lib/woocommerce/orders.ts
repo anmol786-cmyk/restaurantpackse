@@ -443,12 +443,15 @@ export async function getCustomerQuotes(customerId: number, params?: {
 
     const orders = await parseJsonResponse(response);
 
-    // Filter to only include orders that are quote requests
+    // Filter to only include orders that are quote requests OR quick orders
     return orders.filter((order: Order) => {
         const isQuote = order.meta_data?.some(
             (meta: any) => meta.key === '_quote_request' && meta.value === 'yes'
         );
-        return isQuote;
+        const isQuickOrder = order.meta_data?.some(
+            (meta: any) => meta.key === '_quick_order_request' && meta.value === 'yes'
+        );
+        return isQuote || isQuickOrder;
     });
 }
 

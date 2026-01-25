@@ -454,7 +454,7 @@ export const useCartStore = create<CartState>()(
             });
           }
 
-          // Call shipping API (with DHL rates)
+          // Call shipping API
           const result = await calculateShipping(
             shippingItems,
             shippingAddress.postcode,

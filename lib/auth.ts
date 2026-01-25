@@ -2,7 +2,7 @@ import { WC_API_CONFIG } from './woocommerce/config';
 
 export interface LoginCredentials {
     username: string;
-    password?: string;
+    password: string;
 }
 
 export interface RegisterData {
@@ -10,7 +10,7 @@ export interface RegisterData {
     first_name: string;
     last_name: string;
     username: string;
-    password?: string;
+    password: string;
 }
 
 export interface BusinessRegisterData extends RegisterData {
