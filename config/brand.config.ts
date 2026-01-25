@@ -66,11 +66,11 @@ export const brandConfig = {
   // Social Media
   // Note: Update these with actual Anmol Wholesale social media handles when available
   social: {
-    facebook: "https://www.facebook.com/anmolwholesale",
-    instagram: "https://www.instagram.com/anmolwholesale",
-    twitter: "https://www.twitter.com/anmolwholesale",
-    youtube: "https://www.youtube.com/@anmolwholesale",
-    tiktok: "", // Not active yet
+    facebook: "https://www.facebook.com/AnmolWholesale",
+    instagram: "",
+    twitter: "",
+    youtube: "",
+    tiktok: "",
   },
 
   // Currency

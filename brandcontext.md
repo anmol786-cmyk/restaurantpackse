@@ -53,12 +53,16 @@ Expert & Authoritative: We speak from a position of experience as professional c
 Reliable & Professional: Our language is clear, direct, and focused on the needs of a B2B client. We build trust through transparency.
 Authentic & Passionate: We share a genuine passion for high-quality food and authentic flavours.
 Partner-Oriented: We use collaborative language ("your partner," "your success") to show we are invested in our clients' businesses.
-8. Contact Details (To be completed by you)
+8. Contact Details
 Physical Address: Fagerstagatan 13, 163 53 Spånga, Sweden
-Email: wholesale@restaurantpack.se info@restaurantpack.se
+Email: info@restaurantpack.se | wholesale@restaurantpack.se
 Phone Number: +46 76 917 84 56
 
-Mon- friday 10am to 8pm
-Sat-Sun 11 am to 7pm
+Warehouse Hours:
+Monday - Friday: 10:00 – 20:00
+Saturday - Sunday: 11:00 – 19:00
+
+Social Media:
+Facebook: https://www.facebook.com/AnmolWholesale
 
 We have our own delivery system for sweden or even scandavian countries. but there are option for customer to chooze their own place, logistic, or any freight method. we can also arrange any third party service include DHl, post nord, db schencar and more. rates will be of ex warehouse at fagerstagatan 13. so delivery will be optional to choose or customer can arrange his own.

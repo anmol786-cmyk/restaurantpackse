@@ -7,7 +7,7 @@
 // Load environment variables from .env.local if available
 require('dotenv').config({ path: '.env.local' });
 
-const WORDPRESS_URL = process.env.NEXT_PUBLIC_WORDPRESS_URL || 'https://crm.ideallivs.com';
+const WORDPRESS_URL = process.env.NEXT_PUBLIC_WORDPRESS_URL || 'https://crm.restaurantpack.se';
 const CONSUMER_KEY = process.env.WORDPRESS_CONSUMER_KEY;
 const CONSUMER_SECRET = process.env.WORDPRESS_CONSUMER_SECRET;
 

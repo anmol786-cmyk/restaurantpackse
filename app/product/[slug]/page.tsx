@@ -76,7 +76,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
         ...(product.categories && product.categories.length > 0
             ? [{
                 label: product.categories[0].name,
-                href: `/product-category/${product.categories[0].slug}`
+                href: `/shop/category/${product.categories[0].slug}`
             }]
             : []),
         { label: product.name },

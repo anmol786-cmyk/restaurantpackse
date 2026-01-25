@@ -120,9 +120,7 @@ export function anmolWholesaleOrganizationSchema(baseUrl: string = 'https://rest
     ],
     priceRange: '$$$',
     socialMedia: [
-      'https://www.facebook.com/anmolwholesale',
-      'https://www.instagram.com/anmolwholesale',
-      'https://www.youtube.com/@anmolwholesale',
+      'https://www.facebook.com/AnmolWholesale',
     ],
     foundingDate: '2010',
     types: ['WholesaleStore', 'Organization', 'LocalBusiness'],
@@ -207,11 +205,29 @@ export function anmolWholesaleOrganizationSchemaFull(baseUrl: string = 'https://
       url: 'https://anmolsweets.se',
     },
 
-    // Manufacturer credentials
-    manufacturer: {
-      '@type': 'Product',
-      name: 'Anmol Electric Tandoor',
-      description: 'Professional electric tandoor for restaurants and commercial kitchens',
+    // Manufacturer credentials - Defined as a Product that the organization makes
+    // Fixed: Added 'offers' to satisfy Google rich snippet requirements
+    makesOffer: {
+      '@type': 'Offer',
+      itemOffered: {
+        '@type': 'Product',
+        name: 'Anmol Electric Tandoor',
+        description: 'Professional electric tandoor for restaurants and commercial kitchens',
+        image: 'https://crm.restaurantpack.se/wp-content/uploads/2025/03/anmol-tandoor-Photoroom.jpg',
+        sku: 'ANM-TND-001',
+        mpn: 'ANM-TND-001',
+        brand: {
+          '@type': 'Brand',
+          name: 'Anmol'
+        },
+        offers: {
+          '@type': 'Offer',
+          price: '450',
+          priceCurrency: 'SEK',
+          availability: 'https://schema.org/InStock',
+          url: `${baseUrl}/product/anmol-electric-tandoor`
+        }
+      }
     },
   };
 }

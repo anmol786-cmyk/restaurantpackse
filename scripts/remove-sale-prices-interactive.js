@@ -16,7 +16,7 @@ function question(query) {
 
 async function getCredentials() {
     console.log('\n🔐 WooCommerce API Credentials Required\n');
-    console.log('Find these at: crm.ideallivs.com/wp-admin → WooCommerce → Settings → Advanced → REST API\n');
+    console.log('Find these at: crm.restaurantpack.se/wp-admin → WooCommerce → Settings → Advanced → REST API\n');
 
     const consumerKey = await question('Consumer Key (ck_...): ');
     const consumerSecret = await question('Consumer Secret (cs_...): ');
@@ -25,7 +25,7 @@ async function getCredentials() {
 }
 
 async function wcApi(endpoint, method = 'GET', data = null, credentials) {
-    const url = new URL(`https://crm.ideallivs.com/wp-json/wc/v3/${endpoint}`);
+    const url = new URL(`https://crm.restaurantpack.se/wp-json/wc/v3/${endpoint}`);
     const auth = Buffer.from(`${credentials.consumerKey}:${credentials.consumerSecret}`).toString('base64');
 
     const options = {

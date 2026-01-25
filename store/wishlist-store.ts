@@ -152,7 +152,7 @@ export const useWishlistStore = create<WishlistState>()(
       const defaultList: WishlistList = {
         id: defaultListId,
         name: 'My Wishlist',
-        description: 'Your favorite grocery items',
+        description: 'Your wholesale product list',
         createdAt: Date.now(),
         updatedAt: Date.now(),
         visibility: 'private',
@@ -224,10 +224,10 @@ export const useWishlistStore = create<WishlistState>()(
             items: state.items.filter((item) => item.id !== itemId),
             notification: item
               ? {
-                  message: `${item.product.name} removed from wishlist`,
-                  type: 'info',
-                  timestamp: Date.now(),
-                }
+                message: `${item.product.name} removed from wishlist`,
+                type: 'info',
+                timestamp: Date.now(),
+              }
               : null,
           }));
         },

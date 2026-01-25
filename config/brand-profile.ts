@@ -53,12 +53,12 @@ export const brandProfile = {
 
     // Social Media (Update with actual Anmol Wholesale social media when available)
     social: {
-        facebook: "https://www.facebook.com/anmolwholesale",
-        instagram: "https://www.instagram.com/anmolwholesale",
-        youtube: "https://www.youtube.com/@anmolwholesale",
-        tiktok: "https://www.tiktok.com/@anmolwholesale",
-        twitter: "https://www.twitter.com/anmolwholesale",
-        linkedin: "https://www.linkedin.com/company/anmolwholesale",
+        facebook: "https://www.facebook.com/AnmolWholesale",
+        instagram: "",
+        youtube: "",
+        tiktok: "",
+        twitter: "",
+        linkedin: "",
     },
 
     // Delivery Information

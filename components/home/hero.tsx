@@ -13,9 +13,9 @@ interface HeroProps {
 }
 
 export function Hero({
-    title = "Fresh Groceries Delivered to Your Door",
-    subtitle = "Experience the finest selection of organic produce, pantry staples, and international delicacies. Delivered fresh, daily.",
-    badge = "Premium Quality Guaranteed"
+    title = "Professional Restaurant Supplies Delivered Across Sweden",
+    subtitle = "The finest selection of authentic Indo-Pak ingredients, commercial equipment, and bulk staples. Direct-from-warehouse pricing for professional kitchens.",
+    badge = "Wholesale Pricing Guaranteed"
 }: HeroProps) {
     return (
         <section className="relative w-full min-h-[85vh] flex items-center bg-white overflow-hidden pb-12 pt-24 md:py-0">
@@ -119,11 +119,15 @@ export function Hero({
                         </div>
                         <div className="flex items-center gap-2">
                             <div className="w-2 h-2 rounded-full bg-blue-500" />
-                            <span>Same-Day Delivery</span>
+                            <span>Stockholm Fleet Delivery</span>
                         </div>
                         <div className="flex items-center gap-2">
                             <div className="w-2 h-2 rounded-full bg-orange-500" />
                             <span>Europe Shipping</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <div className="w-2 h-2 rounded-full bg-primary" />
+                            <span>Bulk Discounts Available</span>
                         </div>
                     </motion.div>
                 </div>

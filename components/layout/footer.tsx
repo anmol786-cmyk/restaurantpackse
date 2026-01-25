@@ -34,22 +34,15 @@ export async function Footer() {
               {brandProfile.description}
             </p>
             <div className="flex gap-4">
-              {[
-                { icon: Instagram, href: brandProfile.social.instagram },
-                { icon: Facebook, href: brandProfile.social.facebook },
-                { icon: Youtube, href: brandProfile.social.youtube },
-                { icon: Linkedin, href: brandProfile.social.linkedin }
-              ].map((social, i) => (
-                <a
-                  key={i}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="size-10 flex items-center justify-center rounded-xl bg-white border border-slate-200 text-slate-400 hover:text-primary hover:border-primary hover:shadow-md transition-all"
-                >
-                  <social.icon className="size-5" />
-                </a>
-              ))}
+              <a
+                href={brandProfile.social.facebook}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="size-10 flex items-center justify-center rounded-xl bg-white border border-slate-200 text-slate-400 hover:text-primary hover:border-primary hover:shadow-md transition-all"
+                aria-label="Follow us on Facebook"
+              >
+                <Facebook className="size-5" />
+              </a>
             </div>
           </div>
 

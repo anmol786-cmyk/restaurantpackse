@@ -1,7 +1,7 @@
 /**
  * Commerce Rules Configuration
  * Mirrors the backend WordPress plugin rules for frontend validation
- * Source: ideal-indiska-commerce-rules/ideal-indiska-commerce-rules.php
+ * Source: anmol-wholesale-commerce-rules/anmol-wholesale-commerce-rules.php
  */
 
 export interface QuantityLimit {
@@ -38,9 +38,10 @@ export interface FeaturedCategory {
  * Update this array to change which categories are prominently displayed
  */
 export const FEATURED_CATEGORIES: FeaturedCategory[] = [
-  { keywords: ['electronics'], fallbackLabel: 'Electronics' },
+  { keywords: ['equipment', 'tandoor'], fallbackLabel: 'Equipment' },
+  { keywords: ['rice'], fallbackLabel: 'Rice' },
+  { keywords: ['spices', 'masala'], fallbackLabel: 'Spices' },
   { keywords: ['packing'], fallbackLabel: 'Packing' },
-  { keywords: ['food', 'beverages'], fallbackLabel: 'Food & Beverages' },
 ];
 
 /**
