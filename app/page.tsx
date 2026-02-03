@@ -13,8 +13,28 @@ import { anmolWholesaleOrganizationSchemaFull } from "@/lib/schema/organization"
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "Anmol Wholesale | Professional Restaurant Supply Stockholm | 15% Lower Prices",
-  description: "Sweden's leading B2B wholesale partner for restaurants & caterers. 15% lower prices on authentic Indo-Pak ingredients, bulk staples & professional equipment. Stockholm-based manufacturer of Anmol Electric Tandoor. Own Scandinavian delivery system.",
+  title: "Restaurang Grossist Stockholm | Anmol Wholesale | 15% Lägre Priser",
+  description: "Sveriges ledande B2B-grossist för restauranger & catering. 15% lägre priser på indiska kryddor, basmati ris, storköksvaror & elektrisk tandoor. Egen leverans i Stockholm & hela Sverige. Registrera dig för grossistpriser.",
+  alternates: {
+    canonical: "https://restaurantpack.se",
+  },
+  openGraph: {
+    title: "Restaurang Grossist Stockholm | Anmol Wholesale",
+    description: "Sveriges ledande B2B-grossist för restauranger. 15% lägre priser på indiska ingredienser, kryddor & utrustning. Elektrisk tandoor tillverkare.",
+    url: "https://restaurantpack.se",
+    type: "website",
+    locale: "sv_SE",
+  },
+  keywords: [
+    "restaurang grossist stockholm",
+    "storköksvaror grossist",
+    "indiska kryddor grossist",
+    "basmati ris storpack",
+    "elektrisk tandoor",
+    "restaurang leverantör sverige",
+    "halal kött stockholm",
+    "catering grossist",
+  ],
 };
 
 export default async function HomePage() {

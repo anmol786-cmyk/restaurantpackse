@@ -55,13 +55,14 @@ export const metadata: Metadata = {
       { url: '/apple-icon.png', sizes: '180x180', type: 'image/png' },
     ],
   },
-  // verification: {
-  //   google: "YOUR_GOOGLE_VERIFICATION_CODE",
-  // },
-  // OpenGraph with locale configuration
+  verification: {
+    google: "ADD_YOUR_GOOGLE_VERIFICATION_CODE_HERE",
+  },
+  // OpenGraph with locale configuration - Swedish market
   openGraph: {
     type: "website",
-    locale: "en_US",
+    locale: "sv_SE",
+    alternateLocale: ["en_US"],
     url: siteConfig.site_domain,
     siteName: siteConfig.site_name,
     title: siteConfig.site_name,
@@ -82,16 +83,25 @@ export const metadata: Metadata = {
     description: siteConfig.site_description,
     images: [`${siteConfig.site_domain}/twitter-image.jpeg`],
   },
-  // Additional metadata
+  // Additional metadata - Swedish & English keywords for local SEO
   keywords: [
-    "restaurant supply",
-    "wholesale food",
+    // Swedish keywords (primary)
+    "restaurang grossist stockholm",
+    "storköksvaror grossist",
+    "indiska kryddor grossist",
+    "basmati ris storpack",
+    "halal kött stockholm",
+    "elektrisk tandoor",
+    "restaurang leverantör sverige",
+    // English keywords (secondary)
+    "restaurant supply stockholm",
+    "wholesale food sweden",
     "B2B wholesale",
-    "restaurant pack",
     "anmol wholesale",
     "bulk ingredients",
     "foodservice distributor",
-    "catering supplies",
+    "indian grocery wholesale",
+    "electric tandoor sweden",
   ],
   authors: [{ name: siteConfig.site_name }],
   creator: siteConfig.site_name,
@@ -130,7 +140,7 @@ export default async function RootLayout({
   const categories = await getProductCategories({ parent: 0 });
 
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="sv" suppressHydrationWarning>
       <head>
         {/* Preconnect to external domains */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />

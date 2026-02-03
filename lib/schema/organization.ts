@@ -100,8 +100,8 @@ export function organizationSchema(config: OrganizationInput): Organization {
 export function anmolWholesaleOrganizationSchema(baseUrl: string = 'https://restaurantpack.se'): Organization {
   return organizationSchema({
     name: 'Anmol Wholesale',
-    alternateName: 'Anmol AB',
-    description: 'Anmol Wholesale (part of Anmol Sweets & Restaurant) is Sweden\'s leading B2B wholesale supplier. Operated by Anmol AB, we specialize in authentic Indo-Pak ingredients, bulk restaurant supplies, and are the official manufacturer of the Anmol Electric Tandoor.',
+    alternateName: 'Anmol AB | Restaurang Grossist Stockholm',
+    description: 'Sveriges ledande B2B restaurang grossist. Anmol Wholesale erbjuder 15% lägre priser på indiska kryddor, basmati ris, storköksvaror och elektrisk tandoor. Snabb leverans i Stockholm och hela Sverige.',
     url: baseUrl,
     logo: 'https://crm.restaurantpack.se/wp-content/uploads/2025/03/ANMOL-WHOLESALE-1.png',
     image: 'https://crm.restaurantpack.se/wp-content/uploads/2025/03/ANMOL-WHOLESALE-1.png',
@@ -110,20 +110,25 @@ export function anmolWholesaleOrganizationSchema(baseUrl: string = 'https://rest
     address: {
       street: 'Fagerstagatan 13',
       city: 'Spånga',
-      region: 'Stockholm County',
+      region: 'Stockholm',
       postalCode: '163 53',
       country: 'SE',
+    },
+    // Geo coordinates for Spånga, Stockholm
+    geo: {
+      latitude: 59.3833,
+      longitude: 17.8981,
     },
     openingHours: [
       { day: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], opens: '10:00', closes: '20:00' },
       { day: ['Saturday', 'Sunday'], opens: '11:00', closes: '19:00' },
     ],
-    priceRange: '$$$',
+    priceRange: '$$',
     socialMedia: [
       'https://www.facebook.com/AnmolWholesale',
     ],
     foundingDate: '2010',
-    types: ['WholesaleStore', 'Organization', 'LocalBusiness'],
+    types: ['WholesaleStore', 'LocalBusiness', 'Organization', 'GroceryStore'],
   });
 }
 
@@ -160,10 +165,15 @@ export function anmolWholesaleOrganizationSchemaFull(baseUrl: string = 'https://
       description: 'Complete range of Indo-Pak products, bulk ingredients, and professional kitchen equipment including Anmol Electric Tandoor',
     },
 
-    // Knowledge areas
+    // Knowledge areas - Swedish & English for local SEO
     knowsAbout: [
+      'Restaurang Grossist Stockholm',
+      'Storköksvaror Grossist',
+      'Indiska Kryddor Grossist',
+      'Basmati Ris Storpack',
+      'Elektrisk Tandoor',
       'Wholesale Food Distribution',
-      'Restaurant Supplies',
+      'Restaurant Supplies Sweden',
       'Indo-Pak Products',
       'Bulk Ingredients',
       'Anmol Electric Tandoor',
@@ -171,17 +181,30 @@ export function anmolWholesaleOrganizationSchemaFull(baseUrl: string = 'https://
       'Professional Kitchen Equipment',
       'B2B Foodservice',
       'Catering Supplies',
+      'Halal Kött Stockholm',
     ],
 
-    // Additional B2B properties
+    // Additional B2B properties - Primary focus on Stockholm, then Sweden, then Scandinavia
     areaServed: [
       {
-        '@type': 'Country',
-        name: 'Sweden',
+        '@type': 'City',
+        name: 'Stockholm',
+        containedInPlace: {
+          '@type': 'Country',
+          name: 'Sweden',
+        },
+      },
+      {
+        '@type': 'State',
+        name: 'Stockholm County',
+        containedInPlace: {
+          '@type': 'Country',
+          name: 'Sweden',
+        },
       },
       {
         '@type': 'Country',
-        name: 'Germany',
+        name: 'Sweden',
       },
       {
         '@type': 'Country',
@@ -189,11 +212,15 @@ export function anmolWholesaleOrganizationSchemaFull(baseUrl: string = 'https://
       },
       {
         '@type': 'Country',
+        name: 'Denmark',
+      },
+      {
+        '@type': 'Country',
         name: 'Finland',
       },
       {
         '@type': 'Country',
-        name: 'Denmark',
+        name: 'Germany',
       },
     ],
 

@@ -28,12 +28,27 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
             alt: 'Anmol Wholesale - Restaurant Supply Stockholm',
         };
 
+        // Clean description with proper fallback
+        const cleanDescription = product.short_description?.replace(/<[^>]*>/g, '').trim();
+        const metaDescription = cleanDescription && cleanDescription.length > 50
+            ? cleanDescription.substring(0, 160)
+            : `Köp ${product.name} från Anmol Wholesale Stockholm. Grossistpriser för restauranger och catering. Snabb leverans i Sverige.`;
+
+        const productUrl = `https://restaurantpack.se/product/${resolvedParams.slug}`;
+
         return {
-            title: `${product.name} | Anmol Wholesale`,
-            description: product.short_description?.replace(/\<[^>]*>/g, '').substring(0, 160) || product.name,
+            title: `${product.name} | Köp Grossist | Anmol Wholesale`,
+            description: metaDescription,
+            alternates: {
+                canonical: productUrl,
+            },
             openGraph: {
-                title: product.name,
-                description: product.short_description?.replace(/\<[^>]*>/g, '').substring(0, 160),
+                title: `${product.name} - Grossistpris Stockholm`,
+                description: metaDescription,
+                type: 'website',
+                locale: 'sv_SE',
+                url: productUrl,
+                siteName: 'Anmol Wholesale',
                 images: product.images && product.images.length > 0
                     ? product.images.map((img) => ({
                         url: img.src,
@@ -42,7 +57,11 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
                         alt: img.alt || product.name,
                     }))
                     : [defaultImage],
-                url: `https://restaurantpack.se/product/${resolvedParams.slug}`,
+            },
+            twitter: {
+                card: 'summary_large_image',
+                title: product.name,
+                description: metaDescription,
             },
         };
     } catch {
