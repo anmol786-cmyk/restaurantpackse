@@ -2,10 +2,12 @@
 
 import { useState, useEffect } from 'react';
 import { CommerceRules, GLOBAL_MOQ } from '@/config/commerce-rules';
-import { useCurrency } from '@/hooks/use-currency';
-import { Tag, TrendingDown, Plus, Sparkles, Info } from 'lucide-react';
+import { formatPrice } from '@/lib/utils';
+import { Tag, TrendingDown, Plus, Sparkles, Info, ShieldCheck } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
+import { useAuthStore } from '@/store/auth-store';
+import { isApprovedWholesaleCustomer } from '@/lib/auth';
 
 interface QuantityDiscountDisplayProps {
   productId: number;
@@ -24,50 +26,36 @@ export function QuantityDiscountDisplay({
   showTiersTable = true,
   compact = false,
 }: QuantityDiscountDisplayProps) {
-  const { format: formatCurrency } = useCurrency();
+  const { user } = useAuthStore();
+  const isWholesale = isApprovedWholesaleCustomer(user);
+
   const [discountResult, setDiscountResult] = useState(
     CommerceRules.calculateQuantityDiscount(productId, quantity, basePrice)
   );
 
-  const hasQuantityDiscount = CommerceRules.hasQuantityDiscount(productId);
   const moq = CommerceRules.getMOQ(productId);
-  const tiers = CommerceRules.getQuantityDiscountTiers(productId);
+  const tiers = CommerceRules.getEffectiveTiers(productId, basePrice);
 
   useEffect(() => {
     const result = CommerceRules.calculateQuantityDiscount(productId, quantity, basePrice);
     setDiscountResult(result);
   }, [productId, quantity, basePrice]);
 
-  if (!hasQuantityDiscount) {
-    // Show MOQ info if global MOQ is set
-    if (moq > 1) {
-      return (
-        <div className="mt-2 p-2 bg-blue-50 rounded border border-blue-100">
-          <div className="flex items-center gap-2">
-            <Info className="w-4 h-4 text-blue-600" />
-            <span className="text-sm text-blue-700">
-              Minimum order: <strong>{moq} units</strong>
-            </span>
-          </div>
-        </div>
-      );
-    }
-    return null;
-  }
-
-  if (!discountResult) return null;
+  // If no tiers and moq is 1, return null
+  if (tiers.length === 0 && moq <= 1) return null;
 
   if (compact) {
+    if (!discountResult) return null;
     return (
       <div className="space-y-2">
         {/* Current Price Badge */}
         <div className="flex items-center gap-2">
-          <Badge variant="secondary" className="bg-green-100 text-green-800 hover:bg-green-100">
+          <Badge variant="secondary" className="bg-accent/10 text-accent-foreground hover:bg-accent/20 border-accent/20">
             <Tag className="w-3 h-3 mr-1" />
             {discountResult.currentTierLabel}
           </Badge>
           {discountResult.savingsPercent > 0 && (
-            <Badge variant="outline" className="text-green-600 border-green-200">
+            <Badge variant="outline" className="text-primary border-primary/20">
               Save {discountResult.savingsPercent}%
             </Badge>
           )}
@@ -81,7 +69,7 @@ export function QuantityDiscountDisplay({
                 onQuantityChange(quantity + discountResult.quantityToNextTier);
               }
             }}
-            className="flex items-center gap-2 text-xs text-primary hover:underline cursor-pointer group"
+            className="flex items-center gap-2 text-xs text-primary hover:underline cursor-pointer group font-medium"
           >
             <Plus className="w-3 h-3 group-hover:scale-110 transition-transform" />
             <span>{discountResult.nextTierSuggestion}</span>
@@ -93,64 +81,98 @@ export function QuantityDiscountDisplay({
 
   return (
     <div className="mt-4 space-y-4">
-      {/* MOQ Notice */}
-      {moq > 1 && (
-        <div className="flex items-center gap-2 p-2 bg-blue-50 rounded border border-blue-100">
-          <Info className="w-4 h-4 text-blue-600 flex-shrink-0" />
-          <span className="text-sm text-blue-700">
-            Minimum order quantity: <strong>{moq} units</strong>
-          </span>
-        </div>
-      )}
+      {/* MOQ Notice & Wholesale Benefits */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        {moq > 1 && (
+          <div className="flex items-center gap-2 p-3 bg-primary/5 rounded-lg border border-primary/10">
+            <Info className="w-4 h-4 text-primary flex-shrink-0" />
+            <div className="text-xs">
+              <span className="text-muted-foreground block">Minimum Order Quantity</span>
+              <span className="font-bold text-primary">{moq} units</span>
+            </div>
+          </div>
+        )}
+
+        {isWholesale ? (
+          <div className="flex items-center gap-2 p-3 bg-accent/10 rounded-lg border border-accent/20">
+            <ShieldCheck className="w-4 h-4 text-accent flex-shrink-0" />
+            <div className="text-xs">
+              <span className="text-muted-foreground block">Wholesale Account</span>
+              <span className="font-bold text-accent-foreground">Priority Pricing Active</span>
+            </div>
+          </div>
+        ) : (
+          <div className="flex items-center gap-2 p-3 bg-muted rounded-lg border border-border">
+            <TrendingDown className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+            <div className="text-xs">
+              <span className="text-muted-foreground block">Wholesale Savings</span>
+              <span className="font-bold">Login for business rates</span>
+            </div>
+          </div>
+        )}
+      </div>
 
       {/* Pricing Tiers Table */}
       {showTiersTable && tiers.length > 0 && (
-        <div className="rounded-lg border border-border overflow-hidden">
-          <div className="bg-muted/50 px-3 py-2 border-b border-border">
-            <div className="flex items-center gap-2">
-              <TrendingDown className="w-4 h-4 text-green-600" />
-              <span className="text-sm font-semibold">Volume Pricing</span>
+        <div className="rounded-xl border border-primary/10 overflow-hidden bg-card shadow-sm">
+          <div className="bg-gradient-to-r from-primary to-primary/90 px-4 py-3 border-b border-primary/10">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <TrendingDown className="w-4 h-4 text-accent" />
+                <span className="text-sm font-bold text-primary-foreground tracking-wide uppercase">Wholesale Volume Tiers</span>
+              </div>
+              <Badge variant="gold" className="text-[10px] font-bold uppercase transition-transform hover:scale-105">
+                Bulk Savings
+              </Badge>
             </div>
           </div>
-          <div className="divide-y divide-border">
+          <div className="divide-y divide-primary/5">
             {tiers.map((tier, index) => {
-              const isCurrentTier = discountResult.currentTierLabel.includes(tier.quantity.split('-')[0]) ||
-                (quantity >= parseInt(tier.quantity) &&
-                 (!tiers[index + 1] || quantity < parseInt(tiers[index + 1]?.quantity || '9999')));
+              const tierMin = parseInt(tier.quantity);
+              const isCurrentTier = quantity >= tierMin &&
+                (!tiers[index + 1] || quantity < parseInt(tiers[index + 1].quantity));
 
               return (
                 <div
                   key={tier.quantity}
                   className={cn(
-                    'flex items-center justify-between px-3 py-2 transition-colors',
-                    isCurrentTier && 'bg-green-50'
+                    'flex items-center justify-between px-4 py-3 transition-colors',
+                    isCurrentTier ? 'bg-accent/5' : 'hover:bg-muted/30'
                   )}
                 >
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm font-medium text-muted-foreground w-16">
-                      {tier.quantity}
-                    </span>
-                    {isCurrentTier && (
-                      <Badge variant="secondary" className="bg-green-100 text-green-700 text-[10px] px-1.5 py-0">
-                        Current
-                      </Badge>
-                    )}
-                  </div>
                   <div className="flex items-center gap-3">
-                    <span className={cn(
-                      'text-sm font-bold',
-                      isCurrentTier ? 'text-green-700' : 'text-foreground'
+                    <div className={cn(
+                      "w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold border-2",
+                      isCurrentTier
+                        ? "bg-accent text-accent-foreground border-accent shadow-sm"
+                        : "bg-muted text-muted-foreground border-transparent"
                     )}>
-                      {formatCurrency(tier.price)}
+                      {tier.quantity}
+                    </div>
+                    <div>
+                      <span className={cn(
+                        "text-sm font-semibold block",
+                        isCurrentTier ? "text-accent-foreground" : "text-foreground"
+                      )}>
+                        {tier.quantity} Units
+                      </span>
+                      {isCurrentTier && (
+                        <span className="text-[10px] text-accent font-bold uppercase tracking-wider">
+                          Current Tier
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  <div className="flex flex-col items-end">
+                    <span className={cn(
+                      'text-base font-bold',
+                      isCurrentTier ? 'text-primary' : 'text-foreground'
+                    )}>
+                      {formatPrice(tier.price, 'SEK')}
                     </span>
-                    <span className={cn(
-                      'text-xs px-2 py-0.5 rounded-full',
-                      tier.savings === 'Regular'
-                        ? 'bg-muted text-muted-foreground'
-                        : 'bg-green-100 text-green-700'
-                    )}>
+                    <Badge variant={isCurrentTier ? "gold" : "outline"} className="text-[10px] py-0 px-2">
                       {tier.savings}
-                    </span>
+                    </Badge>
                   </div>
                 </div>
               );
@@ -159,68 +181,71 @@ export function QuantityDiscountDisplay({
         </div>
       )}
 
-      {/* Current Pricing Summary */}
-      <div className="p-3 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg border border-green-100">
-        <div className="flex items-center justify-between mb-2">
-          <div className="flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-green-600" />
-            <span className="text-sm font-semibold text-green-800">Your Price</span>
+      {/* Current Pricing Summary - Only show if there's actual savings */}
+      {discountResult && discountResult.savingsPercent > 0 && (
+        <div className="p-4 bg-gradient-to-br from-primary/5 to-accent/5 rounded-xl border border-primary/10 shadow-sm">
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-2">
+              <Sparkles className="w-5 h-5 text-accent" />
+              <span className="text-sm font-bold text-primary uppercase tracking-wider">Tier Applied</span>
+            </div>
+            <Badge className="bg-primary text-primary-foreground hover:bg-primary font-bold">
+              {discountResult.currentTierLabel}
+            </Badge>
           </div>
-          <Badge className="bg-green-600 hover:bg-green-600">
-            {discountResult.currentTierLabel}
-          </Badge>
-        </div>
 
-        <div className="flex items-baseline gap-2">
-          <span className="text-2xl font-bold text-green-700">
-            {formatCurrency(discountResult.unitPrice)}
-          </span>
-          <span className="text-sm text-muted-foreground">/unit</span>
-          {discountResult.savingsPercent > 0 && (
-            <span className="text-sm text-green-600 line-through ml-2">
-              {formatCurrency(basePrice)}
+          <div className="flex items-baseline gap-2">
+            <span className="text-3xl font-black text-primary">
+              {formatPrice(discountResult.unitPrice, 'SEK')}
             </span>
-          )}
-        </div>
-
-        {discountResult.savings > 0 && (
-          <div className="mt-2 text-sm text-green-700">
-            Total: {formatCurrency(discountResult.totalPrice)}
-            <span className="ml-2 font-semibold">
-              (Save {formatCurrency(discountResult.savings)} - {discountResult.savingsPercent}% off)
+            <span className="text-sm text-muted-foreground font-medium">/ unit</span>
+            <span className="text-sm text-muted-foreground/60 line-through ml-2">
+              {formatPrice(basePrice, 'SEK')}
             </span>
           </div>
-        )}
-      </div>
+
+          <div className="mt-3 pt-3 border-t border-primary/10 flex items-center justify-between text-sm">
+            <span className="text-primary/70 font-medium">Total for {quantity} units:</span>
+            <div className="text-right">
+              <span className="text-lg font-bold text-primary block leading-none">
+                {formatPrice(discountResult.totalPrice, 'SEK')}
+              </span>
+              <span className="text-xs text-success font-bold">
+                You save {formatPrice(discountResult.savings, 'SEK')} ({discountResult.savingsPercent}% off)
+              </span>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Next Tier Suggestion */}
-      {discountResult.nextTierSuggestion && discountResult.priceAtNextTier && (
+      {discountResult && discountResult.nextTierSuggestion && discountResult.priceAtNextTier && (
         <button
           onClick={() => {
             if (onQuantityChange && discountResult.quantityToNextTier) {
               onQuantityChange(quantity + discountResult.quantityToNextTier);
             }
           }}
-          className="w-full p-3 bg-primary/5 hover:bg-primary/10 rounded-lg border border-primary/20 transition-colors group cursor-pointer"
+          className="w-full p-4 bg-card hover:bg-primary/[0.02] rounded-xl border-2 border-dashed border-primary/20 hover:border-primary/40 transition-all group cursor-pointer"
         >
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                <Plus className="w-4 h-4 text-primary" />
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                <Plus className="w-5 h-5 text-primary" />
               </div>
               <div className="text-left">
-                <p className="text-sm font-medium text-foreground">
+                <p className="text-sm font-bold text-primary group-hover:text-primary/80 transition-colors">
                   {discountResult.nextTierSuggestion}
                 </p>
                 <p className="text-xs text-muted-foreground">
-                  Next tier price: {formatCurrency(discountResult.priceAtNextTier)}/unit
+                  Save more with only <span className="font-bold text-accent">{discountResult.quantityToNextTier} more</span> units
                 </p>
               </div>
             </div>
             <div className="text-right">
-              <span className="text-xs font-semibold text-primary">
-                +{discountResult.quantityToNextTier} units
-              </span>
+              <Badge variant="outline" className="border-primary/30 text-primary font-bold">
+                {formatPrice(discountResult.priceAtNextTier, 'SEK')}/unit
+              </Badge>
             </div>
           </div>
         </button>
@@ -232,14 +257,7 @@ export function QuantityDiscountDisplay({
 /**
  * Inline version for cart items
  */
-interface CartItemDiscountProps {
-  productId: number;
-  quantity: number;
-  basePrice: number;
-}
-
-export function CartItemDiscount({ productId, quantity, basePrice }: CartItemDiscountProps) {
-  const { format: formatCurrency } = useCurrency();
+export function CartItemDiscount({ productId, quantity, basePrice }: { productId: number; quantity: number; basePrice: number }) {
   const discountResult = CommerceRules.calculateQuantityDiscount(productId, quantity, basePrice);
 
   if (!discountResult || discountResult.savingsPercent === 0) {
@@ -248,9 +266,11 @@ export function CartItemDiscount({ productId, quantity, basePrice }: CartItemDis
 
   return (
     <div className="flex items-center gap-1.5 mt-1">
-      <Tag className="w-3 h-3 text-green-600" />
-      <span className="text-xs text-green-600 font-medium">
-        {discountResult.currentTierLabel} - Save {discountResult.savingsPercent}%
+      <div className="w-4 h-4 rounded-full bg-accent/20 flex items-center justify-center">
+        <Tag className="w-2.5 h-2.5 text-accent" />
+      </div>
+      <span className="text-[10px] text-primary font-bold uppercase tracking-tight">
+        {discountResult.currentTierLabel} (-{discountResult.savingsPercent}%)
       </span>
     </div>
   );

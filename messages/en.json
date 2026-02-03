@@ -113,5 +113,65 @@
     "followUs": "Follow Us",
     "copyright": "© 2025 Anmol Wholesale. All rights reserved.",
     "madeWithLove": "Made with ❤️ in Sweden"
+  },
+  "business": {
+    "register": "Register Business Account",
+    "registerSubtitle": "Join our wholesale program for exclusive pricing",
+    "companyName": "Company Name",
+    "vatNumber": "VAT Number / Organization Number",
+    "businessType": "Business Type",
+    "verifyVat": "Verify",
+    "vatVerified": "VAT number verified",
+    "vatInvalid": "Validation failed",
+    "pendingApproval": "Pending Approval",
+    "pendingMessage": "Your business account is being verified. This typically takes 1-2 business days.",
+    "approved": "Approved",
+    "wholesalePricing": "Wholesale Pricing Active"
+  },
+  "credit": {
+    "apply": "Apply for Credit Terms",
+    "applySubtitle": "Get 28-day payment terms for your business",
+    "creditLimit": "Credit Limit",
+    "availableCredit": "Available Credit",
+    "paymentTerms": "Payment Terms",
+    "net28": "Net 28 days",
+    "minOrder": "Minimum Order",
+    "pending": "Credit Application Pending",
+    "approved": "Credit Account Active",
+    "payNow": "Pay Now",
+    "payLater": "28-Day Credit",
+    "invoicePayment": "Invoice Payment Selected"
+  },
+  "dashboard": {
+    "title": "My Account",
+    "orders": "Orders",
+    "business": "Business",
+    "settings": "Settings",
+    "totalOrders": "Total Orders",
+    "totalSpent": "Total Spent",
+    "thisMonth": "This Month",
+    "avgOrderValue": "Avg. Order Value",
+    "reorderLists": "Reorder Lists",
+    "createList": "Create New List",
+    "addToCart": "Add All to Cart",
+    "invoices": "Invoices",
+    "invoiceHistory": "Invoice History",
+    "outstanding": "Outstanding Balance",
+    "overdue": "Overdue"
+  },
+  "freeShipping": {
+    "title": "Free Shipping",
+    "qualify": "You qualify for free shipping within Stockholm!",
+    "threshold": "Free shipping within Stockholm on orders over 5,000 kr",
+    "addMore": "Add {amount} more to qualify"
+  },
+  "checkout": {
+    "paymentMethod": "Payment Method",
+    "paymentTerms": "Payment Terms",
+    "shippingMethod": "Shipping Method",
+    "placeOrder": "Place Order",
+    "orderNotes": "Order Notes",
+    "billingAddress": "Billing Address",
+    "shippingAddress": "Shipping Address"
   }
 }

@@ -15,7 +15,7 @@ import { Separator } from '@/components/ui/separator';
 import {
   Loader2, Plus, Trash2, Send, Package, Building2, ClipboardList,
   Search, Minus, CheckCircle2, MessageSquare, FileText, ArrowRight,
-  Clock, ShieldCheck, Sparkles, Phone, Mail, Calculator
+  Clock, ShieldCheck, Sparkles, Phone, Mail, Calculator, AlertCircle
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
@@ -380,8 +380,8 @@ function ProductsStep({
         </div>
 
         {/* MOQ Notice */}
-        <div className="flex items-center gap-2 p-3 bg-blue-50 rounded-lg text-sm text-blue-700">
-          <Sparkles className="w-4 h-4" />
+        <div className="flex items-center gap-2 p-3 bg-accent/10 rounded-lg text-sm text-accent-foreground">
+          <Sparkles className="w-4 h-4 text-accent" />
           <span>Minimum order quantity: <strong>{GLOBAL_MOQ} units</strong> per product</span>
         </div>
 
@@ -922,16 +922,48 @@ function ReviewStep({
           </div>
 
           {/* Total */}
-          <div className="flex items-center justify-between p-4 bg-primary/5 rounded-lg border border-primary/20">
-            <div>
-              <p className="text-sm text-muted-foreground">
-                {hasAllPrices ? 'Estimated Total' : 'Total'}
-              </p>
-              <p className="text-2xl font-bold text-primary">
-                {estimatedTotal > 0 ? formatCurrency(estimatedTotal) : 'Price on request'}
-              </p>
+          <div className="space-y-3">
+            <div className="flex items-center justify-between p-4 bg-primary/5 rounded-lg border border-primary/20">
+              <div>
+                <p className="text-sm text-muted-foreground">
+                  {hasAllPrices ? 'Estimated Total' : 'Total'}
+                </p>
+                <p className="text-2xl font-bold text-primary">
+                  {estimatedTotal > 0 ? formatCurrency(estimatedTotal) : 'Price on request'}
+                </p>
+              </div>
+              <Calculator className="w-8 h-8 text-primary/50" />
             </div>
-            <Calculator className="w-8 h-8 text-primary/50" />
+
+            {/* Quote Confidence Indicator */}
+            {(() => {
+              const confidence = CommerceRules.getQuoteConfidence(
+                items.map(i => ({ productId: i.productId || 0, unitPrice: i.unitPrice, quantity: i.quantity })),
+                estimatedTotal
+              );
+
+              if (confidence.level === 'manual') {
+                return (
+                  <div className="flex items-start gap-3 p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-800">
+                    <AlertCircle className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
+                    <div>
+                      <p className="font-semibold">Manual Review Required</p>
+                      <p className="text-xs opacity-90">{confidence.reason}</p>
+                    </div>
+                  </div>
+                );
+              }
+
+              return (
+                <div className="flex items-start gap-3 p-3 bg-green-50 border border-green-200 rounded-lg text-sm text-green-800">
+                  <CheckCircle2 className="w-5 h-5 text-green-500 shrink-0 mt-0.5" />
+                  <div>
+                    <p className="font-semibold">Automated Quote Eligible</p>
+                    <p className="text-xs opacity-90">This quote can be processed instantly after submission.</p>
+                  </div>
+                </div>
+              );
+            })()}
           </div>
 
           {/* Message */}

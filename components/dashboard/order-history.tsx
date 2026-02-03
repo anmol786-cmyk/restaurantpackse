@@ -12,7 +12,8 @@ import {
   CheckCircle,
   XCircle,
   Clock,
-  ChevronRight
+  ChevronRight,
+  Download
 } from 'lucide-react';
 import { formatPrice } from '@/lib/utils';
 import { useAuthStore } from '@/store/auth-store';
@@ -165,8 +166,24 @@ export function OrderHistory() {
 
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle>Order History</CardTitle>
+        <Button variant="outline" size="sm" onClick={() => {
+          const exportData = orders.map(order => ({
+            'Order Number': order.number,
+            'Date': new Date(order.date_created).toLocaleDateString(),
+            'Status': ORDER_STATUS_CONFIG[order.status]?.label || order.status,
+            'Items': order.line_items.length,
+            'Total': order.total,
+            'Currency': order.currency
+          }));
+          import('@/lib/excel').then(({ exportToExcel }) => {
+            exportToExcel(exportData, 'Order-History', 'Orders');
+          });
+        }}>
+          <Download className="w-4 h-4 mr-2" />
+          Export Excel
+        </Button>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">

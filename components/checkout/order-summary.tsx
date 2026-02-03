@@ -198,8 +198,25 @@ export function OrderSummary({
                     </>
                 )}
 
+                {/* Free Shipping Banner */}
+                <div className="mt-6 rounded-lg border border-green-200 bg-green-50 p-4 dark:border-green-800 dark:bg-green-950/30">
+                    <p className="flex items-center gap-2 text-sm font-medium text-green-700 dark:text-green-400">
+                        <span>🚚</span>
+                        {totalWithTax >= 5000 ? (
+                            <span>You qualify for free shipping within Stockholm!</span>
+                        ) : (
+                            <span>Free shipping within Stockholm on orders over 5,000 kr</span>
+                        )}
+                    </p>
+                    {totalWithTax < 5000 && (
+                        <p className="mt-1 text-xs text-green-600 dark:text-green-500">
+                            Add {formatPrice(5000 - totalWithTax, 'SEK')} more to qualify
+                        </p>
+                    )}
+                </div>
+
                 {/* Additional Info */}
-                <div className="mt-6 rounded-lg bg-neutral-50 p-4 text-sm dark:bg-neutral-900">
+                <div className="mt-4 rounded-lg bg-neutral-50 p-4 text-sm dark:bg-neutral-900">
                     <p className="text-neutral-600 dark:text-neutral-400">
                         <strong>Note:</strong> Prices include VAT where applicable. Final shipping costs will be calculated based on your location.
                     </p>

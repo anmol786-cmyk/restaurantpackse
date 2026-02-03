@@ -22,6 +22,9 @@ export interface BusinessRegisterData extends RegisterData {
     city: string;
     postcode: string;
     country: string;
+    // Credit application (optional)
+    apply_for_credit?: boolean;
+    estimated_monthly_volume?: string;
 }
 
 export interface AuthResponse {

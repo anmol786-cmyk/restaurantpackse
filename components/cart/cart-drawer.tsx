@@ -201,6 +201,23 @@ export function CartDrawer() {
 
             {/* Cart Footer */}
             <SheetFooter className="flex-col gap-3">
+              {/* Free Shipping Banner */}
+              <div className="rounded-lg border border-green-200 bg-green-50 p-3 dark:border-green-800 dark:bg-green-950/30">
+                <p className="flex items-center gap-2 text-sm font-medium text-green-700 dark:text-green-400">
+                  <span>🚚</span>
+                  {getTotalPrice(isWholesale) >= 5000 ? (
+                    <span>You qualify for free shipping within Stockholm!</span>
+                  ) : (
+                    <span>Free shipping within Stockholm on orders over 5,000 kr</span>
+                  )}
+                </p>
+                {getTotalPrice(isWholesale) < 5000 && (
+                  <p className="mt-1 text-xs text-green-600 dark:text-green-500">
+                    Add {formatCurrency(5000 - getTotalPrice(isWholesale))} more to qualify
+                  </p>
+                )}
+              </div>
+
               <div className="flex justify-between border-t pt-4 text-base font-bold">
                 <span>Total:</span>
                 <span>{formatCurrency(getTotalPrice(isWholesale))}</span>

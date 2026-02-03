@@ -9,17 +9,19 @@ export async function registerBusinessAction(data: BusinessRegisterData) {
     const consumerKey = process.env.WORDPRESS_CONSUMER_KEY;
     const consumerSecret = process.env.WORDPRESS_CONSUMER_SECRET;
 
-    console.log('Business registration attempt for:', data.email, 'company:', data.company_name);
-
     if (!consumerKey || !consumerSecret) {
-        console.error('Missing WORDPRESS_CONSUMER_KEY or WORDPRESS_CONSUMER_SECRET');
+        console.error('Missing WooCommerce API credentials');
         return { success: false, error: 'Server configuration error: Missing API keys' };
     }
 
     // Validate required fields
     if (!data.email || !data.password) {
-        console.error('Business registration missing required fields:', { email: !!data.email, password: !!data.password });
         return { success: false, error: 'Email and password are required' };
+    }
+
+    // Validate other required fields
+    if (!data.phone || !data.address || !data.city || !data.postcode) {
+        return { success: false, error: 'Please fill in all address fields (phone, address, city, postcode)' };
     }
 
     try {
@@ -54,7 +56,13 @@ export async function registerBusinessAction(data: BusinessRegisterData) {
                 { key: 'company_name', value: data.company_name },
                 { key: 'vat_number', value: data.vat_number },
                 { key: 'business_type', value: data.business_type },
-                { key: 'customer_type', value: 'business' }
+                { key: 'customer_type', value: 'business' },
+                // Credit application fields (optional)
+                ...(data.apply_for_credit ? [
+                    { key: 'credit_application_status', value: 'pending' },
+                    { key: 'credit_application_date', value: new Date().toISOString() },
+                    { key: 'estimated_monthly_volume', value: data.estimated_monthly_volume || '' },
+                ] : [])
             ]
         };
 
@@ -70,28 +78,95 @@ export async function registerBusinessAction(data: BusinessRegisterData) {
         const responseData = await response.json();
 
         if (!response.ok) {
-            console.error('WooCommerce Business Registration Error:', responseData);
+            console.error('WooCommerce Business Registration Error:', response.status);
 
             // Provide user-friendly error messages
-            let errorMessage = responseData.message || 'Business registration failed';
-            if (responseData.code === 'registration-error-email-exists') {
+            let errorMessage = responseData.message || responseData.data?.message || 'Business registration failed';
+
+            // Check for specific error codes
+            const errorCode = responseData.code || responseData.data?.code;
+
+            if (errorCode === 'registration-error-email-exists' || errorMessage.includes('email address is already registered')) {
                 errorMessage = 'An account with this email already exists. Please try logging in instead.';
-            } else if (responseData.code === 'registration-error-username-exists') {
+            } else if (errorCode === 'registration-error-username-exists' || errorMessage.includes('username already exists')) {
                 errorMessage = 'This username is already taken. Please choose a different username.';
-            } else if (responseData.code === 'registration-error-invalid-email') {
+            } else if (errorCode === 'registration-error-invalid-email' || errorCode === 'woocommerce_rest_customer_invalid_email') {
                 errorMessage = 'Please enter a valid email address.';
-            } else if (responseData.code === 'woocommerce_rest_customer_invalid_email') {
-                errorMessage = 'Please enter a valid email address.';
+            } else if (errorCode === 'rest_invalid_param') {
+                // Extract specific parameter errors
+                const paramErrors = responseData.data?.params;
+                if (paramErrors) {
+                    const errorDetails = Object.entries(paramErrors).map(([key, msg]) => `${key}: ${msg}`).join(', ');
+                    errorMessage = `Validation error: ${errorDetails}`;
+                }
+            } else if (response.status === 400) {
+                errorMessage = `Registration failed: ${errorMessage}`;
+            } else if (response.status === 401 || response.status === 403) {
+                errorMessage = 'Server configuration error. Please contact support.';
             }
 
             return {
                 success: false,
                 error: errorMessage,
-                code: responseData.code
+                code: errorCode,
+                details: responseData
             };
         }
 
-        console.log('Business registration successful for:', data.email, 'Customer ID:', responseData.id);
+        // Send notification email to Admin
+        try {
+            const { sendEmail } = await import('@/lib/email/smtp');
+            const { generateEmailTemplate, createInfoRow } = await import('@/lib/email-template');
+
+            const adminEmail = process.env.SMTP_USER || 'info@restaurantpack.se';
+
+            const emailHtml = generateEmailTemplate({
+                title: 'New Wholesale Registration',
+                heading: 'New Business Application',
+                contentSections: [
+                    {
+                        title: 'Applicant Details',
+                        content: `
+                            <table width="100%" cellpadding="0" cellspacing="0">
+                                ${createInfoRow('Company Name', data.company_name)}
+                                ${createInfoRow('VAT / Org No', data.vat_number)}
+                                ${createInfoRow('Business Type', data.business_type)}
+                                ${createInfoRow('Contact Name', `${data.first_name} ${data.last_name}`)}
+                                ${createInfoRow('Email', data.email)}
+                                ${createInfoRow('Phone', data.phone)}
+                                ${createInfoRow('City', data.city)}
+                            </table>
+                        `
+                    },
+                    {
+                        title: 'Action Required',
+                        content: `
+                            <p style="margin: 0; color: #333; font-size: 14px;">
+                                A new wholesale account application has been received. 
+                                Please review the details and approve or reject the application in the Admin Dashboard.
+                            </p>
+                            <div style="margin-top: 20px; text-align: center;">
+                                <a href="${process.env.NEXT_PUBLIC_SITE_URL || 'https://restaurantpack.se'}/admin/wholesale" 
+                                   style="background-color: #8B1538; color: #ffffff; padding: 12px 24px; text-decoration: none; border-radius: 4px; font-weight: 600; display: inline-block;">
+                                    Go to Admin Dashboard
+                                </a>
+                            </div>
+                        `
+                    }
+                ]
+            });
+
+            await sendEmail({
+                to: adminEmail,
+                subject: `New Wholesale Registration: ${data.company_name}`,
+                html: emailHtml
+            });
+
+        } catch (emailError) {
+            console.error('Failed to send admin notification email:', emailError);
+            // Don't fail the registration if email fails
+        }
+
         return { success: true, data: responseData };
     } catch (error: any) {
         console.error('Business registration error:', error);
@@ -101,20 +176,15 @@ export async function registerBusinessAction(data: BusinessRegisterData) {
 
 export async function registerUserAction(data: RegisterData) {
     const baseUrl = WC_API_CONFIG.baseUrl;
-    // Use server-side keys
     const consumerKey = process.env.WORDPRESS_CONSUMER_KEY;
     const consumerSecret = process.env.WORDPRESS_CONSUMER_SECRET;
 
-    console.log('Registration attempt for:', data.email, 'username:', data.username);
-
     if (!consumerKey || !consumerSecret) {
-        console.error('Missing WORDPRESS_CONSUMER_KEY or WORDPRESS_CONSUMER_SECRET');
+        console.error('Missing WooCommerce API credentials');
         return { success: false, error: 'Server configuration error: Missing API keys' };
     }
 
-    // Validate required fields
     if (!data.email || !data.password) {
-        console.error('Registration missing required fields:', { email: !!data.email, password: !!data.password });
         return { success: false, error: 'Email and password are required' };
     }
 
@@ -131,8 +201,6 @@ export async function registerUserAction(data: RegisterData) {
         const responseData = await response.json();
 
         if (!response.ok) {
-            console.error('WooCommerce Registration Error:', responseData);
-
             // Provide user-friendly error messages
             let errorMessage = responseData.message || 'Registration failed';
             if (responseData.code === 'registration-error-email-exists') {
@@ -152,7 +220,6 @@ export async function registerUserAction(data: RegisterData) {
             };
         }
 
-        console.log('Registration successful for:', data.email, 'Customer ID:', responseData.id);
         return { success: true, data: responseData };
     } catch (error: any) {
         console.error('Registration error:', error);
@@ -161,14 +228,12 @@ export async function registerUserAction(data: RegisterData) {
 }
 
 export async function loginUserAction(credentials: LoginCredentials) {
-    console.log('Attempting login for:', credentials.username);
 
     const wordpressUrl = process.env.NEXT_PUBLIC_WORDPRESS_URL;
     const authKey = process.env.SIMPLE_JWT_AUTH_KEY || 'AnmolWholesaleAuthKeYs';
 
-    // Method 1a: Try Simple JWT Login with AUTH_KEY in query string (most common config)
+    // Method 1a: Try Simple JWT Login with AUTH_KEY in query string
     const simpleJwtUrlWithKey = `${wordpressUrl}/wp-json/simple-jwt-login/v1/auth?AUTH_KEY=${encodeURIComponent(authKey)}`;
-    console.log('Trying Simple JWT Login URL (AUTH_KEY in query):', simpleJwtUrlWithKey);
 
     try {
         const response = await fetch(simpleJwtUrlWithKey, {
@@ -182,11 +247,8 @@ export async function loginUserAction(credentials: LoginCredentials) {
             }),
         });
 
-        console.log('Simple JWT Login Response Status (query key):', response.status);
-
         if (response.ok) {
             const data = await response.json();
-            console.log('Simple JWT Login Success:', data);
 
             const transformedData = {
                 token: data.data?.jwt || data.jwt,
@@ -198,20 +260,18 @@ export async function loginUserAction(credentials: LoginCredentials) {
             return { success: true, data: transformedData };
         } else {
             const errorData = await response.json().catch(() => ({ message: 'Unknown error' }));
-            console.error('Simple JWT Login Error (query key):', response.status, errorData);
 
-            // If the error is about invalid credentials, return immediately with clear message
+            // If the error is about invalid credentials, return immediately
             if (errorData.data?.errorCode === 48 || errorData.message?.includes('Wrong user credentials')) {
                 return { success: false, error: 'Invalid email or password. Please check your credentials and try again.' };
             }
         }
     } catch (error: any) {
-        console.error('Simple JWT Login exception (query key):', error.message);
+        // Try alternative method
     }
 
-    // Method 1b: Try Simple JWT Login with AUTH_KEY in body (alternative config)
+    // Method 1b: Try Simple JWT Login with AUTH_KEY in body
     const simpleJwtUrl = `${wordpressUrl}/wp-json/simple-jwt-login/v1/auth`;
-    console.log('Trying Simple JWT Login URL (AUTH_KEY in body):', simpleJwtUrl);
 
     try {
         const response = await fetch(simpleJwtUrl, {
@@ -226,11 +286,8 @@ export async function loginUserAction(credentials: LoginCredentials) {
             }),
         });
 
-        console.log('Simple JWT Login Response Status (body key):', response.status);
-
         if (response.ok) {
             const data = await response.json();
-            console.log('Simple JWT Login Success:', data);
 
             const transformedData = {
                 token: data.data?.jwt || data.jwt,
@@ -242,21 +299,18 @@ export async function loginUserAction(credentials: LoginCredentials) {
             return { success: true, data: transformedData };
         } else {
             const errorData = await response.json().catch(() => ({ message: 'Unknown error' }));
-            console.error('Simple JWT Login Error (body key):', response.status, errorData);
 
-            // If the error is about invalid credentials, return immediately with clear message
+            // If the error is about invalid credentials, return immediately
             if (errorData.data?.errorCode === 48 || errorData.message?.includes('Wrong user credentials')) {
                 return { success: false, error: 'Invalid email or password. Please check your credentials and try again.' };
             }
         }
     } catch (error: any) {
-        console.error('Simple JWT Login exception (body key):', error.message);
-        console.log('Trying alternative authentication methods...');
+        // Try alternative method
     }
 
     // Method 2: Try JWT Authentication for WP REST API plugin
     const jwtAuthUrl = `${wordpressUrl}/wp-json/jwt-auth/v1/token`;
-    console.log('Trying JWT Auth for WP REST API:', jwtAuthUrl);
 
     try {
         const response = await fetch(jwtAuthUrl, {
@@ -270,11 +324,8 @@ export async function loginUserAction(credentials: LoginCredentials) {
             }),
         });
 
-        console.log('JWT Auth Response Status:', response.status);
-
         if (response.ok) {
             const data = await response.json();
-            console.log('JWT Auth Success');
 
             return {
                 success: true,
@@ -287,13 +338,10 @@ export async function loginUserAction(credentials: LoginCredentials) {
             };
         }
     } catch (error: any) {
-        console.log('JWT Auth for WP REST API not available, trying WooCommerce...');
+        // Try alternative method
     }
 
     // Method 3: WordPress password verification via custom endpoint
-    // IMPORTANT: This requires a custom WordPress endpoint that verifies passwords
-    // The previous method was insecure as it didn't verify passwords
-    console.log('Attempting WordPress password verification...');
 
     try {
         // Try to verify password using WordPress REST API
@@ -308,7 +356,6 @@ export async function loginUserAction(credentials: LoginCredentials) {
 
         if (wpResponse.ok) {
             const wpUser = await wpResponse.json();
-            console.log('WordPress authentication successful');
 
             // Create a session token
             const sessionToken = Buffer.from(JSON.stringify({
@@ -328,13 +375,10 @@ export async function loginUserAction(credentials: LoginCredentials) {
             };
         }
     } catch (error: any) {
-        console.log('WordPress REST API authentication failed, trying WooCommerce customer lookup...');
+        // WordPress REST API authentication failed
     }
 
-    // SECURITY WARNING: The code below is DISABLED because it's insecure
-    // It would log in users without password verification
-    // To enable WooCommerce-only authentication, you MUST implement proper password verification
-    console.error('All secure authentication methods failed. WooCommerce-only login requires JWT plugins.');
+    // All secure authentication methods failed
     return {
         success: false,
         error: 'Authentication failed. Please ensure JWT authentication plugins are installed on WordPress, or enable Application Passwords in WordPress settings.'
@@ -345,9 +389,6 @@ export async function getCurrentUserAction(token: string, userEmail?: string) {
     const baseUrl = WC_API_CONFIG.baseUrl;
     const consumerKey = process.env.WORDPRESS_CONSUMER_KEY;
     const consumerSecret = process.env.WORDPRESS_CONSUMER_SECRET;
-
-    console.log('Getting current user with token:', token ? 'Token exists' : 'No token');
-    console.log('User email from JWT:', userEmail);
 
     try {
         // If we don't have the email, try to decode it from the JWT token
@@ -361,7 +402,6 @@ export async function getCurrentUserAction(token: string, userEmail?: string) {
                 if (parts.length === 3) {
                     const payload = JSON.parse(Buffer.from(parts[1], 'base64').toString());
                     email = payload.data?.user?.user_email || payload.email;
-                    console.log('Decoded email from JWT:', email);
                 }
             } catch (decodeError) {
                 console.error('Failed to decode JWT:', decodeError);
@@ -369,14 +409,12 @@ export async function getCurrentUserAction(token: string, userEmail?: string) {
         }
 
         if (!email) {
-            console.error('No email found in token or parameters');
             return { success: false, error: 'Unable to determine user email' };
         }
 
         // Fetch WC customer details using email
         if (consumerKey && consumerSecret) {
             const customerUrl = `${baseUrl}/customers?email=${encodeURIComponent(email)}`;
-            console.log('🔍 Fetching WC customer from:', customerUrl);
 
             try {
                 // Add timeout to prevent hanging requests
@@ -394,46 +432,19 @@ export async function getCurrentUserAction(token: string, userEmail?: string) {
                 );
 
                 clearTimeout(timeoutId);
-                console.log('✅ WC Customer Response Status:', customerResponse.status);
 
                 if (customerResponse.ok) {
                     const customers = await customerResponse.json();
                     if (customers.length > 0) {
-                        console.log('✅ WC Customer found:', customers[0].id, customers[0].email);
                         return { success: true, data: customers[0] };
-                    } else {
-                        console.log('⚠️ No WC customer found with email:', email);
-                    }
-                } else {
-                    let errorDetails = 'Unknown error';
-                    try {
-                        const errorText = await customerResponse.text();
-                        errorDetails = errorText;
-                        console.error('❌ Failed to fetch WC customer. Status:', customerResponse.status);
-                        console.error('❌ Error details:', errorText.substring(0, 500));
-                    } catch (e) {
-                        console.error('❌ Failed to fetch WC customer. Status:', customerResponse.status);
-                        console.error('❌ Could not read error response');
                     }
                 }
             } catch (fetchError: any) {
-                // Catch network errors, timeouts, socket closures, etc.
-                console.error('❌ NETWORK ERROR fetching WC customer:', fetchError.message);
-                console.error('❌ Error type:', fetchError.name);
-                if (fetchError.cause) {
-                    console.error('❌ Error cause:', fetchError.cause);
-                }
-
-                // Don't continue to create - the customer likely exists but we can't reach WC
-                console.warn('⚠️ WooCommerce API unreachable. Will use fallback profile.');
+                // Network error - will use fallback profile
             }
-        } else {
-            console.warn('Missing Consumer Key/Secret, skipping WC customer fetch');
         }
 
         // No WooCommerce customer found - create one automatically
-        console.log('No WooCommerce customer found, creating one for:', email);
-
         // Extract name from email (before @) for initial customer data
         const emailUsername = email.split('@')[0];
         const nameParts = emailUsername.split(/[._-]/);
@@ -451,8 +462,6 @@ export async function getCurrentUserAction(token: string, userEmail?: string) {
                     username: emailUsername,
                 };
 
-                console.log('Creating WooCommerce customer:', customerData);
-
                 const createResponse = await fetch(createCustomerUrl, {
                     method: 'POST',
                     headers: {
@@ -464,13 +473,11 @@ export async function getCurrentUserAction(token: string, userEmail?: string) {
 
                 if (createResponse.ok) {
                     const newCustomer = await createResponse.json();
-                    console.log('WooCommerce customer created successfully:', newCustomer.id);
                     return { success: true, data: newCustomer };
                 } else {
                     const errorData = await createResponse.json();
-                    console.error('Failed to create WooCommerce customer:', errorData);
 
-                    // If customer already exists (maybe created between checks), try fetching again
+                    // If customer already exists, try fetching again
                     if (errorData.code === 'registration-error-email-exists') {
                         const retryCustomerUrl = `${baseUrl}/customers?email=${email}`;
                         const retryResponse = await fetch(retryCustomerUrl, {
@@ -482,22 +489,17 @@ export async function getCurrentUserAction(token: string, userEmail?: string) {
                         if (retryResponse.ok) {
                             const customers = await retryResponse.json();
                             if (customers.length > 0) {
-                                console.log('Found existing customer on retry:', customers[0].id);
                                 return { success: true, data: customers[0] };
                             }
                         }
                     }
                 }
             } catch (createError) {
-                console.error('Error creating WooCommerce customer:', createError);
+                // Failed to create customer
             }
         }
 
-        // Fallback: If we reach here, customer exists but we can't fetch it from WooCommerce
-        // This can happen due to API issues, permissions, or sync problems
-        // Allow login to succeed with basic user data so user isn't locked out
-        console.warn('⚠️ Could not fetch WooCommerce customer for:', email);
-        console.warn('⚠️ Creating temporary user profile. Orders may not be linked until WC customer is accessible.');
+        // Fallback: Create temporary user profile so user isn't locked out
 
         // Create a temporary but functional user object
         // Use a hash of the email as a pseudo-ID (better than 0, won't conflict)

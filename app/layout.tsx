@@ -1,6 +1,6 @@
 import "./globals.css";
 
-import { Inter } from "next/font/google";
+import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import { TopInfoBar } from "@/components/layout/top-info-bar";
 import { SchemaScript } from "@/lib/schema/schema-script";
@@ -13,6 +13,7 @@ import { HreflangTags } from "@/components/seo/hreflang-tags";
 import { CartDrawer } from "@/components/cart/cart-drawer";
 import { WishlistDrawer } from "@/components/wishlist/wishlist-drawer";
 import { Toaster } from "@/components/ui/toaster";
+import { Toaster as SonnerToaster } from "sonner";
 import { siteConfig } from "@/site.config";
 import { cn } from "@/lib/utils";
 import { AiChatWidget } from "@/components/ai/ai-chat-widget";
@@ -28,7 +29,7 @@ const fontSans = Inter({
   preload: true,
 });
 
-const fontHeading = Inter({
+const fontHeading = Plus_Jakarta_Sans({
   weight: ["400", "500", "600", "700", "800"],
   subsets: ["latin"],
   variable: "--font-heading",
@@ -187,6 +188,7 @@ export default async function RootLayout({
           <CartDrawer />
           <WishlistDrawer />
           <Toaster />
+          <SonnerToaster position="top-center" richColors closeButton />
         </ThemeProvider>
         <AiChatWidget />
 

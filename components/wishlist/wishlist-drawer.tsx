@@ -189,7 +189,7 @@ export function WishlistDrawer() {
                 ? 'border-red-500/50 bg-red-500/10'
                 : notification.type === 'warning'
                 ? 'border-yellow-500/50 bg-yellow-500/10'
-                : 'border-blue-500/50 bg-blue-500/10'
+                : 'border-info/50 bg-info/10'
             }`}
           >
             <div className="flex items-start gap-2">
@@ -201,7 +201,7 @@ export function WishlistDrawer() {
                     ? 'text-red-600'
                     : notification.type === 'warning'
                     ? 'text-yellow-600'
-                    : 'text-blue-600'
+                    : 'text-info'
                 }`}
               />
               <div className="flex-1">
@@ -213,7 +213,7 @@ export function WishlistDrawer() {
                       ? 'text-red-800 dark:text-red-200'
                       : notification.type === 'warning'
                       ? 'text-yellow-800 dark:text-yellow-200'
-                      : 'text-blue-800 dark:text-blue-200'
+                      : 'text-info dark:text-info'
                   }`}
                 >
                   {notification.message}

@@ -14,6 +14,7 @@ import { useCartStore } from '@/store/cart-store';
 import { useAuthStore } from '@/store/auth-store';
 import { PaymentMethodSelector } from '@/components/checkout/payment-method-selector';
 import { OrderSummary } from '@/components/checkout/order-summary';
+import { PaymentTermsSelector } from '@/components/checkout/payment-terms-selector';
 import { createOrderAction } from '@/app/actions/order';
 import { validateCartStockAction } from '@/app/actions/cart';
 import { validateShippingRestrictions } from '@/app/actions/shipping-restrictions';
@@ -92,6 +93,7 @@ export default function CheckoutPage() {
 
   // Payment state
   const [paymentMethod, setPaymentMethod] = useState('cod');
+  const [paymentTerm, setPaymentTerm] = useState<'immediate' | 'credit'>('immediate');
   const [orderNotes, setOrderNotes] = useState('');
 
   // Processing state
@@ -302,9 +304,13 @@ export default function CheckoutPage() {
       return;
     }
 
-    // Check for Stripe payment
+    // Handle credit payment term - skip Stripe entirely
+    const isCreditPayment = paymentTerm === 'credit';
+    const effectivePaymentMethod = isCreditPayment ? 'invoice_credit' : paymentMethod;
+
+    // Check for Stripe payment (only when not using credit terms)
     const stripePaymentMethods = ['stripe', 'stripe_cc', 'stripe_klarna', 'klarna', 'link'];
-    const isStripe = stripePaymentMethods.includes(paymentMethod) || paymentMethod.startsWith('stripe');
+    const isStripe = !isCreditPayment && (stripePaymentMethods.includes(paymentMethod) || paymentMethod.startsWith('stripe'));
     setIsStripePayment(isStripe);
 
     setIsProcessing(true);
@@ -392,6 +398,13 @@ export default function CheckoutPage() {
       // For non-Stripe payments
       const isRealCustomer = user?.id && !(user as any)?._meta?.is_temporary;
 
+      // Build metadata for credit payment
+      const creditMetaData = isCreditPayment ? [
+        { key: 'payment_terms', value: 'net_28' },
+        { key: 'payment_due_date', value: new Date(Date.now() + 28 * 24 * 60 * 60 * 1000).toISOString().split('T')[0] },
+        { key: 'is_credit_payment', value: 'yes' },
+      ] : [];
+
       const result = await createOrderAction({
         customer_id: isRealCustomer ? user.id : undefined,
         billing: { ...billing, state: billing.state || '' },
@@ -408,11 +421,12 @@ export default function CheckoutPage() {
             total: shippingCost.toString(),
           },
         ],
-        payment_method: paymentMethod,
-        payment_method_title: getPaymentMethodTitle(paymentMethod),
+        payment_method: effectivePaymentMethod,
+        payment_method_title: getPaymentMethodTitle(effectivePaymentMethod),
         customer_note: orderNotes || undefined,
         coupon_lines: coupon ? [{ code: coupon.code }] : undefined,
         set_paid: false,
+        meta_data: creditMetaData.length > 0 ? creditMetaData : undefined,
       });
 
       if (!result.success || !result.data) {
@@ -445,6 +459,7 @@ export default function CheckoutPage() {
       bacs: 'Direct Bank Transfer',
       stripe: 'Credit Card',
       swish: 'Swish',
+      invoice_credit: 'Invoice - 28 Day Credit',
       credit_net28: 'Credit (Net 28)',
     };
     return titles[methodId] || methodId;
@@ -467,10 +482,10 @@ export default function CheckoutPage() {
       <Section>
         <Container>
           <div className="flex min-h-[60vh] flex-col items-center justify-center text-center">
-            <ShoppingBag className="mb-4 h-16 w-16 text-neutral-400" />
-            <h1 className="mb-2 font-heading text-3xl font-bold">Your cart is empty</h1>
-            <p className="mb-6 text-neutral-600">Add items to your cart before checkout</p>
-            <Button asChild size="lg" className="rounded-full">
+            <ShoppingBag className="mb-4 h-16 w-16 text-muted-foreground/50" />
+            <h1 className="mb-2 font-heading text-3xl font-bold text-foreground">Your cart is empty</h1>
+            <p className="mb-6 text-muted-foreground">Add items to your cart before checkout</p>
+            <Button asChild size="lg" variant="gold">
               <Link href="/shop">Shop Now</Link>
             </Button>
           </div>
@@ -488,7 +503,7 @@ export default function CheckoutPage() {
     <Section>
       <Container>
         <div className="mb-8">
-          <h1 className="mb-4 font-heading text-4xl font-bold">Checkout</h1>
+          <h1 className="mb-4 font-heading text-4xl font-bold text-foreground">Checkout</h1>
 
           {/* 2-Step Progress */}
           <div className="flex items-center justify-center max-w-md mx-auto">
@@ -499,10 +514,10 @@ export default function CheckoutPage() {
                     className={cn(
                       'flex h-10 w-10 items-center justify-center rounded-full transition-all',
                       currentStep === step.id
-                        ? 'bg-primary-600 text-white ring-4 ring-primary-100'
+                        ? 'bg-primary text-primary-foreground ring-4 ring-primary-100'
                         : index === 0 && currentStep === 'payment'
-                          ? 'bg-green-600 text-white'
-                          : 'bg-neutral-200 text-neutral-500'
+                          ? 'bg-success text-success-foreground'
+                          : 'bg-muted text-muted-foreground'
                     )}
                   >
                     {index === 0 && currentStep === 'payment' ? (
@@ -514,7 +529,7 @@ export default function CheckoutPage() {
                   <span
                     className={cn(
                       'font-medium',
-                      currentStep === step.id ? 'text-primary-700' : 'text-neutral-500'
+                      currentStep === step.id ? 'text-primary' : 'text-muted-foreground'
                     )}
                   >
                     {step.label}
@@ -524,7 +539,7 @@ export default function CheckoutPage() {
                   <div
                     className={cn(
                       'mx-4 h-1 flex-1 rounded',
-                      currentStep === 'payment' ? 'bg-green-600' : 'bg-neutral-200'
+                      currentStep === 'payment' ? 'bg-success' : 'bg-muted'
                     )}
                   />
                 )}
@@ -717,15 +732,32 @@ export default function CheckoutPage() {
                   <Card className="p-6">
                     <h2 className="font-heading text-xl font-bold mb-4">Shipping Method</h2>
 
+                    {/* Free Shipping Banner */}
+                    <div className="mb-4 rounded-lg border border-success/30 bg-success/10 p-3">
+                      <p className="flex items-center gap-2 text-sm font-medium text-success">
+                        <Truck className="h-4 w-4" />
+                        {cartTotal >= 5000 ? (
+                          <span>You qualify for free shipping within Stockholm!</span>
+                        ) : (
+                          <span>Free shipping within Stockholm on orders over 5,000 kr</span>
+                        )}
+                      </p>
+                      {cartTotal < 5000 && (
+                        <p className="mt-1 text-xs text-success/80">
+                          Add {formatPrice(5000 - cartTotal, 'SEK')} more to qualify
+                        </p>
+                      )}
+                    </div>
+
                     {/* Shipping methods list below */}
 
                     {isCalculatingShipping ? (
                       <div className="flex items-center justify-center py-8">
-                        <Loader2 className="h-6 w-6 animate-spin text-primary-600 mr-2" />
-                        <span>Calculating shipping rates...</span>
+                        <Loader2 className="h-6 w-6 animate-spin text-primary mr-2" />
+                        <span className="text-muted-foreground">Calculating shipping rates...</span>
                       </div>
                     ) : shippingMethods.length === 0 ? (
-                      <div className="text-center py-8 text-neutral-500">
+                      <div className="text-center py-8 text-muted-foreground">
                         <Truck className="h-10 w-10 mx-auto mb-2 opacity-50" />
                         <p>Enter your postcode to see shipping options</p>
                       </div>
@@ -744,23 +776,23 @@ export default function CheckoutPage() {
                               className={cn(
                                 'flex items-center justify-between p-4 border rounded-lg cursor-pointer transition-all',
                                 selectedShippingMethod?.id === method.id
-                                  ? 'border-primary-500 bg-primary-50 ring-2 ring-primary-500'
-                                  : 'border-neutral-200 hover:border-neutral-300'
+                                  ? 'border-primary bg-primary-50 ring-2 ring-primary'
+                                  : 'border-border hover:border-primary/30'
                               )}
                               onClick={() => setSelectedShippingMethod(method)}
                             >
                               <div className="flex items-center gap-3">
                                 <RadioGroupItem value={method.id} id={method.id} />
-                                <div className="text-primary-600">
+                                <div className="text-primary">
                                   {getShippingIcon(method.method_id)}
                                 </div>
-                                <Label htmlFor={method.id} className="cursor-pointer font-medium">
+                                <Label htmlFor={method.id} className="cursor-pointer font-medium text-foreground">
                                   {method.label}
                                 </Label>
                               </div>
-                              <span className="font-bold">
+                              <span className="font-bold text-foreground">
                                 {method.cost === 0 ? (
-                                  <span className="text-green-600">Free</span>
+                                  <span className="text-success">Free</span>
                                 ) : (
                                   formatPrice(method.total_cost || method.cost, 'SEK')
                                 )}
@@ -792,7 +824,8 @@ export default function CheckoutPage() {
 
                   <Button
                     size="lg"
-                    className="w-full rounded-full"
+                    variant="gold"
+                    className="w-full"
                     onClick={handleContinueToPayment}
                     disabled={!selectedShippingMethod}
                   >
@@ -813,7 +846,7 @@ export default function CheckoutPage() {
                   {/* Order Summary Card */}
                   <Card className="p-6">
                     <div className="flex items-center justify-between mb-4">
-                      <h3 className="font-semibold">Shipping to</h3>
+                      <h3 className="font-semibold text-foreground">Shipping to</h3>
                       <Button
                         variant="link"
                         size="sm"
@@ -822,7 +855,7 @@ export default function CheckoutPage() {
                         Edit
                       </Button>
                     </div>
-                    <p className="text-sm text-neutral-600">
+                    <p className="text-sm text-muted-foreground">
                       {addressData.first_name} {addressData.last_name}
                       <br />
                       {addressData.address_1}
@@ -832,11 +865,11 @@ export default function CheckoutPage() {
                     </p>
                     {selectedShippingMethod && (
                       <p className="mt-2 text-sm">
-                        <span className="text-neutral-500">Shipping:</span>{' '}
-                        <span className="font-medium">{selectedShippingMethod.label}</span>
+                        <span className="text-muted-foreground">Shipping:</span>{' '}
+                        <span className="font-medium text-foreground">{selectedShippingMethod.label}</span>
                         {' - '}
                         {shippingCost === 0 ? (
-                          <span className="text-green-600 font-semibold">Free</span>
+                          <span className="text-success font-semibold">Free</span>
                         ) : (
                           formatPrice(shippingCost, 'SEK')
                         )}
@@ -844,12 +877,21 @@ export default function CheckoutPage() {
                     )}
                   </Card>
 
-                  {/* Payment Method */}
-                  <PaymentMethodSelector
-                    selectedMethod={paymentMethod}
-                    onMethodChange={setPaymentMethod}
+                  {/* Payment Terms for Business Customers with Credit */}
+                  <PaymentTermsSelector
                     orderTotal={cartTotal + shippingCost}
+                    onPaymentTermChange={setPaymentTerm}
+                    selectedTerm={paymentTerm}
                   />
+
+                  {/* Payment Method - only show if paying immediately */}
+                  {paymentTerm === 'immediate' && (
+                    <PaymentMethodSelector
+                      selectedMethod={paymentMethod}
+                      onMethodChange={setPaymentMethod}
+                      orderTotal={cartTotal + shippingCost}
+                    />
+                  )}
 
                   {/* Order Notes */}
                   <Card className="p-6">
@@ -896,7 +938,8 @@ export default function CheckoutPage() {
                     </Button>
                     <Button
                       size="lg"
-                      className="flex-1 rounded-full"
+                      variant="gold"
+                      className="flex-1"
                       onClick={handlePlaceOrder}
                       disabled={isProcessing || (isStripePayment && !!stripeClientSecret)}
                     >

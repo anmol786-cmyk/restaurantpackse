@@ -272,8 +272,8 @@ export function CreditApplication() {
       <Card>
         <CardHeader>
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-blue-100 rounded-lg">
-              <Clock className="w-5 h-5 text-blue-600" />
+            <div className="p-2 bg-info/10 rounded-lg">
+              <Clock className="w-5 h-5 text-info" />
             </div>
             <div>
               <CardTitle className="text-lg">Credit Application Under Review</CardTitle>

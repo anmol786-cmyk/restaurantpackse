@@ -193,11 +193,11 @@ export function ArchiveTemplate({
                   We couldn&apos;t find any products matching your criteria. Try adjusting your filters or browse all products.
                 </p>
                 {process.env.NODE_ENV === 'development' && (
-                  <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg max-w-2xl">
-                    <p className="text-sm text-blue-900 dark:text-blue-100 font-medium mb-2">
+                  <div className="mt-6 p-4 bg-info/10 dark:bg-info/20 border border-info/30 dark:border-info/40 rounded-lg max-w-2xl">
+                    <p className="text-sm text-foreground font-medium mb-2">
                       🔧 Development Note
                     </p>
-                    <p className="text-xs text-blue-700 dark:text-blue-300">
+                    <p className="text-xs text-muted-foreground">
                       Products may not load in local development due to Vercel Security Checkpoint.
                       <br />
                       <strong>Don&apos;t worry:</strong> Products will load correctly when deployed to Vercel.

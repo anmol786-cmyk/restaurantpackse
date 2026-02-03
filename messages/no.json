@@ -113,5 +113,65 @@
     "followUs": "Følg Oss",
     "copyright": "© 2025 Anmol Wholesale. Alle rettigheter reservert.",
     "madeWithLove": "Laget med ❤️ i Sverige"
+  },
+  "business": {
+    "register": "Registrer Bedriftskonto",
+    "registerSubtitle": "Bli med i vårt engrosprogram for eksklusive priser",
+    "companyName": "Firmanavn",
+    "vatNumber": "MVA-nummer / Organisasjonsnummer",
+    "businessType": "Bedriftstype",
+    "verifyVat": "Verifiser",
+    "vatVerified": "MVA-nummer verifisert",
+    "vatInvalid": "Verifisering mislyktes",
+    "pendingApproval": "Venter på Godkjenning",
+    "pendingMessage": "Din bedriftskonto verifiseres. Dette tar vanligvis 1-2 virkedager.",
+    "approved": "Godkjent",
+    "wholesalePricing": "Engrosspriser Aktive"
+  },
+  "credit": {
+    "apply": "Søk om Kredittvilkår",
+    "applySubtitle": "Få 28 dagers betalingsvilkår for din bedrift",
+    "creditLimit": "Kredittgrense",
+    "availableCredit": "Tilgjengelig Kreditt",
+    "paymentTerms": "Betalingsvilkår",
+    "net28": "Netto 28 dager",
+    "minOrder": "Minimumsbestilling",
+    "pending": "Kredittsøknad Under Behandling",
+    "approved": "Kredittkonto Aktivt",
+    "payNow": "Betal Nå",
+    "payLater": "28-Dagers Kreditt",
+    "invoicePayment": "Fakturabetaling Valgt"
+  },
+  "dashboard": {
+    "title": "Min Konto",
+    "orders": "Bestillinger",
+    "business": "Bedrift",
+    "settings": "Innstillinger",
+    "totalOrders": "Totale Bestillinger",
+    "totalSpent": "Totalt Brukt",
+    "thisMonth": "Denne Måneden",
+    "avgOrderValue": "Gjennomsn. Ordreverdi",
+    "reorderLists": "Gjenbestillingslister",
+    "createList": "Opprett Ny Liste",
+    "addToCart": "Legg Alt i Kurven",
+    "invoices": "Fakturaer",
+    "invoiceHistory": "Fakturahistorikk",
+    "outstanding": "Utestående Saldo",
+    "overdue": "Forfalt"
+  },
+  "freeShipping": {
+    "title": "Gratis Frakt",
+    "qualify": "Du kvalifiserer for gratis frakt innen Stockholm!",
+    "threshold": "Gratis frakt innen Stockholm på bestillinger over 5 000 kr",
+    "addMore": "Legg til {amount} mer for å kvalifisere"
+  },
+  "checkout": {
+    "paymentMethod": "Betalingsmetode",
+    "paymentTerms": "Betalingsvilkår",
+    "shippingMethod": "Fraktmetode",
+    "placeOrder": "Fullfør Bestilling",
+    "orderNotes": "Ordrenotat",
+    "billingAddress": "Fakturaadresse",
+    "shippingAddress": "Leveringsadresse"
   }
 }

@@ -40,6 +40,7 @@ import {
   Loader2,
   ChevronRight,
   ChevronDown,
+  Download
 } from 'lucide-react';
 import { useCurrency } from '@/hooks/use-currency';
 import { toast } from 'sonner';
@@ -157,49 +158,79 @@ export function ReorderLists() {
           </p>
         </div>
 
-        {/* Create New List Button */}
-        <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
-          <DialogTrigger asChild>
-            <Button className="gap-2">
-              <Plus className="h-4 w-4" />
-              Create New List
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Create New Reorder List</DialogTitle>
-              <DialogDescription>
-                Create a list to save products you frequently order together.
-              </DialogDescription>
-            </DialogHeader>
-            <div className="space-y-4 py-4">
-              <div className="space-y-2">
-                <Label htmlFor="list-name">List Name *</Label>
-                <Input
-                  id="list-name"
-                  placeholder="e.g., Weekly Stock, Kitchen Essentials"
-                  value={newListName}
-                  onChange={(e) => setNewListName(e.target.value)}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="list-description">Description (optional)</Label>
-                <Input
-                  id="list-description"
-                  placeholder="e.g., Items we order every Monday"
-                  value={newListDescription}
-                  onChange={(e) => setNewListDescription(e.target.value)}
-                />
-              </div>
-            </div>
-            <DialogFooter>
-              <Button variant="outline" onClick={() => setIsCreateDialogOpen(false)}>
-                Cancel
+        <div className="flex items-center gap-2">
+          <Button variant="outline" className="gap-2" onClick={() => {
+            const exportData: any[] = [];
+            lists.forEach(list => {
+              list.items.forEach(item => {
+                exportData.push({
+                  'List Name': list.name,
+                  'Description': list.description || '',
+                  'Product': item.productName,
+                  'Quantity': item.defaultQuantity,
+                  'Price': item.price,
+                  'Total': item.price * item.defaultQuantity
+                });
+              });
+            });
+
+            if (exportData.length === 0) {
+              toast.error('No lists or items to export');
+              return;
+            }
+
+            import('@/lib/excel').then(({ exportToExcel }) => {
+              exportToExcel(exportData, 'Reorder-Lists', 'My Lists');
+            });
+          }}>
+            <Download className="h-4 w-4" />
+            Export Lists
+          </Button>
+
+          {/* Create New List Button */}
+          <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
+            <DialogTrigger asChild>
+              <Button className="gap-2">
+                <Plus className="h-4 w-4" />
+                Create New List
               </Button>
-              <Button onClick={handleCreateList}>Create List</Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Create New Reorder List</DialogTitle>
+                <DialogDescription>
+                  Create a list to save products you frequently order together.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="space-y-4 py-4">
+                <div className="space-y-2">
+                  <Label htmlFor="list-name">List Name *</Label>
+                  <Input
+                    id="list-name"
+                    placeholder="e.g., Weekly Stock, Kitchen Essentials"
+                    value={newListName}
+                    onChange={(e) => setNewListName(e.target.value)}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="list-description">Description (optional)</Label>
+                  <Input
+                    id="list-description"
+                    placeholder="e.g., Items we order every Monday"
+                    value={newListDescription}
+                    onChange={(e) => setNewListDescription(e.target.value)}
+                  />
+                </div>
+              </div>
+              <DialogFooter>
+                <Button variant="outline" onClick={() => setIsCreateDialogOpen(false)}>
+                  Cancel
+                </Button>
+                <Button onClick={handleCreateList}>Create List</Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+        </div>
       </div>
 
       {/* Lists */}
@@ -323,81 +354,101 @@ export function ReorderLists() {
                         {list.items.map((item) => (
                           <div
                             key={item.productId}
-                            className="flex items-center gap-4 p-3 bg-muted/30 rounded-lg"
+                            className="p-3 bg-muted/30 rounded-lg"
                           >
-                            {/* Product Image */}
-                            <div className="relative h-16 w-16 rounded-md overflow-hidden bg-white border flex-shrink-0">
-                              {item.productImage ? (
-                                <Image
-                                  src={item.productImage}
-                                  alt={item.productName}
-                                  fill
-                                  className="object-cover"
-                                />
-                              ) : (
-                                <div className="flex items-center justify-center h-full">
-                                  <Package className="h-6 w-6 text-muted-foreground" />
-                                </div>
-                              )}
-                            </div>
+                            {/* Mobile: Stack layout, Desktop: Row layout */}
+                            <div className="flex items-start gap-3 sm:items-center sm:gap-4">
+                              {/* Product Image */}
+                              <div className="relative h-14 w-14 sm:h-16 sm:w-16 rounded-md overflow-hidden bg-white border flex-shrink-0">
+                                {item.productImage ? (
+                                  <Image
+                                    src={item.productImage}
+                                    alt={item.productName}
+                                    fill
+                                    className="object-cover"
+                                  />
+                                ) : (
+                                  <div className="flex items-center justify-center h-full">
+                                    <Package className="h-5 w-5 sm:h-6 sm:w-6 text-muted-foreground" />
+                                  </div>
+                                )}
+                              </div>
 
-                            {/* Product Info */}
-                            <div className="flex-1 min-w-0">
-                              <Link
-                                href={`/product/${item.productSlug}`}
-                                className="font-medium text-sm hover:text-primary transition-colors line-clamp-1"
-                              >
-                                {item.productName}
-                              </Link>
-                              <p className="text-sm text-muted-foreground">
-                                {formatCurrency(item.price)} each
-                              </p>
-                            </div>
+                              {/* Product Info */}
+                              <div className="flex-1 min-w-0">
+                                <Link
+                                  href={`/product/${item.productSlug}`}
+                                  className="font-medium text-sm hover:text-primary transition-colors line-clamp-2 sm:line-clamp-1"
+                                >
+                                  {item.productName}
+                                </Link>
+                                <p className="text-sm text-muted-foreground">
+                                  {formatCurrency(item.price)} each
+                                </p>
+                                {/* Mobile: Show total inline */}
+                                <p className="text-sm font-semibold sm:hidden mt-1">
+                                  {formatCurrency(item.price * item.defaultQuantity)}
+                                </p>
+                              </div>
 
-                            {/* Quantity */}
-                            <div className="flex items-center gap-2">
+                              {/* Desktop: Remove button */}
                               <Button
                                 size="icon"
-                                variant="outline"
-                                className="h-8 w-8"
-                                onClick={() =>
-                                  updateItemQuantity(list.id, item.productId, item.defaultQuantity - 1)
-                                }
-                                disabled={item.defaultQuantity <= 1}
+                                variant="ghost"
+                                className="hidden sm:flex h-8 w-8 text-destructive hover:text-destructive"
+                                onClick={() => removeItemFromList(list.id, item.productId)}
                               >
-                                -
-                              </Button>
-                              <span className="w-8 text-center text-sm font-medium">
-                                {item.defaultQuantity}
-                              </span>
-                              <Button
-                                size="icon"
-                                variant="outline"
-                                className="h-8 w-8"
-                                onClick={() =>
-                                  updateItemQuantity(list.id, item.productId, item.defaultQuantity + 1)
-                                }
-                              >
-                                +
+                                <Trash2 className="h-4 w-4" />
                               </Button>
                             </div>
 
-                            {/* Line Total */}
-                            <div className="text-right min-w-[80px]">
-                              <p className="font-semibold text-sm">
-                                {formatCurrency(item.price * item.defaultQuantity)}
-                              </p>
-                            </div>
+                            {/* Mobile & Desktop: Quantity controls row */}
+                            <div className="flex items-center justify-between mt-3 pt-3 border-t border-border/50 sm:mt-0 sm:pt-0 sm:border-0 sm:justify-end sm:gap-4">
+                              {/* Quantity */}
+                              <div className="flex items-center gap-2">
+                                <Button
+                                  size="icon"
+                                  variant="outline"
+                                  className="h-8 w-8"
+                                  onClick={() =>
+                                    updateItemQuantity(list.id, item.productId, item.defaultQuantity - 1)
+                                  }
+                                  disabled={item.defaultQuantity <= 1}
+                                >
+                                  -
+                                </Button>
+                                <span className="w-8 text-center text-sm font-medium">
+                                  {item.defaultQuantity}
+                                </span>
+                                <Button
+                                  size="icon"
+                                  variant="outline"
+                                  className="h-8 w-8"
+                                  onClick={() =>
+                                    updateItemQuantity(list.id, item.productId, item.defaultQuantity + 1)
+                                  }
+                                >
+                                  +
+                                </Button>
+                              </div>
 
-                            {/* Remove */}
-                            <Button
-                              size="icon"
-                              variant="ghost"
-                              className="h-8 w-8 text-destructive hover:text-destructive"
-                              onClick={() => removeItemFromList(list.id, item.productId)}
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
+                              {/* Desktop: Line Total */}
+                              <div className="hidden sm:block text-right min-w-[80px]">
+                                <p className="font-semibold text-sm">
+                                  {formatCurrency(item.price * item.defaultQuantity)}
+                                </p>
+                              </div>
+
+                              {/* Mobile: Remove button */}
+                              <Button
+                                size="icon"
+                                variant="ghost"
+                                className="sm:hidden h-8 w-8 text-destructive hover:text-destructive"
+                                onClick={() => removeItemFromList(list.id, item.productId)}
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </div>
                           </div>
                         ))}
 

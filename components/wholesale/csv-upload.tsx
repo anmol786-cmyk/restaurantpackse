@@ -7,6 +7,16 @@ import Papa from 'papaparse';
 import { toast } from 'sonner';
 import type { Product } from '@/types/woocommerce';
 
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Info, HelpCircle } from "lucide-react";
+
 interface CSVRow {
   product_name?: string;
   sku?: string;
@@ -171,7 +181,7 @@ export function CSVUpload({ onProductsImported }: CSVUploadProps) {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center gap-3">
+      <div className="flex flex-wrap items-center gap-3">
         <input
           ref={fileInputRef}
           type="file"
@@ -204,6 +214,55 @@ export function CSVUpload({ onProductsImported }: CSVUploadProps) {
           Download Template
         </Button>
 
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button variant="ghost" size="sm" className="gap-2 text-muted-foreground">
+              <HelpCircle className="h-4 w-4" />
+              Format Help
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="max-w-md">
+            <DialogHeader>
+              <DialogTitle>CSV Upload Guide</DialogTitle>
+              <DialogDescription>
+                Follow these formatting rules to ensure your bulk order is imported correctly.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4 py-4">
+              <div className="space-y-2">
+                <h4 className="text-sm font-semibold">Recommended Format (by SKU)</h4>
+                <div className="bg-muted p-2 rounded-md font-mono text-xs">
+                  sku,quantity<br />
+                  ANM-101,50<br />
+                  ANM-102,100
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  Using SKUs is the most accurate way to match products.
+                </p>
+              </div>
+              <div className="space-y-2">
+                <h4 className="text-sm font-semibold">Alternative Format (by Name)</h4>
+                <div className="bg-muted p-2 rounded-md font-mono text-xs">
+                  product_name,quantity<br />
+                  Basmati Rice 5kg,10<br />
+                  Ghee Pure 1L,5
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  Our system will try to find the closest match for the product names.
+                </p>
+              </div>
+              <div className="bg-amber-50 border border-amber-100 p-3 rounded-md">
+                <div className="flex gap-2 text-amber-800">
+                  <Info className="h-4 w-4 shrink-0 mt-0.5" />
+                  <p className="text-xs">
+                    Please ensure your file has headers in the first row. The column names must be exactly <strong>product_name</strong> or <strong>sku</strong>, and <strong>quantity</strong>.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+
         {uploadStatus === 'success' && (
           <div className="flex items-center gap-2 text-sm text-green-600">
             <CheckCircle2 className="h-4 w-4" />
@@ -217,16 +276,6 @@ export function CSVUpload({ onProductsImported }: CSVUploadProps) {
             <span>Import failed</span>
           </div>
         )}
-      </div>
-
-      <div className="text-xs text-muted-foreground space-y-1">
-        <p>
-          <strong>CSV Format:</strong> Columns should be: product_name, quantity
-        </p>
-        <p>
-          <strong>Example:</strong> &quot;Basmati Rice 5kg, 10&quot; or use SKU instead with column:
-          sku, quantity
-        </p>
       </div>
     </div>
   );

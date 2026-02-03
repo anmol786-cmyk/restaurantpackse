@@ -446,7 +446,6 @@ export const CommerceRules = {
 
     // Add base tiers
     for (const tier of rule.tiers) {
-      const maxLabel = tier.maxQuantity ? tier.maxQuantity.toString() : '+';
       const savingsPercent = Math.round(((rule.basePrice - tier.unitPrice) / rule.basePrice) * 100);
       tiers.push({
         quantity: tier.maxQuantity
@@ -486,6 +485,21 @@ export const CommerceRules = {
   },
 
   /**
+   * Get effective tiers (either product-specific or global)
+   */
+  getEffectiveTiers(productId: number, basePrice: number): { quantity: string; price: number; savings: string }[] {
+    const specificTiers = this.getQuantityDiscountTiers(productId);
+    if (specificTiers.length > 0) return specificTiers;
+
+    // Use global wholesale tiers
+    return WHOLESALE_TIERS.map(tier => ({
+      quantity: `${tier.minQuantity}+`,
+      price: basePrice * (1 - tier.discount),
+      savings: `${Math.round(tier.discount * 100)}% off`
+    }));
+  },
+
+  /**
    * Check if product is restricted in shipping zone
    */
   isRestrictedForShipping(productCategories: string[], productId: number, shippingZone?: string): boolean {
@@ -518,5 +532,33 @@ export const CommerceRules = {
    */
   getPerishableCategoryNames(): string[] {
     return ['Fresh Produce', 'Frozen Foods', 'Traditional Sweets'];
+  },
+
+  /**
+   * Determine quote confidence level
+   * returns 'automated' if all items have wholesale prices and volume is within predictable range
+   */
+  getQuoteConfidence(items: { productId: number; unitPrice?: number; quantity: number }[], total: number): {
+    level: 'automated' | 'manual';
+    reason?: string;
+  } {
+    // 1. Check if any item lacks a unit price
+    const hasUnpricedItems = items.some(item => !item.unitPrice || item.unitPrice <= 0);
+    if (hasUnpricedItems) {
+      return { level: 'manual', reason: 'Some items require custom pricing review.' };
+    }
+
+    // 2. High Value Check (e.g. > 100,000 SEK)
+    if (total > 100000) {
+      return { level: 'manual', reason: 'High-value order requires manager approval for additional discounts.' };
+    }
+
+    // 3. High Quantity Check
+    const hasExtremeQuantity = items.some(item => item.quantity > 500);
+    if (hasExtremeQuantity) {
+      return { level: 'manual', reason: 'Extreme volume requires logistics verification.' };
+    }
+
+    return { level: 'automated' };
   }
 };

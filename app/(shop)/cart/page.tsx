@@ -184,6 +184,23 @@ export default function CartPage() {
                 </Button>
               </div>
 
+              {/* Free Shipping Banner */}
+              <div className="mt-4 rounded-lg border border-green-200 bg-green-50 p-3 dark:border-green-800 dark:bg-green-950/30">
+                <p className="flex items-center gap-2 text-sm font-medium text-green-700 dark:text-green-400">
+                  <span>🚚</span>
+                  {getTotalPrice() >= 5000 ? (
+                    <span>You qualify for free shipping within Stockholm!</span>
+                  ) : (
+                    <span>Free shipping within Stockholm on orders over 5,000 kr</span>
+                  )}
+                </p>
+                {getTotalPrice() < 5000 && (
+                  <p className="mt-1 text-xs text-green-600 dark:text-green-500">
+                    Add {formatPrice(5000 - getTotalPrice(), 'SEK')} more to qualify
+                  </p>
+                )}
+              </div>
+
               <p className="mt-4 text-center text-xs text-muted-foreground">
                 Taxes and shipping calculated at checkout
               </p>

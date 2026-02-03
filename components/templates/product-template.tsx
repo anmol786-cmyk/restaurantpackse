@@ -245,13 +245,18 @@ export function ProductTemplate({
                   </>
                 )}
                 {product.featured && (
-                  <Badge className="bg-secondary text-primary">
-                    ⭐ Featured
+                  <Badge variant="gold">
+                    Featured
                   </Badge>
                 )}
                 {product.on_sale && discount > 0 && (
-                  <Badge variant="destructive">
+                  <Badge variant="gold">
                     -{discount}% OFF
+                  </Badge>
+                )}
+                {CommerceRules.getMOQ(product.id) > 1 && (
+                  <Badge variant="outline" className="border-primary text-primary">
+                    MOQ: {CommerceRules.getMOQ(product.id)} units
                   </Badge>
                 )}
               </div>
@@ -385,7 +390,7 @@ export function ProductTemplate({
               )}
 
               {/* Add to Cart Section */}
-              <div className="space-y-3 bg-primary/5 rounded-2xl p-5">
+              <div className="space-y-3 bg-muted/50 border border-border rounded-xl p-5">
                 {/* Quantity Selector */}
                 <div className="flex items-center gap-4">
                   <span style={{ fontSize: '15.13px', fontWeight: 500, lineHeight: 1.57, letterSpacing: '0.03em' }} className="text-foreground">Quantity:</span>
@@ -411,7 +416,7 @@ export function ProductTemplate({
                   const quantityLimit = CommerceRules.getQuantityLimit(product.id);
                   if (quantityLimit !== null) {
                     return (
-                      <div className="flex items-center gap-2 text-yellow-700 dark:text-yellow-500 bg-yellow-50 dark:bg-yellow-900/20 px-3 py-2 rounded-lg">
+                      <div className="flex items-center gap-2 text-warning bg-warning/10 px-3 py-2 rounded-lg">
                         <svg className="h-4 w-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
@@ -431,15 +436,15 @@ export function ProductTemplate({
                     variation={selectedVariation}
                     quantity={quantity}
                     size="lg"
-                    className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground rounded-full py-5"
-                    style={{ fontSize: '17.89px', fontWeight: 500, lineHeight: 1.52, letterSpacing: '0.03em' }}
+                    className="flex-1 bg-accent hover:bg-gold-600 text-accent-foreground rounded-lg py-5 shadow-md hover:shadow-lg transition-all"
+                    style={{ fontSize: '17.89px', fontWeight: 600, lineHeight: 1.52, letterSpacing: '0.03em' }}
                   />
                   <WishlistButton
                     product={product}
                     variation={selectedVariation || undefined}
                     size="lg"
                     variant="outline"
-                    className="rounded-full py-5 px-6 border-2 hover:bg-red-50 dark:hover:bg-red-950/20"
+                    className="rounded-lg py-5 px-6 border-2 border-primary hover:bg-primary/5"
                   />
                 </div>
 
@@ -477,7 +482,7 @@ export function ProductTemplate({
                     </p>
                   )}
                   <p className="flex items-center gap-2">
-                    <span>🚚</span> Free shipping on orders over 500 SEK
+                    <span>🚚</span> Free shipping within Stockholm on orders over 5,000 kr
                   </p>
                 </div>
               </div>

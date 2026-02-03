@@ -154,7 +154,7 @@ export function ProductCard({ product, className }: ProductCardProps) {
             {/* MOQ Badge */}
             {GLOBAL_MOQ > 1 && (
               <div className="flex items-center gap-1.5 mt-2">
-                <span className="text-xs text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full font-medium">
+                <span className="text-xs text-accent-foreground bg-accent/20 px-2 py-0.5 rounded-full font-medium">
                   Min. {CommerceRules.getMOQ(product.id)} units
                 </span>
               </div>

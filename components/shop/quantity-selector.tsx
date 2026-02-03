@@ -154,7 +154,7 @@ export function QuantitySelector({
 
       {/* MOQ Notice */}
       {moq > 1 && quantity === effectiveMin && (
-        <p className="text-xs text-blue-600">
+        <p className="text-xs text-accent-foreground">
           Minimum order: {moq} units
         </p>
       )}

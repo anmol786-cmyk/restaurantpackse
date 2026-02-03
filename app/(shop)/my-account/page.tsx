@@ -13,14 +13,21 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Package, User, MapPin, LogOut, Loader2, Eye, LayoutDashboard, Download, CreditCard, Edit, Save, X, Building2, Clock, CheckCircle2, FileText, AlertCircle } from 'lucide-react';
+import { Package, User, MapPin, LogOut, Loader2, Eye, LayoutDashboard, Download, CreditCard, Edit, Save, X, Building2, Clock, CheckCircle2, FileText, AlertCircle, Presentation } from 'lucide-react';
 import { getCustomerOrdersAction, updateCustomerAction, getCustomerQuotesAction } from '@/app/actions/auth';
-import { getBusinessInfo, formatBusinessType, type WholesaleStatus } from '@/lib/auth';
+import { getBusinessInfo, formatBusinessType, getCreditStatus, getCreditLimit, getCreditTermsDays, type WholesaleStatus } from '@/lib/auth';
 import { useCartStore } from '@/store/cart-store';
 import type { Order } from '@/types/woocommerce';
-import { format } from 'date-fns';
+import { format, addDays } from 'date-fns';
+import { formatPrice } from '@/lib/utils';
 import { toast } from 'sonner';
+import { Progress } from '@/components/ui/progress';
 import { CreditApplication } from '@/components/dashboard/credit-application';
+import { BusinessStats } from '@/components/dashboard/business-stats';
+import { ReorderLists } from '@/components/dashboard/reorder-lists';
+import { InvoiceList } from '@/components/dashboard/invoice-list';
+import { downloadInvoicePDF, getPaymentDueDate, downloadQuotePDF } from '@/lib/invoice-generator';
+import { CreditStatusVisualizer } from '@/components/dashboard/credit-status-visualizer';
 
 function MyAccountContent() {
   const { user, isAuthenticated, logout, setUser } = useAuthStore();
@@ -37,6 +44,7 @@ function MyAccountContent() {
   const [isLoadingQuotes, setIsLoadingQuotes] = useState(true);
   const [quotesError, setQuotesError] = useState<string | null>(null);
   const [isReordering, setIsReordering] = useState<number | null>(null);
+  const [isGeneratingPDF, setIsGeneratingPDF] = useState<number | null>(null);
 
   // Profile editing state
   const [isEditingProfile, setIsEditingProfile] = useState(false);
@@ -364,13 +372,13 @@ function MyAccountContent() {
   const getOrderStatusBadge = (status: string) => {
     switch (status) {
       case 'completed':
-        return <Badge className="bg-green-500 hover:bg-green-600">Completed</Badge>;
+        return <Badge variant="success">Completed</Badge>;
       case 'processing':
-        return <Badge className="bg-blue-500 hover:bg-blue-600">Processing</Badge>;
+        return <Badge variant="info">Processing</Badge>;
       case 'on-hold':
-        return <Badge className="bg-yellow-500 hover:bg-yellow-600">On Hold</Badge>;
+        return <Badge variant="warning">On Hold</Badge>;
       case 'pending':
-        return <Badge className="bg-orange-500 hover:bg-orange-600">Pending Payment</Badge>;
+        return <Badge variant="outline-warning">Pending Payment</Badge>;
       case 'cancelled':
         return <Badge variant="destructive">Cancelled</Badge>;
       case 'refunded':
@@ -386,9 +394,9 @@ function MyAccountContent() {
   const getWholesaleStatusBadge = (status: WholesaleStatus) => {
     switch (status) {
       case 'approved':
-        return <Badge className="bg-green-500 hover:bg-green-600"><CheckCircle2 className="w-3 h-3 mr-1" /> Verified</Badge>;
+        return <Badge variant="success"><CheckCircle2 className="w-3 h-3 mr-1" /> Verified</Badge>;
       case 'pending':
-        return <Badge className="bg-yellow-500 hover:bg-yellow-600"><Clock className="w-3 h-3 mr-1" /> Pending Verification</Badge>;
+        return <Badge variant="warning"><Clock className="w-3 h-3 mr-1" /> Pending Verification</Badge>;
       case 'rejected':
         return <Badge variant="destructive"><AlertCircle className="w-3 h-3 mr-1" /> Not Approved</Badge>;
       default:
@@ -396,15 +404,87 @@ function MyAccountContent() {
     }
   };
 
+  const handleDownloadInvoice = async (orderId: number) => {
+    const order = orders.find((o) => o.id === orderId);
+    if (!order) return;
+
+    try {
+      setIsGeneratingPDF(orderId);
+
+      const isCredit = order.meta_data?.some(
+        (m: any) => m.key === 'is_credit_payment' && m.value === 'yes'
+      );
+
+      const paymentTermsMeta = order.meta_data?.find(
+        (m: any) => m.key === 'payment_terms'
+      );
+
+      // Determine payment terms
+      let paymentTerms: 'immediate' | 'net_28' | 'net_60' = 'immediate';
+      if (isCredit) {
+        if (paymentTermsMeta?.value === 'net_60') {
+          paymentTerms = 'net_60';
+        } else {
+          paymentTerms = 'net_28';
+        }
+      }
+
+      const invoiceDate = new Date(order.date_created);
+      const dueDate = getPaymentDueDate(invoiceDate, paymentTerms);
+
+      await downloadInvoicePDF({
+        order,
+        invoiceNumber: order.number || order.id.toString(),
+        invoiceDate,
+        dueDate,
+        paymentTerms,
+      });
+
+      toast.success('Invoice downloaded successfully');
+    } catch (error) {
+      console.error('Error generating invoice:', error);
+      toast.error('Failed to generate invoice PDF');
+    } finally {
+      setIsGeneratingPDF(null);
+    }
+  };
+
+  const handleDownloadQuote = async (quoteId: number) => {
+    const quote = quotes.find((q) => q.id === quoteId);
+    if (!quote) return;
+
+    try {
+      setIsGeneratingPDF(quoteId);
+
+      const quoteRef = getQuoteRef(quote);
+      const quoteDate = new Date(quote.date_created);
+      const validUntil = addDays(quoteDate, 14); // Quotes valid for 14 days by default
+
+      await downloadQuotePDF({
+        order: quote,
+        quoteNumber: quoteRef,
+        date: quoteDate,
+        validUntil,
+      });
+
+      toast.success('Quote PDF downloaded successfully');
+    } catch (error) {
+      console.error('Error generating quote:', error);
+      toast.error('Failed to generate quote PDF');
+    } finally {
+      setIsGeneratingPDF(null);
+    }
+  };
+
   return (
-    <Section className="bg-neutral-50 dark:bg-neutral-900/50">
+    <Section className="bg-muted/30 dark:bg-muted/10">
       <Container>
         {/* Verification Status Banner */}
         {businessInfo.isBusinessCustomer && businessInfo.wholesaleStatus === 'pending' && (
-          <Alert className="mb-6 border-yellow-200 bg-yellow-50 dark:bg-yellow-900/20">
-            <Clock className="h-4 w-4 text-yellow-600" />
-            <AlertTitle className="text-yellow-800 dark:text-yellow-200">Account Verification Pending</AlertTitle>
-            <AlertDescription className="text-yellow-700 dark:text-yellow-300">
+          <Alert className="mb-6 border-warning/30 bg-warning/10">
+            <Clock className="h-4 w-4 text-warning" />
+            <AlertTitle className="text-warning">Account Verification Pending</AlertTitle>
+            <AlertDescription className="text-warning/80">
               Your business account is under review. Our team will verify your details within 24-48 hours.
               Once approved, you&apos;ll get access to wholesale pricing and payment terms.
             </AlertDescription>
@@ -412,10 +492,10 @@ function MyAccountContent() {
         )}
 
         {businessInfo.isBusinessCustomer && businessInfo.wholesaleStatus === 'approved' && (
-          <Alert className="mb-6 border-green-200 bg-green-50 dark:bg-green-900/20">
-            <CheckCircle2 className="h-4 w-4 text-green-600" />
-            <AlertTitle className="text-green-800 dark:text-green-200">Wholesale Account Active</AlertTitle>
-            <AlertDescription className="text-green-700 dark:text-green-300">
+          <Alert className="mb-6 border-success/30 bg-success/10">
+            <CheckCircle2 className="h-4 w-4 text-success" />
+            <AlertTitle className="text-success">Wholesale Account Active</AlertTitle>
+            <AlertDescription className="text-success/80">
               You have access to wholesale pricing, volume discounts, and business payment terms.
             </AlertDescription>
           </Alert>
@@ -424,17 +504,17 @@ function MyAccountContent() {
         <div className="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
             <div className="flex items-center gap-3 mb-1">
-              <h1 className="font-heading text-3xl font-bold text-primary-950 dark:text-primary-50">
+              <h1 className="font-heading text-3xl font-bold text-foreground">
                 My Account
               </h1>
               {businessInfo.isBusinessCustomer && (
-                <Badge variant="outline" className="border-primary text-primary">
+                <Badge variant="gold">
                   <Building2 className="w-3 h-3 mr-1" />
                   Business
                 </Badge>
               )}
             </div>
-            <p className="text-neutral-600 dark:text-neutral-400">
+            <p className="text-muted-foreground">
               Welcome back, {user.first_name}!
               {businessInfo.companyName && (
                 <span className="ml-2 text-primary font-medium">({businessInfo.companyName})</span>
@@ -491,6 +571,9 @@ function MyAccountContent() {
                 <CardDescription>Overview of your account activity</CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
+                {/* Credit Status Visualizer */}
+                <CreditStatusVisualizer />
+
                 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                   <div className="rounded-lg border p-4 hover:bg-accent/50 transition-colors cursor-pointer" onClick={() => {
                     const ordersTab = document.querySelector('[value="orders"]') as HTMLElement;
@@ -554,6 +637,9 @@ function MyAccountContent() {
           {businessInfo.isBusinessCustomer && (
             <TabsContent value="business">
               <div className="space-y-6">
+                {/* Business Stats */}
+                <BusinessStats orders={orders} isLoading={isLoadingOrders} />
+
                 {/* Business Status Card */}
                 <Card>
                   <CardHeader>
@@ -623,8 +709,14 @@ function MyAccountContent() {
                             <span>Priority customer support</span>
                           </li>
                           <li className="flex items-center gap-2">
-                            <Clock className="h-4 w-4 text-muted-foreground" />
-                            <span className="text-muted-foreground">Payment terms (Coming soon)</span>
+                            {getCreditStatus(user) === 'approved' ? (
+                              <CheckCircle2 className="h-4 w-4 text-green-500" />
+                            ) : (
+                              <Clock className="h-4 w-4 text-muted-foreground" />
+                            )}
+                            <span className={getCreditStatus(user) === 'approved' ? "" : "text-muted-foreground"}>
+                              Credit payment terms (Net {getCreditTermsDays(user)})
+                            </span>
                           </li>
                         </ul>
                       </div>
@@ -632,9 +724,9 @@ function MyAccountContent() {
 
                     {/* Quick Actions */}
                     <div className="pt-4 border-t">
-                      <h4 className="font-semibold mb-3">Quick Actions</h4>
+                      <h4 className="font-semibold mb-3 text-foreground">Quick Actions</h4>
                       <div className="flex flex-wrap gap-3">
-                        <Button asChild variant="outline">
+                        <Button asChild variant="gold">
                           <Link href="/wholesale/quote">
                             <FileText className="h-4 w-4 mr-2" />
                             Request Quote
@@ -691,12 +783,32 @@ function MyAccountContent() {
                         </CardTitle>
                         <CardDescription>Your submitted orders, quote requests, and their status</CardDescription>
                       </div>
-                      <Button asChild size="sm">
-                        <Link href="/wholesale/quote">
-                          <FileText className="h-4 w-4 mr-2" />
-                          New Quote
-                        </Link>
-                      </Button>
+                      <div className="flex items-center gap-2">
+                        {quotes.length > 0 && (
+                          <Button variant="outline" size="sm" onClick={() => {
+                            const exportData = quotes.map(quote => ({
+                              'Quote/Ref': quote.number || quote.id,
+                              'Date': new Date(quote.date_created).toLocaleDateString(),
+                              'Status': quote.status,
+                              'Total Items': quote.line_items?.reduce((sum, item) => sum + item.quantity, 0) || 0,
+                              'Total Amount': quote.total,
+                              'Currency': quote.currency
+                            }));
+                            import('@/lib/excel').then(({ exportToExcel }) => {
+                              exportToExcel(exportData, 'Quotes-History', 'Quotes');
+                            });
+                          }}>
+                            <Download className="h-4 w-4 mr-2" />
+                            Export Excel
+                          </Button>
+                        )}
+                        <Button asChild size="sm">
+                          <Link href="/wholesale/quote">
+                            <FileText className="h-4 w-4 mr-2" />
+                            New Quote
+                          </Link>
+                        </Button>
+                      </div>
                     </div>
                   </CardHeader>
                   <CardContent>
@@ -735,14 +847,14 @@ function MyAccountContent() {
                               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                                 <div className="flex-1">
                                   <div className="flex items-center gap-2 mb-1">
-                                    <span className={`text-xs px-2 py-0.5 rounded ${isQuick ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300' : 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300'}`}>
+                                    <span className={`text-xs px-2 py-0.5 rounded ${isQuick ? 'bg-accent/20 text-accent-foreground dark:bg-accent/30' : 'bg-primary/10 text-primary dark:bg-primary/20'}`}>
                                       {isQuick ? '\u26a1 Quick Order' : '\ud83d\udcdd Quote'}
                                     </span>
                                     <h4 className="font-semibold">{quoteRef}</h4>
                                     <Badge
                                       className={`text-xs ${status.color === 'green' ? 'bg-green-500 hover:bg-green-600' :
                                         status.color === 'yellow' ? 'bg-yellow-500 hover:bg-yellow-600' :
-                                          status.color === 'blue' ? 'bg-blue-500 hover:bg-blue-600' :
+                                          status.color === 'blue' ? 'bg-info hover:bg-info/90' :
                                             status.color === 'orange' ? 'bg-orange-500 hover:bg-orange-600' :
                                               status.color === 'red' ? 'bg-red-500 hover:bg-red-600' :
                                                 'bg-gray-500 hover:bg-gray-600'
@@ -774,6 +886,19 @@ function MyAccountContent() {
                                   <Button
                                     variant="outline"
                                     size="sm"
+                                    onClick={() => handleDownloadQuote(quote.id)}
+                                    disabled={isGeneratingPDF === quote.id}
+                                  >
+                                    {isGeneratingPDF === quote.id ? (
+                                      <Loader2 className="h-4 w-4 animate-spin mr-1" />
+                                    ) : (
+                                      <Download className="h-4 w-4 mr-1" />
+                                    )}
+                                    PDF
+                                  </Button>
+                                  <Button
+                                    variant="outline"
+                                    size="sm"
                                     onClick={() => handleRepeatOrder(quote)}
                                     disabled={isReordering === quote.id}
                                   >
@@ -796,6 +921,20 @@ function MyAccountContent() {
 
                 {/* Credit Terms Section */}
                 <CreditApplication />
+
+                {/* Invoice Tracking */}
+                <InvoiceList orders={orders} isLoading={isLoadingOrders} />
+
+                {/* Reorder Lists */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Reorder Lists</CardTitle>
+                    <CardDescription>Save products for quick reordering</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <ReorderLists />
+                  </CardContent>
+                </Card>
               </div>
             </TabsContent>
           )}
@@ -804,15 +943,127 @@ function MyAccountContent() {
             <Card>
               <CardHeader>
                 <CardTitle>Downloads</CardTitle>
-                <CardDescription>Access your downloadable products</CardDescription>
+                <CardDescription>Access digital assets and catalogues</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="flex h-48 flex-col items-center justify-center rounded-lg border border-dashed border-neutral-200 bg-neutral-50 text-center dark:border-neutral-800 dark:bg-neutral-900/50">
-                  <Download className="mb-2 h-8 w-8 text-neutral-400" />
-                  <p className="text-sm text-neutral-500">No downloadable products yet.</p>
-                  <Button variant="link" onClick={() => router.push('/shop')}>
-                    Browse Products
-                  </Button>
+                <div className="grid gap-4 md:grid-cols-2">
+                  {/* Product Catalogue Card */}
+                  <div className="flex flex-col border rounded-lg p-4 hover:shadow-md transition-shadow">
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className="p-2 bg-orange-100 rounded-lg dark:bg-orange-900/30">
+                        <Presentation className="h-6 w-6 text-orange-600" />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold">Product Catalogue</h3>
+                        <p className="text-sm text-neutral-500">PowerPoint Presentation (PPTX)</p>
+                      </div>
+                    </div>
+                    <p className="text-sm text-muted-foreground mb-4 flex-grow">
+                      Download our complete product catalogue with images, SKUs, and wholesale pricing. perfect for showing to clients.
+                    </p>
+                    <Button
+                      onClick={async () => {
+                        try {
+                          setIsGeneratingPDF(999);
+                          toast.info('Generating product catalogue...');
+
+                          // Fetch PPTX from API route
+                          const response = await fetch('/api/catalog');
+
+                          if (!response.ok) {
+                            const error = await response.json();
+                            throw new Error(error.error || 'Failed to generate catalogue');
+                          }
+
+                          // Download the file
+                          const blob = await response.blob();
+                          const url = window.URL.createObjectURL(blob);
+                          const a = document.createElement('a');
+                          a.href = url;
+                          a.download = `Anmol-Wholesale-Catalog-${new Date().toISOString().split('T')[0]}.pptx`;
+                          document.body.appendChild(a);
+                          a.click();
+                          window.URL.revokeObjectURL(url);
+                          document.body.removeChild(a);
+
+                          toast.success('Catalogue downloaded successfully');
+                        } catch (error: any) {
+                          console.error('Catalog generation error:', error);
+                          toast.error(error.message || 'Failed to generate catalogue');
+                        } finally {
+                          setIsGeneratingPDF(null);
+                        }
+                      }}
+                      disabled={isGeneratingPDF === 999}
+                      variant="gold"
+                      className="w-full mt-auto"
+                    >
+                      {isGeneratingPDF === 999 ? (
+                        <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                      ) : (
+                        <Download className="h-4 w-4 mr-2" />
+                      )}
+                      Download Catalogue
+                    </Button>
+                  </div>
+
+                  {/* Company Presentation Card */}
+                  <div className="flex flex-col border rounded-lg p-4 hover:shadow-md transition-shadow">
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className="p-2 bg-burgundy/10 rounded-lg">
+                        <Building2 className="h-6 w-6 text-burgundy" />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold">Company Presentation</h3>
+                        <p className="text-sm text-neutral-500">PowerPoint Presentation (PPTX)</p>
+                      </div>
+                    </div>
+                    <p className="text-sm text-muted-foreground mb-4 flex-grow">
+                      Professional presentation about Anmol Wholesale - our services, pricing tiers, and how to partner with us.
+                    </p>
+                    <Button
+                      onClick={async () => {
+                        try {
+                          setIsGeneratingPDF(998);
+                          toast.info('Generating company presentation...');
+
+                          const response = await fetch('/api/presentation');
+
+                          if (!response.ok) {
+                            const error = await response.json();
+                            throw new Error(error.error || 'Failed to generate presentation');
+                          }
+
+                          const blob = await response.blob();
+                          const url = window.URL.createObjectURL(blob);
+                          const a = document.createElement('a');
+                          a.href = url;
+                          a.download = `Anmol-Wholesale-Presentation-${new Date().toISOString().split('T')[0]}.pptx`;
+                          document.body.appendChild(a);
+                          a.click();
+                          window.URL.revokeObjectURL(url);
+                          document.body.removeChild(a);
+
+                          toast.success('Presentation downloaded successfully');
+                        } catch (error: any) {
+                          console.error('Presentation generation error:', error);
+                          toast.error(error.message || 'Failed to generate presentation');
+                        } finally {
+                          setIsGeneratingPDF(null);
+                        }
+                      }}
+                      disabled={isGeneratingPDF === 998}
+                      variant="outline"
+                      className="w-full mt-auto"
+                    >
+                      {isGeneratingPDF === 998 ? (
+                        <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                      ) : (
+                        <Download className="h-4 w-4 mr-2" />
+                      )}
+                      Download Presentation
+                    </Button>
+                  </div>
                 </div>
               </CardContent>
             </Card>
@@ -907,14 +1158,29 @@ function MyAccountContent() {
                               {order.currency} {order.total}
                             </span>
                           </div>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => router.push(`/my-account/orders/${order.id}`)}
-                          >
-                            <Eye className="mr-2 h-4 w-4" />
-                            View Details
-                          </Button>
+                          <div className="flex items-center gap-2">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => handleDownloadInvoice(order.id)}
+                              disabled={isGeneratingPDF === order.id}
+                            >
+                              {isGeneratingPDF === order.id ? (
+                                <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                              ) : (
+                                <Download className="h-4 w-4 mr-2" />
+                              )}
+                              Invoice PDF
+                            </Button>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => router.push(`/my-account/orders/${order.id}`)}
+                            >
+                              <Eye className="mr-2 h-4 w-4" />
+                              View Details
+                            </Button>
+                          </div>
                         </div>
                       </div>
                     ))}
@@ -1280,7 +1546,7 @@ function MyAccountContent() {
           </TabsContent>
         </Tabs>
       </Container>
-    </Section>
+    </Section >
   );
 }
 

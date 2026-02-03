@@ -55,6 +55,10 @@ export interface CreateOrderData {
     coupon_lines?: {
         code: string;
     }[];
+    meta_data?: {
+        key: string;
+        value: string;
+    }[];
 }
 
 /**

@@ -15,12 +15,12 @@ export function PromotionGrid() {
 
 
                     {/* Card 3: Europe-Wide Delivery via DHL */}
-                    <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-600 text-white shadow-sm group hover:shadow-lg transition-all min-h-[200px]">
+                    <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary to-primary-700 text-white shadow-sm group hover:shadow-lg transition-all min-h-[200px]">
                         <div className="p-6 sm:p-10 relative z-10 h-full flex flex-col sm:flex-row items-center justify-between gap-6">
                             <div className="space-y-4 max-w-2xl">
                                 <div className="flex items-center gap-2 mb-2">
                                     <Globe className="h-6 w-6 text-white" />
-                                    <span className="inline-block px-3 py-1 bg-white/20 backdrop-blur-md text-white text-xs font-bold rounded-full border border-white/30 uppercase">
+                                    <span className="inline-block px-3 py-1 bg-accent/20 backdrop-blur-md text-accent text-xs font-bold rounded-full border border-accent/30 uppercase">
                                         Europe-Wide
                                     </span>
                                 </div>
@@ -41,7 +41,7 @@ export function PromotionGrid() {
 
                             <div className="mt-4 sm:mt-0 flex-shrink-0">
                                 <Link href="/europe-delivery">
-                                    <Button size="lg" className="rounded-full bg-white text-blue-600 hover:bg-gray-100 px-8">
+                                    <Button size="lg" className="rounded-full bg-accent text-accent-foreground hover:bg-accent/90 px-8 font-bold">
                                         Learn More <ArrowRight className="ml-2 h-4 w-4" />
                                     </Button>
                                 </Link>
@@ -49,8 +49,8 @@ export function PromotionGrid() {
                         </div>
 
                         {/* Decorative Circles */}
-                        <div className="absolute top-1/2 left-0 w-64 h-64 bg-white/10 rounded-full blur-3xl opacity-50 -translate-y-1/2 -translate-x-1/2"></div>
-                        <div className="absolute bottom-0 right-0 w-48 h-48 bg-white/10 rounded-full blur-2xl opacity-30 translate-x-1/4 translate-y-1/4"></div>
+                        <div className="absolute top-1/2 left-0 w-64 h-64 bg-accent/10 rounded-full blur-3xl opacity-50 -translate-y-1/2 -translate-x-1/2"></div>
+                        <div className="absolute bottom-0 right-0 w-48 h-48 bg-accent/10 rounded-full blur-2xl opacity-30 translate-x-1/4 translate-y-1/4"></div>
                     </div>
                 </div>
             </div>

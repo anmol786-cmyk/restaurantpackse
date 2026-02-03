@@ -54,8 +54,8 @@ export default function QuickOrderPage() {
           </div>
 
           <div className="flex items-start gap-3 p-4 bg-white rounded-lg border border-slate-200">
-            <div className="p-2 bg-blue-600/10 rounded-lg">
-              <FileSpreadsheet className="h-5 w-5 text-blue-600" />
+            <div className="p-2 bg-primary/10 rounded-lg">
+              <FileSpreadsheet className="h-5 w-5 text-primary" />
             </div>
             <div>
               <h3 className="font-semibold text-sm mb-1">CSV Upload</h3>

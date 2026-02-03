@@ -91,6 +91,16 @@ export default function DeliveryInformationPage() {
                                                 Our own delivery service provides personalized, flexible delivery for B2B clients in the greater Stockholm region. Direct from our Spånga warehouse to your kitchen.
                                             </p>
 
+                                            {/* Free Shipping Banner */}
+                                            <div className="bg-green-50 border border-green-200 rounded-xl p-4 mt-4">
+                                                <p className="flex items-center gap-2 text-green-700 font-bold">
+                                                    <span className="text-xl">🚚</span> Free Shipping within Stockholm
+                                                </p>
+                                                <p className="text-green-600 text-sm mt-1">
+                                                    Enjoy free delivery on all orders over 5,000 kr within the Stockholm region
+                                                </p>
+                                            </div>
+
                                             <div className="grid sm:grid-cols-2 gap-6 pt-2">
                                                 <div className="bg-neutral-50 p-4 rounded-xl border border-neutral-100">
                                                     <h4 className="font-bold text-neutral-900 mb-2 flex items-center gap-2">
@@ -122,7 +132,7 @@ export default function DeliveryInformationPage() {
                                 {/* 2. Sweden & Scandinavia */}
                                 <div className="bg-white p-8 rounded-2xl border border-neutral-100 shadow-sm hover:shadow-md transition-all duration-300 group">
                                     <div className="flex items-start gap-6">
-                                        <div className="w-14 h-14 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center flex-shrink-0 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                                        <div className="w-14 h-14 rounded-2xl bg-info/10 text-info flex items-center justify-center flex-shrink-0 group-hover:bg-info group-hover:text-white transition-colors">
                                             <Globe className="h-7 w-7" />
                                         </div>
                                         <div className="space-y-4 flex-1">
@@ -135,13 +145,13 @@ export default function DeliveryInformationPage() {
 
                                             <div className="flex flex-wrap gap-2 pt-2">
                                                 {['Weight-based Rates', 'Tracked Shipments', 'Business Day Delivery', 'Pallet Freight'].map((tag, i) => (
-                                                    <span key={i} className="px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-bold uppercase tracking-wide">
+                                                    <span key={i} className="px-3 py-1 rounded-full bg-info/10 text-info text-xs font-bold uppercase tracking-wide">
                                                         {tag}
                                                     </span>
                                                 ))}
                                             </div>
                                             <div className="mt-4 pt-4 border-t border-neutral-100">
-                                                <Link href="/europe-delivery" className="inline-flex items-center text-blue-600 font-bold hover:underline">
+                                                <Link href="/europe-delivery" className="inline-flex items-center text-primary font-bold hover:underline">
                                                     View European Shipping Rates <ExternalLink className="ml-2 w-4 h-4" />
                                                 </Link>
                                             </div>

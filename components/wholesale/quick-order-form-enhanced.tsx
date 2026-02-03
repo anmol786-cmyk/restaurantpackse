@@ -14,6 +14,9 @@ import {
   Save,
   FolderOpen,
   Upload,
+  Building2,
+  Tag,
+  AlertCircle,
 } from 'lucide-react';
 import { ProductAutocomplete } from './product-autocomplete';
 import { CSVUpload } from './csv-upload';
@@ -35,6 +38,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import { useAuthStore } from '@/store/auth-store';
+import { getWholesaleStatus } from '@/lib/auth';
+import { WHOLESALE_TIERS, CommerceRules } from '@/config/commerce-rules';
+import Link from 'next/link';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 interface OrderLine {
   id: string;
@@ -57,10 +65,33 @@ export function QuickOrderFormEnhanced() {
   const [templateName, setTemplateName] = useState('');
   const { format: formatCurrency, selectedCurrency } = useCurrency();
 
+  // Auth and wholesale status
+  const { isAuthenticated, user } = useAuthStore();
+  const wholesaleStatus = getWholesaleStatus(user);
+  const isApprovedWholesale = wholesaleStatus === 'approved';
+
   // Load templates on mount
   useEffect(() => {
     setTemplates(getOrderTemplates());
   }, []);
+
+  // Pre-fill customer info if authenticated
+  useEffect(() => {
+    if (isAuthenticated && user) {
+      setCustomerName(`${user.first_name || ''} ${user.last_name || ''}`.trim());
+      setCustomerEmail(user.email || '');
+      setCustomerPhone(user.billing?.phone || '');
+    }
+  }, [isAuthenticated, user]);
+
+  // Calculate wholesale price for a product
+  const getWholesalePrice = (basePrice: number, quantity: number): { price: number; discount: number; label: string | null } => {
+    if (!isApprovedWholesale) {
+      return { price: basePrice, discount: 0, label: null };
+    }
+    const result = CommerceRules.getTieredPrice(basePrice, quantity, true);
+    return { price: result.unitPrice, discount: result.discount, label: result.label };
+  };
 
   const addLine = () => {
     setOrderLines([
@@ -100,11 +131,23 @@ export function QuickOrderFormEnhanced() {
   const calculateTotal = () => {
     return orderLines.reduce((total, line) => {
       if (line.product && line.quantity > 0) {
+        const { price } = getWholesalePrice(line.price, line.quantity);
+        return total + price * line.quantity;
+      }
+      return total;
+    }, 0);
+  };
+
+  const calculateRegularTotal = () => {
+    return orderLines.reduce((total, line) => {
+      if (line.product && line.quantity > 0) {
         return total + line.price * line.quantity;
       }
       return total;
     }, 0);
   };
+
+  const totalSavings = calculateRegularTotal() - calculateTotal();
 
   const handleCSVImport = (products: Array<{ product: Product; quantity: number }>) => {
     const newLines: OrderLine[] = products.map((item) => ({
@@ -270,6 +313,39 @@ export function QuickOrderFormEnhanced() {
 
   return (
     <div className="space-y-6">
+      {/* Business Account Prompt for non-authenticated users */}
+      {!isAuthenticated && (
+        <Alert className="border-primary/30 bg-primary/5">
+          <Building2 className="h-4 w-4 text-primary" />
+          <AlertDescription className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <span>
+              <strong>Business customer?</strong> Sign in or register for wholesale pricing with up to 20% off and 28-day credit terms.
+            </span>
+            <div className="flex gap-2 flex-shrink-0">
+              <Button asChild variant="outline" size="sm">
+                <Link href="/login">Sign In</Link>
+              </Button>
+              <Button asChild size="sm">
+                <Link href="/wholesale/register">Register</Link>
+              </Button>
+            </div>
+          </AlertDescription>
+        </Alert>
+      )}
+
+      {/* Wholesale Status Badge */}
+      {isApprovedWholesale && (
+        <div className="flex items-center gap-2 p-3 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg">
+          <Tag className="h-5 w-5 text-green-600" />
+          <div>
+            <span className="text-sm font-bold text-green-700 dark:text-green-400">Wholesale Pricing Active</span>
+            <span className="text-xs text-green-600 dark:text-green-500 ml-2">
+              Volume discounts applied automatically
+            </span>
+          </div>
+        </div>
+      )}
+
       {/* Customer Information */}
       <Card className="p-6">
         <h3 className="text-lg font-semibold mb-4">Your Information</h3>
@@ -437,8 +513,27 @@ export function QuickOrderFormEnhanced() {
               {/* Unit Price */}
               <div className="col-span-1 md:col-span-2">
                 <Label className="md:hidden mb-1">Unit Price</Label>
-                <div className="h-10 flex items-center text-sm font-medium text-muted-foreground">
-                  {line.product ? formatCurrency(line.price) : '—'}
+                <div className="h-10 flex flex-col justify-center">
+                  {line.product ? (
+                    <>
+                      {isApprovedWholesale && line.quantity >= 10 ? (
+                        <>
+                          <span className="text-xs text-muted-foreground line-through">
+                            {formatCurrency(line.price)}
+                          </span>
+                          <span className="text-sm font-medium text-green-600">
+                            {formatCurrency(getWholesalePrice(line.price, line.quantity).price)}
+                          </span>
+                        </>
+                      ) : (
+                        <span className="text-sm font-medium text-muted-foreground">
+                          {formatCurrency(line.price)}
+                        </span>
+                      )}
+                    </>
+                  ) : (
+                    <span className="text-sm text-muted-foreground">—</span>
+                  )}
                 </div>
               </div>
 
@@ -458,8 +553,21 @@ export function QuickOrderFormEnhanced() {
               {/* Line Total */}
               <div className="col-span-1 md:col-span-2">
                 <Label className="md:hidden mb-1">Total</Label>
-                <div className="h-10 flex items-center text-sm font-bold text-primary">
-                  {line.product ? formatCurrency(line.price * line.quantity) : '—'}
+                <div className="h-10 flex flex-col justify-center">
+                  {line.product ? (
+                    <>
+                      <span className="text-sm font-bold text-primary">
+                        {formatCurrency(getWholesalePrice(line.price, line.quantity).price * line.quantity)}
+                      </span>
+                      {isApprovedWholesale && line.quantity >= 10 && (
+                        <span className="text-[10px] text-green-600">
+                          Save {Math.round(getWholesalePrice(line.price, line.quantity).discount * 100)}%
+                        </span>
+                      )}
+                    </>
+                  ) : (
+                    <span className="text-sm text-muted-foreground">—</span>
+                  )}
                 </div>
               </div>
 
@@ -483,8 +591,21 @@ export function QuickOrderFormEnhanced() {
         {/* Total */}
         <div className="mt-6 pt-6 border-t flex justify-end">
           <div className="text-right space-y-1">
+            {totalSavings > 0 && (
+              <div className="flex items-center justify-end gap-2 mb-2">
+                <span className="text-xs text-muted-foreground line-through">
+                  {formatCurrency(calculateRegularTotal())}
+                </span>
+                <span className="text-xs font-medium text-green-600 bg-green-50 dark:bg-green-900/30 px-2 py-0.5 rounded">
+                  Save {formatCurrency(totalSavings)}
+                </span>
+              </div>
+            )}
             <p className="text-sm text-muted-foreground">Order Total</p>
             <p className="text-2xl font-bold text-primary">{formatCurrency(calculateTotal())}</p>
+            {isApprovedWholesale && (
+              <p className="text-xs text-green-600">Wholesale pricing applied</p>
+            )}
           </div>
         </div>
       </Card>

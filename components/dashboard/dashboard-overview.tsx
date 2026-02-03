@@ -70,8 +70,8 @@ export function DashboardOverview() {
       value: stats.totalOrders.toString(),
       subtitle: `${stats.monthlyOrders} this month`,
       icon: ShoppingCart,
-      color: 'text-blue-600',
-      bgColor: 'bg-blue-50',
+      color: 'text-primary',
+      bgColor: 'bg-primary/10',
     },
     {
       title: 'Total Spent',

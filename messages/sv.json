@@ -113,5 +113,65 @@
     "followUs": "Följ Oss",
     "copyright": "© 2025 Anmol Wholesale. Alla rättigheter förbehållna.",
     "madeWithLove": "Gjort med ❤️ i Sverige"
+  },
+  "business": {
+    "register": "Registrera Företagskonto",
+    "registerSubtitle": "Gå med i vårt grossistprogram för exklusiva priser",
+    "companyName": "Företagsnamn",
+    "vatNumber": "Momsnummer / Organisationsnummer",
+    "businessType": "Företagstyp",
+    "verifyVat": "Verifiera",
+    "vatVerified": "Momsnummer verifierat",
+    "vatInvalid": "Verifiering misslyckades",
+    "pendingApproval": "Inväntar Godkännande",
+    "pendingMessage": "Ditt företagskonto verifieras. Detta tar vanligtvis 1-2 arbetsdagar.",
+    "approved": "Godkänd",
+    "wholesalePricing": "Grossistpriser Aktiva"
+  },
+  "credit": {
+    "apply": "Ansök om Kreditvillkor",
+    "applySubtitle": "Få 28 dagars betalningsvillkor för ditt företag",
+    "creditLimit": "Kreditgräns",
+    "availableCredit": "Tillgänglig Kredit",
+    "paymentTerms": "Betalningsvillkor",
+    "net28": "Netto 28 dagar",
+    "minOrder": "Minsta Order",
+    "pending": "Kreditansökan Under Behandling",
+    "approved": "Kreditkonto Aktivt",
+    "payNow": "Betala Nu",
+    "payLater": "28-Dagars Kredit",
+    "invoicePayment": "Fakturabetalning Vald"
+  },
+  "dashboard": {
+    "title": "Mitt Konto",
+    "orders": "Ordrar",
+    "business": "Företag",
+    "settings": "Inställningar",
+    "totalOrders": "Totala Ordrar",
+    "totalSpent": "Totalt Spenderat",
+    "thisMonth": "Denna Månad",
+    "avgOrderValue": "Genomsnittligt Ordervärde",
+    "reorderLists": "Återbeställningslistor",
+    "createList": "Skapa Ny Lista",
+    "addToCart": "Lägg Allt i Varukorgen",
+    "invoices": "Fakturor",
+    "invoiceHistory": "Fakturahistorik",
+    "outstanding": "Utestående Saldo",
+    "overdue": "Förfallen"
+  },
+  "freeShipping": {
+    "title": "Fri Frakt",
+    "qualify": "Du kvalificerar för fri frakt inom Stockholm!",
+    "threshold": "Fri frakt inom Stockholm på beställningar över 5 000 kr",
+    "addMore": "Lägg till {amount} mer för att kvalificera"
+  },
+  "checkout": {
+    "paymentMethod": "Betalningsmetod",
+    "paymentTerms": "Betalningsvillkor",
+    "shippingMethod": "Fraktmetod",
+    "placeOrder": "Slutför Beställning",
+    "orderNotes": "Orderanteckningar",
+    "billingAddress": "Faktureringsadress",
+    "shippingAddress": "Leveransadress"
   }
 }

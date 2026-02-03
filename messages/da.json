@@ -113,5 +113,65 @@
     "followUs": "Følg Os",
     "copyright": "© 2025 Anmol Wholesale. Alle rettigheder forbeholdes.",
     "madeWithLove": "Lavet med ❤️ i Sverige"
+  },
+  "business": {
+    "register": "Registrer Virksomhedskonto",
+    "registerSubtitle": "Bliv en del af vores engrosprogram for eksklusive priser",
+    "companyName": "Virksomhedsnavn",
+    "vatNumber": "Momsnummer / CVR-nummer",
+    "businessType": "Virksomhedstype",
+    "verifyVat": "Verificer",
+    "vatVerified": "Momsnummer verificeret",
+    "vatInvalid": "Verificering mislykkedes",
+    "pendingApproval": "Afventer Godkendelse",
+    "pendingMessage": "Din virksomhedskonto verificeres. Dette tager normalt 1-2 hverdage.",
+    "approved": "Godkendt",
+    "wholesalePricing": "Engrospriser Aktive"
+  },
+  "credit": {
+    "apply": "Ansøg om Kreditvilkår",
+    "applySubtitle": "Få 28 dages betalingsvilkår for din virksomhed",
+    "creditLimit": "Kreditgrænse",
+    "availableCredit": "Tilgængelig Kredit",
+    "paymentTerms": "Betalingsvilkår",
+    "net28": "Netto 28 dage",
+    "minOrder": "Minimumsordre",
+    "pending": "Kreditansøgning Under Behandling",
+    "approved": "Kreditkonto Aktivt",
+    "payNow": "Betal Nu",
+    "payLater": "28-Dages Kredit",
+    "invoicePayment": "Fakturabetaling Valgt"
+  },
+  "dashboard": {
+    "title": "Min Konto",
+    "orders": "Ordrer",
+    "business": "Virksomhed",
+    "settings": "Indstillinger",
+    "totalOrders": "Samlede Ordrer",
+    "totalSpent": "Samlet Forbrug",
+    "thisMonth": "Denne Måned",
+    "avgOrderValue": "Gnsn. Ordreværdi",
+    "reorderLists": "Genbestillingslister",
+    "createList": "Opret Ny Liste",
+    "addToCart": "Tilføj Alt til Kurv",
+    "invoices": "Fakturaer",
+    "invoiceHistory": "Fakturahistorik",
+    "outstanding": "Udestående Saldo",
+    "overdue": "Forfalden"
+  },
+  "freeShipping": {
+    "title": "Gratis Forsendelse",
+    "qualify": "Du kvalificerer til gratis forsendelse inden for Stockholm!",
+    "threshold": "Gratis forsendelse inden for Stockholm på ordrer over 5.000 kr",
+    "addMore": "Tilføj {amount} mere for at kvalificere"
+  },
+  "checkout": {
+    "paymentMethod": "Betalingsmetode",
+    "paymentTerms": "Betalingsvilkår",
+    "shippingMethod": "Forsendelsesmetode",
+    "placeOrder": "Gennemfør Ordre",
+    "orderNotes": "Ordrenoter",
+    "billingAddress": "Faktureringsadresse",
+    "shippingAddress": "Leveringsadresse"
   }
 }

@@ -35,7 +35,16 @@
     "lint": "next lint",
     "type-check": "tsc --noEmit",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
-    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\""
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:debug": "playwright test --debug",
+    "test:ui": "playwright test --ui",
+    "test:chromium": "playwright test --project=chromium",
+    "test:firefox": "playwright test --project=firefox",
+    "test:webkit": "playwright test --project=webkit",
+    "test:mobile": "playwright test --project='Mobile Chrome' --project='Mobile Safari'",
+    "test:report": "playwright show-report"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
@@ -79,6 +88,7 @@
     "nodemailer": "^7.0.12",
     "papaparse": "^5.5.3",
     "postcss": "^8.5.6",
+    "pptxgenjs": "^4.0.1",
     "query-string": "^9.2.1",
     "react": "^19.2.1",
     "react-dom": "^19.2.1",
@@ -91,10 +101,12 @@
     "tailwindcss-animate": "^1.0.7",
     "typescript": "^5.8.3",
     "use-debounce": "^10.0.5",
+    "xlsx": "^0.18.5",
     "zod": "^3.25.67",
     "zustand": "^5.0.8"
   },
   "devDependencies": {
+    "@playwright/test": "^1.58.0",
     "dotenv": "^17.2.3"
   }
 }

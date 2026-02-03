@@ -118,7 +118,7 @@ export function Hero({
                             <span>Halal Certified</span>
                         </div>
                         <div className="flex items-center gap-2">
-                            <div className="w-2 h-2 rounded-full bg-blue-500" />
+                            <div className="w-2 h-2 rounded-full bg-info" />
                             <span>Stockholm Fleet Delivery</span>
                         </div>
                         <div className="flex items-center gap-2">

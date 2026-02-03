@@ -224,7 +224,7 @@ export default function WholesaleLandingPage() {
                                 category: 'Bulk Staples',
                                 items: ['TRS Gram Flour (6x2kg)', 'Nordic Sugar (25kg)', 'Milk Powder (25kg)'],
                                 icon: Package,
-                                color: 'bg-blue-50 text-blue-600'
+                                color: 'bg-primary/10 text-primary'
                             },
                         ].map((product, i) => (
                             <div key={i} className="p-6 rounded-xl border bg-gradient-to-br from-white to-neutral-50 hover:shadow-lg transition-shadow">
