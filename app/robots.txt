@@ -1,6 +1,6 @@
 # ==================================================
-# robots.txt for ideallivs.com
-# Ecommerce + AI-ready (Next.js + WooCommerce API)
+# robots.txt for restaurantpack.se
+# Anmol Wholesale - B2B Restaurant Supply Stockholm
 # ==================================================
 
 User-agent: *
@@ -8,10 +8,12 @@ User-agent: *
 Disallow: /cart/
 Disallow: /checkout/
 Disallow: /my-account/
+Disallow: /dashboard/
 Disallow: /order-received/
 Disallow: /add-to-cart/
 Disallow: /*add-to-cart=*
 Disallow: /*?add-to-cart=*
+Disallow: /admin/
 
 # --- Block internal system paths ---
 Disallow: /api/
@@ -23,10 +25,20 @@ Allow: /_next/static/
 Allow: /images/
 Allow: /wp-content/uploads/
 
+# --- Allow important pages ---
+Allow: /shop
+Allow: /product
+Allow: /product-category
+Allow: /brand
+Allow: /about
+Allow: /contact
+Allow: /blog
+Allow: /wholesale
+
 # --------------------------------------------------
 # Sitemap
 # --------------------------------------------------
-Sitemap: https://ideallivs.com/sitemap.xml
+Sitemap: https://restaurantpack.se/sitemap.xml
 
 # --------------------------------------------------
 # Explicit allow for major crawlers & AI systems
@@ -65,9 +77,9 @@ Allow: /
 User-agent: BraveBot
 Allow: /
 
-# Archive.org (optional)
+# Archive.org (optional - allow for historical purposes)
 User-agent: ia_archiver
-Disallow: /
+Allow: /
 
 # ==================================================
 # End of file
