@@ -15,7 +15,7 @@ import { generateSchemaId, formatOpeningHours, cleanSchema } from './base';
 export function organizationSchema(config: OrganizationInput): Organization {
   const schema: Organization = {
     '@context': 'https://schema.org',
-    '@type': config.types || ['Organization', 'WholesaleStore'],
+    '@type': config.types || ['WholesaleStore', 'Wholesaler', 'Organization'],
     '@id': generateSchemaId(config.url, 'organization'),
     name: config.name,
     url: config.url,
@@ -128,7 +128,7 @@ export function anmolWholesaleOrganizationSchema(baseUrl: string = 'https://rest
       'https://www.facebook.com/AnmolWholesale',
     ],
     foundingDate: '2010',
-    types: ['WholesaleStore', 'LocalBusiness', 'Organization', 'GroceryStore'],
+    types: ['WholesaleStore', 'Wholesaler', 'LocalBusiness', 'Organization'],
   });
 }
 
