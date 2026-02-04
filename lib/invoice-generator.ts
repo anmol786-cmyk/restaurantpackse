@@ -676,3 +676,294 @@ export function getPaymentDueDate(orderDate: Date, paymentTerms: string): Date {
             return orderDate;
     }
 }
+
+/**
+ * Quote Request Data Interface
+ */
+export interface QuoteRequestData {
+    quoteId: string;
+    date: Date;
+    validUntil: Date;
+    customer: {
+        firstName: string;
+        lastName: string;
+        email: string;
+        phone: string;
+        companyName: string;
+        vatNumber?: string;
+        businessType: string;
+        deliveryAddress?: string;
+    };
+    items: Array<{
+        name: string;
+        sku?: string;
+        quantity: number;
+        unitPrice?: number;
+    }>;
+    totalEstimate?: number;
+    message?: string;
+    preferredDeliveryDate?: string;
+}
+
+/**
+ * Generate Quote Request PDF
+ * Creates a professional quote request document for B2B customers
+ */
+export async function generateQuoteRequestPDF(data: QuoteRequestData): Promise<Blob> {
+    const { quoteId, date, validUntil, customer, items, totalEstimate, message, preferredDeliveryDate } = data;
+
+    const doc = new jsPDF({
+        orientation: 'portrait',
+        unit: 'mm',
+        format: 'a4',
+    });
+
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
+    const margin = 20;
+
+    // Add Company Header
+    addHeader(doc, pageWidth, margin);
+
+    // Quote Request Title
+    let yPos = margin + 50;
+    doc.setFontSize(22);
+    doc.setTextColor(...COLORS.primary);
+    doc.setFont('helvetica', 'bold');
+    doc.text('QUOTE REQUEST', pageWidth - margin, yPos, { align: 'right' });
+
+    // Quote Details
+    yPos += 15;
+    doc.setFontSize(10);
+    doc.setTextColor(...COLORS.text);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Reference:', margin, yPos);
+    doc.setFont('helvetica', 'normal');
+    doc.text(quoteId, margin + 25, yPos);
+
+    yPos += 6;
+    doc.setFont('helvetica', 'bold');
+    doc.text('Date:', margin, yPos);
+    doc.setFont('helvetica', 'normal');
+    doc.text(format(date, 'yyyy-MM-dd'), margin + 25, yPos);
+
+    yPos += 6;
+    doc.setFont('helvetica', 'bold');
+    doc.text('Valid Until:', margin, yPos);
+    doc.setFont('helvetica', 'normal');
+    doc.text(format(validUntil, 'yyyy-MM-dd'), margin + 25, yPos);
+
+    // Customer Information Section
+    yPos += 15;
+    doc.setFillColor(...COLORS.lightGray);
+    doc.rect(margin, yPos, pageWidth - 2 * margin, 45, 'F');
+
+    yPos += 7;
+    doc.setFontSize(11);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(...COLORS.primary);
+    doc.text('BUSINESS INFORMATION', margin + 5, yPos);
+
+    yPos += 8;
+    doc.setFontSize(9);
+    doc.setTextColor(...COLORS.text);
+
+    const leftCol = margin + 5;
+    const rightCol = margin + (pageWidth - 2 * margin) / 2;
+
+    // Left column
+    doc.setFont('helvetica', 'bold');
+    doc.text('Company:', leftCol, yPos);
+    doc.setFont('helvetica', 'normal');
+    doc.text(customer.companyName, leftCol + 22, yPos);
+
+    yPos += 6;
+    doc.setFont('helvetica', 'bold');
+    doc.text('Contact:', leftCol, yPos);
+    doc.setFont('helvetica', 'normal');
+    doc.text(`${customer.firstName} ${customer.lastName}`, leftCol + 22, yPos);
+
+    yPos += 6;
+    doc.setFont('helvetica', 'bold');
+    doc.text('Email:', leftCol, yPos);
+    doc.setFont('helvetica', 'normal');
+    doc.text(customer.email, leftCol + 22, yPos);
+
+    yPos += 6;
+    doc.setFont('helvetica', 'bold');
+    doc.text('Phone:', leftCol, yPos);
+    doc.setFont('helvetica', 'normal');
+    doc.text(customer.phone || 'N/A', leftCol + 22, yPos);
+
+    // Right column (reset yPos to match left column start)
+    let rightYPos = yPos - 18;
+    doc.setFont('helvetica', 'bold');
+    doc.text('VAT/Org Nr:', rightCol, rightYPos);
+    doc.setFont('helvetica', 'normal');
+    doc.text(customer.vatNumber || 'N/A', rightCol + 25, rightYPos);
+
+    rightYPos += 6;
+    doc.setFont('helvetica', 'bold');
+    doc.text('Business Type:', rightCol, rightYPos);
+    doc.setFont('helvetica', 'normal');
+    doc.text(customer.businessType || 'N/A', rightCol + 25, rightYPos);
+
+    if (preferredDeliveryDate) {
+        rightYPos += 6;
+        doc.setFont('helvetica', 'bold');
+        doc.text('Pref. Delivery:', rightCol, rightYPos);
+        doc.setFont('helvetica', 'normal');
+        doc.text(preferredDeliveryDate, rightCol + 25, rightYPos);
+    }
+
+    if (customer.deliveryAddress) {
+        rightYPos += 6;
+        doc.setFont('helvetica', 'bold');
+        doc.text('Delivery Addr:', rightCol, rightYPos);
+        doc.setFont('helvetica', 'normal');
+        const addrLines = doc.splitTextToSize(customer.deliveryAddress, 60);
+        doc.text(addrLines, rightCol + 25, rightYPos);
+    }
+
+    // Requested Items Table
+    yPos += 20;
+    const tableData = items.map((item, index) => [
+        (index + 1).toString(),
+        item.sku || 'N/A',
+        item.name,
+        item.quantity.toString(),
+        item.unitPrice ? `${item.unitPrice.toFixed(2)} SEK` : 'TBD',
+        item.unitPrice ? `${(item.unitPrice * item.quantity).toFixed(2)} SEK` : 'TBD',
+    ]);
+
+    autoTable(doc, {
+        startY: yPos,
+        head: [['#', 'SKU', 'Product', 'Qty', 'Unit Price', 'Subtotal']],
+        body: tableData,
+        theme: 'striped',
+        headStyles: {
+            fillColor: COLORS.primary,
+            textColor: COLORS.white,
+            fontStyle: 'bold',
+            fontSize: 9,
+        },
+        bodyStyles: {
+            fontSize: 8,
+            textColor: COLORS.text,
+        },
+        alternateRowStyles: {
+            fillColor: COLORS.lightGray,
+        },
+        columnStyles: {
+            0: { cellWidth: 10, halign: 'center' },
+            1: { cellWidth: 25 },
+            2: { cellWidth: 'auto' },
+            3: { cellWidth: 15, halign: 'center' },
+            4: { cellWidth: 25, halign: 'right' },
+            5: { cellWidth: 30, halign: 'right' },
+        },
+        margin: { left: margin, right: margin },
+    });
+
+    yPos = (doc as any).lastAutoTable.finalY + 10;
+
+    // Totals Section
+    const rightAlign = pageWidth - margin;
+    const labelX = rightAlign - 50;
+
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(...COLORS.text);
+    doc.text('Items:', labelX, yPos, { align: 'right' });
+    doc.setFont('helvetica', 'normal');
+    doc.text(items.length.toString(), rightAlign, yPos, { align: 'right' });
+
+    yPos += 6;
+    doc.text('Total Quantity:', labelX, yPos, { align: 'right' });
+    const totalQty = items.reduce((sum, item) => sum + item.quantity, 0);
+    doc.text(totalQty.toString(), rightAlign, yPos, { align: 'right' });
+
+    // Estimated Total
+    yPos += 3;
+    doc.setDrawColor(...COLORS.accent);
+    doc.setLineWidth(0.3);
+    doc.line(labelX - 5, yPos, rightAlign, yPos);
+
+    yPos += 6;
+    doc.setFontSize(12);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(...COLORS.primary);
+    doc.text('ESTIMATED TOTAL:', labelX, yPos, { align: 'right' });
+    doc.text(
+        totalEstimate ? `${totalEstimate.toFixed(2)} SEK` : 'Price on Request',
+        rightAlign,
+        yPos,
+        { align: 'right' }
+    );
+
+    // Customer Notes
+    if (message) {
+        yPos += 15;
+        doc.setFillColor(255, 249, 230); // Light yellow
+        doc.rect(margin, yPos, pageWidth - 2 * margin, 25, 'F');
+        doc.setDrawColor(234, 179, 8); // Gold border
+        doc.setLineWidth(0.5);
+        doc.line(margin, yPos, margin, yPos + 25);
+
+        yPos += 7;
+        doc.setFontSize(10);
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(153, 102, 0); // Dark gold
+        doc.text('Customer Notes:', margin + 5, yPos);
+
+        yPos += 6;
+        doc.setFontSize(9);
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(...COLORS.text);
+        const noteLines = doc.splitTextToSize(message, pageWidth - 2 * margin - 10);
+        doc.text(noteLines, margin + 5, yPos);
+        yPos += noteLines.length * 4 + 10;
+    }
+
+    // Next Steps Section
+    yPos += 10;
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(...COLORS.primary);
+    doc.text('WHAT HAPPENS NEXT?', margin, yPos);
+
+    const steps = [
+        '1. Our B2B team will review your request within 24 hours.',
+        '2. You will receive a detailed quote with final pricing via email.',
+        '3. Accept the quote to proceed with your wholesale order.',
+    ];
+
+    yPos += 7;
+    doc.setFontSize(9);
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(...COLORS.text);
+    steps.forEach((step) => {
+        doc.text(step, margin, yPos);
+        yPos += 5;
+    });
+
+    // Footer
+    addFooter(doc, pageWidth, pageHeight, margin);
+
+    return doc.output('blob');
+}
+
+/**
+ * Download Quote Request PDF
+ */
+export async function downloadQuoteRequestPDF(data: QuoteRequestData, filename?: string) {
+    const blob = await generateQuoteRequestPDF(data);
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename || `quote-request-${data.quoteId}.pdf`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+}

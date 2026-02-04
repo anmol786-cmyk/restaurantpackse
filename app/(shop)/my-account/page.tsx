@@ -29,6 +29,44 @@ import { InvoiceList } from '@/components/dashboard/invoice-list';
 import { downloadInvoicePDF, getPaymentDueDate, downloadQuotePDF } from '@/lib/invoice-generator';
 import { CreditStatusVisualizer } from '@/components/dashboard/credit-status-visualizer';
 
+// Helper function to download Wholesale Agreement PDF
+async function downloadWholesaleAgreement(businessInfo: ReturnType<typeof getBusinessInfo>, user: any) {
+  try {
+    const params = new URLSearchParams({
+      companyName: businessInfo.companyName || '',
+      vatNumber: businessInfo.vatNumber || '',
+      businessType: businessInfo.businessType || 'Wholesale',
+      contactName: user ? `${user.first_name || ''} ${user.last_name || ''}`.trim() : '',
+      contactEmail: user?.email || '',
+      contactPhone: user?.billing?.phone || '',
+      address: user?.billing?.address_1 || '',
+      city: user?.billing?.city || '',
+      postcode: user?.billing?.postcode || '',
+    });
+
+    const response = await fetch(`/api/documents/wholesale-agreement?${params.toString()}`);
+
+    if (!response.ok) {
+      throw new Error('Failed to generate agreement');
+    }
+
+    const blob = await response.blob();
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `Wholesale-Agreement-${businessInfo.companyName || 'draft'}.pdf`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+
+    toast.success('Wholesale Agreement downloaded!');
+  } catch (error) {
+    console.error('Error downloading wholesale agreement:', error);
+    toast.error('Failed to download agreement. Please try again.');
+  }
+}
+
 function MyAccountContent() {
   const { user, isAuthenticated, logout, setUser } = useAuthStore();
   const { addItemFromLineItem } = useCartStore();
@@ -744,6 +782,15 @@ function MyAccountContent() {
                             Contact Sales
                           </Link>
                         </Button>
+                        {businessInfo.wholesaleStatus === 'approved' && (
+                          <Button
+                            variant="outline"
+                            onClick={() => downloadWholesaleAgreement(businessInfo, user)}
+                          >
+                            <Download className="h-4 w-4 mr-2" />
+                            Wholesale Agreement
+                          </Button>
+                        )}
                       </div>
                     </div>
                   </CardContent>

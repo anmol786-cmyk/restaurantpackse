@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { brandConfig } from '@/config/brand.config';
 import nodemailer from 'nodemailer';
 import { getWooCommerceUrl, getWooCommerceAuthHeader } from '@/lib/woocommerce/config';
+import { generateQuoteRequestPDF, type QuoteRequestData } from '@/lib/invoice-generator';
+import { addDays } from 'date-fns';
 
 // Generate unique quote ID
 function generateQuoteId(): string {
@@ -221,6 +223,46 @@ export async function POST(request: NextRequest) {
         const fromEmail = process.env.SMTP_FROM || process.env.SMTP_USER;
         const fromName = process.env.SMTP_FROM_NAME || 'Anmol Wholesale';
 
+        // Generate Quote Request PDF
+        const quoteDate = new Date();
+        const quoteValidUntil = addDays(quoteDate, 14); // Quote valid for 14 days
+
+        const quoteRequestData: QuoteRequestData = {
+          quoteId,
+          date: quoteDate,
+          validUntil: quoteValidUntil,
+          customer: {
+            firstName,
+            lastName,
+            email,
+            phone,
+            companyName,
+            vatNumber,
+            businessType,
+            deliveryAddress,
+          },
+          items: items.map((item: any) => ({
+            name: item.name,
+            sku: item.sku,
+            quantity: item.quantity,
+            unitPrice: item.unitPrice,
+          })),
+          totalEstimate,
+          message,
+          preferredDeliveryDate,
+        };
+
+        let pdfBuffer: Buffer | null = null;
+        try {
+          const pdfBlob = await generateQuoteRequestPDF(quoteRequestData);
+          const arrayBuffer = await pdfBlob.arrayBuffer();
+          pdfBuffer = Buffer.from(arrayBuffer);
+          console.log(`✅ Quote Request PDF generated: ${quoteId}`);
+        } catch (pdfError) {
+          console.error('⚠️ Failed to generate Quote Request PDF:', pdfError);
+          // Continue without PDF attachment
+        }
+
         const itemsHtml = items.map((item: any) => `
           <tr>
             <td style="padding: 12px; border-bottom: 1px solid #eee;">${item.name}</td>
@@ -232,12 +274,19 @@ export async function POST(request: NextRequest) {
           </tr>
         `).join('');
 
-        // Send admin notification email
+        // Send admin notification email with PDF attachment
         await transporter.sendMail({
           from: `"${fromName} - Quote Request" <${fromEmail}>`,
           to: adminEmail,
           replyTo: email,
           subject: `🆕 Quote Request ${quoteId} from ${companyName}${orderId ? ` (Order #${orderId})` : ''}`,
+          attachments: pdfBuffer ? [
+            {
+              filename: `Quote-Request-${quoteId}.pdf`,
+              content: pdfBuffer,
+              contentType: 'application/pdf',
+            },
+          ] : [],
           html: `
             <!DOCTYPE html>
             <html>
@@ -248,6 +297,7 @@ export async function POST(request: NextRequest) {
                     <h1 style="margin: 0; font-size: 24px;">New Quote Request</h1>
                     <p style="margin: 8px 0 0; opacity: 0.9; font-size: 16px;">${quoteId}</p>
                     ${orderId ? `<p style="margin: 4px 0 0; opacity: 0.7; font-size: 14px;">WooCommerce Order #${orderId}</p>` : ''}
+                    ${pdfBuffer ? `<p style="margin: 8px 0 0; opacity: 0.8; font-size: 12px;">📎 PDF Quote Request Attached</p>` : ''}
                   </div>
 
                   <div style="padding: 24px;">
@@ -348,11 +398,18 @@ export async function POST(request: NextRequest) {
           `,
         });
 
-        // Send customer confirmation email
+        // Send customer confirmation email with PDF attachment
         await transporter.sendMail({
           from: `"${brandConfig.businessName}" <${fromEmail}>`,
           to: email,
           subject: `Your Quote Request ${quoteId} - ${brandConfig.businessName}`,
+          attachments: pdfBuffer ? [
+            {
+              filename: `Quote-Request-${quoteId}.pdf`,
+              content: pdfBuffer,
+              contentType: 'application/pdf',
+            },
+          ] : [],
           html: `
             <!DOCTYPE html>
             <html>
@@ -368,6 +425,14 @@ export async function POST(request: NextRequest) {
                     <p style="font-size: 16px;">Dear ${firstName},</p>
 
                     <p>Thank you for your interest in ${brandConfig.businessName}. We have received your quote request and our B2B team is reviewing it.</p>
+
+                    ${pdfBuffer ? `
+                    <div style="background: #e8f5e9; border-radius: 8px; padding: 12px; margin: 16px 0; border-left: 4px solid #4caf50;">
+                      <p style="margin: 0; color: #2e7d32; font-size: 14px;">
+                        📎 <strong>Your quote request PDF is attached to this email</strong> for your records.
+                      </p>
+                    </div>
+                    ` : ''}
 
                     <div style="background: #f0f7ff; border-radius: 8px; padding: 20px; margin: 24px 0; text-align: center;">
                       <p style="margin: 0 0 8px; color: #666; font-size: 14px;">Your Quote Reference</p>

@@ -28,10 +28,48 @@ import {
   ArrowRight,
   Wallet,
   Calendar,
-  FileText
+  FileText,
+  Download
 } from 'lucide-react';
 import { toast } from 'sonner';
 import Link from 'next/link';
+
+// Helper function to download Credit Agreement PDF
+async function downloadCreditAgreement(businessInfo: { companyName?: string | null; vatNumber?: string | null }, user: any) {
+  try {
+    const params = new URLSearchParams({
+      companyName: businessInfo.companyName || '',
+      vatNumber: businessInfo.vatNumber || '',
+      contactName: user ? `${user.first_name || ''} ${user.last_name || ''}`.trim() : '',
+      contactEmail: user?.email || '',
+      contactPhone: user?.billing?.phone || '',
+      address: user?.billing?.address_1 || '',
+      city: user?.billing?.city || '',
+      postcode: user?.billing?.postcode || '',
+    });
+
+    const response = await fetch(`/api/documents/credit-agreement?${params.toString()}`);
+
+    if (!response.ok) {
+      throw new Error('Failed to generate agreement');
+    }
+
+    const blob = await response.blob();
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `Credit-Agreement-${businessInfo.companyName || 'draft'}.pdf`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+
+    toast.success('Credit Agreement downloaded!');
+  } catch (error) {
+    console.error('Error downloading credit agreement:', error);
+    toast.error('Failed to download agreement. Please try again.');
+  }
+}
 
 const creditApplicationSchema = z.object({
   expected_monthly_volume: z.string().min(1, 'Please select expected monthly order volume'),
@@ -260,6 +298,17 @@ export function CreditApplication() {
                 <p className="font-medium">{businessInfo.vatNumber || 'N/A'}</p>
               </div>
             </div>
+            <div className="mt-4 pt-4 border-t">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => downloadCreditAgreement(businessInfo, user)}
+                className="w-full md:w-auto"
+              >
+                <Download className="w-4 h-4 mr-2" />
+                Download Credit Agreement
+              </Button>
+            </div>
           </CardContent>
         </Card>
       </div>
@@ -457,10 +506,21 @@ export function CreditApplication() {
               )}
             />
 
-            <Button type="submit" disabled={isSubmitting} className="w-full" variant="premium">
-              {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              Submit Credit Application
-            </Button>
+            <div className="flex flex-col md:flex-row gap-3">
+              <Button
+                type="button"
+                variant="outline"
+                className="md:w-auto"
+                onClick={() => downloadCreditAgreement(businessInfo, user)}
+              >
+                <FileText className="w-4 h-4 mr-2" />
+                Preview Credit Agreement
+              </Button>
+              <Button type="submit" disabled={isSubmitting} className="flex-1" variant="premium">
+                {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                Submit Credit Application
+              </Button>
+            </div>
           </form>
         </Form>
       </CardContent>

@@ -4,6 +4,7 @@ import { getWooCommerceUrl, getWooCommerceAuthHeader } from '@/lib/woocommerce/c
 import { brandConfig } from '@/config/brand.config';
 import { CREDIT_TERMS } from '@/config/commerce-rules';
 import nodemailer from 'nodemailer';
+import { generateCreditAgreementPDF, type CreditAgreementData } from '@/lib/agreement-generator';
 
 interface CreditApplicationData {
   expected_monthly_volume: string;
@@ -226,12 +227,59 @@ export async function POST(request: NextRequest) {
         const fromEmail = process.env.SMTP_FROM || process.env.SMTP_USER;
         const fromName = process.env.SMTP_FROM_NAME || 'Anmol Wholesale';
 
-        // Send admin notification
+        // Generate Credit Agreement PDF
+        let pdfBuffer: Buffer | null = null;
+        try {
+          const creditAgreementData: CreditAgreementData = {
+            agreementId: applicationId,
+            effectiveDate: new Date(),
+            customer: {
+              companyName: company_name,
+              vatNumber: vat_number || '',
+              address: customer.billing?.address_1 || '',
+              city: customer.billing?.city || '',
+              postcode: customer.billing?.postcode || '',
+              country: customer.billing?.country || 'Sweden',
+              contactName: invoice_contact_name,
+              contactEmail: invoice_contact_email,
+              contactPhone: invoice_contact_phone,
+            },
+            creditTerms: {
+              creditLimit: CREDIT_TERMS.defaultCreditLimit,
+              paymentDays: CREDIT_TERMS.defaultCreditDays,
+              currency: 'SEK',
+              minOrderValue: CREDIT_TERMS.minOrderForCredit,
+            },
+            invoiceContact: {
+              name: invoice_contact_name,
+              email: invoice_contact_email,
+              phone: invoice_contact_phone,
+            },
+            expectedMonthlyVolume: expected_monthly_volume,
+          };
+
+          const pdfBlob = await generateCreditAgreementPDF(creditAgreementData);
+          const arrayBuffer = await pdfBlob.arrayBuffer();
+          pdfBuffer = Buffer.from(arrayBuffer);
+          console.log(`✅ Credit Agreement PDF generated: ${applicationId}`);
+        } catch (pdfError) {
+          console.error('⚠️ Failed to generate Credit Agreement PDF:', pdfError);
+          // Continue without PDF attachment
+        }
+
+        // Send admin notification with PDF attachment
         await transporter.sendMail({
           from: `"${fromName} - Credit Application" <${fromEmail}>`,
           to: adminEmail,
           replyTo: invoice_contact_email,
           subject: `💳 Credit Application ${applicationId} - ${company_name}`,
+          attachments: pdfBuffer ? [
+            {
+              filename: `Credit-Agreement-${applicationId}.pdf`,
+              content: pdfBuffer,
+              contentType: 'application/pdf',
+            },
+          ] : [],
           html: `
             <!DOCTYPE html>
             <html>
@@ -335,11 +383,18 @@ export async function POST(request: NextRequest) {
           `,
         });
 
-        // Send customer confirmation
+        // Send customer confirmation with PDF attachment
         await transporter.sendMail({
           from: `"${brandConfig.businessName}" <${fromEmail}>`,
           to: invoice_contact_email,
           subject: `Credit Application Received - ${brandConfig.businessName}`,
+          attachments: pdfBuffer ? [
+            {
+              filename: `Credit-Agreement-${applicationId}.pdf`,
+              content: pdfBuffer,
+              contentType: 'application/pdf',
+            },
+          ] : [],
           html: `
             <!DOCTYPE html>
             <html>
@@ -355,6 +410,14 @@ export async function POST(request: NextRequest) {
                     <p style="font-size: 16px;">Dear ${invoice_contact_name},</p>
 
                     <p>Thank you for applying for credit payment terms with ${brandConfig.businessName}. We have received your application and our finance team is reviewing it.</p>
+
+                    ${pdfBuffer ? `
+                    <div style="background: #e8f5e9; border-radius: 8px; padding: 12px; margin: 16px 0; border-left: 4px solid #4caf50;">
+                      <p style="margin: 0; color: #2e7d32; font-size: 14px;">
+                        📎 <strong>Your Credit Agreement is attached to this email</strong> for your records and review.
+                      </p>
+                    </div>
+                    ` : ''}
 
                     <div style="background: #f0f7ff; border-radius: 8px; padding: 20px; margin: 24px 0; text-align: center;">
                       <p style="margin: 0 0 8px; color: #666; font-size: 14px;">Application Reference</p>
