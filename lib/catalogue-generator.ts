@@ -1,33 +1,40 @@
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { format } from 'date-fns';
+import { brandProfile } from '@/config/brand-profile';
 
 /**
  * Modern Product Catalogue PDF Generator
- * Creates a beautiful, professional B2B product catalogue
+ * Creates a beautiful, professional B2B product catalogue with images
+ *
+ * Design System:
+ * - Primary: Anmol Red #b01116 (RGB: 176, 17, 22)
+ * - Accent: Gold #eab308 (RGB: 234, 179, 8)
+ * - Typography: Clean, professional hierarchy
  */
 
-// Brand Colors (Anmol Red & Gold)
-const COLORS = {
-    primary: [176, 17, 22] as [number, number, number],      // Anmol Red #b01116
-    primaryLight: [220, 38, 38] as [number, number, number], // Lighter red
-    accent: [234, 179, 8] as [number, number, number],       // Gold #eab308
-    accentDark: [161, 98, 7] as [number, number, number],    // Dark gold
-    text: [28, 25, 23] as [number, number, number],          // Dark gray
-    textLight: [107, 114, 128] as [number, number, number],  // Gray
-    white: [255, 255, 255] as [number, number, number],
-    lightGray: [249, 250, 251] as [number, number, number],  // Background
-    border: [229, 231, 235] as [number, number, number],
+// Theme Colors (matching theme.config.ts Royal Heritage theme)
+const THEME = {
+    primary: { r: 176, g: 17, b: 22 },      // Anmol Red #b01116
+    primaryDark: { r: 127, g: 29, b: 29 },  // Darker red #7f1d1d
+    accent: { r: 234, g: 179, b: 8 },       // Gold #eab308
+    accentDark: { r: 161, g: 98, b: 7 },    // Dark gold #a16207
+    text: { r: 28, g: 25, b: 23 },          // Dark warm gray #1c1917
+    textMuted: { r: 87, g: 83, b: 78 },     // Muted text #57534e
+    white: { r: 255, g: 255, b: 255 },
+    background: { r: 250, g: 250, b: 249 }, // Warm off-white #fafaf9
+    border: { r: 231, g: 229, b: 228 },     // Border #e7e5e4
 };
 
-// Company Information
+// Company info from brand profile
 const COMPANY = {
-    name: 'Anmol Wholesale',
-    tagline: 'From Our Restaurant Kitchen to Yours',
-    address: 'Fagerstagatan 13, 163 53 Spånga, Stockholm',
-    phone: '+46 76 917 84 56',
-    email: 'info@restaurantpack.se',
-    website: 'www.restaurantpack.se',
+    name: brandProfile.name,
+    tagline: brandProfile.tagline,
+    taglineFull: brandProfile.taglineFull,
+    address: brandProfile.address.formatted,
+    phone: brandProfile.contact.phone,
+    email: brandProfile.contact.email,
+    website: brandProfile.website.domain,
     vat: 'SE559253806901',
 };
 
@@ -52,8 +59,15 @@ export interface CatalogueOptions {
     categoryFilter?: string[];
 }
 
+// Helper to set colors
+const setColor = (doc: jsPDF, color: { r: number; g: number; b: number }, type: 'fill' | 'text' | 'draw') => {
+    if (type === 'fill') doc.setFillColor(color.r, color.g, color.b);
+    else if (type === 'text') doc.setTextColor(color.r, color.g, color.b);
+    else doc.setDrawColor(color.r, color.g, color.b);
+};
+
 /**
- * Generate Product Catalogue PDF
+ * Generate Product Catalogue PDF with Modern Design
  */
 export async function generateCataloguePDF(
     products: CatalogueProduct[],
@@ -61,7 +75,7 @@ export async function generateCataloguePDF(
 ): Promise<Blob> {
     const {
         title = 'Product Catalogue',
-        subtitle = '2026 Edition',
+        subtitle = `${format(new Date(), 'yyyy')} Edition`,
         includePrice = true,
         language = 'sv',
     } = options;
@@ -80,23 +94,28 @@ export async function generateCataloguePDF(
     const productsByCategory = groupByCategory(products);
     const categories = Object.keys(productsByCategory).sort();
 
+    // Preload images
+    const imageCache = await preloadImages(products);
+
     let currentPage = 1;
 
     // Page 1: Cover
-    addCoverPage(doc, pageWidth, pageHeight, title, subtitle, categories.length, products.length);
+    addCoverPage(doc, pageWidth, pageHeight, title, subtitle, categories.length, products.length, language);
     currentPage++;
 
     // Page 2: Table of Contents
     doc.addPage();
-    currentPage = addTableOfContents(doc, categories, productsByCategory, pageWidth, margin, currentPage);
+    addTableOfContents(doc, categories, productsByCategory, pageWidth, pageHeight, margin, currentPage, language);
+    currentPage++;
 
-    // Category Pages
+    // Category Pages with Product Cards
     for (const category of categories) {
         doc.addPage();
-        currentPage = addCategoryPage(
+        currentPage = await addCategoryPage(
             doc,
             category,
             productsByCategory[category],
+            imageCache,
             pageWidth,
             pageHeight,
             margin,
@@ -114,7 +133,44 @@ export async function generateCataloguePDF(
 }
 
 /**
- * Cover Page - Modern Hero Design
+ * Preload product images for embedding in PDF
+ */
+async function preloadImages(products: CatalogueProduct[]): Promise<Map<number, string>> {
+    const cache = new Map<number, string>();
+
+    for (const product of products) {
+        if (product.image) {
+            try {
+                const response = await fetch(product.image);
+                if (response.ok) {
+                    const blob = await response.blob();
+                    const base64 = await blobToBase64(blob);
+                    cache.set(product.id, base64);
+                }
+            } catch (error) {
+                // Skip failed images
+                console.warn(`Failed to load image for product ${product.id}`);
+            }
+        }
+    }
+
+    return cache;
+}
+
+/**
+ * Convert blob to base64
+ */
+function blobToBase64(blob: Blob): Promise<string> {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result as string);
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+    });
+}
+
+/**
+ * Cover Page - Premium Modern Design
  */
 function addCoverPage(
     doc: jsPDF,
@@ -123,257 +179,385 @@ function addCoverPage(
     title: string,
     subtitle: string,
     categoryCount: number,
-    productCount: number
+    productCount: number,
+    language: string
 ) {
-    // Full page primary color background
-    doc.setFillColor(...COLORS.primary);
+    // Full page primary background
+    setColor(doc, THEME.primary, 'fill');
     doc.rect(0, 0, pageWidth, pageHeight, 'F');
 
-    // Decorative gold accent bar at top
-    doc.setFillColor(...COLORS.accent);
-    doc.rect(0, 0, pageWidth, 8, 'F');
+    // Top gold accent bar
+    setColor(doc, THEME.accent, 'fill');
+    doc.rect(0, 0, pageWidth, 6, 'F');
 
-    // Decorative gold accent circle (bottom right)
-    doc.setFillColor(245, 215, 120); // Light gold for subtle decoration
-    doc.circle(pageWidth + 30, pageHeight - 60, 120, 'F');
+    // Diagonal gold stripe decoration (top-right corner)
+    setColor(doc, THEME.accent, 'fill');
+    doc.triangle(pageWidth - 80, 0, pageWidth, 0, pageWidth, 80, 'F');
 
-    // Company Name - Large
-    doc.setTextColor(...COLORS.white);
-    doc.setFontSize(42);
+    // Company Logo Area (white circle background)
+    setColor(doc, THEME.white, 'fill');
+    doc.circle(pageWidth / 2, 55, 25, 'F');
+
+    // Company Name
+    setColor(doc, THEME.white, 'text');
+    doc.setFontSize(36);
     doc.setFont('helvetica', 'bold');
-    doc.text(COMPANY.name.toUpperCase(), pageWidth / 2, 70, { align: 'center' });
+    doc.text(COMPANY.name.toUpperCase(), pageWidth / 2, 100, { align: 'center' });
 
     // Tagline
+    setColor(doc, THEME.accent, 'text');
     doc.setFontSize(14);
     doc.setFont('helvetica', 'italic');
-    doc.setTextColor(...COLORS.accent);
-    doc.text(COMPANY.tagline, pageWidth / 2, 82, { align: 'center' });
+    doc.text(COMPANY.tagline, pageWidth / 2, 112, { align: 'center' });
 
-    // Horizontal gold line
-    doc.setDrawColor(...COLORS.accent);
-    doc.setLineWidth(0.8);
-    doc.line(40, 95, pageWidth - 40, 95);
+    // Decorative line
+    setColor(doc, THEME.accent, 'draw');
+    doc.setLineWidth(1);
+    doc.line(60, 125, pageWidth - 60, 125);
 
     // Catalogue Title
-    doc.setTextColor(...COLORS.white);
+    setColor(doc, THEME.white, 'text');
     doc.setFontSize(28);
     doc.setFont('helvetica', 'bold');
-    doc.text(title.toUpperCase(), pageWidth / 2, 130, { align: 'center' });
+    doc.text(title.toUpperCase(), pageWidth / 2, 150, { align: 'center' });
 
-    // Subtitle / Edition
+    // Subtitle
+    setColor(doc, THEME.accent, 'text');
     doc.setFontSize(16);
     doc.setFont('helvetica', 'normal');
-    doc.setTextColor(...COLORS.accent);
-    doc.text(subtitle, pageWidth / 2, 142, { align: 'center' });
+    doc.text(subtitle, pageWidth / 2, 162, { align: 'center' });
 
-    // Stats boxes
-    const boxY = 170;
-    const boxWidth = 50;
-    const boxHeight = 35;
-    const gap = 20;
+    // Stats Section
+    const statsY = 185;
+    const boxWidth = 55;
+    const boxHeight = 40;
+    const gap = 15;
     const startX = (pageWidth - (boxWidth * 2 + gap)) / 2;
 
-    // Products box
-    doc.setFillColor(...COLORS.accent);
-    doc.roundedRect(startX, boxY, boxWidth, boxHeight, 3, 3, 'F');
-    doc.setTextColor(...COLORS.primary);
-    doc.setFontSize(24);
+    // Products stat box
+    setColor(doc, THEME.accent, 'fill');
+    doc.roundedRect(startX, statsY, boxWidth, boxHeight, 4, 4, 'F');
+    setColor(doc, THEME.primary, 'text');
+    doc.setFontSize(28);
     doc.setFont('helvetica', 'bold');
-    doc.text(productCount.toString(), startX + boxWidth / 2, boxY + 18, { align: 'center' });
+    doc.text(productCount.toString(), startX + boxWidth / 2, statsY + 22, { align: 'center' });
     doc.setFontSize(9);
     doc.setFont('helvetica', 'normal');
-    doc.text('PRODUCTS', startX + boxWidth / 2, boxY + 28, { align: 'center' });
+    doc.text(language === 'sv' ? 'PRODUKTER' : 'PRODUCTS', startX + boxWidth / 2, statsY + 33, { align: 'center' });
 
-    // Categories box
-    doc.setFillColor(...COLORS.accent);
-    doc.roundedRect(startX + boxWidth + gap, boxY, boxWidth, boxHeight, 3, 3, 'F');
-    doc.setTextColor(...COLORS.primary);
-    doc.setFontSize(24);
+    // Categories stat box
+    setColor(doc, THEME.accent, 'fill');
+    doc.roundedRect(startX + boxWidth + gap, statsY, boxWidth, boxHeight, 4, 4, 'F');
+    setColor(doc, THEME.primary, 'text');
+    doc.setFontSize(28);
     doc.setFont('helvetica', 'bold');
-    doc.text(categoryCount.toString(), startX + boxWidth + gap + boxWidth / 2, boxY + 18, { align: 'center' });
+    doc.text(categoryCount.toString(), startX + boxWidth + gap + boxWidth / 2, statsY + 22, { align: 'center' });
     doc.setFontSize(9);
     doc.setFont('helvetica', 'normal');
-    doc.text('CATEGORIES', startX + boxWidth + gap + boxWidth / 2, boxY + 28, { align: 'center' });
+    doc.text(language === 'sv' ? 'KATEGORIER' : 'CATEGORIES', startX + boxWidth + gap + boxWidth / 2, statsY + 33, { align: 'center' });
 
-    // Bottom section - Contact info
-    const bottomY = pageHeight - 45;
-    doc.setTextColor(...COLORS.white);
-    doc.setFontSize(10);
+    // Bottom contact section
+    const bottomY = pageHeight - 50;
+    setColor(doc, THEME.white, 'text');
+    doc.setFontSize(11);
     doc.setFont('helvetica', 'normal');
     doc.text(COMPANY.website, pageWidth / 2, bottomY, { align: 'center' });
-    doc.text(`${COMPANY.phone}  |  ${COMPANY.email}`, pageWidth / 2, bottomY + 6, { align: 'center' });
 
-    // Gold accent bar at bottom
-    doc.setFillColor(...COLORS.accent);
-    doc.rect(0, pageHeight - 8, pageWidth, 8, 'F');
-
-    // Date
-    doc.setTextColor(...COLORS.accent);
     doc.setFontSize(9);
-    doc.text(format(new Date(), 'MMMM yyyy'), pageWidth / 2, pageHeight - 15, { align: 'center' });
+    doc.text(`${COMPANY.phone}  •  ${COMPANY.email}`, pageWidth / 2, bottomY + 7, { align: 'center' });
+    doc.text(COMPANY.address, pageWidth / 2, bottomY + 14, { align: 'center' });
+
+    // Bottom gold bar
+    setColor(doc, THEME.accent, 'fill');
+    doc.rect(0, pageHeight - 6, pageWidth, 6, 'F');
+
+    // Date in bottom corner
+    setColor(doc, THEME.accent, 'text');
+    doc.setFontSize(8);
+    doc.text(format(new Date(), 'MMMM yyyy'), pageWidth / 2, pageHeight - 12, { align: 'center' });
 }
 
 /**
- * Table of Contents
+ * Table of Contents - Clean Modern Design
  */
 function addTableOfContents(
     doc: jsPDF,
     categories: string[],
     productsByCategory: Record<string, CatalogueProduct[]>,
     pageWidth: number,
+    pageHeight: number,
     margin: number,
-    startPage: number
-): number {
+    pageNum: number,
+    language: string
+) {
     // Header
-    addPageHeader(doc, pageWidth, margin, 'Contents');
+    addPageHeader(doc, pageWidth, margin, language === 'sv' ? 'Innehåll' : 'Contents');
 
     let yPos = 55;
+    let startPage = pageNum + 1;
 
-    doc.setFontSize(11);
-    let pageNum = startPage + 1; // Start after TOC
-
+    // Category list with modern styling
     for (const category of categories) {
         const productCount = productsByCategory[category].length;
 
+        // Category row background
+        if (categories.indexOf(category) % 2 === 0) {
+            setColor(doc, THEME.background, 'fill');
+            doc.rect(margin, yPos - 5, pageWidth - 2 * margin, 12, 'F');
+        }
+
         // Category name
+        setColor(doc, THEME.text, 'text');
+        doc.setFontSize(11);
         doc.setFont('helvetica', 'bold');
-        doc.setTextColor(...COLORS.text);
-        doc.text(category, margin, yPos);
+        doc.text(category, margin + 3, yPos);
 
         // Product count
+        setColor(doc, THEME.textMuted, 'text');
+        doc.setFontSize(9);
         doc.setFont('helvetica', 'normal');
-        doc.setTextColor(...COLORS.textLight);
-        doc.text(`(${productCount} products)`, margin + doc.getTextWidth(category) + 3, yPos);
-
-        // Dotted line
-        const textEnd = margin + doc.getTextWidth(category) + doc.getTextWidth(`(${productCount} products)`) + 6;
-        const pageNumX = pageWidth - margin - 10;
-
-        doc.setDrawColor(...COLORS.border);
-        doc.setLineDashPattern([1, 2], 0);
-        doc.line(textEnd, yPos - 1, pageNumX - 5, yPos - 1);
-        doc.setLineDashPattern([], 0);
+        const countText = language === 'sv' ? `${productCount} produkter` : `${productCount} products`;
+        doc.text(countText, margin + 3 + doc.getTextWidth(category) + 5, yPos);
 
         // Page number
-        doc.setTextColor(...COLORS.primary);
+        setColor(doc, THEME.primary, 'text');
         doc.setFont('helvetica', 'bold');
-        doc.text(pageNum.toString(), pageNumX, yPos, { align: 'right' });
+        doc.text(startPage.toString(), pageWidth - margin - 3, yPos, { align: 'right' });
 
-        yPos += 10;
-        pageNum++;
+        // Dotted line
+        const textEndX = margin + 3 + doc.getTextWidth(category) + 5 + doc.getTextWidth(countText) + 5;
+        setColor(doc, THEME.border, 'draw');
+        doc.setLineDashPattern([1, 2], 0);
+        doc.line(textEndX, yPos - 1, pageWidth - margin - 15, yPos - 1);
+        doc.setLineDashPattern([], 0);
+
+        yPos += 12;
+        startPage++;
     }
 
-    // Footer note
-    yPos += 15;
-    doc.setFillColor(...COLORS.lightGray);
-    doc.roundedRect(margin, yPos, pageWidth - 2 * margin, 25, 3, 3, 'F');
+    // Info box at bottom
+    yPos += 20;
+    setColor(doc, THEME.background, 'fill');
+    doc.roundedRect(margin, yPos, pageWidth - 2 * margin, 30, 3, 3, 'F');
 
+    setColor(doc, THEME.textMuted, 'text');
     doc.setFontSize(9);
     doc.setFont('helvetica', 'normal');
-    doc.setTextColor(...COLORS.textLight);
-    doc.text('All prices are in SEK and exclude VAT (25% moms).', margin + 5, yPos + 9);
-    doc.text('Prices and availability are subject to change. Contact us for current stock.', margin + 5, yPos + 17);
 
-    addPageFooter(doc, pageWidth, margin, startPage);
-    return startPage;
+    const infoText1 = language === 'sv'
+        ? 'Alla priser är i SEK exklusive moms (25%).'
+        : 'All prices are in SEK excluding VAT (25%).';
+    const infoText2 = language === 'sv'
+        ? 'Priser och tillgänglighet kan ändras. Kontakta oss för aktuellt lager.'
+        : 'Prices and availability subject to change. Contact us for current stock.';
+
+    doc.text(infoText1, margin + 8, yPos + 12);
+    doc.text(infoText2, margin + 8, yPos + 22);
+
+    // Page footer
+    addPageFooter(doc, pageWidth, pageHeight, margin, pageNum);
 }
 
 /**
- * Category Page with Product Grid
+ * Category Page with Product Cards and Images
  */
-function addCategoryPage(
+async function addCategoryPage(
     doc: jsPDF,
     category: string,
     products: CatalogueProduct[],
+    imageCache: Map<number, string>,
     pageWidth: number,
     pageHeight: number,
     margin: number,
     pageNum: number,
     includePrice: boolean,
     language: string
-): number {
-    // Category header with colored bar
-    doc.setFillColor(...COLORS.primary);
-    doc.rect(0, 0, pageWidth, 35, 'F');
+): Promise<number> {
+    // Category header bar
+    setColor(doc, THEME.primary, 'fill');
+    doc.rect(0, 0, pageWidth, 30, 'F');
 
-    doc.setTextColor(...COLORS.white);
-    doc.setFontSize(20);
+    setColor(doc, THEME.white, 'text');
+    doc.setFontSize(18);
     doc.setFont('helvetica', 'bold');
-    doc.text(category.toUpperCase(), margin, 23);
+    doc.text(category.toUpperCase(), margin, 20);
 
     // Product count badge
-    doc.setFillColor(...COLORS.accent);
-    doc.roundedRect(pageWidth - margin - 30, 12, 28, 12, 2, 2, 'F');
-    doc.setTextColor(...COLORS.primary);
-    doc.setFontSize(10);
+    setColor(doc, THEME.accent, 'fill');
+    doc.roundedRect(pageWidth - margin - 35, 8, 32, 14, 2, 2, 'F');
+    setColor(doc, THEME.primary, 'text');
+    doc.setFontSize(9);
     doc.setFont('helvetica', 'bold');
-    doc.text(`${products.length} items`, pageWidth - margin - 16, 20, { align: 'center' });
+    const countText = `${products.length} ${language === 'sv' ? 'st' : 'items'}`;
+    doc.text(countText, pageWidth - margin - 19, 17, { align: 'center' });
 
-    // Products table
-    const tableData = products.map((p, index) => {
-        const row = [
-            (index + 1).toString(),
-            p.sku || '-',
-            p.name,
-        ];
+    // Product grid layout
+    const cardWidth = (pageWidth - 2 * margin - 10) / 2; // 2 columns with gap
+    const cardHeight = 55;
+    const gap = 10;
+    let yPos = 40;
+    let col = 0;
 
-        if (includePrice) {
-            const price = p.price ? `${parseFloat(p.price).toFixed(0)} kr` : 'Contact us';
-            row.push(price);
+    for (let i = 0; i < products.length; i++) {
+        const product = products[i];
+        const xPos = margin + col * (cardWidth + gap);
+
+        // Check if we need a new page
+        if (yPos + cardHeight > pageHeight - 25) {
+            addPageFooter(doc, pageWidth, pageHeight, margin, pageNum);
+            doc.addPage();
+            pageNum++;
+            yPos = 20;
+
+            // Add category continuation header
+            setColor(doc, THEME.primary, 'fill');
+            doc.rect(0, 0, pageWidth, 15, 'F');
+            setColor(doc, THEME.white, 'text');
+            doc.setFontSize(10);
+            doc.setFont('helvetica', 'bold');
+            doc.text(`${category} (${language === 'sv' ? 'fortsättning' : 'continued'})`, margin, 10);
+            yPos = 25;
         }
 
-        return row;
-    });
+        // Product card
+        drawProductCard(doc, product, imageCache, xPos, yPos, cardWidth, cardHeight, includePrice, language);
 
-    const headers = ['#', 'SKU', language === 'sv' ? 'Produkt' : 'Product'];
-    if (includePrice) {
-        headers.push(language === 'sv' ? 'Pris' : 'Price');
+        col++;
+        if (col >= 2) {
+            col = 0;
+            yPos += cardHeight + gap;
+        }
     }
 
-    autoTable(doc, {
-        startY: 45,
-        head: [headers],
-        body: tableData,
-        theme: 'striped',
-        headStyles: {
-            fillColor: COLORS.primary,
-            textColor: COLORS.white,
-            fontStyle: 'bold',
-            fontSize: 10,
-            cellPadding: 4,
-        },
-        bodyStyles: {
-            fontSize: 9,
-            textColor: COLORS.text,
-            cellPadding: 3,
-        },
-        alternateRowStyles: {
-            fillColor: COLORS.lightGray,
-        },
-        columnStyles: {
-            0: { cellWidth: 10, halign: 'center' },
-            1: { cellWidth: 25, fontStyle: 'bold', font: 'courier' },
-            2: { cellWidth: 'auto' },
-            3: includePrice ? { cellWidth: 25, halign: 'right', fontStyle: 'bold', textColor: COLORS.primary } : {},
-        },
-        margin: { left: margin, right: margin },
-        didDrawPage: () => {
-            addPageFooter(doc, pageWidth, margin, pageNum);
-        },
-    });
-
-    // Check if we need more pages for this category
-    const finalY = (doc as any).lastAutoTable?.finalY || pageHeight - 30;
-
-    if (finalY > pageHeight - 30) {
-        pageNum++;
-    }
-
+    addPageFooter(doc, pageWidth, pageHeight, margin, pageNum);
     return pageNum;
 }
 
 /**
- * Back Cover - Contact & Order Information
+ * Draw individual product card with image
+ */
+function drawProductCard(
+    doc: jsPDF,
+    product: CatalogueProduct,
+    imageCache: Map<number, string>,
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+    includePrice: boolean,
+    language: string
+) {
+    // Card background
+    setColor(doc, THEME.white, 'fill');
+    doc.roundedRect(x, y, width, height, 3, 3, 'F');
+
+    // Card border
+    setColor(doc, THEME.border, 'draw');
+    doc.setLineWidth(0.3);
+    doc.roundedRect(x, y, width, height, 3, 3, 'S');
+
+    const imageSize = 35;
+    const imageX = x + 5;
+    const imageY = y + (height - imageSize) / 2;
+
+    // Product image
+    const imageData = imageCache.get(product.id);
+    if (imageData) {
+        try {
+            doc.addImage(imageData, 'JPEG', imageX, imageY, imageSize, imageSize);
+        } catch {
+            // Draw placeholder if image fails
+            drawImagePlaceholder(doc, imageX, imageY, imageSize);
+        }
+    } else {
+        drawImagePlaceholder(doc, imageX, imageY, imageSize);
+    }
+
+    // Text area
+    const textX = imageX + imageSize + 8;
+    const textWidth = width - imageSize - 20;
+
+    // Product name (truncate if too long)
+    setColor(doc, THEME.text, 'text');
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'bold');
+    const productName = truncateText(doc, product.name, textWidth);
+    doc.text(productName, textX, y + 12);
+
+    // SKU
+    if (product.sku) {
+        setColor(doc, THEME.textMuted, 'text');
+        doc.setFontSize(8);
+        doc.setFont('courier', 'normal');
+        doc.text(`SKU: ${product.sku}`, textX, y + 20);
+    }
+
+    // Description (truncate)
+    if (product.description) {
+        setColor(doc, THEME.textMuted, 'text');
+        doc.setFontSize(7);
+        doc.setFont('helvetica', 'normal');
+        const desc = truncateText(doc, product.description.replace(/<[^>]*>/g, ''), textWidth);
+        doc.text(desc, textX, y + 28);
+    }
+
+    // Price tag
+    if (includePrice && product.price) {
+        const priceY = y + height - 10;
+        const priceText = `${parseFloat(product.price).toLocaleString('sv-SE')} kr`;
+
+        setColor(doc, THEME.primary, 'fill');
+        const priceWidth = doc.getTextWidth(priceText) + 8;
+        doc.roundedRect(textX, priceY - 6, priceWidth, 10, 2, 2, 'F');
+
+        setColor(doc, THEME.white, 'text');
+        doc.setFontSize(9);
+        doc.setFont('helvetica', 'bold');
+        doc.text(priceText, textX + 4, priceY + 1);
+
+        // Show sale badge if on sale
+        if (product.salePrice && product.regularPrice && product.salePrice !== product.regularPrice) {
+            setColor(doc, THEME.accent, 'fill');
+            doc.roundedRect(textX + priceWidth + 3, priceY - 6, 20, 10, 2, 2, 'F');
+            setColor(doc, THEME.primary, 'text');
+            doc.setFontSize(7);
+            doc.setFont('helvetica', 'bold');
+            doc.text('SALE', textX + priceWidth + 13, priceY + 1, { align: 'center' });
+        }
+    }
+}
+
+/**
+ * Draw image placeholder
+ */
+function drawImagePlaceholder(doc: jsPDF, x: number, y: number, size: number) {
+    setColor(doc, THEME.background, 'fill');
+    doc.roundedRect(x, y, size, size, 2, 2, 'F');
+    setColor(doc, THEME.border, 'draw');
+    doc.roundedRect(x, y, size, size, 2, 2, 'S');
+
+    // Camera icon placeholder
+    setColor(doc, THEME.textMuted, 'text');
+    doc.setFontSize(20);
+    doc.text('📷', x + size / 2 - 5, y + size / 2 + 3);
+}
+
+/**
+ * Truncate text to fit width
+ */
+function truncateText(doc: jsPDF, text: string, maxWidth: number): string {
+    if (!text) return '';
+    if (doc.getTextWidth(text) <= maxWidth) return text;
+
+    let truncated = text;
+    while (doc.getTextWidth(truncated + '...') > maxWidth && truncated.length > 0) {
+        truncated = truncated.slice(0, -1);
+    }
+    return truncated + '...';
+}
+
+/**
+ * Back Cover - Order & Contact Information
  */
 function addBackCover(
     doc: jsPDF,
@@ -382,52 +566,56 @@ function addBackCover(
     margin: number,
     language: string
 ) {
-    // Header bar
-    doc.setFillColor(...COLORS.primary);
-    doc.rect(0, 0, pageWidth, 50, 'F');
+    // Header section
+    setColor(doc, THEME.primary, 'fill');
+    doc.rect(0, 0, pageWidth, 55, 'F');
 
-    doc.setTextColor(...COLORS.white);
-    doc.setFontSize(24);
+    setColor(doc, THEME.white, 'text');
+    doc.setFontSize(26);
     doc.setFont('helvetica', 'bold');
-    doc.text(language === 'sv' ? 'BESTÄLL IDAG' : 'ORDER TODAY', pageWidth / 2, 30, { align: 'center' });
+    doc.text(language === 'sv' ? 'BESTÄLL IDAG' : 'ORDER TODAY', pageWidth / 2, 28, { align: 'center' });
 
-    doc.setFontSize(11);
+    setColor(doc, THEME.accent, 'text');
+    doc.setFontSize(12);
     doc.setFont('helvetica', 'normal');
-    doc.setTextColor(...COLORS.accent);
-    doc.text(language === 'sv' ? 'Snabb leverans i hela Sverige' : 'Fast delivery across Sweden', pageWidth / 2, 42, { align: 'center' });
+    doc.text(
+        language === 'sv' ? 'Snabb leverans i hela Sverige & Europa' : 'Fast delivery across Sweden & Europe',
+        pageWidth / 2, 42, { align: 'center' }
+    );
 
     let yPos = 70;
 
-    // Contact Section
-    doc.setFillColor(...COLORS.lightGray);
-    doc.roundedRect(margin, yPos, pageWidth - 2 * margin, 55, 5, 5, 'F');
+    // Contact card
+    setColor(doc, THEME.background, 'fill');
+    doc.roundedRect(margin, yPos, pageWidth - 2 * margin, 65, 5, 5, 'F');
 
-    doc.setTextColor(...COLORS.primary);
+    setColor(doc, THEME.primary, 'text');
     doc.setFontSize(14);
     doc.setFont('helvetica', 'bold');
-    doc.text(language === 'sv' ? 'Kontakta Oss' : 'Contact Us', margin + 10, yPos + 15);
+    doc.text(language === 'sv' ? 'KONTAKTA OSS' : 'CONTACT US', margin + 12, yPos + 18);
 
-    doc.setTextColor(...COLORS.text);
+    setColor(doc, THEME.text, 'text');
     doc.setFontSize(10);
     doc.setFont('helvetica', 'normal');
-    doc.text(`📍  ${COMPANY.address}`, margin + 10, yPos + 27);
-    doc.text(`📞  ${COMPANY.phone}`, margin + 10, yPos + 37);
-    doc.text(`✉️  ${COMPANY.email}`, margin + 10, yPos + 47);
 
-    doc.setTextColor(...COLORS.primary);
-    doc.setFont('helvetica', 'bold');
-    doc.text(`🌐  ${COMPANY.website}`, pageWidth - margin - 10, yPos + 27, { align: 'right' });
-    doc.setFont('helvetica', 'normal');
-    doc.setTextColor(...COLORS.textLight);
-    doc.text(`VAT: ${COMPANY.vat}`, pageWidth - margin - 10, yPos + 37, { align: 'right' });
+    const contactInfo = [
+        { icon: '📍', text: COMPANY.address },
+        { icon: '📞', text: COMPANY.phone },
+        { icon: '✉️', text: COMPANY.email },
+        { icon: '🌐', text: COMPANY.website },
+    ];
 
-    yPos += 70;
+    contactInfo.forEach((item, i) => {
+        doc.text(`${item.icon}  ${item.text}`, margin + 12, yPos + 32 + i * 8);
+    });
 
-    // Why Choose Us
-    doc.setTextColor(...COLORS.primary);
+    yPos += 80;
+
+    // Why choose us section
+    setColor(doc, THEME.primary, 'text');
     doc.setFontSize(14);
     doc.setFont('helvetica', 'bold');
-    doc.text(language === 'sv' ? 'Varför Välja Oss?' : 'Why Choose Us?', margin, yPos);
+    doc.text(language === 'sv' ? 'VARFÖR VÄLJA OSS?' : 'WHY CHOOSE US?', margin, yPos);
 
     yPos += 12;
     const benefits = language === 'sv' ? [
@@ -440,34 +628,34 @@ function addBackCover(
     ] : [
         '✓  Wholesale prices with up to 20% discount',
         '✓  Free shipping on orders over 5,000 SEK',
-        '✓  Invoice payment with 28-day credit for businesses',
+        '✓  Invoice with 28-day credit for businesses',
         '✓  Own manufacturing of Anmol Electric Tandoor',
         '✓  Fast delivery in Stockholm area',
         '✓  Over 1000+ satisfied restaurant customers',
     ];
 
-    doc.setTextColor(...COLORS.text);
+    setColor(doc, THEME.text, 'text');
     doc.setFontSize(10);
     doc.setFont('helvetica', 'normal');
     benefits.forEach((benefit) => {
         doc.text(benefit, margin, yPos);
-        yPos += 8;
+        yPos += 9;
     });
 
-    yPos += 15;
+    yPos += 12;
 
-    // How to Order Box
-    doc.setFillColor(...COLORS.accent);
-    doc.roundedRect(margin, yPos, pageWidth - 2 * margin, 45, 5, 5, 'F');
+    // How to order box
+    setColor(doc, THEME.accent, 'fill');
+    doc.roundedRect(margin, yPos, pageWidth - 2 * margin, 50, 5, 5, 'F');
 
-    doc.setTextColor(...COLORS.primary);
+    setColor(doc, THEME.primary, 'text');
     doc.setFontSize(12);
     doc.setFont('helvetica', 'bold');
-    doc.text(language === 'sv' ? 'HUR DU BESTÄLLER' : 'HOW TO ORDER', margin + 10, yPos + 12);
+    doc.text(language === 'sv' ? 'SÅ HÄR BESTÄLLER DU' : 'HOW TO ORDER', margin + 12, yPos + 14);
 
-    doc.setFontSize(10);
+    doc.setFontSize(9);
     doc.setFont('helvetica', 'normal');
-    const orderSteps = language === 'sv' ? [
+    const steps = language === 'sv' ? [
         '1. Besök restaurantpack.se och skapa ett företagskonto',
         '2. Lägg till produkter i varukorgen',
         '3. Välj leveransalternativ och betalningsmetod',
@@ -479,72 +667,76 @@ function addBackCover(
         '4. Get your goods delivered within 2-5 business days',
     ];
 
-    orderSteps.forEach((step, i) => {
-        doc.text(step, margin + 10, yPos + 22 + i * 6);
+    steps.forEach((step, i) => {
+        doc.text(step, margin + 12, yPos + 26 + i * 6);
     });
 
-    // Bottom footer
-    doc.setFillColor(...COLORS.primary);
-    doc.rect(0, pageHeight - 25, pageWidth, 25, 'F');
+    // Footer bar
+    setColor(doc, THEME.primary, 'fill');
+    doc.rect(0, pageHeight - 30, pageWidth, 30, 'F');
 
-    doc.setTextColor(...COLORS.white);
-    doc.setFontSize(12);
+    setColor(doc, THEME.white, 'text');
+    doc.setFontSize(14);
     doc.setFont('helvetica', 'bold');
-    doc.text(COMPANY.name, pageWidth / 2, pageHeight - 14, { align: 'center' });
+    doc.text(COMPANY.name, pageWidth / 2, pageHeight - 18, { align: 'center' });
 
-    doc.setFontSize(9);
-    doc.setFont('helvetica', 'normal');
-    doc.setTextColor(...COLORS.accent);
-    doc.text(COMPANY.tagline, pageWidth / 2, pageHeight - 7, { align: 'center' });
+    setColor(doc, THEME.accent, 'text');
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'italic');
+    doc.text(COMPANY.tagline, pageWidth / 2, pageHeight - 9, { align: 'center' });
 }
 
 /**
- * Page Header
+ * Page Header - Consistent across pages
  */
 function addPageHeader(doc: jsPDF, pageWidth: number, margin: number, title: string) {
-    // Accent line
-    doc.setFillColor(...COLORS.primary);
-    doc.rect(0, 0, pageWidth, 5, 'F');
+    // Top accent bar
+    setColor(doc, THEME.primary, 'fill');
+    doc.rect(0, 0, pageWidth, 4, 'F');
 
     // Title
-    doc.setTextColor(...COLORS.primary);
-    doc.setFontSize(22);
+    setColor(doc, THEME.primary, 'text');
+    doc.setFontSize(20);
     doc.setFont('helvetica', 'bold');
-    doc.text(title.toUpperCase(), margin, 25);
+    doc.text(title.toUpperCase(), margin, 22);
 
-    // Company name (right)
-    doc.setTextColor(...COLORS.textLight);
-    doc.setFontSize(10);
+    // Company name (right aligned)
+    setColor(doc, THEME.textMuted, 'text');
+    doc.setFontSize(9);
     doc.setFont('helvetica', 'normal');
-    doc.text(COMPANY.name, pageWidth - margin, 25, { align: 'right' });
+    doc.text(COMPANY.name, pageWidth - margin, 22, { align: 'right' });
 
     // Separator line
-    doc.setDrawColor(...COLORS.border);
+    setColor(doc, THEME.border, 'draw');
     doc.setLineWidth(0.5);
-    doc.line(margin, 32, pageWidth - margin, 32);
+    doc.line(margin, 28, pageWidth - margin, 28);
 }
 
 /**
- * Page Footer
+ * Page Footer - Consistent with contact info on all pages
  */
-function addPageFooter(doc: jsPDF, pageWidth: number, margin: number, pageNum: number) {
-    const pageHeight = doc.internal.pageSize.getHeight();
+function addPageFooter(doc: jsPDF, pageWidth: number, pageHeight: number, margin: number, pageNum: number) {
+    const footerY = pageHeight - 18;
 
-    // Footer line
-    doc.setDrawColor(...COLORS.border);
+    // Footer separator line
+    setColor(doc, THEME.border, 'draw');
     doc.setLineWidth(0.3);
-    doc.line(margin, pageHeight - 15, pageWidth - margin, pageHeight - 15);
+    doc.line(margin, footerY, pageWidth - margin, footerY);
 
-    // Website
-    doc.setFontSize(8);
+    // Contact info (left)
+    setColor(doc, THEME.textMuted, 'text');
+    doc.setFontSize(7);
     doc.setFont('helvetica', 'normal');
-    doc.setTextColor(...COLORS.textLight);
-    doc.text(COMPANY.website, margin, pageHeight - 8);
+    doc.text(`${COMPANY.website}  •  ${COMPANY.phone}  •  ${COMPANY.email}`, margin, footerY + 6);
 
-    // Page number
-    doc.setTextColor(...COLORS.primary);
+    // Address (left, second line)
+    doc.text(COMPANY.address, margin, footerY + 11);
+
+    // Page number (right)
+    setColor(doc, THEME.primary, 'text');
+    doc.setFontSize(9);
     doc.setFont('helvetica', 'bold');
-    doc.text(`${pageNum}`, pageWidth - margin, pageHeight - 8, { align: 'right' });
+    doc.text(`${pageNum}`, pageWidth - margin, footerY + 8, { align: 'right' });
 }
 
 /**

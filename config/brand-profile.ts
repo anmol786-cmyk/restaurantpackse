@@ -12,7 +12,8 @@
 export const brandProfile = {
     // Basic Information
     name: "Anmol Wholesale",
-    tagline: "From Our Restaurant Kitchen to Yours",
+    tagline: "Kitchen to Kitchen",
+    taglineFull: "From Our Restaurant Kitchen to Yours",
     description: "Sweden's trusted B2B wholesale supplier for restaurants, grocery stores, and caterers. Backed by Anmol Sweets & Restaurant's culinary expertise. Authentic Indo-Pak products, bulk ingredients, and manufacturer of the Anmol Electric Tandoor.",
 
     // Contact Information

@@ -3,6 +3,7 @@
 import { Phone, Mail, MapPin, Clock, ShoppingCart } from "lucide-react";
 import Link from "next/link";
 import { brandConfig } from "@/config/brand.config";
+import { brandProfile } from "@/config/brand-profile";
 import { useEffect, useState } from "react";
 import { getStoreStatus, type StoreStatus } from "@/lib/store-hours";
 import { cn } from "@/lib/utils";
@@ -62,7 +63,7 @@ export function TopInfoBar() {
         <div className="hidden xl:flex items-center gap-2 text-white/70">
           <span className="text-white font-black uppercase tracking-widest text-[9px] bg-white/20 px-1.5 py-0.5 rounded">Anmol Advantage</span>
           <span>•</span>
-          <span className="italic">"From Our Restaurant Kitchen to Yours"</span>
+          <span className="italic">"{brandProfile.tagline}"</span>
         </div>
 
         {/* Right: Contact & Delivery */}

@@ -142,7 +142,7 @@ export function anmolWholesaleOrganizationSchemaFull(baseUrl: string = 'https://
   return {
     ...baseSchema,
 
-    slogan: 'From Our Restaurant Kitchen to Yours',
+    slogan: 'Kitchen to Kitchen',
 
     // B2B Payment methods
     paymentAccepted: [
