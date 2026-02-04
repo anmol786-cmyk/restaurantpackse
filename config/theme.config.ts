@@ -446,19 +446,19 @@ export const royalHeritageTheme: ThemeConfig = {
   colors: {
     ...defaultTheme.colors,
 
-    // Primary: Deep Burgundy/Maroon - Represents royalty, tradition, premium quality
+    // Primary: Anmol Red - Bold, Trust, Heritage
     primary: {
       50: '#fef2f2',   // Lightest - subtle backgrounds
       100: '#fee2e2',
       200: '#fecaca',
-      300: '#fca5a5',
-      400: '#f87171',
-      500: '#9f1239',  // Main burgundy red
-      600: '#881337',
-      700: '#881337',  // Dark - text, borders
-      800: '#7f1d1d',
-      900: '#7f1d1d',
-      950: '#450a0a',  // Darkest - deep accents
+      300: '#f87171',
+      400: '#dc2626',
+      500: '#b01116',  // Main Anmol Red
+      600: '#991b1b',
+      700: '#7f1d1d',  // Dark - text, borders
+      800: '#651a1a',
+      900: '#4a1414',
+      950: '#2d0a0a',  // Darkest - deep accents
     },
 
     // Secondary: Royal Gold - Represents luxury, celebration, premium, tradition

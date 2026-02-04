@@ -33,9 +33,9 @@ const BANK_INFO = {
     clearingNumber: '####',
 };
 
-// Theme Colors (Royal Heritage) as fixed-length tuples
+// Theme Colors (Anmol Red) as fixed-length tuples
 const COLORS: Record<string, [number, number, number]> = {
-    primary: [159, 18, 57],      // Burgundy #9f1239
+    primary: [176, 17, 22],      // Anmol Red #b01116
     accent: [234, 179, 8],       // Gold #eab308
     text: [28, 25, 23],          // Dark gray #1c1917
     lightGray: [243, 244, 246],  // #f3f4f6
