@@ -4,13 +4,18 @@ import Script from 'next/script';
 import { brandProfile } from '@/config/brand-profile';
 import { Facebook, Instagram, Twitter, MapPin, Phone, Mail, Clock, Youtube, ExternalLink, Linkedin } from 'lucide-react';
 import { getOnSaleProducts, getProductCategories } from '@/lib/woocommerce';
+import { CatalogueCTA } from './catalogue-cta';
 
 export async function Footer() {
   const saleProducts = await getOnSaleProducts(3);
   const categories = await getProductCategories({ parent: 0, per_page: 5, hide_empty: true });
 
   return (
-    <footer className="w-full bg-slate-50 border-t border-slate-200 mt-20">
+    <>
+      {/* Download Catalogue CTA Section */}
+      <CatalogueCTA />
+
+      <footer className="w-full bg-slate-50 border-t border-slate-200">
       <div className="site-container py-16">
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-12 mb-16">
 
@@ -136,5 +141,6 @@ export async function Footer() {
       {/* Decorative Brand Accent - Red Bottom bar as requested */}
       <div className="h-1.5 w-full bg-primary" />
     </footer>
+    </>
   );
 }
