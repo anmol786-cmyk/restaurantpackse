@@ -99,13 +99,32 @@ export const BULK_PRICING_RULES: BulkPricingRule[] = [
 ];
 
 /**
- * Global Wholesale Tiered Pricing
- * Applied to all products unless overridden or restricted
+ * Wholesale Tier Type
  */
-export const WHOLESALE_TIERS = [
-  { minQuantity: 10, discount: 0.10, label: 'Bulk (10+)' },
-  { minQuantity: 50, discount: 0.16, label: 'Wholesale (50+)' },
-  { minQuantity: 100, discount: 0.20, label: 'Commercial (100+)' },
+export interface WholesaleTier {
+  minQuantity: number;
+  discount: number;
+  label: string;
+}
+
+/**
+ * Global Wholesale Tiered Pricing
+ * DISABLED: Currently only Electric Tandoor (ID 161) has quantity discounts
+ * Other products will have discounts recalculated and re-enabled later
+ */
+export const WHOLESALE_TIERS: WholesaleTier[] = [
+  // Temporarily disabled - will be recalculated
+  // { minQuantity: 10, discount: 0.10, label: 'Bulk (10+)' },
+  // { minQuantity: 50, discount: 0.16, label: 'Wholesale (50+)' },
+  // { minQuantity: 100, discount: 0.20, label: 'Commercial (100+)' },
+];
+
+/**
+ * Products that have quantity discounts enabled
+ * Only these products will show bulk pricing tiers
+ */
+export const QUANTITY_DISCOUNT_ENABLED_PRODUCTS = [
+  161, // Mini Electric Tandoor
 ];
 
 /**
@@ -235,13 +254,19 @@ export const CommerceRules = {
   /**
    * Get tiered price based on quantity
    * For wholesale customers
+   * Note: Global tiers are currently disabled - only product-specific rules apply
    */
-  getTieredPrice(basePrice: number, quantity: number, isWholesaleUser: boolean = false): { unitPrice: number; discount: number; label: string | null } {
+  getTieredPrice(basePrice: number, quantity: number, isWholesaleUser: boolean = false, productId?: number): { unitPrice: number; discount: number; label: string | null } {
     if (!isWholesaleUser) {
       return { unitPrice: basePrice, discount: 0, label: null };
     }
 
-    // Find the highest tier that applies
+    // If productId provided, check if it's enabled for quantity discounts
+    if (productId && !QUANTITY_DISCOUNT_ENABLED_PRODUCTS.includes(productId)) {
+      return { unitPrice: basePrice, discount: 0, label: null };
+    }
+
+    // Find the highest tier that applies (currently empty/disabled)
     const applicableTier = [...WHOLESALE_TIERS]
       .sort((a, b) => b.minQuantity - a.minQuantity)
       .find(tier => quantity >= tier.minQuantity);
@@ -306,9 +331,18 @@ export const CommerceRules = {
 
   /**
    * Check if a product has quantity discount rules
+   * Only returns true for products in QUANTITY_DISCOUNT_ENABLED_PRODUCTS
    */
   hasQuantityDiscount(productId: number): boolean {
-    return QUANTITY_DISCOUNT_RULES.some(r => r.productId === productId);
+    return QUANTITY_DISCOUNT_ENABLED_PRODUCTS.includes(productId) &&
+           QUANTITY_DISCOUNT_RULES.some(r => r.productId === productId);
+  },
+
+  /**
+   * Check if quantity discounts are enabled for a product
+   */
+  isQuantityDiscountEnabled(productId: number): boolean {
+    return QUANTITY_DISCOUNT_ENABLED_PRODUCTS.includes(productId);
   },
 
   /**
@@ -321,8 +355,14 @@ export const CommerceRules = {
   /**
    * Calculate quantity discount price for a product
    * This is the main function for calculating price based on quantity
+   * Only calculates for products in QUANTITY_DISCOUNT_ENABLED_PRODUCTS
    */
   calculateQuantityDiscount(productId: number, quantity: number, basePrice?: number): QuantityDiscountResult | null {
+    // Only calculate for enabled products
+    if (!QUANTITY_DISCOUNT_ENABLED_PRODUCTS.includes(productId)) {
+      return null;
+    }
+
     const rule = this.getQuantityDiscountRule(productId);
 
     if (!rule) {
@@ -486,12 +526,18 @@ export const CommerceRules = {
 
   /**
    * Get effective tiers (either product-specific or global)
+   * Only returns tiers for products in QUANTITY_DISCOUNT_ENABLED_PRODUCTS
    */
   getEffectiveTiers(productId: number, basePrice: number): { quantity: string; price: number; savings: string }[] {
+    // Only show tiers for enabled products
+    if (!QUANTITY_DISCOUNT_ENABLED_PRODUCTS.includes(productId)) {
+      return [];
+    }
+
     const specificTiers = this.getQuantityDiscountTiers(productId);
     if (specificTiers.length > 0) return specificTiers;
 
-    // Use global wholesale tiers
+    // Use global wholesale tiers (currently empty/disabled)
     return WHOLESALE_TIERS.map(tier => ({
       quantity: `${tier.minQuantity}+`,
       price: basePrice * (1 - tier.discount),

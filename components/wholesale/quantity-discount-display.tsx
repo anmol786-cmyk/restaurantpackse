@@ -29,6 +29,9 @@ export function QuantityDiscountDisplay({
   const { user } = useAuthStore();
   const isWholesale = isApprovedWholesaleCustomer(user);
 
+  // Check if quantity discounts are enabled for this product
+  const isDiscountEnabled = CommerceRules.isQuantityDiscountEnabled(productId);
+
   const [discountResult, setDiscountResult] = useState(
     CommerceRules.calculateQuantityDiscount(productId, quantity, basePrice)
   );
@@ -40,6 +43,9 @@ export function QuantityDiscountDisplay({
     const result = CommerceRules.calculateQuantityDiscount(productId, quantity, basePrice);
     setDiscountResult(result);
   }, [productId, quantity, basePrice]);
+
+  // If quantity discounts are not enabled for this product, return null
+  if (!isDiscountEnabled) return null;
 
   // If no tiers and moq is 1, return null
   if (tiers.length === 0 && moq <= 1) return null;
@@ -258,6 +264,11 @@ export function QuantityDiscountDisplay({
  * Inline version for cart items
  */
 export function CartItemDiscount({ productId, quantity, basePrice }: { productId: number; quantity: number; basePrice: number }) {
+  // Check if quantity discounts are enabled for this product
+  if (!CommerceRules.isQuantityDiscountEnabled(productId)) {
+    return null;
+  }
+
   const discountResult = CommerceRules.calculateQuantityDiscount(productId, quantity, basePrice);
 
   if (!discountResult || discountResult.savingsPercent === 0) {

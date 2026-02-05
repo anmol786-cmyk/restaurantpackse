@@ -1,7 +1,7 @@
 'use client';
 
 import { useAuthStore } from '@/store/auth-store';
-import { WHOLESALE_TIERS } from '@/config/commerce-rules';
+import { WHOLESALE_TIERS, QUANTITY_DISCOUNT_ENABLED_PRODUCTS } from '@/config/commerce-rules';
 import { useCurrency } from '@/hooks/use-currency';
 import { Tag, Building2, ChevronRight, Clock, CheckCircle2 } from 'lucide-react';
 import Link from 'next/link';
@@ -9,10 +9,11 @@ import { getWholesaleStatus, getCreditStatus } from '@/lib/auth';
 
 interface WholesalePriceDisplayProps {
     basePrice: number;
+    productId?: number;
     showCompact?: boolean;
 }
 
-export function WholesalePriceDisplay({ basePrice, showCompact = false }: WholesalePriceDisplayProps) {
+export function WholesalePriceDisplay({ basePrice, productId, showCompact = false }: WholesalePriceDisplayProps) {
     const { isAuthenticated, user } = useAuthStore();
     const { format: formatCurrency } = useCurrency();
 
@@ -21,6 +22,16 @@ export function WholesalePriceDisplay({ basePrice, showCompact = false }: Wholes
     const isApprovedWholesale = wholesaleStatus === 'approved';
     const isPendingWholesale = wholesaleStatus === 'pending';
     const isBusinessCustomer = wholesaleStatus !== 'none';
+
+    // Check if this product has quantity discounts enabled
+    // If productId provided and not in enabled list, don't show wholesale tiers
+    const hasGlobalTiers = WHOLESALE_TIERS.length > 0;
+    const isProductDiscountEnabled = productId ? QUANTITY_DISCOUNT_ENABLED_PRODUCTS.includes(productId) : true;
+
+    // If no global tiers and product doesn't have specific discounts, hide this component
+    if (!hasGlobalTiers && !isProductDiscountEnabled) {
+        return null;
+    }
 
     // Not authenticated - show register CTA
     if (!isAuthenticated) {
@@ -71,27 +82,46 @@ export function WholesalePriceDisplay({ basePrice, showCompact = false }: Wholes
                         <span className="text-[11px] text-warning/80">Your business account is being verified. Wholesale pricing will be enabled shortly.</span>
                     </div>
                 </div>
-                {/* Show preview of pricing tiers */}
-                <div className="mt-3 pt-3 border-t border-warning/30">
-                    <span className="text-[10px] text-warning/80 uppercase font-medium">Preview: Pricing after approval</span>
-                    <div className="grid grid-cols-3 gap-1 mt-2 opacity-60">
-                        {WHOLESALE_TIERS.map((tier) => {
-                            const discountedPrice = basePrice * (1 - tier.discount);
-                            return (
-                                <div key={tier.minQuantity} className="flex flex-col items-center p-1 rounded bg-warning/10 border border-warning/20">
-                                    <span className="text-[9px] text-warning font-bold">{tier.minQuantity}+ qty</span>
-                                    <span className="text-[10px] font-bold text-warning">{formatCurrency(discountedPrice)}</span>
-                                </div>
-                            );
-                        })}
+                {/* Show preview of pricing tiers only if there are tiers */}
+                {hasGlobalTiers && (
+                    <div className="mt-3 pt-3 border-t border-warning/30">
+                        <span className="text-[10px] text-warning/80 uppercase font-medium">Preview: Pricing after approval</span>
+                        <div className="grid grid-cols-3 gap-1 mt-2 opacity-60">
+                            {WHOLESALE_TIERS.map((tier) => {
+                                const discountedPrice = basePrice * (1 - tier.discount);
+                                return (
+                                    <div key={tier.minQuantity} className="flex flex-col items-center p-1 rounded bg-warning/10 border border-warning/20">
+                                        <span className="text-[9px] text-warning font-bold">{tier.minQuantity}+ qty</span>
+                                        <span className="text-[10px] font-bold text-warning">{formatCurrency(discountedPrice)}</span>
+                                    </div>
+                                );
+                            })}
+                        </div>
                     </div>
-                </div>
+                )}
             </div>
         );
     }
 
     // Approved wholesale customer - show full pricing tiers
     if (isApprovedWholesale) {
+        // If no global tiers to show, just show status badge
+        if (!hasGlobalTiers) {
+            return (
+                <div className="mt-2 flex items-center justify-between">
+                    <div className="flex items-center gap-1.5">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-green-600" />
+                        <span className="text-[10px] font-bold text-green-600 uppercase tracking-wider">Wholesale Account Active</span>
+                    </div>
+                    {creditStatus === 'approved' && (
+                        <span className="text-[9px] font-medium text-primary bg-primary/10 dark:bg-primary/20 px-1.5 py-0.5 rounded">
+                            28-Day Credit
+                        </span>
+                    )}
+                </div>
+            );
+        }
+
         if (showCompact) {
             // Compact version for smaller spaces
             return (
