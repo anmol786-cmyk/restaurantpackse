@@ -93,7 +93,7 @@ async function fetchProductsForCatalogue(categorySlug?: string): Promise<Catalog
             salePrice: p.sale_price || '',
             currency: 'SEK',
             image: p.images?.[0]?.src || '',
-            category: p.categories?.[0]?.name || 'Other',
+            category: cleanHtmlEntities(p.categories?.[0]?.name || 'Other'),
             description: cleanHtmlEntities(p.short_description || ''),
         }));
 
@@ -127,17 +127,40 @@ async function getCategoryIdBySlug(slug: string): Promise<number | null> {
 
 /**
  * Clean HTML entities from text
+ * Handles both lowercase and uppercase HTML entities
  */
 function cleanHtmlEntities(text: string): string {
     if (!text) return '';
     return text
-        .replace(/&amp;/g, '&')
-        .replace(/&lt;/g, '<')
-        .replace(/&gt;/g, '>')
-        .replace(/&quot;/g, '"')
-        .replace(/&#039;/g, "'")
-        .replace(/&ndash;/g, '–')
-        .replace(/&mdash;/g, '—')
-        .replace(/<[^>]*>/g, '') // Strip HTML tags
+        // Handle common HTML entities (case-insensitive)
+        .replace(/&amp;/gi, '&')
+        .replace(/&lt;/gi, '<')
+        .replace(/&gt;/gi, '>')
+        .replace(/&quot;/gi, '"')
+        .replace(/&#0?39;/gi, "'")
+        .replace(/&apos;/gi, "'")
+        .replace(/&ndash;/gi, '\u2013')
+        .replace(/&mdash;/gi, '\u2014')
+        .replace(/&nbsp;/gi, ' ')
+        .replace(/&copy;/gi, '\u00A9')
+        .replace(/&reg;/gi, '\u00AE')
+        .replace(/&trade;/gi, '\u2122')
+        .replace(/&euro;/gi, '\u20AC')
+        .replace(/&pound;/gi, '\u00A3')
+        .replace(/&yen;/gi, '\u00A5')
+        .replace(/&cent;/gi, '\u00A2')
+        .replace(/&deg;/gi, '\u00B0')
+        .replace(/&hellip;/gi, '...')
+        .replace(/&laquo;/gi, '\u00AB')
+        .replace(/&raquo;/gi, '\u00BB')
+        .replace(/&lsquo;/gi, '\u2018')
+        .replace(/&rsquo;/gi, '\u2019')
+        .replace(/&ldquo;/gi, '\u201C')
+        .replace(/&rdquo;/gi, '\u201D')
+        // Handle numeric entities
+        .replace(/&#(\d+);/g, (_, code) => String.fromCharCode(parseInt(code, 10)))
+        .replace(/&#x([0-9a-f]+);/gi, (_, code) => String.fromCharCode(parseInt(code, 16)))
+        // Strip HTML tags
+        .replace(/<[^>]*>/g, '')
         .trim();
 }

@@ -133,40 +133,27 @@ export async function generateCataloguePDF(
 }
 
 /**
- * Preload product images for embedding in PDF
+ * Image data with format info
  */
-async function preloadImages(products: CatalogueProduct[]): Promise<Map<number, string>> {
-    const cache = new Map<number, string>();
-
-    for (const product of products) {
-        if (product.image) {
-            try {
-                const response = await fetch(product.image);
-                if (response.ok) {
-                    const blob = await response.blob();
-                    const base64 = await blobToBase64(blob);
-                    cache.set(product.id, base64);
-                }
-            } catch (error) {
-                // Skip failed images
-                console.warn(`Failed to load image for product ${product.id}`);
-            }
-        }
-    }
-
-    return cache;
+interface ImageData {
+    base64: string;
+    format: 'JPEG' | 'PNG' | 'GIF' | 'WEBP';
 }
 
 /**
- * Convert blob to base64
+ * Preload product images for embedding in PDF
+ * Skip image loading for server-side PDF generation to avoid issues
  */
-function blobToBase64(blob: Blob): Promise<string> {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onloadend = () => resolve(reader.result as string);
-        reader.onerror = reject;
-        reader.readAsDataURL(blob);
-    });
+async function preloadImages(products: CatalogueProduct[]): Promise<Map<number, ImageData | null>> {
+    const cache = new Map<number, ImageData | null>();
+
+    // For server-side generation, we'll skip images to avoid encoding issues
+    // Images from external URLs often fail in server context
+    for (const product of products) {
+        cache.set(product.id, null);
+    }
+
+    return cache;
 }
 
 /**
@@ -359,13 +346,13 @@ function addTableOfContents(
 }
 
 /**
- * Category Page with Product Cards and Images
+ * Category Page with Product Cards
  */
 async function addCategoryPage(
     doc: jsPDF,
     category: string,
     products: CatalogueProduct[],
-    imageCache: Map<number, string>,
+    imageCache: Map<number, ImageData | null>,
     pageWidth: number,
     pageHeight: number,
     margin: number,
@@ -434,12 +421,12 @@ async function addCategoryPage(
 }
 
 /**
- * Draw individual product card with image
+ * Draw individual product card - Clean text-based design
  */
 function drawProductCard(
     doc: jsPDF,
     product: CatalogueProduct,
-    imageCache: Map<number, string>,
+    imageCache: Map<number, ImageData | null>,
     x: number,
     y: number,
     width: number,
@@ -456,90 +443,65 @@ function drawProductCard(
     doc.setLineWidth(0.3);
     doc.roundedRect(x, y, width, height, 3, 3, 'S');
 
-    const imageSize = 35;
-    const imageX = x + 5;
-    const imageY = y + (height - imageSize) / 2;
+    // Left accent bar
+    setColor(doc, THEME.primary, 'fill');
+    doc.rect(x, y + 3, 3, height - 6, 'F');
 
-    // Product image
-    const imageData = imageCache.get(product.id);
-    if (imageData) {
-        try {
-            doc.addImage(imageData, 'JPEG', imageX, imageY, imageSize, imageSize);
-        } catch {
-            // Draw placeholder if image fails
-            drawImagePlaceholder(doc, imageX, imageY, imageSize);
-        }
-    } else {
-        drawImagePlaceholder(doc, imageX, imageY, imageSize);
-    }
-
-    // Text area
-    const textX = imageX + imageSize + 8;
-    const textWidth = width - imageSize - 20;
+    const padding = 8;
+    const textX = x + padding;
+    const textWidth = width - padding * 2;
 
     // Product name (truncate if too long)
     setColor(doc, THEME.text, 'text');
     doc.setFontSize(10);
     doc.setFont('helvetica', 'bold');
-    const productName = truncateText(doc, product.name, textWidth);
+    const productName = truncateText(doc, product.name, textWidth - 10);
     doc.text(productName, textX, y + 12);
 
-    // SKU
+    // SKU badge
     if (product.sku) {
+        setColor(doc, THEME.background, 'fill');
+        const skuText = product.sku;
+        const skuWidth = doc.getTextWidth(skuText) + 6;
+        doc.roundedRect(textX, y + 16, skuWidth, 8, 1, 1, 'F');
+
         setColor(doc, THEME.textMuted, 'text');
-        doc.setFontSize(8);
-        doc.setFont('courier', 'normal');
-        doc.text(`SKU: ${product.sku}`, textX, y + 20);
+        doc.setFontSize(7);
+        doc.setFont('helvetica', 'normal');
+        doc.text(skuText, textX + 3, y + 21);
     }
 
-    // Description (truncate)
+    // Description (truncate to 2 lines max)
     if (product.description) {
         setColor(doc, THEME.textMuted, 'text');
         doc.setFontSize(7);
         doc.setFont('helvetica', 'normal');
-        const desc = truncateText(doc, product.description.replace(/<[^>]*>/g, ''), textWidth);
-        doc.text(desc, textX, y + 28);
+        const cleanDesc = product.description.replace(/<[^>]*>/g, '').substring(0, 80);
+        const desc = truncateText(doc, cleanDesc, textWidth - 5);
+        doc.text(desc, textX, y + 32);
     }
 
-    // Price tag
+    // Price section at bottom
     if (includePrice && product.price) {
-        const priceY = y + height - 10;
-        const priceText = `${parseFloat(product.price).toLocaleString('sv-SE')} kr`;
+        const priceY = y + height - 8;
+        const price = parseFloat(product.price);
+        const priceText = isNaN(price) ? 'Kontakta oss' : `${price.toLocaleString('sv-SE')} kr`;
 
-        setColor(doc, THEME.primary, 'fill');
-        const priceWidth = doc.getTextWidth(priceText) + 8;
-        doc.roundedRect(textX, priceY - 6, priceWidth, 10, 2, 2, 'F');
-
-        setColor(doc, THEME.white, 'text');
-        doc.setFontSize(9);
+        setColor(doc, THEME.primary, 'text');
+        doc.setFontSize(11);
         doc.setFont('helvetica', 'bold');
-        doc.text(priceText, textX + 4, priceY + 1);
+        doc.text(priceText, textX, priceY);
 
         // Show sale badge if on sale
         if (product.salePrice && product.regularPrice && product.salePrice !== product.regularPrice) {
             setColor(doc, THEME.accent, 'fill');
-            doc.roundedRect(textX + priceWidth + 3, priceY - 6, 20, 10, 2, 2, 'F');
+            doc.roundedRect(textX + doc.getTextWidth(priceText) + 3, priceY - 5, 18, 7, 1, 1, 'F');
             setColor(doc, THEME.primary, 'text');
-            doc.setFontSize(7);
+            doc.setFontSize(6);
             doc.setFont('helvetica', 'bold');
-            doc.text('SALE', textX + priceWidth + 13, priceY + 1, { align: 'center' });
+            doc.text('REA', textX + doc.getTextWidth(priceText) + 12, priceY - 1, { align: 'center' });
         }
     }
-}
-
-/**
- * Draw image placeholder
- */
-function drawImagePlaceholder(doc: jsPDF, x: number, y: number, size: number) {
-    setColor(doc, THEME.background, 'fill');
-    doc.roundedRect(x, y, size, size, 2, 2, 'F');
-    setColor(doc, THEME.border, 'draw');
-    doc.roundedRect(x, y, size, size, 2, 2, 'S');
-
-    // Camera icon placeholder
-    setColor(doc, THEME.textMuted, 'text');
-    doc.setFontSize(20);
-    doc.text('📷', x + size / 2 - 5, y + size / 2 + 3);
 }
 
 /**

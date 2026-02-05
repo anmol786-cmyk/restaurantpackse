@@ -25,39 +25,52 @@ export function formatDate(
 
 /**
  * Decode HTML entities in a string
+ * Handles both lowercase and UPPERCASE entities (e.g., &amp; and &AMP;)
  * @param text - Text containing HTML entities
  * @returns Decoded text
  */
 export function decodeHtmlEntities(text: string): string {
   if (!text) return '';
 
-  // First handle named entities
+  // Handle named entities (case-insensitive with 'gi' flag)
   let decoded = text
-    .replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&quot;/g, '"')
-    .replace(/&#039;/g, "'")
-    .replace(/&#39;/g, "'")
-    .replace(/&apos;/g, "'")
-    .replace(/&nbsp;/g, ' ')
-    .replace(/&ndash;/g, '\u2013')
-    .replace(/&mdash;/g, '\u2014')
-    .replace(/&lsquo;/g, '\u2018')
-    .replace(/&rsquo;/g, '\u2019')
-    .replace(/&ldquo;/g, '\u201C')
-    .replace(/&rdquo;/g, '\u201D')
-    .replace(/&bull;/g, '\u2022')
-    .replace(/&hellip;/g, '\u2026')
-    .replace(/&copy;/g, '\u00A9')
-    .replace(/&reg;/g, '\u00AE')
-    .replace(/&trade;/g, '\u2122');
+    .replace(/&amp;/gi, '&')
+    .replace(/&lt;/gi, '<')
+    .replace(/&gt;/gi, '>')
+    .replace(/&quot;/gi, '"')
+    .replace(/&#0?39;/gi, "'")
+    .replace(/&apos;/gi, "'")
+    .replace(/&nbsp;/gi, ' ')
+    .replace(/&ndash;/gi, '\u2013')
+    .replace(/&mdash;/gi, '\u2014')
+    .replace(/&lsquo;/gi, '\u2018')
+    .replace(/&rsquo;/gi, '\u2019')
+    .replace(/&ldquo;/gi, '\u201C')
+    .replace(/&rdquo;/gi, '\u201D')
+    .replace(/&bull;/gi, '\u2022')
+    .replace(/&hellip;/gi, '\u2026')
+    .replace(/&copy;/gi, '\u00A9')
+    .replace(/&reg;/gi, '\u00AE')
+    .replace(/&trade;/gi, '\u2122')
+    .replace(/&euro;/gi, '\u20AC')
+    .replace(/&pound;/gi, '\u00A3')
+    .replace(/&yen;/gi, '\u00A5')
+    .replace(/&cent;/gi, '\u00A2')
+    .replace(/&deg;/gi, '\u00B0')
+    .replace(/&plusmn;/gi, '\u00B1')
+    .replace(/&times;/gi, '\u00D7')
+    .replace(/&divide;/gi, '\u00F7')
+    .replace(/&frac12;/gi, '\u00BD')
+    .replace(/&frac14;/gi, '\u00BC')
+    .replace(/&frac34;/gi, '\u00BE')
+    .replace(/&laquo;/gi, '\u00AB')
+    .replace(/&raquo;/gi, '\u00BB');
 
   // Handle numeric character references (&#8211; etc.)
   decoded = decoded.replace(/&#(\d+);/g, (_, num) => String.fromCharCode(parseInt(num, 10)));
 
   // Handle hex character references (&#x2013; etc.)
-  decoded = decoded.replace(/&#x([0-9A-Fa-f]+);/g, (_, hex) => String.fromCharCode(parseInt(hex, 16)));
+  decoded = decoded.replace(/&#x([0-9A-Fa-f]+);/gi, (_, hex) => String.fromCharCode(parseInt(hex, 16)));
 
   return decoded;
 }
