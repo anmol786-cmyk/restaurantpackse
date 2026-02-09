@@ -6,6 +6,7 @@ import { Link } from '@/i18n/navigation';
 import { SchemaScript } from '@/lib/schema/schema-script';
 import { europeDeliveryServiceSchema } from '@/lib/schema';
 import { GoogleMapCompact } from "@/components/shared/google-map";
+import Image from "next/image";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
     const { locale } = await params;
@@ -27,10 +28,12 @@ export default async function EuropeDeliveryPage() {
             {/* Hero Section */}
             <section className="relative h-[400px] flex items-center overflow-hidden bg-neutral-900">
                 <div className="absolute inset-0 z-0">
-                    <img
+                    <Image
                         src="https://images.unsplash.com/photo-1557821552-17105176677c?q=80&w=2069&auto=format&fit=crop"
                         alt="European Logistics"
-                        className="object-cover w-full h-full opacity-40"
+                        fill
+                        className="object-cover opacity-40"
+                        unoptimized
                     />
                     <div className="absolute inset-0 bg-gradient-to-r from-neutral-900 via-neutral-900/80 to-transparent" />
                 </div>

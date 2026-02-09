@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { WholesaleCustomer, getAllWholesaleCustomers } from '@/app/actions/admin';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -56,7 +56,7 @@ export function CustomerDirectory() {
     const [statusFilter, setStatusFilter] = useState<'all' | 'approved' | 'pending'>('all');
     const [searchTerm, setSearchTerm] = useState('');
 
-    const fetchCustomers = async () => {
+    const fetchCustomers = useCallback(async () => {
         setIsLoading(true);
         const result = await getAllWholesaleCustomers(statusFilter);
 
@@ -66,11 +66,11 @@ export function CustomerDirectory() {
             toast.error('Failed to load customers');
         }
         setIsLoading(false);
-    };
+    }, [statusFilter]);
 
     useEffect(() => {
         fetchCustomers();
-    }, [statusFilter]);
+    }, [fetchCustomers]);
 
     // Filter customers by search term
     const filteredCustomers = customers.filter(customer => {

@@ -52,39 +52,7 @@ const nextConfig = {
             // },
         ],
     },
-    async rewrites() {
-        return [
-            // Main sitemap index
-            {
-                source: '/sitemap.xml',
-                destination: '/api/sitemap',
-            },
-            // Sub-sitemaps
-            {
-                source: '/sitemap-pages.xml',
-                destination: '/api/sitemap/pages',
-            },
-            {
-                source: '/sitemap-delivery.xml',
-                destination: '/api/sitemap/delivery',
-            },
-
-            {
-                source: '/sitemap-product-categories.xml',
-                destination: '/api/sitemap/product-categories',
-            },
-
-            {
-                source: '/sitemap-images.xml',
-                destination: '/api/sitemap/images',
-            },
-            // Paginated product sitemaps
-            {
-                source: '/sitemap-products-:page.xml',
-                destination: '/api/sitemap/products/:page',
-            },
-        ];
-    },
+    // rewrites removed as we now use file-based sitemaps (app/sitemap.ts, etc.)
 };
 
 module.exports = withNextIntl(nextConfig);

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { AdminOrder, getAdminOrders } from '@/app/actions/admin';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -50,7 +50,7 @@ export function AdminOrdersTable() {
     const [searchTerm, setSearchTerm] = useState('');
     const [totalOrders, setTotalOrders] = useState(0);
 
-    const fetchOrders = async () => {
+    const fetchOrders = useCallback(async () => {
         setIsLoading(true);
         const result = await getAdminOrders({
             status: statusFilter !== 'all' ? statusFilter : undefined,
@@ -64,11 +64,11 @@ export function AdminOrdersTable() {
             toast.error('Failed to load orders');
         }
         setIsLoading(false);
-    };
+    }, [statusFilter]);
 
     useEffect(() => {
         fetchOrders();
-    }, [statusFilter]);
+    }, [fetchOrders]);
 
     // Filter orders by search term
     const filteredOrders = orders.filter(order => {
