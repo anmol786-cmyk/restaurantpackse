@@ -1,5 +1,7 @@
 import { siteConfig } from "@/site.config";
 import { NextRequest, NextResponse } from "next/server";
+import { generateSitemapXml } from "@/lib/sitemap-generator";
+import { MetadataRoute } from "next";
 
 /**
  * Locale-Specific Pages Sitemap Handler
@@ -14,7 +16,7 @@ const DEFAULT_LOCALE = 'en';
 interface Page {
     slug: string;
     priority: number;
-    changefreq: string;
+    changefreq: "daily" | "monthly" | "weekly" | "yearly";
 }
 
 const PAGES: Page[] = [
@@ -50,47 +52,47 @@ export async function GET(
     }
 
     // If English is requested via /en/sitemap.xml, redirect to root sitemap-pages.xml
-    // This prevents duplicate content issues
     if (locale === DEFAULT_LOCALE) {
         return NextResponse.redirect(`${baseUrl}/sitemap-pages.xml`, 301);
     }
 
-    const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:xhtml="http://www.w3.org/1999/xhtml">
-${PAGES.map((page) => {
+    const items: MetadataRoute.Sitemap = PAGES.map((page) => {
         // Current locale URL (e.g. /sv/about)
         const pageUrl = page.slug ? `/${locale}/${page.slug}` : `/${locale}`;
+        const url = `${baseUrl}${pageUrl}`;
 
-        const alternates = LOCALES.map(
-            (altLocale) => {
-                // Alternate URL logic
-                let altUrl = '';
-                if (altLocale === DEFAULT_LOCALE) {
-                    // Default locale (en) has NO prefix
-                    altUrl = page.slug ? `/${page.slug}` : `/`;
-                } else {
-                    // Other locales have prefix
-                    altUrl = page.slug ? `/${altLocale}/${page.slug}` : `/${altLocale}`;
-                }
-                return `    <xhtml:link rel="alternate" hreflang="${altLocale}" href="${baseUrl}${altUrl}" />`;
+        // Create alternates
+        const languages: Record<string, string> = {};
+
+        LOCALES.forEach((altLocale) => {
+            let altUrl = '';
+            if (altLocale === DEFAULT_LOCALE) {
+                // Default locale (en) has NO prefix
+                altUrl = page.slug ? `/${page.slug}` : `/`;
+            } else {
+                altUrl = page.slug ? `/${altLocale}/${page.slug}` : `/${altLocale}`;
             }
-        ).join('\n');
+            languages[altLocale] = `${baseUrl}${altUrl}`;
+        });
 
-        return `  <url>
-    <loc>${baseUrl}${pageUrl}</loc>
-    <lastmod>${new Date().toISOString()}</lastmod>
-    <changefreq>${page.changefreq}</changefreq>
-    <priority>${page.priority}</priority>
-${alternates}
-    <xhtml:link rel="alternate" hreflang="x-default" href="${baseUrl}${page.slug ? `/${page.slug}` : ''}" />
-  </url>`;
-    }).join("\n")}
-</urlset>`;
+        // Add x-default (usually maps to English root)
+        const defaultUrl = page.slug ? `/${page.slug}` : `/`;
+        languages['x-default'] = `${baseUrl}${defaultUrl}`;
 
-    return new NextResponse(sitemap, {
+        return {
+            url,
+            lastModified: new Date(),
+            changeFrequency: page.changefreq,
+            priority: page.priority,
+            alternates: { languages }
+        };
+    });
+
+    const xml = generateSitemapXml(items);
+
+    return new NextResponse(xml, {
         headers: {
-            "Content-Type": "application/xml",
+            "Content-Type": "application/xml; charset=utf-8",
             "Cache-Control": "public, max-age=86400, s-maxage=86400",
         },
     });

@@ -4,9 +4,8 @@ import { MetadataRoute } from 'next';
  * Generates valid XML string for a URL Set sitemap
  */
 export function generateSitemapXml(items: MetadataRoute.Sitemap): string {
-    const header = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:xhtml="http://www.w3.org/1999/xhtml">`;
+    // Explicitly define header without leading newlines
+    const header = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"\n        xmlns:xhtml="http://www.w3.org/1999/xhtml">';
 
     const urls = items.map(item => {
         let urlBlock = `  <url>
@@ -28,37 +27,31 @@ export function generateSitemapXml(items: MetadataRoute.Sitemap): string {
         }
 
         if (item.alternates && item.alternates.languages) {
-            // Add each language alternate
             Object.entries(item.alternates.languages).forEach(([lang, href]) => {
                 urlBlock += `\n    <xhtml:link rel="alternate" hreflang="${lang}" href="${href}" />`;
             });
-            // Check if we need x-default (often English or explicitly set)
-            // Usually provided in the map, but if not, logic might vary.
-            // We will assume logic provided alternates correctly.
-            // But ensure valid XML attribute escaping if URLs have special chars (usually already encoded).
         }
 
         urlBlock += `\n  </url>`;
         return urlBlock;
     }).join('\n');
 
-    const footer = `\n</urlset>`;
+    const footer = '\n</urlset>';
 
-    return header + '\n' + urls + footer;
+    return (header + '\n' + urls + footer).trim();
 }
 
 /**
  * Generates valid XML string for a Sitemap Index
  */
 export function generateSitemapIndexXml(sitemaps: string[]): string {
-    const header = `<?xml version="1.0" encoding="UTF-8"?>
-<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`;
+    const header = '<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
 
     const content = sitemaps.map(url => `  <sitemap>
     <loc>${url}</loc>
     <lastmod>${new Date().toISOString()}</lastmod>
   </sitemap>`).join('\n');
 
-    const footer = `\n</sitemapindex>`;
-    return header + '\n' + content + footer;
+    const footer = '\n</sitemapindex>';
+    return (header + '\n' + content + footer).trim();
 }
