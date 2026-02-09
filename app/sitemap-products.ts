@@ -20,8 +20,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const products = productsRes.data;
 
     return products.map((product) => {
-        // Default URL (usually English or the default locale)
-        const url = `${baseUrl}/en/product/${product.slug}`;
+        // Default URL (English)
+        const url = `${baseUrl}/product/${product.slug}`;
 
         // Create alternate language links
         const alternates = {
@@ -29,7 +29,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         };
 
         LOCALES.forEach((altLocale) => {
-            alternates.languages[altLocale] = `${baseUrl}/${altLocale}/product/${product.slug}`;
+            if (altLocale === 'en') {
+                alternates.languages[altLocale] = url;
+            } else {
+                alternates.languages[altLocale] = `${baseUrl}/${altLocale}/product/${product.slug}`;
+            }
         });
 
         return {

@@ -20,8 +20,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
 
     return categories.map((category) => {
-        // Default URL
-        const url = `${baseUrl}/en/posts/categories?category=${category.slug}`;
+        // Default URL (English)
+        const url = `${baseUrl}/posts/categories?category=${category.slug}`;
 
         // Create alternate language links
         const alternates = {
@@ -29,7 +29,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         };
 
         LOCALES.forEach((altLocale) => {
-            alternates.languages[altLocale] = `${baseUrl}/${altLocale}/posts/categories?category=${category.slug}`;
+            const localePath = altLocale === 'en' ? '' : `/${altLocale}`;
+            alternates.languages[altLocale] = `${baseUrl}${localePath}/posts/categories?category=${category.slug}`;
         });
 
         return {

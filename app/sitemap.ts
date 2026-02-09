@@ -16,9 +16,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const sitemaps: MetadataRoute.Sitemap = [];
 
     // Add locale-specific page sitemaps
-    locales.forEach(locale => {
+    // English (Default)
+    sitemaps.push({
+        url: `${baseUrl}/sitemap-pages.xml`,
+        lastModified: new Date(),
+    });
+
+    // Other Languages
+    ['sv', 'no', 'da'].forEach(locale => {
         sitemaps.push({
-            url: `${baseUrl}/sitemap-pages-${locale}.xml`,
+            url: `${baseUrl}/${locale}/sitemap.xml`,
             lastModified: new Date(),
         });
     });

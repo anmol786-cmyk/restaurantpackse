@@ -21,8 +21,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
 
     return posts.map((post) => {
-        // Default URL
-        const url = `${baseUrl}/en/posts/${post.slug}`;
+        // Default URL (English)
+        const url = `${baseUrl}/posts/${post.slug}`;
 
         // Create alternate language links
         const alternates = {
@@ -30,7 +30,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         };
 
         LOCALES.forEach((altLocale) => {
-            alternates.languages[altLocale] = `${baseUrl}/${altLocale}/posts/${post.slug}`;
+            const localePath = altLocale === 'en' ? '' : `/${altLocale}`;
+            alternates.languages[altLocale] = `${baseUrl}${localePath}/posts/${post.slug}`;
         });
 
         return {

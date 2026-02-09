@@ -6,144 +6,86 @@
 
 ---
 
-## 🎯 **What Was Done**
+## 🎯 **Final Structure**
 
-Created a comprehensive multilingual sitemap structure with **separate sitemaps for each language** (English, Swedish, Norwegian, Danish) located at the root level for cleaner URLs.
+We have implemented a **localized sitemap structure** that perfectly matches your website's URL logic:
+
+1.  **English (Default)**: Served at root (e.g., `/about`) -> Sitemap at `/sitemap-pages.xml`
+2.  **Swedish**: Served at `/sv/` (e.g., `/sv/about`) -> Sitemap at `/sv/sitemap.xml`
+3.  **Norwegian**: Served at `/no/` -> Sitemap at `/no/sitemap.xml`
+4.  **Danish**: Served at `/da/` -> Sitemap at `/da/sitemap.xml`
 
 ---
 
-## 📋 **Sitemap Structure**
+## 📋 **Sitemap URLs**
 
 ### **Main Sitemap Index**
 **URL:** `https://restaurantpack.se/sitemap.xml`
 
-This is the master sitemap that links to all other sitemaps.
+This links to all the specific sitemaps below.
 
 ### **Language-Specific Sitemaps**
 
-#### **Pages Sitemaps (by locale)**
-- `/sitemap-pages-en.xml` - English pages
-- `/sitemap-pages-sv.xml` - Swedish pages
-- `/sitemap-pages-no.xml` - Norwegian pages
-- `/sitemap-pages-da.xml` - Danish pages
+#### **English (Default)**
+- **Sitemap:** `https://restaurantpack.se/sitemap-pages.xml`
+- **URLs inside:** `https://restaurantpack.se/about` (No `/en/` prefix!)
 
-**Includes:**
-- Homepage
-- About, Contact, FAQ
-- Shop, Blog, Posts
-- Legal pages (Privacy, Terms, Refund)
-- Delivery pages
-- Wholesale pages
-- Account pages
+#### **Swedish (sv)**
+- **Sitemap:** `https://restaurantpack.se/sv/sitemap.xml`
+- **URLs inside:** `https://restaurantpack.se/sv/about`
 
-#### **Product & Category Sitemaps (Shared)**
-- `/sitemap-products.xml` - All products with hreflang
-- `/sitemap-categories.xml` - Product categories with hreflang
-- `/sitemap-posts.xml` - Blog posts with hreflang
-- `/sitemap-post-categories.xml` - Blog categories with hreflang
+#### **Norwegian (no)**
+- **Sitemap:** `https://restaurantpack.se/no/sitemap.xml`
+- **URLs inside:** `https://restaurantpack.se/no/about`
+
+#### **Danish (da)**
+- **Sitemap:** `https://restaurantpack.se/da/sitemap.xml`
+- **URLs inside:** `https://restaurantpack.se/da/about`
+
+### **Product & Content Sitemaps (Shared)**
+- `/sitemap-products.xml`
+- `/sitemap-categories.xml`
+- `/sitemap-posts.xml`
+- `/sitemap-post-categories.xml`
+
+*(Note: These shared sitemaps also use root URLs for English and `/sv/` etc. for alternates)*
 
 ---
 
-## 🌍 **Hreflang Implementation**
+## 🌍 **Hreflang Configuration**
 
-Each URL in the sitemaps includes **hreflang annotations** for all language versions:
+All URLs now correctly point to the **root** for English and **localized paths** for others.
 
+**Example for About Page:**
 ```xml
 <url>
-  <loc>https://restaurantpack.se/en/about</loc>
-  <xhtml:link rel="alternate" hreflang="en" href="https://restaurantpack.se/en/about" />
+  <loc>https://restaurantpack.se/about</loc>
+  <xhtml:link rel="alternate" hreflang="en" href="https://restaurantpack.se/about" />
   <xhtml:link rel="alternate" hreflang="sv" href="https://restaurantpack.se/sv/about" />
-  <xhtml:link rel="alternate" hreflang="no" href="https://restaurantpack.se/no/about" />
-  <xhtml:link rel="alternate" hreflang="da" href="https://restaurantpack.se/da/about" />
-  <xhtml:link rel="alternate" hreflang="x-default" href="https://restaurantpack.se/about" />
+  ...
 </url>
 ```
 
-This tells Google:
-- ✅ Which language each page is in
-- ✅ All available language versions
-- ✅ The default version (x-default)
+---
+
+## 🚀 **Action Items**
+
+1.  **Submit `sitemap.xml`** to Google Search Console.
+2.  Also submit individual language sitemaps if you want granular tracking:
+    *   `sitemap-pages.xml` (English)
+    *   `sv/sitemap.xml` (Swedish)
+    *   `no/sitemap.xml` (Norwegian)
+    *   `da/sitemap.xml` (Danish)
 
 ---
 
-## 📊 **Google Search Console Setup**
+## 📝 **Files**
 
-### **Option 1: Submit Main Sitemap (Recommended)**
-
-Submit the main sitemap index:
-```
-sitemap.xml
-```
-
-Google will automatically discover and index all sub-sitemaps.
-
-### **Option 2: Submit Specific Sitemaps**
-
-For better control and monitoring, you can submit specific sitemaps:
-
-**English:** `sitemap-pages-en.xml`  
-**Swedish:** `sitemap-pages-sv.xml`  
-**Norwegian:** `sitemap-pages-no.xml`  
-**Danish:** `sitemap-pages-da.xml`  
+- `app/sitemap.ts` (Index)
+- `app/sitemap-pages.ts` (English Root)
+- `app/[locale]/sitemap.xml/route.ts` (Localized SV, NO, DA)
+- `app/sitemap-products.ts` etc. (Shared content)
 
 ---
 
-## 🎯 **Benefits**
-
-### **SEO Benefits:**
-✅ **Clean URLs** - No confusing `/api/` prefixes  
-✅ **Better Indexing** - Google can index each language separately  
-✅ **Hreflang Support** - Proper language targeting  
-✅ **Standard Convention** - Uses standard `sitemap.xml` location  
-
-### **Monitoring Benefits:**
-✅ **Language-Specific Stats** - See performance per language  
-✅ **Separate Tracking** - Monitor each market independently  
-✅ **Error Detection** - Identify issues per language  
-
----
-
-## 📝 **Files Created**
-
-1. `app/sitemap.ts` - Main index
-2. `app/sitemap-pages-[locale].ts` - Locale specific pages
-3. `app/sitemap-products.ts` - Products
-4. `app/sitemap-categories.ts` - Categories
-5. `app/sitemap-posts.ts` - Blog posts
-6. `app/sitemap-post-categories.ts` - Blog categories
-
----
-
-## 🔧 **How to Test**
-
-### **1. Test Main Sitemap:**
-Visit: `https://restaurantpack.se/sitemap.xml`
-
-### **2. Test Language-Specific Sitemaps:**
-- `https://restaurantpack.se/sitemap-pages-en.xml`
-- `https://restaurantpack.se/sitemap-pages-sv.xml`
-
-### **3. Validate Sitemaps:**
-Use Google's Sitemap Validator or submit directly in Google Search Console.
-
----
-
-## ✅ **Checklist**
-
-- [x] Main sitemap index created at root
-- [x] Locale-specific sitemaps created
-- [x] Hreflang annotations added
-- [x] Clean URLs implemented
-- [ ] Submit to Google Search Console
-
----
-
-## 🚀 **Next Steps**
-
-1. **Submit `sitemap.xml`** to Google Search Console
-2. **Monitor** indexing status
-3. **Verify** no errors in Search Console
-
----
-
-**Status:** ✅ **READY FOR SUBMISSION**  
+**Status:** ✅ **READY FOR PRODUCTION**  

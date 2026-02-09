@@ -2,8 +2,9 @@ import { MetadataRoute } from 'next';
 import { siteConfig } from '@/site.config';
 
 /**
- * Danish Pages Sitemap
- * Route: /sitemap-pages-da.xml
+ * Locale-Specific Sitemap
+ * Route: /[locale]/sitemap.xml
+ * Automatically generates sitemap for each locale
  */
 
 const LOCALES = ['en', 'sv', 'no', 'da'];
@@ -34,13 +35,22 @@ const PAGES: PageConfig[] = [
     { slug: 'cart', priority: 0.6, changefreq: 'daily' },
 ];
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+export async function generateSitemaps() {
+    return LOCALES.map((locale) => ({ locale }));
+}
+
+export default async function sitemap({
+    id,
+}: {
+    id: { locale: string };
+}): Promise<MetadataRoute.Sitemap> {
     const baseUrl = siteConfig.site_domain;
-    const locale = 'da';
+    const locale = id.locale; // From generateSitemaps
 
     return PAGES.map((page) => {
         const url = page.slug ? `${baseUrl}/${locale}/${page.slug}` : `${baseUrl}/${locale}`;
 
+        // Create alternate language links
         const alternates = {
             languages: {} as Record<string, string>,
         };
@@ -60,4 +70,4 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     });
 }
 
-export const revalidate = 86400;
+export const revalidate = 86400; // Daily

@@ -2,8 +2,9 @@ import { MetadataRoute } from 'next';
 import { siteConfig } from '@/site.config';
 
 /**
- * Swedish Pages Sitemap
- * Route: /sitemap-pages-sv.xml
+ * Default (English) Pages Sitemap
+ * Route: /sitemap-pages.xml
+ * Contains all default language pages (no /en/ prefix)
  */
 
 const LOCALES = ['en', 'sv', 'no', 'da'];
@@ -36,18 +37,28 @@ const PAGES: PageConfig[] = [
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const baseUrl = siteConfig.site_domain;
-    const locale = 'sv';
 
     return PAGES.map((page) => {
-        const url = page.slug ? `${baseUrl}/${locale}/${page.slug}` : `${baseUrl}/${locale}`;
+        // English is default, so NO locale prefix
+        const url = page.slug ? `${baseUrl}/${page.slug}` : `${baseUrl}`;
 
+        // Create alternate language links
         const alternates = {
             languages: {} as Record<string, string>,
         };
 
         LOCALES.forEach((altLocale) => {
+            // Alternate locales HAVE prefix (e.g., /sv/about)
             const altUrl = page.slug ? `${baseUrl}/${altLocale}/${page.slug}` : `${baseUrl}/${altLocale}`;
-            alternates.languages[altLocale] = altUrl;
+
+            // But if altLocale is 'en', we point to root (x-default behavior usually)
+            // Actually, for hreflang 'en', we want to point to the English URL.
+            // Since English is root, we map 'en' to root URL.
+            if (altLocale === 'en') {
+                alternates.languages[altLocale] = url;
+            } else {
+                alternates.languages[altLocale] = altUrl;
+            }
         });
 
         return {
@@ -60,4 +71,4 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     });
 }
 
-export const revalidate = 86400;
+export const revalidate = 86400; // Daily

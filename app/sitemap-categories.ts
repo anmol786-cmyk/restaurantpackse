@@ -16,8 +16,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const categories = await getProductCategories();
 
     return categories.map((category: any) => {
-        // Default URL
-        const url = `${baseUrl}/en/shop/category/${category.slug}`;
+        // Default URL (English)
+        const url = `${baseUrl}/shop/category/${category.slug}`;
 
         // Create alternate language links
         const alternates = {
@@ -25,7 +25,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         };
 
         LOCALES.forEach((altLocale) => {
-            alternates.languages[altLocale] = `${baseUrl}/${altLocale}/shop/category/${category.slug}`;
+            const localePath = altLocale === 'en' ? '' : `/${altLocale}`;
+            alternates.languages[altLocale] = `${baseUrl}${localePath}/shop/category/${category.slug}`;
         });
 
         return {
