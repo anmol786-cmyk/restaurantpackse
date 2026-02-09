@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useTransition } from 'react';
 import { Check, ChevronDown, Globe } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -9,8 +9,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { usePathname, useRouter } from 'next/navigation';
-import { locales, localeNames, localeFlags, type Locale } from '@/i18n';
+import { useRouter, usePathname } from '@/i18n/navigation';
+import { routing, localeNames, localeFlags, type Locale } from '@/i18n/routing';
 import { cn } from '@/lib/utils';
 
 interface LanguageSelectorProps {
@@ -25,18 +25,14 @@ export function LanguageSelector({
   currentLocale,
 }: LanguageSelectorProps) {
   const [open, setOpen] = useState(false);
+  const [isPending, startTransition] = useTransition();
   const router = useRouter();
   const pathname = usePathname();
 
   const handleLocaleChange = (locale: Locale) => {
-    // Remove current locale from pathname if it exists
-    const segments = pathname.split('/').filter(Boolean);
-    const newSegments = segments[0] && locales.includes(segments[0] as Locale)
-      ? [locale, ...segments.slice(1)]
-      : [locale, ...segments];
-
-    const newPath = '/' + newSegments.join('/');
-    router.push(newPath);
+    startTransition(() => {
+      router.replace(pathname, { locale });
+    });
     setOpen(false);
   };
 
@@ -51,14 +47,14 @@ export function LanguageSelector({
           <Button
             variant="ghost"
             size="icon"
-            className={cn('h-9 w-9', className)}
+            className={cn('h-9 w-9', isPending && 'opacity-50', className)}
             aria-label="Select language"
           >
             <Globe className="h-4 w-4" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-[180px]">
-          {locales.map((locale) => (
+          {routing.locales.map((locale) => (
             <DropdownMenuItem
               key={locale}
               onClick={() => handleLocaleChange(locale)}
@@ -83,14 +79,14 @@ export function LanguageSelector({
     return (
       <DropdownMenu open={open} onOpenChange={setOpen}>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="sm" className={cn('h-9 gap-1.5 px-2.5', className)}>
+          <Button variant="ghost" size="sm" className={cn('h-9 gap-1.5 px-2.5', isPending && 'opacity-50', className)}>
             <span className="text-base">{currentLocaleFlag}</span>
             <span className="font-medium text-sm uppercase">{currentLocale}</span>
             <ChevronDown className="h-3.5 w-3.5 opacity-50" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-[180px]">
-          {locales.map((locale) => (
+          {routing.locales.map((locale) => (
             <DropdownMenuItem
               key={locale}
               onClick={() => handleLocaleChange(locale)}
@@ -114,7 +110,7 @@ export function LanguageSelector({
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" className={cn('h-10 gap-2', className)}>
+        <Button variant="outline" className={cn('h-10 gap-2', isPending && 'opacity-50', className)}>
           <Globe className="h-4 w-4" />
           <span className="text-lg">{currentLocaleFlag}</span>
           <span className="font-medium">{currentLocaleName}</span>
@@ -125,7 +121,7 @@ export function LanguageSelector({
         <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground">
           Select Language
         </div>
-        {locales.map((locale) => (
+        {routing.locales.map((locale) => (
           <DropdownMenuItem
             key={locale}
             onClick={() => handleLocaleChange(locale)}

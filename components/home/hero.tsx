@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, ShoppingBag, Truck } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import { useTranslations } from 'next-intl';
 
 interface HeroProps {
     title?: string;
@@ -13,10 +14,17 @@ interface HeroProps {
 }
 
 export function Hero({
-    title = "Professional Restaurant Supplies Delivered Across Sweden",
-    subtitle = "The finest selection of authentic Indo-Pak ingredients, commercial equipment, and bulk staples. Direct-from-warehouse pricing for professional kitchens.",
-    badge = "Wholesale Pricing Guaranteed"
+    title,
+    subtitle,
+    badge
 }: HeroProps) {
+    const t = useTranslations('hero');
+    const tc = useTranslations('common');
+
+    const displayTitle = title || t('title');
+    const displaySubtitle = subtitle || t('subtitle');
+    const displayBadge = badge || t('badge');
+
     return (
         <section className="relative w-full min-h-[85vh] flex items-center bg-white overflow-hidden pb-12 pt-24 md:py-0">
             {/* Background Image with Overlay */}
@@ -29,7 +37,7 @@ export function Hero({
                     <div className="relative h-full w-full">
                         <Image
                             src="https://crm.restaurantpack.se/wp-content/uploads/2025/03/anmol-wholesale.png"
-                            alt="Anmol Wholesale - Restaurant Supply"
+                            alt={t('imageAlt')}
                             fill
                             className="object-cover object-center"
                             priority
@@ -51,7 +59,7 @@ export function Hero({
                     >
                         <span className="inline-flex items-center space-x-2 bg-primary/10 border border-primary/20 px-3 py-1.5 md:px-4 md:py-2 rounded-full text-xs md:text-sm font-bold text-primary backdrop-blur-sm">
                             <Truck className="w-3 h-3 md:w-4 md:h-4" />
-                            <span className="tracking-wide uppercase">{badge}</span>
+                            <span className="tracking-wide uppercase">{displayBadge}</span>
                         </span>
                     </motion.div>
 
@@ -62,8 +70,8 @@ export function Hero({
                         transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
                         className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-slate-900 tracking-tight leading-[1.1]"
                     >
-                        {title.split(' ').slice(0, -1).join(' ')}{' '}
-                        <span className="text-primary">{title.split(' ').slice(-1)}</span>
+                        {displayTitle.split(' ').slice(0, -1).join(' ')}{' '}
+                        <span className="text-primary">{displayTitle.split(' ').slice(-1)}</span>
                     </motion.h1>
 
                     {/* Subtitle */}
@@ -73,7 +81,7 @@ export function Hero({
                         transition={{ duration: 0.8, delay: 0.4 }}
                         className="text-lg md:text-xl text-slate-500 max-w-xl leading-relaxed font-medium"
                     >
-                        {subtitle}
+                        {displaySubtitle}
                     </motion.p>
 
                     {/* Buttons */}
@@ -90,7 +98,7 @@ export function Hero({
                         >
                             <Link href="/shop">
                                 <ShoppingBag className="mr-2 w-5 h-5" />
-                                Start Shopping
+                                {tc('startShopping')}
                             </Link>
                         </Button>
                         <Button
@@ -100,7 +108,7 @@ export function Hero({
                             asChild
                         >
                             <Link href="/shop?sort=new">
-                                View New Arrivals
+                                {tc('viewNewArrivals')}
                                 <ArrowRight className="ml-2 w-5 h-5" />
                             </Link>
                         </Button>
@@ -115,19 +123,19 @@ export function Hero({
                     >
                         <div className="flex items-center gap-2">
                             <div className="w-2 h-2 rounded-full bg-green-500" />
-                            <span>Halal Certified</span>
+                            <span>{t('trustHalal')}</span>
                         </div>
                         <div className="flex items-center gap-2">
                             <div className="w-2 h-2 rounded-full bg-info" />
-                            <span>Stockholm Fleet Delivery</span>
+                            <span>{t('trustDelivery')}</span>
                         </div>
                         <div className="flex items-center gap-2">
                             <div className="w-2 h-2 rounded-full bg-orange-500" />
-                            <span>Europe Shipping</span>
+                            <span>{t('trustEurope')}</span>
                         </div>
                         <div className="flex items-center gap-2">
                             <div className="w-2 h-2 rounded-full bg-primary" />
-                            <span>Bulk Discounts Available</span>
+                            <span>{t('trustBulk')}</span>
                         </div>
                     </motion.div>
                 </div>

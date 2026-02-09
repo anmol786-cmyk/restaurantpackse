@@ -7,11 +7,13 @@ import { Input } from "@/components/ui/input";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCartStore } from "@/store/cart-store";
 import { toast } from "sonner";
+import { useTranslations } from 'next-intl';
 
 export function QuickOrder() {
     const [sku, setSku] = useState("");
     const [isSearching, setIsSearching] = useState(false);
     const addItem = useCartStore((state) => state.addItem);
+    const t = useTranslations('quickOrder');
 
     const handleQuickAdd = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -19,7 +21,6 @@ export function QuickOrder() {
 
         setIsSearching(true);
         try {
-            // Mock API search for demo - in production this would call a real SKU lookup
             const response = await fetch(`/api/search?q=${encodeURIComponent(sku)}&exact=true`);
             const data = await response.json();
 
@@ -35,13 +36,13 @@ export function QuickOrder() {
                     type: 'simple',
                     status: 'publish'
                 } as unknown as any);
-                toast.success(`Added ${product.name} to cart`);
+                toast.success(t('toastAdded', { name: product.name }));
                 setSku("");
             } else {
-                toast.error("Product SKU not found");
+                toast.error(t('toastNotFound'));
             }
         } catch (error) {
-            toast.error("Error searching for product");
+            toast.error(t('toastError'));
         } finally {
             setIsSearching(false);
         }
@@ -57,13 +58,13 @@ export function QuickOrder() {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                     <div className="space-y-6">
                         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 border border-white/30 text-white text-xs font-bold uppercase tracking-widest">
-                            B2B Efficiency
+                            {t('b2bEfficiency')}
                         </div>
                         <h2 className="text-3xl md:text-4xl font-bold text-white tracking-tight">
-                            Quick Order by SKU
+                            {t('skuTitle')}
                         </h2>
                         <p className="text-white/80 max-w-lg leading-relaxed text-lg">
-                            Know exactly what you need? Enter the product SKU or name to instantly add it to your wholesale order. Streamlined for professional kitchen buyers.
+                            {t('skuDescription')}
                         </p>
 
                         <form onSubmit={handleQuickAdd} className="flex gap-4 max-w-md">
@@ -72,7 +73,7 @@ export function QuickOrder() {
                                 <Input
                                     value={sku}
                                     onChange={(e) => setSku(e.target.value)}
-                                    placeholder="Enter SKU or name..."
+                                    placeholder={t('skuPlaceholder')}
                                     className="h-14 pl-12 bg-white/10 border-white/20 text-white placeholder:text-white/50 rounded-xl focus:ring-white focus:border-white text-lg"
                                 />
                             </div>
@@ -92,14 +93,14 @@ export function QuickOrder() {
                             <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                             <div className="space-y-6 relative z-10">
                                 <div className="flex items-center justify-between border-b border-white/5 pb-4">
-                                    <span className="text-white font-bold">Fast-Fill Checklist</span>
-                                    <span className="text-primary text-xs font-black">SAVE TIME</span>
+                                    <span className="text-white font-bold">{t('fastFill')}</span>
+                                    <span className="text-primary text-xs font-black">{t('saveTime')}</span>
                                 </div>
                                 {[
-                                    "Direct Warehouse Access",
-                                    "Custom CSV Upload for Bulk",
-                                    "Repeat Previous Orders",
-                                    "Managed Account Support"
+                                    t('directWarehouse'),
+                                    t('csvUpload'),
+                                    t('repeatOrders'),
+                                    t('managedAccount')
                                 ].map((text, i) => (
                                     <div key={i} className="flex items-center gap-4 text-white/90">
                                         <div className="size-6 rounded-full bg-secondary text-secondary-foreground flex items-center justify-center">

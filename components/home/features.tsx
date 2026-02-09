@@ -2,39 +2,42 @@
 
 import { Truck, Percent, CreditCard, ShieldCheck } from "lucide-react";
 import { motion } from "framer-motion";
-
-const features = [
-    {
-        icon: Truck,
-        title: "Next-Day Delivery",
-        description: "Own fleet delivery across Stockholm area",
-        color: "text-primary",
-        bg: "bg-primary/5"
-    },
-    {
-        icon: Percent,
-        title: "Volume Discounts",
-        description: "Tiered pricing for pallet and case quantities",
-        color: "text-secondary",
-        bg: "bg-secondary/5"
-    },
-    {
-        icon: CreditCard,
-        title: "Flexible Terms",
-        description: "Net-30 payment options for businesses",
-        color: "text-primary",
-        bg: "bg-primary/5"
-    },
-    {
-        icon: ShieldCheck,
-        title: "Quality Assured",
-        description: "Sourced directly from manufacturers",
-        color: "text-secondary",
-        bg: "bg-secondary/5"
-    }
-];
+import { useTranslations } from 'next-intl';
 
 export function Features() {
+    const t = useTranslations('features');
+
+    const features = [
+        {
+            icon: Truck,
+            title: t('nextDay'),
+            description: t('nextDayDesc'),
+            color: "text-primary",
+            bg: "bg-primary/5"
+        },
+        {
+            icon: Percent,
+            title: t('volume'),
+            description: t('volumeDesc'),
+            color: "text-secondary",
+            bg: "bg-secondary/5"
+        },
+        {
+            icon: CreditCard,
+            title: t('flexible'),
+            description: t('flexibleDesc'),
+            color: "text-primary",
+            bg: "bg-primary/5"
+        },
+        {
+            icon: ShieldCheck,
+            title: t('quality'),
+            description: t('qualityDesc'),
+            color: "text-secondary",
+            bg: "bg-secondary/5"
+        }
+    ];
+
     return (
         <section className="w-full pb-8 md:pb-12 pt-0 relative z-30 -mt-10 md:-mt-16 bg-transparent pointer-events-none">
             <div className="site-container">

@@ -7,6 +7,7 @@ import { brandProfile } from "@/config/brand-profile";
 import { useEffect, useState } from "react";
 import { getStoreStatus, type StoreStatus } from "@/lib/store-hours";
 import { cn } from "@/lib/utils";
+import { useTranslations } from 'next-intl';
 
 // WhatsApp Icon Component
 function WhatsAppIcon({ className }: { className?: string }) {
@@ -24,6 +25,8 @@ function WhatsAppIcon({ className }: { className?: string }) {
 export function TopInfoBar() {
   const { contact } = brandConfig;
   const [storeStatus, setStoreStatus] = useState<StoreStatus | null>(null);
+  const t = useTranslations('topBar');
+  const tc = useTranslations('common');
 
   useEffect(() => {
     const updateStatus = () => setStoreStatus(getStoreStatus());
@@ -61,9 +64,9 @@ export function TopInfoBar() {
 
         {/* Center: USP / Tagline */}
         <div className="hidden xl:flex items-center gap-2 text-white/70">
-          <span className="text-white font-black uppercase tracking-widest text-[9px] bg-white/20 px-1.5 py-0.5 rounded">Anmol Advantage</span>
+          <span className="text-white font-black uppercase tracking-widest text-[9px] bg-white/20 px-1.5 py-0.5 rounded">{t('anmolAdvantage')}</span>
           <span>•</span>
-          <span className="italic">"{brandProfile.tagline}"</span>
+          <span className="italic">&quot;{tc('tagline')}&quot;</span>
         </div>
 
         {/* Right: Contact & Delivery */}
@@ -75,11 +78,11 @@ export function TopInfoBar() {
             </a>
             <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-green-300 hover:text-white transition-colors">
               <WhatsAppIcon className="h-3.5 w-3.5" />
-              <span className="font-bold border-b border-green-300/50">Chat B2B</span>
+              <span className="font-bold border-b border-green-300/50">{t('chatB2B')}</span>
             </a>
           </div>
           <div className="flex items-center gap-2 bg-white/20 text-white px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-tighter border border-white/20">
-            Ex-Warehouse Pricing
+            {t('exWarehouse')}
           </div>
         </div>
       </div>

@@ -6,8 +6,11 @@ import { ArrowRight, UserPlus, Phone } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { brandProfile } from "@/config/brand-profile";
+import { useTranslations } from 'next-intl';
 
 export function CTASection() {
+    const t = useTranslations('cta');
+
     return (
         <section className="w-full py-20">
             <div className="site-container relative overflow-hidden rounded-[2.5rem] bg-[#A80E13] min-h-[500px] flex items-center">
@@ -31,11 +34,11 @@ export function CTASection() {
                     >
                         <div className="space-y-4">
                             <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight leading-[1.1]">
-                                Empower Your <br />
-                                <span className="text-white">Restaurant Kitchen</span>
+                                {t('title')} <br />
+                                <span className="text-white">{t('titleHighlight')}</span>
                             </h2>
                             <p className="text-xl text-white/90 max-w-lg leading-relaxed font-medium">
-                                Join hundreds of professional partners in Stockholm. Get access to wholesale pricing, dedicated support, and our premium product catalog.
+                                {t('subtitle')}
                             </p>
                         </div>
 
@@ -47,7 +50,7 @@ export function CTASection() {
                             >
                                 <Link href="/wholesale/register">
                                     <UserPlus className="mr-2 w-5 h-5" />
-                                    Register Business Account
+                                    {t('registerBusiness')}
                                 </Link>
                             </Button>
 
@@ -66,9 +69,9 @@ export function CTASection() {
 
                         <div className="flex flex-wrap items-center gap-8 pt-4">
                             {[
-                                { label: 'Active Partners', value: '450+' },
-                                { label: 'Premium SKUs', value: '2500+' },
-                                { label: 'Stockholm Presence', value: '15 Years' }
+                                { label: t('activePartners'), value: '450+' },
+                                { label: t('premiumSkus'), value: '2500+' },
+                                { label: t('stockholmPresence'), value: t('yearsValue') }
                             ].map((stat, i) => (
                                 <div key={i} className="space-y-1">
                                     <div className="text-2xl font-black text-white">{stat.value}</div>

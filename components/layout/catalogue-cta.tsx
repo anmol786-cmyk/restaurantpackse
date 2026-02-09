@@ -4,14 +4,22 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Download, FileText, Loader2, CheckCircle } from 'lucide-react';
 import { toast } from 'sonner';
+import { useTranslations } from 'next-intl';
 
 /**
  * Download Catalogue CTA Section
  * Placed above the footer to encourage catalogue downloads
  */
 export function CatalogueCTA() {
+    const t = useTranslations('catalogueCTA');
     const [isDownloading, setIsDownloading] = useState(false);
     const [downloaded, setDownloaded] = useState(false);
+
+    const features = [
+        { label: t('feature1'), icon: '📦' },
+        { label: t('feature2'), icon: '💰' },
+        { label: t('feature3'), icon: '🔄' },
+    ];
 
     const handleDownload = async () => {
         setIsDownloading(true);
@@ -33,14 +41,14 @@ export function CatalogueCTA() {
             URL.revokeObjectURL(url);
 
             setDownloaded(true);
-            toast.success('Catalogue downloaded successfully!');
+            toast.success(t('successToast'));
 
             // Reset after 5 seconds
             setTimeout(() => setDownloaded(false), 5000);
 
         } catch (error) {
             console.error('Error downloading catalogue:', error);
-            toast.error('Failed to download catalogue. Please try again.');
+            toast.error(t('errorToast'));
         } finally {
             setIsDownloading(false);
         }
@@ -67,26 +75,21 @@ export function CatalogueCTA() {
                     <div className="flex-1 text-center lg:text-left">
                         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/20 text-accent text-sm font-medium mb-6">
                             <FileText className="w-4 h-4" />
-                            <span>Free Download</span>
+                            <span>{t('badge')}</span>
                         </div>
 
                         <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
-                            Download Our
-                            <span className="block text-accent">Product Catalogue</span>
+                            {t('title')}
+                            <span className="block text-accent">{t('titleHighlight')}</span>
                         </h2>
 
                         <p className="text-white/80 text-lg max-w-xl mb-8">
-                            Browse our complete range of wholesale products, bulk pricing, and special offers.
-                            Perfect for restaurants, caterers, and food businesses.
+                            {t('description')}
                         </p>
 
                         {/* Features */}
                         <div className="flex flex-wrap gap-6 justify-center lg:justify-start mb-8">
-                            {[
-                                { label: '100+ Products', icon: '📦' },
-                                { label: 'Wholesale Prices', icon: '💰' },
-                                { label: 'Updated Monthly', icon: '🔄' },
-                            ].map((feature) => (
+                            {features.map((feature) => (
                                 <div
                                     key={feature.label}
                                     className="flex items-center gap-2 text-white/90 text-sm"
@@ -114,23 +117,23 @@ export function CatalogueCTA() {
                             {isDownloading ? (
                                 <>
                                     <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                                    Generating PDF...
+                                    {t('downloading')}
                                 </>
                             ) : downloaded ? (
                                 <>
                                     <CheckCircle className="w-5 h-5 mr-2" />
-                                    Downloaded!
+                                    {t('downloaded')}
                                 </>
                             ) : (
                                 <>
                                     <Download className="w-5 h-5 mr-2" />
-                                    Download Catalogue (PDF)
+                                    {t('downloadButton')}
                                 </>
                             )}
                         </Button>
 
                         <p className="text-white/60 text-sm mt-4">
-                            No registration required • Instant download
+                            {t('noRegistration')}
                         </p>
                     </div>
 

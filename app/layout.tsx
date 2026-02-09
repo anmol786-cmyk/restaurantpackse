@@ -1,24 +1,12 @@
 import "./globals.css";
 
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
-import { ThemeProvider } from "@/components/theme/theme-provider";
-import { TopInfoBar } from "@/components/layout/top-info-bar";
-import { SchemaScript } from "@/lib/schema/schema-script";
-import { websiteSchema } from "@/lib/schema";
+import { getLocale } from "next-intl/server";
 import { GoogleTagManager, GoogleTagManagerNoScript, FacebookPixel } from "@/components/analytics";
-import { Header } from "@/components/layout/header";
-import { Footer } from "@/components/layout/footer";
 import { GeoMetaTags } from "@/components/seo/geo-meta-tags";
 import { HreflangTags } from "@/components/seo/hreflang-tags";
-import { CartDrawer } from "@/components/cart/cart-drawer";
-import { WishlistDrawer } from "@/components/wishlist/wishlist-drawer";
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as SonnerToaster } from "sonner";
 import { siteConfig } from "@/site.config";
 import { cn } from "@/lib/utils";
-import { AiChatWidget } from "@/components/ai/ai-chat-widget";
-
-import { getProductCategories } from "@/lib/woocommerce";
 
 import type { Metadata } from "next";
 
@@ -58,7 +46,6 @@ export const metadata: Metadata = {
   verification: {
     google: "ADD_YOUR_GOOGLE_VERIFICATION_CODE_HERE",
   },
-  // OpenGraph with locale configuration - Swedish market
   openGraph: {
     type: "website",
     locale: "sv_SE",
@@ -76,16 +63,13 @@ export const metadata: Metadata = {
       },
     ],
   },
-  // Twitter Card
   twitter: {
     card: "summary_large_image",
     title: siteConfig.site_name,
     description: siteConfig.site_description,
     images: [`${siteConfig.site_domain}/twitter-image.jpeg`],
   },
-  // Additional metadata - Swedish & English keywords for local SEO
   keywords: [
-    // Swedish keywords (primary)
     "restaurang grossist stockholm",
     "storköksvaror grossist",
     "indiska kryddor grossist",
@@ -93,7 +77,6 @@ export const metadata: Metadata = {
     "halal kött stockholm",
     "elektrisk tandoor",
     "restaurang leverantör sverige",
-    // English keywords (secondary)
     "restaurant supply stockholm",
     "wholesale food sweden",
     "B2B wholesale",
@@ -119,7 +102,6 @@ export const metadata: Metadata = {
   },
 };
 
-// Viewport configuration for mobile devices
 export const viewport = {
   width: 'device-width',
   initialScale: 1,
@@ -127,36 +109,21 @@ export const viewport = {
   userScalable: true,
 };
 
-// Force dynamic rendering to prevent build timeouts
-// The layout fetches categories from WooCommerce which can be slow
-export const dynamic = 'force-dynamic';
-export const revalidate = 3600; // Revalidate every hour
-
 export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const categories = await getProductCategories({ parent: 0 });
+  const locale = await getLocale();
 
   return (
-    <html lang="sv" suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning>
       <head>
         {/* Preconnect to external domains */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        {/* Add your WordPress/CMS domain here */}
-        {/* <link rel="preconnect" href="YOUR_WORDPRESS_DOMAIN" /> */}
         <link rel="preconnect" href="https://connect.facebook.net" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://www.facebook.com" />
-
-        {/* Preload critical hero image - Add your hero image URL */}
-        {/* <link
-          rel="preload"
-          as="image"
-          href="YOUR_HERO_IMAGE_URL"
-          fetchPriority="high"
-        /> */}
 
         {/* Geo-Targeting Meta Tags */}
         <GeoMetaTags />
@@ -174,44 +141,7 @@ export default async function RootLayout({
         {/* Facebook Pixel */}
         <FacebookPixel />
 
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          {/* Top Green Info Bar - Desktop only */}
-          <TopInfoBar />
-
-          {/* New Horizontal Header System */}
-          <Header categories={categories} />
-
-          {/* Main Layout Container */}
-          <div className="flex flex-col min-h-screen">
-            {/* Main Content Area */}
-            <main className="flex-1 w-full overflow-x-hidden">
-              {children}
-            </main>
-            <Footer />
-          </div>
-
-          <CartDrawer />
-          <WishlistDrawer />
-          <Toaster />
-          <SonnerToaster position="top-center" richColors closeButton />
-        </ThemeProvider>
-        <AiChatWidget />
-
-        {/* Global WebSite Schema */}
-        <SchemaScript
-          id="website-schema"
-          schema={websiteSchema({
-            name: siteConfig.site_name,
-            url: siteConfig.site_domain,
-            description: siteConfig.site_description,
-            searchUrl: `${siteConfig.site_domain}/shop`,
-          })}
-        />
+        {children}
       </body>
     </html>
   );

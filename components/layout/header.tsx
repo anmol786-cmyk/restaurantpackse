@@ -15,10 +15,14 @@ import { brandConfig } from '@/config/brand.config';
 import { brandProfile } from '@/config/brand-profile';
 import { AiChatWidget, useAIChat } from '@/components/ai/ai-chat-widget';
 import { CurrencySelector } from '@/components/ui/currency-selector';
+import { LanguageSelector } from '@/components/ui/language-selector';
+import type { Locale } from '@/i18n/routing';
+import { useTranslations } from 'next-intl';
 
 interface HeaderProps {
   className?: string;
   categories?: any[];
+  locale?: Locale;
 }
 
 const NavLink = ({ href, children }: { href: string; children: React.ReactNode }) => (
@@ -30,9 +34,10 @@ const NavLink = ({ href, children }: { href: string; children: React.ReactNode }
   </Link>
 );
 
-export function Header({ className, categories = [] }: HeaderProps) {
+export function Header({ className, categories = [], locale = 'en' }: HeaderProps) {
   const logoUrl = 'https://crm.restaurantpack.se/wp-content/uploads/2025/03/ANMOL-WHOLESALE-1.png';
   const { openChat, ChatWidget } = useAIChat();
+  const t = useTranslations('nav');
 
   return (
     <>
@@ -62,7 +67,6 @@ export function Header({ className, categories = [] }: HeaderProps) {
 
             {/* Search Bar area - Expands to fill space */}
             <div className="flex-1 max-w-xl">
-              {/* We'll style the SearchModal trigger to look like a modern input */}
               <SearchModal />
             </div>
 
@@ -70,11 +74,11 @@ export function Header({ className, categories = [] }: HeaderProps) {
             <div className="flex items-center gap-8">
               {/* Navigation Links */}
               <nav className="flex items-center gap-6">
-                <NavLink href="/shop">Products</NavLink>
-                <NavLink href="/wholesale">Wholesale</NavLink>
-                <NavLink href="/wholesale/quick-order">Quick Order</NavLink>
-                <NavLink href="/wholesale/quote">Quotes</NavLink>
-                <NavLink href="/wholesale/register">B2B Account</NavLink>
+                <NavLink href="/shop">{t('shop')}</NavLink>
+                <NavLink href="/wholesale">{t('wholesale')}</NavLink>
+                <NavLink href="/wholesale/quick-order">{t('quickOrder')}</NavLink>
+                <NavLink href="/wholesale/quote">{t('quotes')}</NavLink>
+                <NavLink href="/wholesale/register">{t('b2bAccount')}</NavLink>
               </nav>
 
               <div className="h-6 w-px bg-slate-200 hidden xl:block" />
@@ -89,6 +93,7 @@ export function Header({ className, categories = [] }: HeaderProps) {
                   <MessageCircle className="h-5 w-5" />
                 </button>
 
+                <LanguageSelector variant="compact" currentLocale={locale} />
                 <CurrencySelector variant="compact" />
 
                 <UserNav />
@@ -119,6 +124,7 @@ export function Header({ className, categories = [] }: HeaderProps) {
             </div>
 
             <div className="flex items-center gap-2">
+              <LanguageSelector variant="icon-only" currentLocale={locale} />
               <CurrencySelector variant="icon-only" />
               <SearchModal variant="icon" />
               <CartIcon />

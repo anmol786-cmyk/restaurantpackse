@@ -1,12 +1,22 @@
 'use client';
 
 import Image from 'next/image';
-import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { ArrowRight, CheckCircle2, Flame, Timer } from 'lucide-react';
+import { ArrowRight, CheckCircle2, Flame } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Link } from '@/i18n/navigation';
+import { useTranslations } from 'next-intl';
 
 export function TandoorShowcase() {
+    const t = useTranslations('tandoorShowcase');
+
+    const features = [
+        t('feature1'),
+        t('feature2'),
+        t('feature3'),
+        t('feature4')
+    ];
+
     return (
         <section className="py-12 md:py-20 bg-white">
             <div className="site-container">
@@ -21,27 +31,20 @@ export function TandoorShowcase() {
                             <div className="relative z-10 space-y-6">
                                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/20 text-white text-xs font-bold uppercase tracking-widest backdrop-blur-sm">
                                     <Flame className="w-3 h-3 fill-current" />
-                                    Official Anmol Brand
+                                    {t('badge')}
                                 </div>
 
                                 <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight leading-[1.1]">
-                                    Mini Electric <br />
-                                    <span className="text-white/90">Tandoor Oven</span>
+                                    {t('title')} <br />
+                                    <span className="text-white/90">{t('titleHighlight')}</span>
                                 </h2>
 
                                 <p className="text-lg text-white/90 leading-relaxed font-medium max-w-lg">
-                                    Experience the authentic taste of tandoori cooking right in your European kitchen.
-                                    Engineered specifically for home use, this compact powerhouse delivers professional
-                                    results for char-grilled flavor without the smoke.
+                                    {t('description')}
                                 </p>
 
                                 <div className="space-y-3 pt-2">
-                                    {[
-                                        "Perfect for Roti, Naan, Pizza & Grilling",
-                                        "Compact Design for European Homes",
-                                        "Energy Efficient & Quick Heating",
-                                        "Smoke-free Indoor Operation"
-                                    ].map((feature, i) => (
+                                    {features.map((feature, i) => (
                                         <div key={i} className="flex items-center gap-3 text-white/90">
                                             <CheckCircle2 className="w-5 h-5 text-white flex-shrink-0" />
                                             <span className="text-base font-medium">{feature}</span>
@@ -56,7 +59,7 @@ export function TandoorShowcase() {
                                         asChild
                                     >
                                         <Link href="/product/mini-electric-tandoor-oven">
-                                            Shop Now
+                                            {t('shopNow')}
                                             <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                                         </Link>
                                     </Button>
@@ -77,7 +80,7 @@ export function TandoorShowcase() {
                             >
                                 <Image
                                     src="https://crm.restaurantpack.se/wp-content/uploads/2025/03/anmol-tandoor-Photoroom.jpg"
-                                    alt="Anmol Mini Electric Tandoor - Authentic Tandoori Cooking at Home"
+                                    alt={t('imageAlt')}
                                     fill
                                     className="object-cover z-10"
                                     sizes="(max-width: 768px) 100vw, 50vw"

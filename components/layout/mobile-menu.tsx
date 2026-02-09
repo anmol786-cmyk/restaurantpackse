@@ -33,24 +33,26 @@ import {
     SheetTrigger,
 } from '@/components/ui/sheet';
 import { getStoreStatus, type StoreStatus } from '@/lib/store-hours';
-
-const menuItems = [
-    { href: '/', label: 'Home', icon: Home },
-    { href: '/shop', label: 'Shop', icon: ShoppingBag },
-    { href: '/wholesale', label: 'Wholesale', icon: Building2 },
-    { href: '/wholesale/quick-order', label: 'Quick Order', icon: Zap },
-    { href: '/wholesale/quote', label: 'Bulk Quote', icon: ClipboardList },
-    { href: '/wholesale/register', label: 'B2B Account', icon: UserPlus },
-    { href: '/blog', label: 'Blog', icon: BookOpen },
-    { href: '/about', label: 'About', icon: Info },
-    { href: '/contact', label: 'Contact', icon: Mail },
-    { href: '/my-account', label: 'My Account', icon: Crown },
-];
+import { useTranslations } from 'next-intl';
 
 export function MobileMenu() {
     const [open, setOpen] = useState(false);
     const [storeStatus, setStoreStatus] = useState<StoreStatus | null>(null);
     const logoUrl = 'https://crm.restaurantpack.se/wp-content/uploads/2025/03/ANMOL-WHOLESALE-1.png';
+    const t = useTranslations('nav');
+
+    const menuItems = [
+        { href: '/', label: t('home'), icon: Home },
+        { href: '/shop', label: t('shop'), icon: ShoppingBag },
+        { href: '/wholesale', label: t('wholesale'), icon: Building2 },
+        { href: '/wholesale/quick-order', label: t('quickOrder'), icon: Zap },
+        { href: '/wholesale/quote', label: t('bulkQuote'), icon: ClipboardList },
+        { href: '/wholesale/register', label: t('b2bAccount'), icon: UserPlus },
+        { href: '/blog', label: t('blog'), icon: BookOpen },
+        { href: '/about', label: t('about'), icon: Info },
+        { href: '/contact', label: t('contact'), icon: Mail },
+        { href: '/my-account', label: t('myAccount'), icon: Crown },
+    ];
 
     useEffect(() => {
         const updateStatus = () => setStoreStatus(getStoreStatus());
