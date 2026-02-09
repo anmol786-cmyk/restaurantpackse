@@ -51,7 +51,30 @@
       "Bash(git fetch:*)",
       "Bash(identify:*)",
       "Bash(cd:*)",
-      "Bash(npx next lint:*)"
+      "Bash(npx next lint:*)",
+      "Bash(xcopy \"C:\\\\Users\\\\786\\\\.claude\\\\skills-main\\\\skills\\\\frontend-design\" \"D:\\\\Visual codes\\\\Anmol Project\\\\restaurantpack.se\\\\.claude\\\\skills\\\\frontend-design\"\" /E /I /Y && xcopy \"C:Users786.claudeskills-mainskillswebapp-testing\" \"D:Visual codesAnmol Projectrestaurantpack.se.claudeskillswebapp-testing\"\" /E /I /Y)",
+      "Bash(xcopy \"C:\\\\Users\\\\786\\\\.claude\\\\skills-main\\\\skills\\\\pdf\" \"D:\\\\Visual codes\\\\Anmol Project\\\\restaurantpack.se\\\\.claude\\\\skills\\\\pdf\"\" /E /I /Y && xcopy \"C:Users786.claudeskills-mainskillsxlsx\" \"D:Visual codesAnmol Projectrestaurantpack.se.claudeskillsxlsx\"\" /E /I /Y)",
+      "Bash(python:*)",
+      "Bash(pip install:*)",
+      "Bash(playwright install:*)",
+      "Bash(npx playwright test:*)",
+      "mcp__claude_ai_Vercel__list_teams",
+      "mcp__claude_ai_Vercel__list_projects",
+      "Bash(npm ls:*)",
+      "Bash(node -e:*)",
+      "Bash(for dir in \"\\(shop\\)\" about blog category checkout contact delivery-information europe-delivery faq posts privacy-policy product product-category refund-return terms-conditions \"[slug]\")",
+      "Bash(do if [ -d \"$dir\" ])",
+      "Bash(then cp -r \"$dir\" \"[locale]/$dir\")",
+      "Bash(echo:*)",
+      "Bash(elif [ -f \"$dir\" ])",
+      "Bash(then cp \"$dir\" \"[locale]/$dir\")",
+      "Bash(fi)",
+      "Bash(done)",
+      "Bash(timeout:*)",
+      "Bash(taskkill:*)",
+      "Bash(wc:*)",
+      "Bash(git log:*)",
+      "Bash(grep:*)"
     ]
   }
 }
