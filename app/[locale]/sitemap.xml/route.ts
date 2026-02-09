@@ -62,11 +62,7 @@ ${PAGES.map((page) => {
         // Current locale URL (e.g. /sv/about)
         const pageUrl = page.slug ? `/${locale}/${page.slug}` : `/${locale}`;
 
-        return `  <url>
-    <loc>${baseUrl}${pageUrl}</loc>
-    <lastmod>${new Date().toISOString()}</lastmod>
-    <changefreq>${page.changefreq}</changefreq>
-    <priority>${page.priority}</priority>${LOCALES.map(
+        const alternates = LOCALES.map(
             (altLocale) => {
                 // Alternate URL logic
                 let altUrl = '';
@@ -77,10 +73,16 @@ ${PAGES.map((page) => {
                     // Other locales have prefix
                     altUrl = page.slug ? `/${altLocale}/${page.slug}` : `/${altLocale}`;
                 }
-                return `
-    <xhtml:link rel="alternate" hreflang="${altLocale}" href="${baseUrl}${altUrl}" />`;
+                return `    <xhtml:link rel="alternate" hreflang="${altLocale}" href="${baseUrl}${altUrl}" />`;
             }
-        ).join('')}
+        ).join('\n');
+
+        return `  <url>
+    <loc>${baseUrl}${pageUrl}</loc>
+    <lastmod>${new Date().toISOString()}</lastmod>
+    <changefreq>${page.changefreq}</changefreq>
+    <priority>${page.priority}</priority>
+${alternates}
     <xhtml:link rel="alternate" hreflang="x-default" href="${baseUrl}${page.slug ? `/${page.slug}` : ''}" />
   </url>`;
     }).join("\n")}
