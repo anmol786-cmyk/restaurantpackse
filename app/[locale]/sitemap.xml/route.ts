@@ -124,10 +124,10 @@ export async function GET(
 
     // 3. Add product categories
     try {
-        const categoriesRes = await getProductCategories({ per_page: 100 });
-        const categories = categoriesRes.data.filter(cat => cat.count > 0);
+        const categories = await getProductCategories({ per_page: 100 });
+        const filteredCategories = categories.filter(cat => cat.count > 0);
 
-        const categoryItems = categories.map((category) => {
+        const categoryItems = filteredCategories.map((category) => {
             const url = `${baseUrl}/${locale}/shop/${category.slug}`;
 
             const languages: Record<string, string> = {};
