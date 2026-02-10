@@ -5,7 +5,7 @@ import { MetadataRoute } from 'next';
  */
 export function generateSitemapXml(items: MetadataRoute.Sitemap): string {
     // Explicitly define header without leading newlines
-    const header = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"\n        xmlns:xhtml="http://www.w3.org/1999/xhtml">';
+    const header = '<?xml version="1.0" encoding="UTF-8"?>\n<?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"\n        xmlns:xhtml="http://www.w3.org/1999/xhtml">';
 
     const urls = items.map(item => {
         let urlBlock = `  <url>
@@ -45,7 +45,7 @@ export function generateSitemapXml(items: MetadataRoute.Sitemap): string {
  * Generates valid XML string for a Sitemap Index
  */
 export function generateSitemapIndexXml(sitemaps: string[]): string {
-    const header = '<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
+    const header = '<?xml version="1.0" encoding="UTF-8"?>\n<?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
 
     const content = sitemaps.map(url => `  <sitemap>
     <loc>${url}</loc>
