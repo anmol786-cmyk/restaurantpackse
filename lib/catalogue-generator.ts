@@ -104,7 +104,7 @@ export async function generateCataloguePDF(
     let currentPage = 1;
 
     // Page 1: Cover
-    addCoverPage(doc, pageWidth, pageHeight, title, subtitle, categories.length, products.length, language);
+    addCoverPage(doc, pageWidth, pageHeight, margin, title, subtitle, categories.length, products.length, language);
     currentPage++;
 
     // Page 2: Table of Contents
@@ -160,6 +160,7 @@ function addCoverPage(
     doc: jsPDF,
     pageWidth: number,
     pageHeight: number,
+    margin: number,
     title: string,
     subtitle: string,
     categoryCount: number,
