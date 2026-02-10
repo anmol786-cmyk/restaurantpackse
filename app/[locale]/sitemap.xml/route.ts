@@ -2,8 +2,7 @@ import { siteConfig } from "@/site.config";
 import { NextRequest, NextResponse } from "next/server";
 import { generateSitemapXml } from "@/lib/sitemap-generator";
 import { MetadataRoute } from "next";
-import { getProducts } from "@/lib/woocommerce/products-direct";
-import { getProductCategories } from "@/lib/woocommerce/categories";
+import { getProducts, getProductCategories } from "@/lib/woocommerce/products-direct";
 
 /**
  * Locale-Specific Complete Sitemap Handler
