@@ -79,10 +79,10 @@ export function TandoorShowcase() {
                                 transition={{ duration: 0.5, ease: "easeOut" }}
                             >
                                 <Image
-                                    src="https://crm.restaurantpack.se/wp-content/uploads/2025/03/anmol-tandoor-Photoroom.jpg"
+                                    src="https://crm.restaurantpack.se/wp-content/uploads/2025/03/front-graphics.png"
                                     alt={t('imageAlt')}
                                     fill
-                                    className="object-cover z-10"
+                                    className="object-cover object-left z-10"
                                     sizes="(max-width: 768px) 100vw, 50vw"
                                     priority
                                 />

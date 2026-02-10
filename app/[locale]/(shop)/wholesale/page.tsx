@@ -46,7 +46,7 @@ export default async function WholesaleLandingPage() {
                         className="object-cover opacity-40 scale-105"
                         priority
                     />
-                    <div className="absolute inset-0 bg-gradient-to-r from-neutral-900 via-neutral-900/80 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-[#A80E13] via-[#A80E13]/80 to-transparent" />
                 </div>
 
                 <div className="container relative z-10 px-4">
@@ -234,7 +234,7 @@ export default async function WholesaleLandingPage() {
             </section>
 
             {/* Tandoor Spotlight */}
-            <section className="py-24 bg-neutral-900 text-white relative overflow-hidden">
+            <section className="py-24 bg-[#A80E13] text-white relative overflow-hidden">
                 <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1574966740793-34d9dfdc8640?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center opacity-10" />
                 <div className="container px-4 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-10">
                     <div className="space-y-8">
@@ -267,10 +267,10 @@ export default async function WholesaleLandingPage() {
                     </div>
                     <div className="relative aspect-square rounded-3xl overflow-hidden shadow-2xl border-4 border-white/10">
                         <Image
-                            src="https://images.unsplash.com/photo-1599658880436-c61792e70672?q=80&w=2070&auto=format&fit=crop"
+                            src="https://crm.restaurantpack.se/wp-content/uploads/2025/03/front-graphics.png"
                             alt="Anmol Electric Tandoor in Professional Kitchen"
                             fill
-                            className="object-cover"
+                            className="object-cover object-left"
                         />
                     </div>
                 </div>
