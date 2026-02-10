@@ -118,7 +118,7 @@ export default function CheckoutPage() {
     if (items.length > 0) {
       trackInitiateCheckout(items, getTotalPrice());
     }
-  }, []);
+  }, [items, getTotalPrice]);
 
   // Calculate shipping when postcode changes
   const handleCalculateShipping = useCallback(async (postcode: string, city: string, country: string) => {
