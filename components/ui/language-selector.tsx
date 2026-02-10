@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useTransition } from 'react';
+import { useState } from 'react';
 import { Check, ChevronDown, Globe } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -9,7 +9,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { useRouter, usePathname } from '@/i18n/navigation';
+import { Link, usePathname } from '@/i18n/navigation';
 import { routing, localeNames, localeFlags, type Locale } from '@/i18n/routing';
 import { cn } from '@/lib/utils';
 
@@ -25,16 +25,7 @@ export function LanguageSelector({
   currentLocale,
 }: LanguageSelectorProps) {
   const [open, setOpen] = useState(false);
-  const [isPending, startTransition] = useTransition();
-  const router = useRouter();
   const pathname = usePathname();
-
-  const handleLocaleChange = (locale: Locale) => {
-    startTransition(() => {
-      router.replace(pathname, { locale });
-    });
-    setOpen(false);
-  };
 
   const currentLocaleName = localeNames[currentLocale];
   const currentLocaleFlag = localeFlags[currentLocale];
@@ -47,7 +38,7 @@ export function LanguageSelector({
           <Button
             variant="ghost"
             size="icon"
-            className={cn('h-9 w-9', isPending && 'opacity-50', className)}
+            className={cn('h-9 w-9', className)}
             aria-label="Select language"
           >
             <Globe className="h-4 w-4" />
@@ -57,16 +48,16 @@ export function LanguageSelector({
           {routing.locales.map((locale) => (
             <DropdownMenuItem
               key={locale}
-              onClick={() => handleLocaleChange(locale)}
+              asChild
               className="cursor-pointer"
             >
-              <div className="flex items-center justify-between w-full">
+              <Link href={pathname} locale={locale} className="flex items-center justify-between w-full">
                 <div className="flex items-center gap-2">
                   <span className="text-base">{localeFlags[locale]}</span>
                   <span className="font-medium text-sm">{localeNames[locale]}</span>
                 </div>
                 {currentLocale === locale && <Check className="h-4 w-4 text-primary" />}
-              </div>
+              </Link>
             </DropdownMenuItem>
           ))}
         </DropdownMenuContent>
@@ -79,7 +70,7 @@ export function LanguageSelector({
     return (
       <DropdownMenu open={open} onOpenChange={setOpen}>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="sm" className={cn('h-9 gap-1.5 px-2.5', isPending && 'opacity-50', className)}>
+          <Button variant="ghost" size="sm" className={cn('h-9 gap-1.5 px-2.5', className)}>
             <span className="text-base">{currentLocaleFlag}</span>
             <span className="font-medium text-sm uppercase">{currentLocale}</span>
             <ChevronDown className="h-3.5 w-3.5 opacity-50" />
@@ -89,16 +80,16 @@ export function LanguageSelector({
           {routing.locales.map((locale) => (
             <DropdownMenuItem
               key={locale}
-              onClick={() => handleLocaleChange(locale)}
+              asChild
               className="cursor-pointer"
             >
-              <div className="flex items-center justify-between w-full">
+              <Link href={pathname} locale={locale} className="flex items-center justify-between w-full">
                 <div className="flex items-center gap-2">
                   <span className="text-base">{localeFlags[locale]}</span>
                   <span className="font-medium text-sm">{localeNames[locale]}</span>
                 </div>
                 {currentLocale === locale && <Check className="h-4 w-4 text-primary" />}
-              </div>
+              </Link>
             </DropdownMenuItem>
           ))}
         </DropdownMenuContent>
@@ -110,7 +101,7 @@ export function LanguageSelector({
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" className={cn('h-10 gap-2', isPending && 'opacity-50', className)}>
+        <Button variant="outline" className={cn('h-10 gap-2', className)}>
           <Globe className="h-4 w-4" />
           <span className="text-lg">{currentLocaleFlag}</span>
           <span className="font-medium">{currentLocaleName}</span>
@@ -124,16 +115,16 @@ export function LanguageSelector({
         {routing.locales.map((locale) => (
           <DropdownMenuItem
             key={locale}
-            onClick={() => handleLocaleChange(locale)}
+            asChild
             className="cursor-pointer py-2.5"
           >
-            <div className="flex items-center justify-between w-full">
+            <Link href={pathname} locale={locale} className="flex items-center justify-between w-full">
               <div className="flex items-center gap-3">
                 <span className="text-xl">{localeFlags[locale]}</span>
                 <span className="font-medium">{localeNames[locale]}</span>
               </div>
               {currentLocale === locale && <Check className="h-4 w-4 text-primary" />}
-            </div>
+            </Link>
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>
