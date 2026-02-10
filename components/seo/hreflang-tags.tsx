@@ -20,15 +20,12 @@ export function HreflangTags({ canonicalUrl, pathname = '' }: HreflangTagsProps)
 
       {/* Swedish version */}
       <link rel="alternate" hrefLang="sv" href={`${baseUrl}/sv/${path}`} />
-      <link rel="alternate" hrefLang="sv-SE" href={`${baseUrl}/sv/${path}`} />
 
       {/* Norwegian version */}
       <link rel="alternate" hrefLang="no" href={`${baseUrl}/no/${path}`} />
-      <link rel="alternate" hrefLang="nb-NO" href={`${baseUrl}/no/${path}`} />
 
       {/* Danish version */}
       <link rel="alternate" hrefLang="da" href={`${baseUrl}/da/${path}`} />
-      <link rel="alternate" hrefLang="da-DK" href={`${baseUrl}/da/${path}`} />
 
       {/* Default/fallback - points to English (unprefixed) */}
       <link rel="alternate" hrefLang="x-default" href={`${baseUrl}/${path}`} />

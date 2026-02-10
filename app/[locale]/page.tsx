@@ -37,6 +37,14 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       url: "https://restaurantpack.se",
       type: "website",
       locale: localeMap[locale] || "en_US",
+      images: [
+        {
+          url: "https://restaurantpack.se/opengraph-image.jpeg",
+          width: 1200,
+          height: 630,
+          alt: "Anmol Wholesale - Restaurant Supply Sweden",
+        },
+      ],
     },
   };
 }
