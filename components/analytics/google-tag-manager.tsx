@@ -6,7 +6,7 @@
 import Script from 'next/script';
 
 export function GoogleTagManager() {
-  const GTM_ID = 'GTM-NMWTPV89';
+  const GTM_ID = 'GTM-TZ8ZT9SK';
 
   return (
     <>
@@ -29,7 +29,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 }
 
 export function GoogleTagManagerNoScript() {
-  const GTM_ID = 'GTM-NMWTPV89';
+  const GTM_ID = 'GTM-TZ8ZT9SK';
 
   return (
     <noscript>

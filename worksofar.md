@@ -57,10 +57,10 @@ Summary: Design System Implementation Complete
 ## Current Status
 - **Phase 3.1 (B2B Features)**: 🟡 In Progress / Debugging
     - **Business Registration**: VAT optionality implemented.
-    - **Known Issue**: Form submission fails with "Address/Phone required" errors despite user input. Attempted fix (CSS hiding vs unmounting) did not fully resolve it. Needs fresh investigation.
+    - **Catalogue PDF Redesign**: ✅ Completed. Switched to strict Red (#A80E13) & White theme. Fixed build errors.
+    - **Checkout Page**: ✅ Fixed ESLint warning for useEffect dependencies.
     - **Credit System**: Credit limit visualization added to dashboard.
     - **Exports**: Order history, Invoice list, and Reorder lists exportable to Excel.
-    - **Product Catalog**: PDF/PPTX catalog generation implemented.
 
 ## Next Steps
 - **Phase 3.2**: Sales Dashboard & Analytics
