@@ -1,4 +1,4 @@
-import jsPDF from 'jspdf';
+import jsPDF, { GState } from 'jspdf';
 import { format } from 'date-fns';
 import { brandProfile } from '@/config/brand-profile';
 
@@ -210,9 +210,9 @@ function addCoverPage(
     setColor(doc, THEME.white, 'fill');
     // Drop shadow simulation (gray rect behind)
     setColor(doc, { r: 0, g: 0, b: 0 }, 'fill'); // Black
-    doc.setGState(new doc.GState({ opacity: 0.1 })); // Transparent
+    doc.setGState(new GState({ opacity: 0.1 })); // Transparent
     doc.rect(statsMargin + 2, statsY + 2, boxW, boxH, 'F');
-    doc.setGState(new doc.GState({ opacity: 1 })); // Reset
+    doc.setGState(new GState({ opacity: 1 })); // Reset
 
     setColor(doc, THEME.white, 'fill');
     doc.rect(statsMargin, statsY, boxW, boxH, 'F'); // Main white box
