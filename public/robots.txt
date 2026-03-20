@@ -18,8 +18,13 @@ Allow: /posts
 Allow: /about
 Allow: /contact
 
-# Sitemap
+# Sitemaps
 Sitemap: https://restaurantpack.se/sitemap.xml
+Sitemap: https://restaurantpack.se/sitemap-products.xml
+Sitemap: https://restaurantpack.se/sitemap-categories.xml
+Sitemap: https://restaurantpack.se/sitemap-posts.xml
+Sitemap: https://restaurantpack.se/sitemap-pages.xml
+Sitemap: https://restaurantpack.se/sitemap-post-categories.xml
 
 # Crawl-delay (optional, helps prevent server overload)
 Crawl-delay: 1
