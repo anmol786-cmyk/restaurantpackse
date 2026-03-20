@@ -14,13 +14,16 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     title: t('metaTitle'),
     description: t('metaDescription'),
     alternates: {
-      canonical: '/about',
+      canonical: `https://restaurantpack.se${locale === 'en' ? '' : `/${locale}`}/about`,
     },
   };
 }
 
-export default async function AboutPage() {
+export default async function AboutPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
   const t = await getTranslations('aboutPage');
+  const localePath = locale === 'en' ? '' : `/${locale}`;
+  const localeUrl = `https://restaurantpack.se${localePath}`;
 
   return (
     <main className="min-h-screen bg-background">
@@ -255,7 +258,7 @@ export default async function AboutPage() {
           </div>
         </div>
       </section>
-      <SchemaScript id="about-org-schema" schema={anmolWholesaleOrganizationSchema()} />
+      <SchemaScript id="about-org-schema" schema={anmolWholesaleOrganizationSchema(localeUrl)} />
     </main>
   );
 }

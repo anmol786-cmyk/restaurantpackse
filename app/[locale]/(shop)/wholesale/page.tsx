@@ -31,11 +31,17 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     return {
         title: t('metaTitle'),
         description: t('metaDescription'),
+        alternates: {
+            canonical: `https://restaurantpack.se${locale === 'en' ? '' : `/${locale}`}/wholesale`,
+        },
     };
 }
 
-export default async function WholesaleLandingPage() {
+export default async function WholesaleLandingPage({ params }: { params: Promise<{ locale: string }> }) {
+    const { locale } = await params;
     const t = await getTranslations('wholesaleLanding');
+    const localePath = locale === 'en' ? '' : `/${locale}`;
+    const localeUrl = `https://restaurantpack.se${localePath}`;
 
     return (
         <div className="flex flex-col min-h-screen">
@@ -400,7 +406,7 @@ export default async function WholesaleLandingPage() {
                     </div>
                 </div>
             </section>
-        <SchemaScript id="wholesale-org-schema" schema={anmolWholesaleOrganizationSchema()} />
+        <SchemaScript id="wholesale-org-schema" schema={anmolWholesaleOrganizationSchema(localeUrl)} />
         </div>
     );
 }

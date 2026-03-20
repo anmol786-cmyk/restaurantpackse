@@ -47,7 +47,7 @@ export async function generateMetadata({ params }: ProductCategoryPageProps): Pr
             title: `${category.name} | Anmol Wholesale`,
             description: category.description?.replace(/\<[^>]*>/g, '').substring(0, 160) || t('shopProducts', { name: category.name }),
             alternates: {
-                canonical: `${siteConfig.site_domain}/product-category/${resolvedParams.slug?.join('/')}`,
+                canonical: `https://restaurantpack.se${resolvedParams.locale === 'en' ? '' : `/${resolvedParams.locale}`}/product-category/${resolvedParams.slug?.join('/') || ''}`,
             },
             openGraph: {
                 title: category.name,
@@ -60,7 +60,7 @@ export async function generateMetadata({ params }: ProductCategoryPageProps): Pr
                         alt: category.name,
                     }]
                     : [defaultImage],
-                url: `${siteConfig.site_domain}/product-category/${resolvedParams.slug?.join('/')}`,
+                url: `https://restaurantpack.se${resolvedParams.locale === 'en' ? '' : `/${resolvedParams.locale}`}/product-category/${resolvedParams.slug?.join('/') || ''}`,
             },
         };
     } catch {

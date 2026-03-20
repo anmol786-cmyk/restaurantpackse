@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
         title: t('metaTitle'),
         description: t('metaDescription'),
         alternates: {
-            canonical: '/delivery-information',
+            canonical: `https://restaurantpack.se${locale === 'en' ? '' : `/${locale}`}/delivery-information`,
         },
     };
 }

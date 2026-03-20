@@ -31,12 +31,12 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     title: t('homeTitle'),
     description: t('homeDescription'),
     alternates: {
-      canonical: "https://restaurantpack.se",
+      canonical: `https://restaurantpack.se${locale === 'en' ? '' : `/${locale}`}`,
     },
     openGraph: {
       title: t('homeTitle'),
       description: t('homeDescription'),
-      url: "https://restaurantpack.se",
+      url: `https://restaurantpack.se${locale === 'en' ? '' : `/${locale}`}`,
       type: "website",
       locale: localeMap[locale] || "en_US",
       images: [
@@ -54,6 +54,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'productShowcase' });
+  const localePath = locale === 'en' ? '' : `/${locale}`;
+  const localeUrl = `https://restaurantpack.se${localePath}`;
 
   // Fetch data in parallel - get more products for better sorting
   const [categoriesRes, allProductsRes, haldiramRes] = await Promise.all([
@@ -115,12 +117,12 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       <SchemaScript
         id="homepage-schema-graph"
         schema={schemaGraph(
-          anmolWholesaleOrganizationSchemaFull(),
+          anmolWholesaleOrganizationSchemaFull(localeUrl),
           websiteSchema({
             name: 'Anmol Wholesale',
-            url: siteConfig.site_domain,
+            url: localeUrl,
             description: siteConfig.site_description,
-            searchUrl: `${siteConfig.site_domain}/shop`,
+            searchUrl: `${localeUrl}/shop`,
           })
         ) as Record<string, unknown>}
       />

@@ -43,7 +43,8 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
             ? cleanDescription.substring(0, 160)
             : t('metaFallback', { name: product.name });
 
-        const productUrl = `https://restaurantpack.se/product/${resolvedParams.slug}`;
+        const localePath = resolvedParams.locale === 'en' ? '' : `/${resolvedParams.locale}`;
+        const productUrl = `https://restaurantpack.se${localePath}/product/${resolvedParams.slug}`;
 
         return {
             title: t('metaTitle', { name: product.name }),
