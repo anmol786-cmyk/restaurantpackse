@@ -504,7 +504,7 @@ export function UnifiedSearchChat({ className }: UnifiedSearchChatProps) {
                                     </div>
 
                                     {/* Feedback Form */}
-                                    <div className="bg-white dark:bg-gray-900 rounded-lg border p-4">
+                                    <div className="bg-card rounded-lg border p-4">
                                         <FeedbackForm
                                             onClose={() => setIsOpen(false)}
                                             onSuccess={() => {

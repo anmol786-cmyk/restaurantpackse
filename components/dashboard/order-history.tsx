@@ -13,7 +13,9 @@ import {
   XCircle,
   Clock,
   ChevronRight,
-  Download
+  Download,
+  FileDown,
+  Loader2
 } from 'lucide-react';
 import { formatPrice } from '@/lib/utils';
 import { useAuthStore } from '@/store/auth-store';
@@ -39,6 +41,7 @@ export function OrderHistory() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [reorderingId, setReorderingId] = useState<number | null>(null);
+  const [invoicingId, setInvoicingId] = useState<number | null>(null);
 
   useEffect(() => {
     async function fetchOrders() {
@@ -48,43 +51,10 @@ export function OrderHistory() {
       }
 
       try {
-        // In production, fetch from WooCommerce API
-        // const response = await fetch(`/api/orders?customer_id=${user.id}`);
-        // const data = await response.json();
-        // setOrders(data);
-
-        // Mock data for now
-        await new Promise(resolve => setTimeout(resolve, 500));
-
-        const mockOrders: Order[] = [
-          {
-            id: 1234,
-            number: 'ORD-1234',
-            status: 'completed',
-            date_created: '2025-01-07T10:30:00',
-            total: '4580',
-            currency: 'SEK',
-            line_items: [
-              { id: 1, name: 'Basmati Rice 20kg', quantity: 5, total: '2500', product_id: 101, variation_id: 0, tax_class: '', subtotal: '2500', subtotal_tax: '0', total_tax: '0', taxes: [], meta_data: [], sku: 'RICE-001', price: 500, image: { id: 0, src: '', name: '', alt: '', date_created: '', date_created_gmt: '', date_modified: '', date_modified_gmt: '' }, parent_name: null },
-              { id: 2, name: 'Red Lentils 10kg', quantity: 3, total: '1200', product_id: 102, variation_id: 0, tax_class: '', subtotal: '1200', subtotal_tax: '0', total_tax: '0', taxes: [], meta_data: [], sku: 'LENTIL-002', price: 400, image: { id: 0, src: '', name: '', alt: '', date_created: '', date_created_gmt: '', date_modified: '', date_modified_gmt: '' }, parent_name: null },
-              { id: 3, name: 'Garam Masala 500g', quantity: 8, total: '880', product_id: 103, variation_id: 0, tax_class: '', subtotal: '880', subtotal_tax: '0', total_tax: '0', taxes: [], meta_data: [], sku: 'SPICE-003', price: 110, image: { id: 0, src: '', name: '', alt: '', date_created: '', date_created_gmt: '', date_modified: '', date_modified_gmt: '' }, parent_name: null },
-            ],
-          } as any,
-          {
-            id: 1233,
-            number: 'ORD-1233',
-            status: 'processing',
-            date_created: '2025-01-05T14:15:00',
-            total: '8920',
-            currency: 'SEK',
-            line_items: [
-              { id: 4, name: 'Turmeric Powder 1kg', quantity: 20, total: '3200', product_id: 104, variation_id: 0, tax_class: '', subtotal: '3200', subtotal_tax: '0', total_tax: '0', taxes: [], meta_data: [], sku: 'SPICE-004', price: 160, image: { id: 0, src: '', name: '', alt: '', date_created: '', date_created_gmt: '', date_modified: '', date_modified_gmt: '' }, parent_name: null },
-              { id: 5, name: 'Cumin Seeds 500g', quantity: 12, total: '1440', product_id: 105, variation_id: 0, tax_class: '', subtotal: '1440', subtotal_tax: '0', total_tax: '0', taxes: [], meta_data: [], sku: 'SPICE-005', price: 120, image: { id: 0, src: '', name: '', alt: '', date_created: '', date_created_gmt: '', date_modified: '', date_modified_gmt: '' }, parent_name: null },
-            ],
-          } as any,
-        ];
-
-        setOrders(mockOrders);
+        const response = await fetch(`/api/orders?customer_id=${user.id}&per_page=20`);
+        if (!response.ok) throw new Error('Failed to fetch orders');
+        const data = await response.json();
+        setOrders(Array.isArray(data) ? data : data.orders ?? []);
       } catch (error) {
         console.error('Failed to fetch orders:', error);
         toast.error('Failed to load order history');
@@ -95,6 +65,27 @@ export function OrderHistory() {
 
     fetchOrders();
   }, [user]);
+
+  const handleDownloadInvoice = async (orderId: number, orderNumber: string) => {
+    try {
+      setInvoicingId(orderId);
+      const response = await fetch(`/api/orders/${orderId}/invoice`);
+      if (!response.ok) throw new Error('Failed to generate invoice');
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Invoice-${orderNumber}.pdf`;
+      a.click();
+      URL.revokeObjectURL(url);
+      toast.success('Invoice downloaded');
+    } catch (error) {
+      console.error('Invoice error:', error);
+      toast.error('Failed to download invoice');
+    } finally {
+      setInvoicingId(null);
+    }
+  };
 
   const handleReorder = async (order: Order) => {
     setReorderingId(order.id);
@@ -253,6 +244,19 @@ export function OrderHistory() {
                         <RefreshCw className="w-4 h-4 mr-2" />
                         Reorder
                       </>
+                    )}
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleDownloadInvoice(order.id, order.number)}
+                    disabled={invoicingId === order.id}
+                    title="Download Invoice PDF"
+                  >
+                    {invoicingId === order.id ? (
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                    ) : (
+                      <FileDown className="w-4 h-4" />
                     )}
                   </Button>
                   <Button variant="ghost" size="sm" asChild>

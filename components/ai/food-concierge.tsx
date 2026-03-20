@@ -136,7 +136,7 @@ export function FoodConcierge() {
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 20, scale: 0.95 }}
                         transition={{ duration: 0.2, ease: 'easeOut' }}
-                        className="fixed bottom-44 right-4 z-[99] w-[90vw] max-w-[400px] overflow-hidden rounded-3xl border border-neutral-200 bg-white shadow-2xl dark:border-neutral-700 dark:bg-neutral-900 md:bottom-28 md:right-8"
+                        className="fixed bottom-44 right-4 z-[99] w-[90vw] max-w-[400px] overflow-hidden rounded-3xl border border-border bg-background shadow-2xl md:bottom-28 md:right-8"
                     >
                         {/* Header */}
                         <div className="relative flex items-center gap-3 bg-gradient-to-r from-primary-900 via-primary-800 to-primary-900 p-5 text-white">
@@ -153,7 +153,7 @@ export function FoodConcierge() {
                         </div>
 
                         {/* Messages Area */}
-                        <div className="h-[420px] overflow-y-auto bg-gradient-to-b from-neutral-50 to-white p-4 dark:from-neutral-800 dark:to-neutral-900">
+                        <div className="h-[420px] overflow-y-auto bg-gradient-to-b from-muted to-background p-4">
                             <div className="flex flex-col gap-3">
                                 {messages.map((msg, index) => (
                                     <motion.div
@@ -164,7 +164,7 @@ export function FoodConcierge() {
                                         className={cn(
                                             "flex w-max max-w-[85%] flex-col gap-1 rounded-2xl px-4 py-3 text-sm shadow-md",
                                             msg.role === 'assistant'
-                                                ? "self-start rounded-tl-sm bg-white/80 backdrop-blur-md text-neutral-800 ring-1 ring-white/20 dark:bg-neutral-800/80 dark:text-neutral-100 dark:ring-neutral-700/50"
+                                                ? "self-start rounded-tl-sm bg-card/80 backdrop-blur-md text-foreground ring-1 ring-border/20"
                                                 : "self-end rounded-tr-sm font-medium shadow-lg"
                                         )}
                                         style={msg.role === 'user' ? { backgroundColor: '#1a3d35', color: 'white' } : undefined}
@@ -186,7 +186,7 @@ export function FoodConcierge() {
                                     <motion.div
                                         initial={{ opacity: 0 }}
                                         animate={{ opacity: 1 }}
-                                        className="self-start rounded-2xl rounded-tl-sm bg-white/80 backdrop-blur-md px-5 py-3 shadow-md ring-1 ring-white/20 dark:bg-neutral-800/80 dark:ring-neutral-700/50"
+                                        className="self-start rounded-2xl rounded-tl-sm bg-card/80 backdrop-blur-md px-5 py-3 shadow-md ring-1 ring-border/20"
                                     >
                                         <div className="flex gap-1.5">
                                             <span className="h-2.5 w-2.5 animate-bounce rounded-full [animation-delay:-0.3s]" style={{ backgroundColor: '#1a3d35' }} />
@@ -200,7 +200,7 @@ export function FoodConcierge() {
                         </div>
 
                         {/* Input Area */}
-                        <div className="border-t border-neutral-200 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-900">
+                        <div className="border-t border-border bg-background p-4">
                             <form
                                 onSubmit={(e) => {
                                     e.preventDefault();
@@ -212,7 +212,7 @@ export function FoodConcierge() {
                                     value={inputValue}
                                     onChange={(e) => setInputValue(e.target.value)}
                                     placeholder="Ask about our menu, reservations..."
-                                    className="flex-1 rounded-full border-neutral-300 bg-neutral-50 px-5 py-2.5 text-sm focus:border-primary-500 focus:bg-white focus:ring-2 focus:ring-primary-500/20 dark:border-neutral-700 dark:bg-neutral-800 dark:focus:bg-neutral-700"
+                                    className="flex-1 rounded-full border-border bg-muted px-5 py-2.5 text-sm focus:border-primary-500 focus:bg-background focus:ring-2 focus:ring-primary-500/20"
                                     disabled={isTyping}
                                 />
                                 <Button

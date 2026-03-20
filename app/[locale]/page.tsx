@@ -10,6 +10,8 @@ import { sortProductsStrategically } from "@/lib/utils/product-sorting";
 import type { Metadata } from "next";
 import { SchemaScript } from "@/lib/schema/schema-script";
 import { anmolWholesaleOrganizationSchemaFull } from "@/lib/schema/organization";
+import { websiteSchema, schemaGraph } from '@/lib/schema';
+import { siteConfig } from '@/site.config';
 import { getTranslations } from 'next-intl/server';
 
 export const revalidate = 3600;
@@ -71,7 +73,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   const featuredProducts = strategicallySortedProducts.slice(0, 8);
 
   return (
-    <main className="flex min-h-screen flex-col bg-white pb-20 overflow-x-hidden max-w-full">
+    <main className="flex min-h-screen flex-col bg-background pb-20 overflow-x-hidden max-w-full">
       {/* 1. Hero Section - uses translations internally */}
       <Hero />
 
@@ -111,8 +113,16 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
 
       {/* SEO Structured Data */}
       <SchemaScript
-        id="homepage-org-schema"
-        schema={anmolWholesaleOrganizationSchemaFull()}
+        id="homepage-schema-graph"
+        schema={schemaGraph(
+          anmolWholesaleOrganizationSchemaFull(),
+          websiteSchema({
+            name: 'Anmol Wholesale',
+            url: siteConfig.site_domain,
+            description: siteConfig.site_description,
+            searchUrl: `${siteConfig.site_domain}/shop`,
+          })
+        ) as Record<string, unknown>}
       />
     </main>
   );

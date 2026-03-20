@@ -15,8 +15,11 @@ import { Separator } from '@/components/ui/separator';
 import {
   Loader2, Plus, Trash2, Send, Package, Building2, ClipboardList,
   Search, Minus, CheckCircle2, MessageSquare, FileText, ArrowRight,
-  Clock, ShieldCheck, Sparkles, Phone, Mail, Calculator, AlertCircle
+  Clock, ShieldCheck, Sparkles, Phone, Mail, Calculator, AlertCircle,
+  FileDown
 } from 'lucide-react';
+import { downloadQuotePDF, calculateValidUntil } from '@/lib/pdf/quote-pdf';
+import type { QuotePDFData } from '@/lib/pdf/quote-pdf';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import { useCurrency } from '@/hooks/use-currency';
@@ -82,6 +85,9 @@ export function QuoteRequestFormPro() {
     message?: string;
   } | null>(null);
 
+  // Snapshot of form values captured at submission time — used to build the PDF
+  const [submittedFormData, setSubmittedFormData] = useState<QuoteFormValues | null>(null);
+
   const { format: formatCurrency } = useCurrency();
 
   const form = useForm<QuoteFormValues>({
@@ -121,6 +127,9 @@ export function QuoteRequestFormPro() {
   async function onSubmit(data: QuoteFormValues, type: 'website' | 'whatsapp') {
     setIsLoading(true);
     setSubmissionType(type);
+
+    // Capture form values snapshot now — the form will be reset on success
+    setSubmittedFormData(data);
 
     try {
       if (type === 'website') {
@@ -218,11 +227,16 @@ Sent via Anmol Wholesale Quote System`;
 
   // Success state
   if (quoteResult?.success) {
-    return <QuoteSuccessState result={quoteResult} onReset={() => {
-      setQuoteResult(null);
-      form.reset();
-      setCurrentStep(1);
-    }} />;
+    return <QuoteSuccessState
+      result={quoteResult}
+      submittedFormData={submittedFormData}
+      onReset={() => {
+        setQuoteResult(null);
+        setSubmittedFormData(null);
+        form.reset();
+        setCurrentStep(1);
+      }}
+    />;
   }
 
   return (
@@ -553,7 +567,7 @@ function QuoteItemRow({
 
                 {/* Search Dropdown */}
                 {isOpen && searchResults.length > 0 && (
-                  <div className="absolute z-50 w-full mt-1 bg-white border rounded-lg shadow-lg max-h-48 overflow-auto">
+                  <div className="absolute z-50 w-full mt-1 bg-card border border-border rounded-lg shadow-lg max-h-48 overflow-auto">
                     {searchResults.map((product) => (
                       <button
                         key={product.id}
@@ -1107,11 +1121,47 @@ function ReviewStep({
 // Success State Component
 function QuoteSuccessState({
   result,
+  submittedFormData,
   onReset,
 }: {
   result: { success: boolean; quoteId?: string; orderId?: number; message?: string };
+  submittedFormData: QuoteFormValues | null;
   onReset: () => void;
 }) {
+  function handleDownloadPDF() {
+    const now = new Date().toISOString();
+    // Use the quoteId from the API response, or generate a client-side one
+    const quoteId = result.quoteId ?? `QT-${Date.now().toString(36).toUpperCase()}`;
+
+    const pdfData: QuotePDFData = {
+      quoteId,
+      quoteDate: now,
+      validUntil: calculateValidUntil(now, 30),
+      customer: {
+        name: submittedFormData
+          ? `${submittedFormData.firstName} ${submittedFormData.lastName}`.trim()
+          : '',
+        email: submittedFormData?.email ?? '',
+        phone: submittedFormData?.phone,
+        company: submittedFormData?.companyName,
+        vatNumber: submittedFormData?.vatNumber,
+        businessType: submittedFormData?.businessType,
+        deliveryAddress: submittedFormData?.deliveryAddress,
+      },
+      items: (submittedFormData?.items ?? []).map((item) => ({
+        product_name: item.name,
+        sku: item.sku,
+        quantity: item.quantity,
+        estimatedPrice: item.unitPrice,
+      })),
+      message: submittedFormData?.message,
+      preferredDeliveryDate: submittedFormData?.preferredDeliveryDate,
+      currency: 'SEK',
+    };
+
+    downloadQuotePDF(pdfData);
+  }
+
   return (
     <Card className="text-center">
       <CardContent className="py-12 space-y-6">
@@ -1141,6 +1191,10 @@ function QuoteSuccessState({
           <Button variant="outline" onClick={onReset}>
             <Plus className="w-4 h-4 mr-2" />
             Submit Another Quote
+          </Button>
+          <Button variant="outline" onClick={handleDownloadPDF}>
+            <FileDown className="w-4 h-4 mr-2" />
+            Download Quote Confirmation PDF
           </Button>
           <Button asChild>
             <Link href="/wholesale">

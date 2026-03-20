@@ -60,7 +60,7 @@ export function QuickOrder() {
                         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 border border-white/30 text-white text-xs font-bold uppercase tracking-widest">
                             {t('b2bEfficiency')}
                         </div>
-                        <h2 className="text-3xl md:text-4xl font-bold text-white tracking-tight">
+                        <h2 className="font-heading text-3xl md:text-4xl font-bold text-white tracking-tight">
                             {t('skuTitle')}
                         </h2>
                         <p className="text-white/80 max-w-lg leading-relaxed text-lg">
@@ -81,7 +81,7 @@ export function QuickOrder() {
                                 type="submit"
                                 size="lg"
                                 disabled={isSearching}
-                                className="h-14 px-8 bg-primary hover:bg-primary/90 text-white rounded-xl shadow-xl shadow-primary/20"
+                                className="h-14 px-8 bg-accent hover:bg-accent/90 text-accent-foreground rounded-xl shadow-xl shadow-black/20"
                             >
                                 {isSearching ? <Loader2 className="w-6 h-6 animate-spin" /> : <Plus className="w-6 h-6" />}
                             </Button>
@@ -94,7 +94,7 @@ export function QuickOrder() {
                             <div className="space-y-6 relative z-10">
                                 <div className="flex items-center justify-between border-b border-white/5 pb-4">
                                     <span className="text-white font-bold">{t('fastFill')}</span>
-                                    <span className="text-primary text-xs font-black">{t('saveTime')}</span>
+                                    <span className="text-accent text-xs font-black">{t('saveTime')}</span>
                                 </div>
                                 {[
                                     t('directWarehouse'),
@@ -117,7 +117,7 @@ export function QuickOrder() {
                             initial={{ x: 20, y: 20 }}
                             animate={{ x: -20, y: -20 }}
                             transition={{ duration: 4, repeat: Infinity, repeatType: "reverse" }}
-                            className="absolute -top-6 -right-6 bg-primary text-white p-3 rounded-lg shadow-xl text-[10px] font-mono leading-none z-20"
+                            className="absolute -top-6 -right-6 bg-accent text-accent-foreground p-3 rounded-lg shadow-xl text-[10px] font-mono leading-none z-20"
                         >
                             SKU-7829-XL
                         </motion.div>

@@ -118,7 +118,7 @@ export function ProductAutocomplete({ onSelect, selectedProduct }: ProductAutoco
 
           {/* Dropdown Results */}
           {isOpen && (
-            <div className="absolute z-50 w-full mt-1 bg-white border rounded-md shadow-lg max-h-60 overflow-auto">
+            <div className="absolute z-50 w-full mt-1 bg-card border border-border rounded-md shadow-lg max-h-60 overflow-auto">
               {isSearching ? (
                 <div className="p-4 text-center text-sm text-muted-foreground">
                   <Loader2 className="h-4 w-4 animate-spin mx-auto mb-2" />

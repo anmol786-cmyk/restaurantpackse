@@ -5,6 +5,10 @@ import { cookies } from 'next/headers';
 
 export const dynamic = 'force-dynamic';
 
+// Brand primary color — matches site theme
+const BRAND_PRIMARY = '#A80E13';
+const BRAND_PRIMARY_DARK = '#7A0A0E';
+
 interface OrderItem {
   product_id: number;
   product_name: string;
@@ -209,9 +213,6 @@ export async function POST(request: NextRequest) {
     console.log('═══════════════════════════════════════════════');
 
     // Create WooCommerce order
-    let wcOrderId: number | undefined;
-    let wcOrderNumber: string | undefined;
-
     const orderResult = await createQuickOrderInWooCommerce({
       quickOrderId,
       customer,
@@ -220,25 +221,34 @@ export async function POST(request: NextRequest) {
       customerId,
     });
 
-    if (orderResult) {
-      wcOrderId = orderResult.orderId;
-      wcOrderNumber = orderResult.orderNumber;
-      console.log(`✅ WooCommerce order created: #${wcOrderId}`);
-    } else {
-      console.warn('⚠️ Failed to create WooCommerce order, continuing with email only');
+    // If WooCommerce order creation fails, return error without sending any emails
+    if (!orderResult) {
+      console.error('❌ WooCommerce order creation failed — aborting, no emails sent');
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Failed to create order',
+          message: 'We were unable to place your order at this time. Please try again or contact us directly.',
+        },
+        { status: 502 }
+      );
     }
 
-    // Build email HTML
+    const wcOrderId = orderResult.orderId;
+    const wcOrderNumber = orderResult.orderNumber;
+    console.log(`✅ WooCommerce order created: #${wcOrderId}`);
+
+    // Build email HTML — only reached after successful WooCommerce order creation
     const emailHTML = generateOrderEmailHTML(quickOrderId, customer, items, total, wcOrderId);
 
-    // Send email to admin
+    // Send admin + customer confirmation emails
     const adminEmail = process.env.ADMIN_EMAIL || 'info@restaurantpack.se';
 
     try {
       // Send to admin
       await sendEmail({
         to: adminEmail,
-        subject: `⚡ Quick Order ${quickOrderId} from ${customer.name}${wcOrderId ? ` (Order #${wcOrderId})` : ''}`,
+        subject: `⚡ Quick Order ${quickOrderId} from ${customer.name} (Order #${wcOrderId})`,
         html: emailHTML,
       });
 
@@ -251,8 +261,8 @@ export async function POST(request: NextRequest) {
 
       console.log('✅ Quick order emails sent successfully');
     } catch (emailError) {
-      console.error('⚠️ Email sending error:', emailError);
-      // Continue even if email fails - order is still created
+      // Log email errors but do not fail the response — the WooCommerce order was created
+      console.error('⚠️ Email sending error (order still created):', emailError);
     }
 
     return NextResponse.json({
@@ -260,9 +270,7 @@ export async function POST(request: NextRequest) {
       quickOrderId,
       orderId: wcOrderId,
       orderNumber: wcOrderNumber,
-      message: wcOrderId
-        ? `Your order has been received. Reference: ${quickOrderId}. We will contact you within 24 hours.`
-        : 'Order received successfully. You will receive a confirmation email shortly.',
+      message: `Your order has been received. Reference: ${quickOrderId}. We will contact you within 24 hours.`,
     });
   } catch (error: any) {
     console.error('Quick order API error:', error);
@@ -305,14 +313,14 @@ function generateOrderEmailHTML(
         <title>Quick Order ${orderId}</title>
       </head>
       <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 0 auto; padding: 20px;">
-        <div style="background: linear-gradient(135deg, #A80E13 0%, #7A0A0E 100%); color: white; padding: 30px; border-radius: 8px 8px 0 0;">
+        <div style="background: linear-gradient(135deg, ${BRAND_PRIMARY} 0%, ${BRAND_PRIMARY_DARK} 100%); color: white; padding: 30px; border-radius: 8px 8px 0 0;">
           <h1 style="margin: 0; font-size: 28px;">⚡ New Quick Order</h1>
           <p style="margin: 10px 0 0 0; opacity: 0.9;">Quick Order ID: ${orderId}</p>
           ${wcOrderId ? `<p style="margin: 4px 0 0 0; opacity: 0.7; font-size: 14px;">WooCommerce Order #${wcOrderId}</p>` : ''}
         </div>
 
         <div style="background: white; padding: 30px; border: 1px solid #e5e7eb; border-top: none; border-radius: 0 0 8px 8px;">
-          <h2 style="color: #A80E13; margin-top: 0;">Customer Information</h2>
+          <h2 style="color: ${BRAND_PRIMARY}; margin-top: 0;">Customer Information</h2>
           <table style="width: 100%; margin-bottom: 30px;">
             <tr>
               <td style="padding: 8px 0; width: 120px; font-weight: 600;">Name:</td>
@@ -320,22 +328,22 @@ function generateOrderEmailHTML(
             </tr>
             <tr>
               <td style="padding: 8px 0; font-weight: 600;">Email:</td>
-              <td style="padding: 8px 0;"><a href="mailto:${customer.email}" style="color: #A80E13;">${customer.email}</a></td>
+              <td style="padding: 8px 0;"><a href="mailto:${customer.email}" style="color: ${BRAND_PRIMARY};">${customer.email}</a></td>
             </tr>
             <tr>
               <td style="padding: 8px 0; font-weight: 600;">Phone:</td>
-              <td style="padding: 8px 0;"><a href="tel:${customer.phone}" style="color: #A80E13;">${customer.phone}</a></td>
+              <td style="padding: 8px 0;"><a href="tel:${customer.phone}" style="color: ${BRAND_PRIMARY};">${customer.phone}</a></td>
             </tr>
           </table>
 
-          <h2 style="color: #A80E13; margin-top: 30px;">Order Items</h2>
+          <h2 style="color: ${BRAND_PRIMARY}; margin-top: 30px;">Order Items</h2>
           <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
             <thead>
               <tr style="background: #f9fafb;">
-                <th style="padding: 12px; text-align: left; border-bottom: 2px solid #A80E13;">Product</th>
-                <th style="padding: 12px; text-align: center; border-bottom: 2px solid #A80E13;">Qty</th>
-                <th style="padding: 12px; text-align: right; border-bottom: 2px solid #A80E13;">Unit Price</th>
-                <th style="padding: 12px; text-align: right; border-bottom: 2px solid #A80E13;">Total</th>
+                <th style="padding: 12px; text-align: left; border-bottom: 2px solid ${BRAND_PRIMARY};">Product</th>
+                <th style="padding: 12px; text-align: center; border-bottom: 2px solid ${BRAND_PRIMARY};">Qty</th>
+                <th style="padding: 12px; text-align: right; border-bottom: 2px solid ${BRAND_PRIMARY};">Unit Price</th>
+                <th style="padding: 12px; text-align: right; border-bottom: 2px solid ${BRAND_PRIMARY};">Total</th>
               </tr>
             </thead>
             <tbody>
@@ -343,8 +351,8 @@ function generateOrderEmailHTML(
             </tbody>
             <tfoot>
               <tr>
-                <td colspan="3" style="padding: 16px 12px; text-align: right; font-size: 18px; font-weight: 700; border-top: 2px solid #A80E13;">Order Total:</td>
-                <td style="padding: 16px 12px; text-align: right; font-size: 18px; font-weight: 700; color: #A80E13; border-top: 2px solid #A80E13;">${total.toFixed(2)} kr</td>
+                <td colspan="3" style="padding: 16px 12px; text-align: right; font-size: 18px; font-weight: 700; border-top: 2px solid ${BRAND_PRIMARY};">Order Total:</td>
+                <td style="padding: 16px 12px; text-align: right; font-size: 18px; font-weight: 700; color: ${BRAND_PRIMARY}; border-top: 2px solid ${BRAND_PRIMARY};">${total.toFixed(2)} kr</td>
               </tr>
             </tfoot>
           </table>
@@ -352,7 +360,7 @@ function generateOrderEmailHTML(
           ${wcOrderId ? `
           <div style="text-align: center; margin-top: 24px;">
             <a href="${process.env.WOOCOMMERCE_URL || process.env.NEXT_PUBLIC_WOOCOMMERCE_URL}/wp-admin/post.php?post=${wcOrderId}&action=edit"
-               style="display: inline-block; background: #A80E13; color: white; padding: 14px 28px; text-decoration: none; border-radius: 6px; font-weight: 600;">
+               style="display: inline-block; background: ${BRAND_PRIMARY}; color: white; padding: 14px 28px; text-decoration: none; border-radius: 6px; font-weight: 600;">
               View Order #${wcOrderId} in WooCommerce
             </a>
           </div>
@@ -400,7 +408,7 @@ function generateCustomerConfirmationHTML(
         <title>Order Confirmation ${orderId}</title>
       </head>
       <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 0 auto; padding: 20px;">
-        <div style="background: linear-gradient(135deg, #A80E13 0%, #7A0A0E 100%); color: white; padding: 30px; border-radius: 8px 8px 0 0;">
+        <div style="background: linear-gradient(135deg, ${BRAND_PRIMARY} 0%, ${BRAND_PRIMARY_DARK} 100%); color: white; padding: 30px; border-radius: 8px 8px 0 0;">
           <h1 style="margin: 0; font-size: 28px;">Thank You for Your Order!</h1>
           <p style="margin: 10px 0 0 0; opacity: 0.9;">Reference: ${orderId}</p>
           ${wcOrderId ? `<p style="margin: 4px 0 0 0; opacity: 0.7; font-size: 14px;">Order #${wcOrderId}</p>` : ''}
@@ -410,13 +418,13 @@ function generateCustomerConfirmationHTML(
           <p style="font-size: 16px; margin-top: 0;">Hi ${customer.name},</p>
           <p style="font-size: 16px;">We've received your order and our team will review it shortly. We'll contact you within 24 hours to confirm pricing, availability, and delivery details.</p>
 
-          <h2 style="color: #A80E13; margin-top: 30px;">Your Order</h2>
+          <h2 style="color: ${BRAND_PRIMARY}; margin-top: 30px;">Your Order</h2>
           <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
             <thead>
               <tr style="background: #f9fafb;">
-                <th style="padding: 12px; text-align: left; border-bottom: 2px solid #A80E13;">Product</th>
-                <th style="padding: 12px; text-align: center; border-bottom: 2px solid #A80E13;">Quantity</th>
-                <th style="padding: 12px; text-align: right; border-bottom: 2px solid #A80E13;">Total</th>
+                <th style="padding: 12px; text-align: left; border-bottom: 2px solid ${BRAND_PRIMARY};">Product</th>
+                <th style="padding: 12px; text-align: center; border-bottom: 2px solid ${BRAND_PRIMARY};">Quantity</th>
+                <th style="padding: 12px; text-align: right; border-bottom: 2px solid ${BRAND_PRIMARY};">Total</th>
               </tr>
             </thead>
             <tbody>
@@ -424,8 +432,8 @@ function generateCustomerConfirmationHTML(
             </tbody>
             <tfoot>
               <tr>
-                <td colspan="2" style="padding: 16px 12px; text-align: right; font-size: 18px; font-weight: 700; border-top: 2px solid #A80E13;">Estimated Total:</td>
-                <td style="padding: 16px 12px; text-align: right; font-size: 18px; font-weight: 700; color: #A80E13; border-top: 2px solid #A80E13;">${total.toFixed(2)} kr</td>
+                <td colspan="2" style="padding: 16px 12px; text-align: right; font-size: 18px; font-weight: 700; border-top: 2px solid ${BRAND_PRIMARY};">Estimated Total:</td>
+                <td style="padding: 16px 12px; text-align: right; font-size: 18px; font-weight: 700; color: ${BRAND_PRIMARY}; border-top: 2px solid ${BRAND_PRIMARY};">${total.toFixed(2)} kr</td>
               </tr>
             </tfoot>
           </table>
@@ -441,8 +449,8 @@ function generateCustomerConfirmationHTML(
           </div>
 
           <div style="margin-top: 30px; padding: 20px; background: #f9fafb; border-radius: 8px;">
-            <h3 style="margin: 0 0 10px 0; color: #A80E13;">Need Help?</h3>
-            <p style="margin: 0;">Contact us at <a href="tel:+46769178456" style="color: #A80E13;">+46769178456</a> or <a href="mailto:info@restaurantpack.se" style="color: #A80E13;">info@restaurantpack.se</a></p>
+            <h3 style="margin: 0 0 10px 0; color: ${BRAND_PRIMARY};">Need Help?</h3>
+            <p style="margin: 0;">Contact us at <a href="tel:+46769178456" style="color: ${BRAND_PRIMARY};">+46769178456</a> or <a href="mailto:info@restaurantpack.se" style="color: ${BRAND_PRIMARY};">info@restaurantpack.se</a></p>
           </div>
         </div>
 

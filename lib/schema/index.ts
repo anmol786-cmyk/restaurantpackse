@@ -23,6 +23,7 @@ export * from './article';
 export * from './faq';
 export * from './collection';
 export * from './delivery';
+export * from './speakable';
 
 /**
  * QUICK START EXAMPLES

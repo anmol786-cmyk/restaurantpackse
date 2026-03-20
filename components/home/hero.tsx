@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, ShoppingBag, Truck } from "lucide-react";
+import { ArrowRight, ShoppingBag, Truck, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { useTranslations } from 'next-intl';
@@ -13,11 +13,7 @@ interface HeroProps {
     badge?: string;
 }
 
-export function Hero({
-    title,
-    subtitle,
-    badge
-}: HeroProps) {
+export function Hero({ title, subtitle, badge }: HeroProps) {
     const t = useTranslations('hero');
     const tc = useTranslations('common');
 
@@ -26,117 +22,114 @@ export function Hero({
     const displayBadge = badge || t('badge');
 
     return (
-        <section className="relative w-full min-h-[85vh] flex items-center bg-white overflow-hidden pb-12 pt-24 md:py-0">
-            {/* Background Image with Overlay */}
-            <div className="absolute inset-0 z-0">
-                {/* Robust Overlay for Readability */}
-                <div className="absolute inset-0 bg-gradient-to-r from-white via-white/95 to-white/40 md:via-white/90 md:to-transparent z-10" />
+        <section className="relative w-full min-h-[88vh] flex items-center overflow-hidden bg-background">
 
-                {/* Hero Image - Right Aligned */}
-                <div className="absolute right-0 top-0 h-full w-full md:w-3/4 lg:w-2/3 ml-auto">
-                    <div className="relative h-full w-full">
-                        <Image
-                            src="https://crm.restaurantpack.se/wp-content/uploads/2025/03/anmol-wholesale.png"
-                            alt={t('imageAlt')}
-                            fill
-                            className="object-cover object-center"
-                            priority
-                            fetchPriority="high"
-                            sizes="(max-width: 768px) 100vw, 66vw"
-                        />
-                    </div>
-                </div>
+            {/* Dot pattern — subtle texture on the content side */}
+            <div className="absolute inset-0 bg-dot-pattern opacity-[0.35] z-0 pointer-events-none" />
+
+            {/* Primary brand red vertical accent bar — left edge */}
+            <div className="absolute left-0 top-0 bottom-0 w-1 bg-primary z-10 hidden md:block" />
+
+            {/* Hero Image — right column, full bleed */}
+            <div className="absolute right-0 top-0 h-full w-full md:w-[58%] z-0">
+                {/* Gradient mask — from background into image */}
+                <div className="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-background/10 z-10" />
+                <Image
+                    src="https://crm.restaurantpack.se/wp-content/uploads/2025/03/anmol-wholesale.png"
+                    alt={t('imageAlt')}
+                    fill
+                    className="object-cover object-center"
+                    priority
+                    fetchPriority="high"
+                    sizes="(max-width: 768px) 100vw, 58vw"
+                />
             </div>
 
-            <div className="site-container relative z-20">
-                <div className="max-w-3xl space-y-6 md:space-y-8">
-                    {/* Badge */}
+            {/* Content */}
+            <div className="site-container relative z-20 py-24 md:py-0">
+                <div className="max-w-2xl space-y-7">
+
+                    {/* Overline badge — editorial style */}
                     <motion.div
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.6, ease: "easeOut" }}
-                        className="inline-block"
+                        transition={{ duration: 0.5, ease: "easeOut" }}
+                        className="flex items-center gap-3"
                     >
-                        <span className="inline-flex items-center space-x-2 bg-primary/10 border border-primary/20 px-3 py-1.5 md:px-4 md:py-2 rounded-full text-xs md:text-sm font-bold text-primary backdrop-blur-sm">
-                            <Truck className="w-3 h-3 md:w-4 md:h-4" />
-                            <span className="tracking-wide uppercase">{displayBadge}</span>
-                        </span>
+                        <span className="block w-8 h-px bg-primary" />
+                        <span className="section-label">{displayBadge}</span>
                     </motion.div>
 
-                    {/* Main Heading */}
+                    {/* Main heading */}
                     <motion.h1
-                        initial={{ opacity: 0, y: 20 }}
+                        initial={{ opacity: 0, y: 24 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-                        className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-slate-900 tracking-tight leading-[1.1]"
+                        transition={{ duration: 0.7, delay: 0.15, ease: [0.25, 0.46, 0.45, 0.94] }}
+                        className="font-heading font-extrabold text-foreground tracking-tight leading-[1.08]"
+                        style={{ fontSize: 'clamp(2.4rem, 5vw, 3.75rem)' }}
                     >
                         {displayTitle.split(' ').slice(0, -1).join(' ')}{' '}
-                        <span className="text-primary">{displayTitle.split(' ').slice(-1)}</span>
+                        <em className="not-italic text-primary">{displayTitle.split(' ').slice(-1)}</em>
                     </motion.h1>
 
                     {/* Subtitle */}
                     <motion.p
-                        initial={{ opacity: 0, y: 20 }}
+                        initial={{ opacity: 0, y: 16 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.4 }}
-                        className="text-lg md:text-xl text-slate-500 max-w-xl leading-relaxed font-medium"
+                        transition={{ duration: 0.7, delay: 0.3 }}
+                        className="text-lg text-muted-foreground leading-relaxed max-w-lg"
                     >
                         {displaySubtitle}
                     </motion.p>
 
-                    {/* Buttons */}
+                    {/* CTA buttons */}
                     <motion.div
-                        initial={{ opacity: 0, y: 20 }}
+                        initial={{ opacity: 0, y: 16 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.6 }}
-                        className="flex flex-wrap gap-3 md:gap-4 pt-2 md:pt-4"
+                        transition={{ duration: 0.7, delay: 0.45 }}
+                        className="flex flex-wrap gap-3 pt-1"
                     >
                         <Button
                             size="lg"
-                            className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl h-12 md:h-14 px-6 md:px-8 text-base md:text-lg font-bold shadow-xl shadow-primary/20 transition-all hover:-translate-y-1 w-full sm:w-auto"
+                            className="bg-primary hover:bg-primary/90 text-primary-foreground h-12 px-7 text-base font-bold rounded-lg shadow-lg shadow-primary/25 hover:-translate-y-0.5 transition-all duration-200"
                             asChild
                         >
                             <Link href="/shop">
-                                <ShoppingBag className="mr-2 w-5 h-5" />
+                                <ShoppingBag className="mr-2 w-4 h-4" />
                                 {tc('startShopping')}
                             </Link>
                         </Button>
                         <Button
                             variant="outline"
                             size="lg"
-                            className="bg-white/80 backdrop-blur border-border text-foreground hover:bg-muted rounded-xl h-12 md:h-14 px-6 md:px-8 text-base md:text-lg font-bold w-full sm:w-auto"
+                            className="bg-background/80 border-border text-foreground hover:bg-muted h-12 px-7 text-base font-semibold rounded-lg"
                             asChild
                         >
                             <Link href="/shop?sort=new">
                                 {tc('viewNewArrivals')}
-                                <ArrowRight className="ml-2 w-5 h-5" />
+                                <ArrowRight className="ml-2 w-4 h-4" />
                             </Link>
                         </Button>
                     </motion.div>
 
-                    {/* Trust Indicators */}
+                    {/* Trust indicators — cleaner treatment */}
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        transition={{ duration: 1, delay: 0.8 }}
-                        className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-4 sm:pt-8 text-xs sm:text-sm font-medium text-muted-foreground"
+                        transition={{ duration: 0.8, delay: 0.65 }}
+                        className="flex flex-wrap items-center gap-x-6 gap-y-2 pt-3 border-t border-border"
                     >
-                        <div className="flex items-center gap-2">
-                            <div className="w-2 h-2 rounded-full bg-green-500" />
-                            <span>{t('trustHalal')}</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <div className="w-2 h-2 rounded-full bg-info" />
-                            <span>{t('trustDelivery')}</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <div className="w-2 h-2 rounded-full bg-orange-500" />
-                            <span>{t('trustEurope')}</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <div className="w-2 h-2 rounded-full bg-primary" />
-                            <span>{t('trustBulk')}</span>
-                        </div>
+                        {[
+                            { label: t('trustHalal'), color: 'bg-success' },
+                            { label: t('trustDelivery'), color: 'bg-info' },
+                            { label: t('trustEurope'), color: 'bg-accent' },
+                            { label: t('trustBulk'), color: 'bg-primary' },
+                        ].map(({ label, color }) => (
+                            <div key={label} className="flex items-center gap-2">
+                                <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${color}`} />
+                                <span className="text-xs font-medium text-muted-foreground">{label}</span>
+                            </div>
+                        ))}
                     </motion.div>
                 </div>
             </div>

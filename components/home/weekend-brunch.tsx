@@ -55,12 +55,12 @@ export function WeekendBrunch() {
 
             {/* Info Cards Row */}
             <div className="grid grid-cols-2 gap-4 mt-6">
-              <div className="bg-white p-6 rounded-xl border border-border/50 text-center">
+              <div className="bg-card p-6 rounded-xl border border-border/50 text-center">
                 <p className="text-secondary font-bold uppercase tracking-wider text-xs mb-1">Time</p>
                 <p className="font-heading font-bold text-foreground">10:00 - 14:00</p>
                 <p className="text-sm text-muted-foreground mt-1">Sat & Sun</p>
               </div>
-              <div className="bg-white p-6 rounded-xl border border-border/50 text-center">
+              <div className="bg-card p-6 rounded-xl border border-border/50 text-center">
                 <p className="text-secondary font-bold uppercase tracking-wider text-xs mb-1">Price</p>
                 <p className="font-heading font-bold text-primary text-xl">129 SEK</p>
                 <p className="text-sm text-muted-foreground mt-1">Per Person</p>
@@ -96,7 +96,7 @@ export function WeekendBrunch() {
 
             {/* Menu Sections */}
             <div className="space-y-6">
-              <div className="bg-white rounded-2xl p-8 border border-border/60 hover:border-primary/20 transition-colors shadow-sm">
+              <div className="bg-card rounded-2xl p-8 border border-border/60 hover:border-primary/20 transition-colors shadow-sm">
                 <h3 className="text-xl font-heading font-bold text-foreground mb-4 flex items-center gap-2">
                   <span className="text-2xl">🍛</span>
                   Main Dishes
@@ -112,7 +112,7 @@ export function WeekendBrunch() {
               </div>
 
               <div className="grid sm:grid-cols-2 gap-6">
-                <div className="bg-white rounded-2xl p-6 border border-border/60 shadow-sm">
+                <div className="bg-card rounded-2xl p-6 border border-border/60 shadow-sm">
                   <h3 className="text-lg font-heading font-bold text-foreground mb-3 flex items-center gap-2">
                     <span className="text-xl">🥗</span>
                     Sides & Sweets
@@ -127,7 +127,7 @@ export function WeekendBrunch() {
                   </ul>
                 </div>
 
-                <div className="bg-white rounded-2xl p-6 border border-border/60 shadow-sm">
+                <div className="bg-card rounded-2xl p-6 border border-border/60 shadow-sm">
                   <h3 className="text-lg font-heading font-bold text-foreground mb-3 flex items-center gap-2">
                     <span className="text-xl">☕</span>
                     Beverages

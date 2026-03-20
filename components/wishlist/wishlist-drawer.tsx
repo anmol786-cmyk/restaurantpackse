@@ -131,9 +131,9 @@ export function WishlistDrawer() {
       case 'medium':
         return 'bg-yellow-500/10 text-yellow-600 border-yellow-500/20';
       case 'low':
-        return 'bg-gray-500/10 text-gray-600 border-gray-500/20';
+        return 'bg-muted text-muted-foreground border-border';
       default:
-        return 'bg-gray-500/10 text-gray-600 border-gray-500/20';
+        return 'bg-muted text-muted-foreground border-border';
     }
   };
 

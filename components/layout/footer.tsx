@@ -19,7 +19,7 @@ export async function Footer() {
       {/* Download Catalogue CTA Section */}
       <CatalogueCTA />
 
-      <footer className="w-full bg-slate-50 border-t border-slate-200">
+      <footer className="w-full bg-muted border-t border-border">
         <div className="site-container py-16">
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-12 mb-16">
 
@@ -39,7 +39,7 @@ export async function Footer() {
                   Anmol Wholesale
                 </span>
               </Link>
-              <p className="text-sm text-slate-500 max-w-sm leading-relaxed">
+              <p className="text-sm text-muted-foreground max-w-sm leading-relaxed">
                 {t('brandDescription')}
               </p>
               <div className="flex gap-4">
@@ -47,7 +47,7 @@ export async function Footer() {
                   href={brandProfile.social.facebook}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="size-10 flex items-center justify-center rounded-xl bg-white border border-slate-200 text-slate-400 hover:text-primary hover:border-primary hover:shadow-md transition-all"
+                  className="size-10 flex items-center justify-center rounded-xl bg-card border border-border text-muted-foreground hover:text-primary hover:border-primary hover:shadow-md transition-all"
                   aria-label="Follow us on Facebook"
                 >
                   <Facebook className="size-5" />
@@ -57,18 +57,18 @@ export async function Footer() {
 
             {/* Column 2: Products/Catalog */}
             <div>
-              <h4 className="text-sm font-bold uppercase tracking-widest text-slate-900 mb-6 underline decoration-primary decoration-2 underline-offset-8">
+              <h4 className="text-sm font-bold uppercase tracking-widest text-foreground mb-6 underline decoration-primary decoration-2 underline-offset-8">
                 {t('catalog')}
               </h4>
               <ul className="space-y-4">
                 <li>
-                  <Link href="/shop" className="text-sm text-slate-500 hover:text-primary transition-colors">
+                  <Link href="/shop" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                     {tc('allProducts')}
                   </Link>
                 </li>
                 {categories?.map((category) => (
                   <li key={category.id}>
-                    <Link href={`/product-category/${category.slug}`} className="text-sm text-slate-500 hover:text-primary transition-colors">
+                    <Link href={`/product-category/${category.slug}`} className="text-sm text-muted-foreground hover:text-primary transition-colors">
                       {category.name}
                     </Link>
                   </li>
@@ -78,7 +78,7 @@ export async function Footer() {
 
             {/* Column 3: Logistics */}
             <div>
-              <h4 className="text-sm font-bold uppercase tracking-widest text-slate-900 mb-6 underline decoration-primary decoration-2 underline-offset-8">
+              <h4 className="text-sm font-bold uppercase tracking-widest text-foreground mb-6 underline decoration-primary decoration-2 underline-offset-8">
                 {t('logistics')}
               </h4>
               <ul className="space-y-4">
@@ -88,7 +88,7 @@ export async function Footer() {
                   { label: t('exWarehouse'), href: '/delivery-information' }
                 ].map((link) => (
                   <li key={link.href + link.label}>
-                    <Link href={link.href} className="text-sm text-slate-500 hover:text-primary transition-colors">
+                    <Link href={link.href} className="text-sm text-muted-foreground hover:text-primary transition-colors">
                       {link.label}
                     </Link>
                   </li>
@@ -98,7 +98,7 @@ export async function Footer() {
 
             {/* Column 4: B2B Support */}
             <div>
-              <h4 className="text-sm font-bold uppercase tracking-widest text-slate-900 mb-6 underline decoration-primary decoration-2 underline-offset-8">
+              <h4 className="text-sm font-bold uppercase tracking-widest text-foreground mb-6 underline decoration-primary decoration-2 underline-offset-8">
                 {t('partnership')}
               </h4>
               <ul className="space-y-4">
@@ -110,7 +110,7 @@ export async function Footer() {
                   { label: t('faq'), href: '/faq' }
                 ].map((link) => (
                   <li key={link.href + link.label}>
-                    <Link href={link.href} className="text-sm text-slate-500 hover:text-primary transition-colors">
+                    <Link href={link.href} className="text-sm text-muted-foreground hover:text-primary transition-colors">
                       {link.label}
                     </Link>
                   </li>
@@ -120,8 +120,8 @@ export async function Footer() {
           </div>
 
           {/* Bottom Bar */}
-          <div className="pt-8 border-t border-slate-200 flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest">
+          <div className="pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4">
+            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">
               &copy; {new Date().getFullYear()} {brandProfile.name}. {t('copyright')}
             </p>
             <div className="flex gap-8">
@@ -133,7 +133,7 @@ export async function Footer() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="text-[10px] font-bold uppercase tracking-widest text-slate-400 hover:text-primary transition-colors"
+                  className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors"
                 >
                   {link.label}
                 </Link>

@@ -28,7 +28,7 @@ interface HeaderProps {
 const NavLink = ({ href, children }: { href: string; children: React.ReactNode }) => (
   <Link
     href={href}
-    className="text-sm font-semibold text-slate-600 hover:text-primary transition-colors whitespace-nowrap"
+    className="text-sm font-semibold text-foreground/80 hover:text-primary transition-colors whitespace-nowrap"
   >
     {children}
   </Link>
@@ -41,7 +41,7 @@ export function Header({ className, categories = [], locale = 'en' }: HeaderProp
 
   return (
     <>
-      <header className={cn("w-full bg-white border-b border-slate-100 sticky top-0 z-50 transition-all duration-300 shadow-sm", className)}>
+      <header className={cn("w-full bg-background/95 backdrop-blur-md border-b border-border sticky top-0 z-50 transition-all duration-300 shadow-sm", className)}>
         <div className="site-container">
           {/* Desktop Header Row */}
           <div className="hidden xl:flex items-center h-20 gap-8">
@@ -81,13 +81,13 @@ export function Header({ className, categories = [], locale = 'en' }: HeaderProp
                 <NavLink href="/wholesale/register">{t('b2bAccount')}</NavLink>
               </nav>
 
-              <div className="h-6 w-px bg-slate-200 hidden xl:block" />
+              <div className="h-6 w-px bg-border hidden xl:block" />
 
               {/* Action Buttons */}
               <div className="flex items-center gap-3">
                 <button
                   onClick={openChat}
-                  className="flex items-center justify-center p-2 text-slate-500 hover:text-primary hover:bg-slate-50 rounded-lg transition-all"
+                  className="flex items-center justify-center p-2 text-muted-foreground hover:text-primary hover:bg-muted rounded-lg transition-all"
                   title="AI Assistant"
                 >
                   <MessageCircle className="h-5 w-5" />

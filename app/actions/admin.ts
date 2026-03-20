@@ -168,7 +168,7 @@ export async function approveWholesaleRequest(userId: number) {
                         content: `
                             <div style="text-align: center; margin: 20px 0;">
                                 <a href="${process.env.NEXT_PUBLIC_SITE_URL || 'https://restaurantpack.se'}/login" 
-                                   style="background-color: #8B1538; color: #ffffff; padding: 12px 24px; text-decoration: none; border-radius: 4px; font-weight: 600; display: inline-block;">
+                                   style="background-color: #b01116; color: #ffffff; padding: 12px 24px; text-decoration: none; border-radius: 4px; font-weight: 600; display: inline-block;">
                                     Login to Your Account
                                 </a>
                             </div>
@@ -202,7 +202,7 @@ export async function approveWholesaleRequest(userId: number) {
 /**
  * Reject a wholesale request
  */
-export async function rejectWholesaleRequest(userId: number, reason?: string) {
+export async function rejectWholesaleRequest(userId: number, reason: string) {
     const baseUrl = WC_API_CONFIG.baseUrl;
     const consumerKey = process.env.WORDPRESS_CONSUMER_KEY;
     const consumerSecret = process.env.WORDPRESS_CONSUMER_SECRET;
@@ -227,7 +227,7 @@ export async function rejectWholesaleRequest(userId: number, reason?: string) {
         const payload = {
             meta_data: [
                 { key: 'is_wholesale_customer', value: 'rejected' },
-                { key: 'wholesale_rejection_reason', value: reason || 'Application criteria not met' },
+                { key: 'wholesale_rejection_reason', value: reason },
                 { key: 'wholesale_rejection_date', value: new Date().toISOString() }
             ]
         };

@@ -13,15 +13,17 @@ export function CTASection() {
 
     return (
         <section className="w-full py-20">
-            <div className="site-container relative overflow-hidden rounded-[2.5rem] bg-[#A80E13] min-h-[500px] flex items-center">
+            <div className="site-container relative overflow-hidden rounded-[2.5rem] bg-primary min-h-[500px] flex items-center">
 
                 <div className="absolute inset-0 z-0">
-                    <div className="absolute inset-0 bg-gradient-to-r from-[#A80E13] via-[#A80E13]/90 to-transparent z-10" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/90 to-transparent z-10" />
                     <Image
                         src="https://crm.restaurantpack.se/wp-content/uploads/2025/03/ANMOL-WHOLESALE-1.png"
                         alt="Join Anmol Wholesale"
                         fill
                         className="object-cover object-right opacity-40 mix-blend-overlay"
+                        loading="lazy"
+                        sizes="(max-width: 768px) 100vw, 80vw"
                     />
                 </div>
 
@@ -33,9 +35,9 @@ export function CTASection() {
                         className="space-y-8"
                     >
                         <div className="space-y-4">
-                            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight leading-[1.1]">
+                            <h2 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight leading-[1.1]">
                                 {t('title')} <br />
-                                <span className="text-white">{t('titleHighlight')}</span>
+                                <span className="text-accent">{t('titleHighlight')}</span>
                             </h2>
                             <p className="text-xl text-white/90 max-w-lg leading-relaxed font-medium">
                                 {t('subtitle')}
@@ -45,7 +47,7 @@ export function CTASection() {
                         <div className="flex flex-col sm:flex-row gap-4">
                             <Button
                                 size="lg"
-                                className="h-14 px-8 bg-[#005c4b] hover:bg-[#004a3c] text-white rounded-xl text-lg font-bold shadow-2xl shadow-primary/20 transition-all hover:-translate-y-1"
+                                className="h-14 px-8 bg-accent hover:bg-accent/90 text-accent-foreground rounded-xl text-lg font-bold shadow-2xl shadow-primary/20 transition-all hover:-translate-y-1"
                                 asChild
                             >
                                 <Link href="/wholesale/register">
@@ -83,7 +85,7 @@ export function CTASection() {
                 </div>
 
                 {/* Decorative floating element */}
-                <div className="hidden lg:block absolute right-24 bottom-24 size-48 border-4 border-primary/20 rounded-full animate-pulse" />
+                <div className="hidden lg:block absolute right-24 bottom-24 size-48 border-4 border-white/10 rounded-full animate-pulse" />
             </div>
         </section>
     );

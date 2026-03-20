@@ -1,8 +1,13 @@
 import { notFound } from 'next/navigation';
 import { getProductBySlug, getRelatedProducts } from '@/lib/woocommerce';
+
+export const revalidate = 3600; // ISR: revalidate product pages hourly
 import { ProductTemplate } from '@/components/templates';
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
+import { SchemaScript } from '@/lib/schema/schema-script';
+import { wooCommerceProductSchema, breadcrumbSchema } from '@/lib/schema';
+import { siteConfig } from '@/site.config';
 
 interface ProductPageProps {
     params: Promise<{
@@ -104,11 +109,30 @@ export default async function ProductPage({ params }: ProductPageProps) {
         { label: product.name },
     ];
 
+    const baseUrl = siteConfig.site_domain;
+    const productSchema = wooCommerceProductSchema(product, {
+        baseUrl,
+        brandName: 'Anmol Wholesale',
+        sellerName: 'Anmol Wholesale',
+    });
+    const breadcrumbJsonLd = breadcrumbSchema([
+        { name: 'Home', url: baseUrl },
+        { name: 'Shop', url: `${baseUrl}/shop` },
+        ...(product.categories && product.categories.length > 0
+            ? [{ name: product.categories[0].name, url: `${baseUrl}/product-category/${product.categories[0].slug}` }]
+            : []),
+        { name: product.name, url: `${baseUrl}/product/${product.slug}` },
+    ]);
+
     return (
-        <ProductTemplate
-            product={product}
-            breadcrumbs={breadcrumbs}
-            relatedProducts={relatedProducts}
-        />
+        <>
+            <ProductTemplate
+                product={product}
+                breadcrumbs={breadcrumbs}
+                relatedProducts={relatedProducts}
+            />
+            <SchemaScript id="product-schema" schema={productSchema} />
+            <SchemaScript id="product-breadcrumb-schema" schema={breadcrumbJsonLd} />
+        </>
     );
 }

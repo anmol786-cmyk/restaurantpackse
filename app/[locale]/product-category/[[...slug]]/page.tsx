@@ -1,5 +1,7 @@
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
+
+export const revalidate = 3600; // ISR: revalidate category pages hourly
 import { getProductCategoryBySlug, getProducts, getProductCategories } from '@/lib/woocommerce';
 import { getProductBrands } from '@/lib/woocommerce/brands';
 import { ArchiveTemplate } from '@/components/templates';
@@ -44,6 +46,9 @@ export async function generateMetadata({ params }: ProductCategoryPageProps): Pr
         return {
             title: `${category.name} | Anmol Wholesale`,
             description: category.description?.replace(/\<[^>]*>/g, '').substring(0, 160) || t('shopProducts', { name: category.name }),
+            alternates: {
+                canonical: `${siteConfig.site_domain}/product-category/${resolvedParams.slug?.join('/')}`,
+            },
             openGraph: {
                 title: category.name,
                 description: category.description?.replace(/\<[^>]*>/g, '').substring(0, 160),

@@ -107,7 +107,7 @@ function ProductCard({ product }: { product: Product }) {
           {/* Minimal Sale Badge */}
           {product.on_sale && (
             <div className="absolute top-4 left-4 z-10">
-              <span className="bg-red-600 text-white text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider">
+              <span className="bg-primary text-primary-foreground text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider">
                 Sale
               </span>
             </div>
@@ -125,7 +125,7 @@ function ProductCard({ product }: { product: Product }) {
                 <span className="text-lg font-bold text-primary">
                   {formatPrice(product.sale_price, 'SEK')}
                 </span>
-                <span className="text-sm text-muted-foreground line-through decoration-red-500/30">
+                <span className="text-sm text-muted-foreground line-through decoration-primary/30">
                   {formatPrice(product.regular_price, 'SEK')}
                 </span>
               </>

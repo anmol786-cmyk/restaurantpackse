@@ -16,8 +16,8 @@ export function BannerStrip() {
 
                         <div className="relative z-10 flex items-center justify-between">
                             <div>
-                                <div className="flex items-center gap-2 mb-1 sm:mb-2 text-yellow-400">
-                                    <span className="w-2 h-2 rounded-full bg-yellow-400 animate-pulse"></span>
+                                <div className="flex items-center gap-2 mb-1 sm:mb-2 text-accent">
+                                    <span className="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
                                     <span className="text-xs font-bold tracking-widest uppercase">Premium Quality</span>
                                 </div>
                                 <h2 className="text-xl sm:text-2xl md:text-3xl font-heading font-bold text-white mb-1">

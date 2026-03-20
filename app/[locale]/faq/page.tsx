@@ -9,6 +9,8 @@ import {
 } from "@/components/ui/accordion";
 import { MessageCircle, Mail, MapPin } from 'lucide-react';
 import { brandConfig } from '@/config/brand.config';
+import { SchemaScript } from '@/lib/schema/schema-script';
+import { anmolWholesaleFAQSchema } from '@/lib/schema';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
     const { locale } = await params;
@@ -166,6 +168,8 @@ export default async function FAQPage() {
                     </div>
                 </div>
             </section>
+
+            <SchemaScript id="faq-schema" schema={anmolWholesaleFAQSchema()} />
         </div>
     );
 }

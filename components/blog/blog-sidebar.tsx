@@ -50,10 +50,10 @@ export async function BlogSidebar() {
                                         </div>
                                     )}
                                     <div>
-                                        <h4 className="font-medium text-sm text-neutral-800 dark:text-neutral-200 line-clamp-2 group-hover:text-primary-600 transition-colors mb-1">
+                                        <h4 className="font-medium text-sm text-foreground line-clamp-2 group-hover:text-primary-600 transition-colors mb-1">
                                             {decodeHtmlEntities(post.title.rendered)}
                                         </h4>
-                                        <div className="flex items-center text-xs text-neutral-500 gap-2">
+                                        <div className="flex items-center text-xs text-muted-foreground gap-2">
                                             <Calendar className="h-3 w-3" />
                                             {new Date(post.date).toLocaleDateString()}
                                         </div>
@@ -97,11 +97,11 @@ export async function BlogSidebar() {
                             <div key={comment.id} className="flex gap-3 items-start text-sm">
                                 <MessageSquare className="h-4 w-4 text-primary-500 mt-1 flex-shrink-0" />
                                 <div>
-                                    <p className="font-medium text-neutral-800 dark:text-neutral-200">
-                                        {comment.author_name} <span className="text-neutral-500 font-normal">on</span>
+                                    <p className="font-medium text-foreground">
+                                        {comment.author_name} <span className="text-muted-foreground font-normal">on</span>
                                     </p>
                                     <div
-                                        className="text-neutral-600 dark:text-neutral-400 line-clamp-2 mt-0.5 text-xs italic"
+                                        className="text-muted-foreground line-clamp-2 mt-0.5 text-xs italic"
                                         dangerouslySetInnerHTML={{ __html: comment.content.rendered }}
                                     />
                                 </div>

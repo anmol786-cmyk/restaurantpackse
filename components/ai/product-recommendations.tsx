@@ -92,8 +92,8 @@ export function ProductRecommendations({
         <div className={cn('space-y-4', className)}>
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                    <Sparkles className="h-5 w-5 text-secondary-500" />
-                    <h2 className="font-heading text-2xl font-bold text-primary-950 dark:text-primary-50">
+                    <Sparkles className="h-5 w-5 text-secondary" />
+                    <h2 className="font-heading text-2xl font-bold text-foreground">
                         {currentProduct ? 'You May Also Like' : 'Recommended For You'}
                     </h2>
                 </div>
@@ -114,7 +114,7 @@ export function ProductRecommendations({
             {isLoading ? (
                 <div className="grid gap-4 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
                     {Array.from({ length: maxRecommendations }).map((_, i) => (
-                        <Card key={i} className="h-64 animate-pulse bg-neutral-100 dark:bg-neutral-800" />
+                        <Card key={i} className="h-64 animate-pulse bg-muted" />
                     ))}
                 </div>
             ) : (
@@ -123,7 +123,7 @@ export function ProductRecommendations({
                         <Card key={product.id} className="group relative overflow-hidden transition-all hover:shadow-lg">
                             <Link href={`/product/${product.slug}`}>
                                 {/* Image */}
-                                <div className="relative aspect-square overflow-hidden bg-neutral-100 dark:bg-neutral-800">
+                                <div className="relative aspect-square overflow-hidden bg-muted">
                                     {product.images && product.images.length > 0 ? (
                                         <Image
                                             src={product.images[0].src}
@@ -134,7 +134,7 @@ export function ProductRecommendations({
                                         />
                                     ) : (
                                         <div className="flex h-full items-center justify-center">
-                                            <Sparkles className="h-12 w-12 text-neutral-400" />
+                                            <Sparkles className="h-12 w-12 text-muted-foreground" />
                                         </div>
                                     )}
                                     {confidence > 80 && (
@@ -147,14 +147,14 @@ export function ProductRecommendations({
 
                                 {/* Content */}
                                 <div className="p-4">
-                                    <h3 className="mb-1 line-clamp-2 font-heading text-base font-medium text-primary-950 dark:text-primary-50">
+                                    <h3 className="mb-1 line-clamp-2 font-heading text-base font-medium text-foreground">
                                         {product.name}
                                     </h3>
-                                    <p className="mb-2 text-xs text-neutral-600 dark:text-neutral-400 line-clamp-1">
+                                    <p className="mb-2 text-xs text-muted-foreground line-clamp-1">
                                         {reason}
                                     </p>
                                     <div className="flex items-center justify-between">
-                                        <span className="font-heading text-lg font-bold text-primary-700 dark:text-primary-400">
+                                        <span className="font-heading text-lg font-bold text-primary">
                                             {formatPrice(product.price, 'SEK')}
                                         </span>
                                         <div className="flex gap-1">
@@ -207,7 +207,7 @@ export function ProductRecommendations({
                 </div>
             )}
 
-            <p className="text-center text-xs text-neutral-500">
+            <p className="text-center text-xs text-muted-foreground">
                 <Sparkles className="mr-1 inline h-3 w-3" />
                 Recommendations powered by smart algorithms
             </p>

@@ -170,10 +170,10 @@ function ExpressCheckoutButtonInner({
     }
 
     return (
-        <div className="mb-6 rounded-lg border border-neutral-200 bg-neutral-50 p-6 dark:border-neutral-800 dark:bg-neutral-900">
+        <div className="mb-6 rounded-lg border border-border bg-muted p-6">
             {/* Express Checkout Header */}
             <div className="mb-4 flex items-center gap-2">
-                <span className="text-sm font-semibold text-neutral-700 dark:text-neutral-300">
+                <span className="text-sm font-semibold text-foreground">
                     Express Checkout
                 </span>
                 <span className="rounded bg-green-100 px-2 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900/30 dark:text-green-400">
@@ -185,17 +185,17 @@ function ExpressCheckoutButtonInner({
             <div ref={buttonRef} id="express-checkout-button" className="mb-4" />
 
             {/* Info text */}
-            <p className="text-center text-xs text-neutral-500 dark:text-neutral-400">
+            <p className="text-center text-xs text-muted-foreground">
                 Skip the form and pay directly with Apple Pay or Google Pay
             </p>
 
             {/* Separator */}
             <div className="mt-6 flex items-center gap-3">
-                <div className="h-px flex-1 bg-neutral-300 dark:bg-neutral-700" />
-                <span className="text-sm font-medium text-neutral-500">
+                <div className="h-px flex-1 bg-border" />
+                <span className="text-sm font-medium text-muted-foreground">
                     Or fill out the form below
                 </span>
-                <div className="h-px flex-1 bg-neutral-300 dark:bg-neutral-700" />
+                <div className="h-px flex-1 bg-border" />
             </div>
         </div>
     );

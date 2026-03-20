@@ -166,15 +166,15 @@ export function CatalogueCTA() {
                                     {/* Product grid mockup */}
                                     <div className="grid grid-cols-3 gap-2 mb-4">
                                         {[...Array(6)].map((_, i) => (
-                                            <div key={i} className="aspect-square bg-gray-100 rounded" />
+                                            <div key={i} className="aspect-square bg-muted rounded" />
                                         ))}
                                     </div>
 
                                     {/* Text lines */}
                                     <div className="space-y-2">
-                                        <div className="h-2 w-full bg-gray-100 rounded" />
-                                        <div className="h-2 w-4/5 bg-gray-100 rounded" />
-                                        <div className="h-2 w-3/5 bg-gray-100 rounded" />
+                                        <div className="h-2 w-full bg-muted rounded" />
+                                        <div className="h-2 w-4/5 bg-muted rounded" />
+                                        <div className="h-2 w-3/5 bg-muted rounded" />
                                     </div>
                                 </div>
 

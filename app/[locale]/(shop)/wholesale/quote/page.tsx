@@ -20,8 +20,8 @@ export default async function WholesaleQuotePage() {
     return (
         <div className="bg-slate-50 min-h-screen">
             {/* Hero Header */}
-            <div className="bg-[#A80E13] py-20 text-white text-center relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-[#A80E13] to-neutral-900 opacity-90" />
+            <div className="bg-primary py-20 text-white text-center relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-primary to-neutral-900 opacity-90" />
                 <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1556910103-1c02745aae4d?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center opacity-10" />
                 <div className="site-container px-4 relative z-10">
                     <div className="inline-block mb-4">
@@ -61,7 +61,7 @@ export default async function WholesaleQuotePage() {
                     <div className="space-y-6">
                         {/* Response Time Card */}
                         <div className="bg-white rounded-2xl border border-slate-100 p-8 shadow-lg shadow-black/5">
-                            <h3 className="text-lg font-bold mb-4 flex items-center gap-2 font-heading text-[#A80E13]">
+                            <h3 className="text-lg font-bold mb-4 flex items-center gap-2 font-heading text-primary">
                                 <Clock className="w-5 h-5" />
                                 {t('responseTitle')}
                             </h3>
@@ -71,12 +71,12 @@ export default async function WholesaleQuotePage() {
 
                             <div className="space-y-5 pt-2">
                                 <div className="flex items-start gap-4 group cursor-pointer">
-                                    <div className="h-10 w-10 rounded-full bg-[#A80E13]/10 flex items-center justify-center text-[#A80E13] group-hover:bg-[#A80E13] group-hover:text-white transition-colors">
+                                    <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
                                         <Phone className="w-5 h-5" />
                                     </div>
                                     <div>
                                         <p className="text-sm font-semibold text-slate-700">{t('salesLine')}</p>
-                                        <a href={`tel:${brandProfile.contact.phone}`} className="text-lg font-bold text-[#A80E13] hover:underline decoration-2 underline-offset-4">
+                                        <a href={`tel:${brandProfile.contact.phone}`} className="text-lg font-bold text-primary hover:underline decoration-2 underline-offset-4">
                                             {brandProfile.contact.phone}
                                         </a>
                                         <p className="text-xs text-slate-500 mt-1">{t('salesHours')}</p>
@@ -84,12 +84,12 @@ export default async function WholesaleQuotePage() {
                                 </div>
 
                                 <div className="flex items-start gap-4 group cursor-pointer">
-                                    <div className="h-10 w-10 rounded-full bg-[#A80E13]/10 flex items-center justify-center text-[#A80E13] group-hover:bg-[#A80E13] group-hover:text-white transition-colors">
+                                    <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
                                         <Mail className="w-5 h-5" />
                                     </div>
                                     <div>
                                         <p className="text-sm font-semibold text-slate-700">{t('wholesaleEmail')}</p>
-                                        <a href={`mailto:${brandProfile.contact.email}`} className="text-base font-bold text-[#A80E13] hover:underline decoration-2 underline-offset-4 break-all">
+                                        <a href={`mailto:${brandProfile.contact.email}`} className="text-base font-bold text-primary hover:underline decoration-2 underline-offset-4 break-all">
                                             {brandProfile.contact.email}
                                         </a>
                                     </div>
@@ -100,7 +100,7 @@ export default async function WholesaleQuotePage() {
                         {/* What's Next Card */}
                         <div className="bg-white rounded-2xl border border-slate-100 p-8 shadow-lg shadow-black/5">
                             <h3 className="text-lg font-bold mb-4 flex items-center gap-2 font-heading text-slate-900">
-                                <ClipboardList className="w-5 h-5 text-[#A80E13]" />
+                                <ClipboardList className="w-5 h-5 text-primary" />
                                 {t('howItWorks')}
                             </h3>
                             <ul className="space-y-4 text-sm">
@@ -121,7 +121,7 @@ export default async function WholesaleQuotePage() {
                         {/* Featured Products Card */}
                         <div className="bg-gradient-to-br from-slate-50 to-white rounded-2xl border border-slate-100 p-8 shadow-lg shadow-black/5">
                             <h3 className="text-lg font-bold mb-4 flex items-center gap-2 font-heading text-slate-900">
-                                <Package className="w-5 h-5 text-[#A80E13]" />
+                                <Package className="w-5 h-5 text-primary" />
                                 {t('popularItems')}
                             </h3>
                             <ul className="space-y-3 text-sm text-slate-600">
@@ -135,7 +135,7 @@ export default async function WholesaleQuotePage() {
                                     'Dried Milk Powder (25kg bulk)'
                                 ].map((item, i) => (
                                     <li key={i} className="flex items-start gap-2">
-                                        <CheckCircle2 className="w-4 h-4 text-[#A80E13] flex-shrink-0 mt-0.5" />
+                                        <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
                                         <span>{item}</span>
                                     </li>
                                 ))}
@@ -146,7 +146,7 @@ export default async function WholesaleQuotePage() {
                         </div>
 
                         {/* Business Account CTA */}
-                        <div className="bg-[#1a1a1a] rounded-2xl p-8 text-white relative overflow-hidden ring-1 ring-white/10">
+                        <div className="bg-neutral-900 rounded-2xl p-8 text-white relative overflow-hidden ring-1 ring-white/10">
                             <div className="absolute -top-6 -right-6 opacity-10 rotate-12">
                                 <Building2 className="w-32 h-32" />
                             </div>
@@ -156,7 +156,7 @@ export default async function WholesaleQuotePage() {
                             </p>
                             <Link
                                 href="/wholesale/register"
-                                className="inline-flex items-center text-white font-bold hover:text-[#A80E13] transition-colors relative z-10 group"
+                                className="inline-flex items-center text-white font-bold hover:text-primary transition-colors relative z-10 group"
                             >
                                 {t('registerAccount')}
                                 <span className="ml-2 group-hover:translate-x-1 transition-transform">&rarr;</span>

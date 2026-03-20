@@ -1,13 +1,13 @@
 /**
  * Organization Schema Generator
- * Framework-agnostic function for generating Organization/GroceryStore schema
+ * Framework-agnostic function for generating Organization/Wholesaler schema
  */
 
 import type { Organization, OrganizationInput } from './types';
 import { generateSchemaId, formatOpeningHours, cleanSchema } from './base';
 
 /**
- * Generate Organization Schema (GroceryStore, LocalBusiness, etc.)
+ * Generate Organization Schema (Wholesaler, LocalBusiness, etc.)
  *
  * @param config - Organization configuration
  * @returns Complete Organization schema object
@@ -15,7 +15,7 @@ import { generateSchemaId, formatOpeningHours, cleanSchema } from './base';
 export function organizationSchema(config: OrganizationInput): Organization {
   const schema: Organization = {
     '@context': 'https://schema.org',
-    '@type': config.types || ['WholesaleStore', 'Wholesaler', 'Organization'],
+    '@type': config.types || ['Wholesaler', 'LocalBusiness', 'Organization'],
     '@id': generateSchemaId(config.url, 'organization'),
     name: config.name,
     url: config.url,
@@ -95,7 +95,7 @@ export function organizationSchema(config: OrganizationInput): Organization {
 
 /**
  * Anmol Wholesale Organization Schema
- * B2B Wholesale distributor for restaurants, grocery stores, and caterers
+ * B2B Wholesale distributor for restaurants, caterers, and foodservice businesses
  */
 export function anmolWholesaleOrganizationSchema(baseUrl: string = 'https://restaurantpack.se'): Organization {
   return organizationSchema({
@@ -128,7 +128,7 @@ export function anmolWholesaleOrganizationSchema(baseUrl: string = 'https://rest
       'https://www.facebook.com/AnmolWholesale',
     ],
     foundingDate: '2010',
-    types: ['WholesaleStore', 'Wholesaler', 'LocalBusiness', 'Organization'],
+    types: ['Wholesaler', 'LocalBusiness', 'Organization'],
   });
 }
 

@@ -26,11 +26,11 @@ export function CategoryGrid({ categories }: CategoryGridProps) {
     // Gradient backgrounds for categories without images
     const gradientBackgrounds = [
         'bg-gradient-to-br from-primary to-primary/80',
-        'bg-gradient-to-br from-secondary to-secondary/80',
-        'bg-gradient-to-br from-slate-900 to-slate-800',
-        'bg-gradient-to-br from-primary/90 to-primary/70',
-        'bg-gradient-to-br from-secondary/90 to-secondary/70',
-        'bg-gradient-to-br from-slate-800 to-slate-700',
+        'bg-gradient-to-br from-primary/90 to-primary/60',
+        'bg-gradient-to-br from-foreground to-foreground/75',
+        'bg-gradient-to-br from-accent/90 to-accent/60',
+        'bg-gradient-to-br from-primary/80 to-foreground/80',
+        'bg-gradient-to-br from-foreground/90 to-foreground/60',
     ];
 
     return (
@@ -38,8 +38,8 @@ export function CategoryGrid({ categories }: CategoryGridProps) {
             <div className="site-container">
                 <div className="flex items-center justify-between mb-6 md:mb-8">
                     <div className="space-y-1">
-                        <span className="text-primary font-bold text-xs uppercase tracking-wider">Explore</span>
-                        <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">Top Categories</h2>
+                        <span className="section-label">Explore</span>
+                        <h2 className="font-heading text-3xl md:text-4xl font-bold tracking-tight text-foreground mt-1">Top Categories</h2>
                     </div>
                     <Link
                         href="/shop"

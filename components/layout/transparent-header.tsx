@@ -50,7 +50,7 @@ export function TransparentHeader({ categories, className }: TransparentHeaderPr
     // Set initial state
     handleScroll();
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -169,7 +169,7 @@ export function TransparentHeader({ categories, className }: TransparentHeaderPr
               <div className="flex items-center gap-2">
                 <div className={cn(
                   "transition-colors",
-                  isTransparent && "[&_button]:text-amber-100 [&_svg]:text-amber-100"
+                  isTransparent && "[&_button]:text-primary-foreground [&_svg]:text-primary-foreground"
                 )}>
                   <MobileMenu />
                 </div>
@@ -178,7 +178,7 @@ export function TransparentHeader({ categories, className }: TransparentHeaderPr
                   className={cn(
                     "transition-colors p-2 rounded-full",
                     isTransparent
-                      ? "text-amber-100 hover:text-primary hover:bg-white/10"
+                      ? "text-primary-foreground hover:text-primary hover:bg-white/10"
                       : "text-foreground hover:text-primary hover:bg-primary/5"
                   )}
                   aria-label="AI Anmol Assistant"
@@ -203,7 +203,7 @@ export function TransparentHeader({ categories, className }: TransparentHeaderPr
               {/* Right Actions */}
               <div className={cn(
                 "flex items-center gap-3 transition-colors",
-                isTransparent && "[&_button]:text-amber-100 [&_svg]:text-amber-100 [&_span]:text-amber-100"
+                isTransparent && "[&_button]:text-primary-foreground [&_svg]:text-primary-foreground [&_span]:text-primary-foreground"
               )}>
                 <CartIcon />
               </div>
@@ -212,7 +212,7 @@ export function TransparentHeader({ categories, className }: TransparentHeaderPr
             {/* Mobile Search Bar */}
             <div className={cn(
               "pb-3 transition-all",
-              isTransparent && "[&_button]:bg-white/10 [&_button]:backdrop-blur-sm [&_button]:border-white/20 [&_button]:text-amber-100 [&_button]:hover:bg-white/20 [&_input]:text-amber-100 [&_input]:placeholder-amber-100/60"
+              isTransparent && "[&_button]:bg-white/10 [&_button]:backdrop-blur-sm [&_button]:border-white/20 [&_button]:text-primary-foreground [&_button]:hover:bg-white/20 [&_input]:text-primary-foreground [&_input]:placeholder-primary-foreground/60"
             )}>
               <SearchModal />
             </div>

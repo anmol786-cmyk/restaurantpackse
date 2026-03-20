@@ -16,16 +16,20 @@ const nextConfig = {
 
     // Experimental optimizations
     experimental: {
-        optimizePackageImports: ['lucide-react', 'date-fns'],
+        optimizePackageImports: [
+            'lucide-react',
+            'date-fns',
+            'framer-motion',
+            '@radix-ui/react-dialog',
+            '@radix-ui/react-dropdown-menu',
+            '@radix-ui/react-select',
+            '@radix-ui/react-tabs',
+            '@radix-ui/react-tooltip',
+        ],
     },
 
     // Modern browser targets - reduces legacy JavaScript
     transpilePackages: [],
-    modularizeImports: {
-        'lucide-react': {
-            transform: 'lucide-react/dist/esm/icons/{{kebabCase member}}',
-        },
-    },
 
     // Webpack configuration for path aliases (fixes Vercel build issues)
     webpack: (config, { isServer }) => {
@@ -43,13 +47,15 @@ const nextConfig = {
         imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
         minimumCacheTTL: 31536000,
         remotePatterns: [
-            // Add your WordPress/CMS domain here for remote images
-            // Example:
-            // {
-            //     protocol: 'https',
-            //     hostname: 'your-wordpress-domain.com',
-            //     pathname: '/wp-content/uploads/**',
-            // },
+            {
+                protocol: 'https',
+                hostname: 'crm.restaurantpack.se',
+                pathname: '/wp-content/uploads/**',
+            },
+            {
+                protocol: 'https',
+                hostname: 'restaurantpack.se',
+            },
         ],
     },
     // rewrites removed as we now use file-based sitemaps (app/sitemap.ts, etc.)

@@ -114,7 +114,7 @@ export function ShippingCalculator({ className }: { className?: string }) {
               {postcodeError ? (
                 <p className="text-xs text-destructive">{postcodeError}</p>
               ) : (
-                <p className="text-xs text-neutral-500">
+                <p className="text-xs text-muted-foreground">
                   Enter your postal code to see shipping options
                 </p>
               )}

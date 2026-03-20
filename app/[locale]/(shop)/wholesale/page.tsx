@@ -1,6 +1,8 @@
 import { Metadata } from 'next';
 import { Link } from '@/i18n/navigation';
 import { getTranslations } from 'next-intl/server';
+import { SchemaScript } from '@/lib/schema/schema-script';
+import { anmolWholesaleOrganizationSchema } from '@/lib/schema';
 import { Button } from '@/components/ui/button';
 import {
     Building2,
@@ -17,7 +19,8 @@ import {
     Factory,
     Users,
     Award,
-    TrendingUp
+    TrendingUp,
+    FileDown,
 } from 'lucide-react';
 import Image from 'next/image';
 import { brandProfile } from '@/config/brand-profile';
@@ -46,7 +49,7 @@ export default async function WholesaleLandingPage() {
                         className="object-cover opacity-40 scale-105"
                         priority
                     />
-                    <div className="absolute inset-0 bg-gradient-to-r from-[#A80E13] via-[#A80E13]/80 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/80 to-transparent" />
                 </div>
 
                 <div className="container relative z-10 px-4">
@@ -234,7 +237,7 @@ export default async function WholesaleLandingPage() {
             </section>
 
             {/* Tandoor Spotlight */}
-            <section className="py-24 bg-[#A80E13] text-white relative overflow-hidden">
+            <section className="py-24 bg-primary text-white relative overflow-hidden">
                 <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1574966740793-34d9dfdc8640?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center opacity-10" />
                 <div className="container px-4 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-10">
                     <div className="space-y-8">
@@ -323,7 +326,7 @@ export default async function WholesaleLandingPage() {
             </section>
 
             {/* CTA Section */}
-            <section className="py-24 bg-[#A80E13] text-white">
+            <section className="py-24 bg-primary text-white">
                 <div className="container px-4">
                     <div className="max-w-4xl mx-auto text-center space-y-8 mb-16">
                         <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-white mb-6">
@@ -333,11 +336,17 @@ export default async function WholesaleLandingPage() {
                             {t('ctaDesc')}
                         </p>
                         <div className="flex flex-wrap justify-center gap-4 pt-4">
-                            <Button asChild size="lg" className="h-14 px-10 text-lg font-bold bg-[#005c4b] hover:bg-[#004a3c] text-white border-0 shadow-lg">
+                            <Button asChild size="lg" className="h-14 px-10 text-lg font-bold bg-white text-primary hover:bg-white/90 border-0 shadow-lg">
                                 <Link href="/wholesale/register">{t('ctaOpenAccount')}</Link>
                             </Button>
-                            <Button asChild size="lg" variant="outline" className="h-14 px-10 text-lg font-bold bg-[#bf2026] text-white border-white/20 hover:bg-[#a61b21] hover:text-white">
+                            <Button asChild size="lg" variant="outline" className="h-14 px-10 text-lg font-bold bg-primary/80 text-white border-white/20 hover:bg-primary/90 hover:text-white">
                                 <Link href="/wholesale/quote">{t('ctaRequestPriceList')}</Link>
+                            </Button>
+                            <Button asChild size="lg" variant="outline" className="h-14 px-10 text-lg font-bold bg-transparent text-white border-white/40 hover:bg-white/10 hover:text-white gap-2">
+                                <a href="/api/catalogue" target="_blank" rel="noopener noreferrer">
+                                    <FileDown className="w-5 h-5" />
+                                    Download Catalogue
+                                </a>
                             </Button>
                         </div>
                     </div>
@@ -391,6 +400,7 @@ export default async function WholesaleLandingPage() {
                     </div>
                 </div>
             </section>
+        <SchemaScript id="wholesale-org-schema" schema={anmolWholesaleOrganizationSchema()} />
         </div>
     );
 }

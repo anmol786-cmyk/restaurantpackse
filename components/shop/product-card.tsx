@@ -121,7 +121,7 @@ export function ProductCard({ product, className }: ProductCardProps) {
                 </Badge>
               )}
               {CommerceRules.hasQuantityDiscount(product.id) && (
-                <Badge className="bg-green-600 text-white hover:bg-green-600 shadow-sm border-0">
+                <Badge className="bg-success text-success-foreground hover:bg-success/90 shadow-sm border-0">
                   Volume Discount
                 </Badge>
               )}

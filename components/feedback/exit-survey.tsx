@@ -103,7 +103,7 @@ export function ExitSurvey({ show, onClose }: ExitSurveyProps) {
             className="fixed bottom-6 right-6 z-[9999] w-full max-w-md"
             style={{ pointerEvents: 'auto' }}
           >
-            <Card className="shadow-2xl border-2 bg-white dark:bg-gray-900">
+            <Card className="shadow-2xl border-2 bg-card">
               {isSubmitted ? (
                 <CardContent className="pt-6 pb-6 text-center">
                   <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-green-100 dark:bg-green-900">

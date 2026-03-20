@@ -57,6 +57,6 @@ export function anmolWholesaleBrandSchema(): Brand {
   return brandSchema('Anmol Wholesale', {
     url: 'https://restaurantpack.se',
     logo: 'https://crm.restaurantpack.se/wp-content/uploads/2025/03/ANMOL-WHOLESALE-1.png',
-    description: 'Sweden\'s trusted B2B wholesale supplier for restaurants, grocery stores, and caterers. Manufacturer of Anmol Electric Tandoor.',
+    description: 'Sweden\'s leading B2B wholesale distributor for restaurants, professional caterers, and foodservice businesses. Manufacturer of the Anmol Electric Tandoor.',
   });
 }

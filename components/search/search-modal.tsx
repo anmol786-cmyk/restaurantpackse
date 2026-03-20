@@ -105,11 +105,11 @@ export function SearchModal({ variant = 'default' }: { variant?: 'default' | 'ic
                 <div className="w-full">
                     <Button
                         variant="ghost"
-                        className="relative h-11 w-full justify-start text-sm text-slate-500 bg-slate-100/80 hover:bg-slate-100 border-none rounded-xl transition-all duration-200 group"
+                        className="relative h-11 w-full justify-start text-sm text-muted-foreground bg-muted/80 hover:bg-muted border-none rounded-xl transition-all duration-200 group"
                         onClick={() => setIsOpen(true)}
                     >
-                        <Search className="mr-3 h-5 w-5 text-slate-400 group-hover:text-primary transition-colors" />
-                        <span className="text-slate-500/80 font-medium">Search for premium restaurant supplies, SKUs...</span>
+                        <Search className="mr-3 h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
+                        <span className="text-muted-foreground/80 font-medium">Search for premium restaurant supplies, SKUs...</span>
                     </Button>
                 </div>
             )}

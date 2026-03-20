@@ -18,9 +18,9 @@ export function TandoorShowcase() {
     ];
 
     return (
-        <section className="py-12 md:py-20 bg-white">
+        <section className="py-12 md:py-20 bg-background">
             <div className="site-container">
-                <div className="rounded-[2.5rem] overflow-hidden bg-[#A80E13] shadow-2xl">
+                <div className="rounded-[2.5rem] overflow-hidden bg-primary shadow-2xl">
                     <div className="grid grid-cols-1 lg:grid-cols-2">
 
                         {/* Left Content Column */}
@@ -34,7 +34,7 @@ export function TandoorShowcase() {
                                     {t('badge')}
                                 </div>
 
-                                <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight leading-[1.1]">
+                                <h2 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight leading-[1.1]">
                                     {t('title')} <br />
                                     <span className="text-white/90">{t('titleHighlight')}</span>
                                 </h2>
@@ -55,7 +55,7 @@ export function TandoorShowcase() {
                                 <div className="pt-6">
                                     <Button
                                         size="lg"
-                                        className="h-14 px-8 bg-white text-[#A80E13] hover:bg-white/90 rounded-full font-bold text-lg shadow-xl shadow-black/10 transition-transform hover:-translate-y-1 group"
+                                        className="h-14 px-8 bg-white text-primary hover:bg-white/90 rounded-full font-bold text-lg shadow-xl shadow-black/10 transition-transform hover:-translate-y-1 group"
                                         asChild
                                     >
                                         <Link href="/product/mini-electric-tandoor-oven">
@@ -68,10 +68,10 @@ export function TandoorShowcase() {
                         </div>
 
                         {/* Right Image Column */}
-                        <div className="relative h-[400px] lg:h-auto min-h-[400px] bg-gray-50 overflow-hidden group">
+                        <div className="relative h-[400px] lg:h-auto min-h-[400px] bg-muted overflow-hidden group">
 
                             {/* Decorative Elements - optional, maybe remove if image covers all */}
-                            <div className="absolute inset-0 bg-gradient-to-br from-gray-100 to-gray-200" />
+                            <div className="absolute inset-0 bg-gradient-to-br from-muted to-muted/60" />
 
                             <motion.div
                                 className="relative w-full h-full"
@@ -84,7 +84,7 @@ export function TandoorShowcase() {
                                     fill
                                     className="object-cover object-left z-10"
                                     sizes="(max-width: 768px) 100vw, 50vw"
-                                    priority
+                                    loading="lazy"
                                 />
                             </motion.div>
                         </div>

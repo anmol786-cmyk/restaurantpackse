@@ -50,20 +50,20 @@ export function TopInfoBar() {
                 storeStatus.isOpen ? "bg-green-300" : "bg-red-300"
               )} />
               <span className="text-white">{storeStatus.statusText}</span>
-              <span className="text-white/40">|</span>
+              <span className="text-primary-foreground/40">|</span>
               <span className="text-white/80">{storeStatus.todayHours}</span>
             </div>
           )}
           <div className="flex items-center gap-1.5 group">
             <MapPin className="h-3 w-3 text-white/60 group-hover:text-white transition-colors" />
-            <a href={contact.googleMapsUrl} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
+            <a href={contact.googleMapsUrl} target="_blank" rel="noopener noreferrer" className="hover:text-primary-foreground transition-colors">
               Fagerstagatan 13, Spånga
             </a>
           </div>
         </div>
 
         {/* Center: USP / Tagline */}
-        <div className="hidden xl:flex items-center gap-2 text-white/70">
+        <div className="hidden xl:flex items-center gap-2 text-primary-foreground/70">
           <span className="text-white font-black uppercase tracking-widest text-[9px] bg-white/20 px-1.5 py-0.5 rounded">{t('anmolAdvantage')}</span>
           <span>•</span>
           <span className="italic">&quot;{tc('tagline')}&quot;</span>
@@ -72,7 +72,7 @@ export function TopInfoBar() {
         {/* Right: Contact & Delivery */}
         <div className="flex items-center gap-6">
           <div className="flex items-center gap-4">
-            <a href={`tel:${phoneClean}`} className="flex items-center gap-1.5 hover:text-white transition-colors">
+            <a href={`tel:${phoneClean}`} className="flex items-center gap-1.5 hover:text-primary-foreground transition-colors">
               <Phone className="h-3 w-3 text-white/60" />
               <span>{contact.phone}</span>
             </a>
@@ -81,7 +81,7 @@ export function TopInfoBar() {
               <span className="font-bold border-b border-green-300/50">{t('chatB2B')}</span>
             </a>
           </div>
-          <div className="flex items-center gap-2 bg-white/20 text-white px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-tighter border border-white/20">
+          <div className="flex items-center gap-2 bg-primary-foreground/20 text-primary-foreground px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-tighter border border-primary-foreground/20">
             {t('exWarehouse')}
           </div>
         </div>

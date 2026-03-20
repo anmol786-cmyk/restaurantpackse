@@ -1,6 +1,6 @@
 import "./globals.css";
 
-import { Inter, Plus_Jakarta_Sans } from "next/font/google";
+import { DM_Sans, Sora } from "next/font/google";
 import { getLocale } from "next-intl/server";
 import { GoogleTagManager, GoogleTagManagerNoScript, FacebookPixel } from "@/components/analytics";
 import { GeoMetaTags } from "@/components/seo/geo-meta-tags";
@@ -10,14 +10,14 @@ import { cn } from "@/lib/utils";
 
 import type { Metadata } from "next";
 
-const fontSans = Inter({
+const fontSans = DM_Sans({
   subsets: ["latin"],
   variable: "--font-sans",
   display: "swap",
   preload: true,
 });
 
-const fontHeading = Plus_Jakarta_Sans({
+const fontHeading = Sora({
   weight: ["400", "500", "600", "700", "800"],
   subsets: ["latin"],
   variable: "--font-heading",

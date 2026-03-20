@@ -18,7 +18,7 @@ export default async function WholesaleRegisterPage() {
 
     return (
         <div className="site-container relative min-h-[80vh] grid lg:grid-cols-2 gap-8 py-10">
-            <div className="relative hidden h-full flex-col bg-[#A80E13] p-10 text-white lg:flex dark:border-r overflow-hidden rounded-l-2xl my-4">
+            <div className="relative hidden h-full flex-col bg-primary p-10 text-white lg:flex dark:border-r overflow-hidden rounded-l-2xl my-4">
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/20 z-10" />
                 <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1556910103-1c02745aae4d?q=80&w=2071&auto=format&fit=crop')] bg-cover bg-center opacity-20 mix-blend-overlay" />
 
@@ -103,7 +103,7 @@ export default async function WholesaleRegisterPage() {
             <div className="lg:p-8 pt-20 pb-12 flex items-center justify-center">
                 <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[450px]">
                     <div className="flex flex-col space-y-2 text-center">
-                        <h1 className="text-3xl font-bold tracking-tight font-heading text-[#A80E13]">{t('formTitle')}</h1>
+                        <h1 className="text-3xl font-bold tracking-tight font-heading text-primary">{t('formTitle')}</h1>
                         <p className="text-sm text-muted-foreground">
                             {t('formSubtitle')}
                         </p>
@@ -114,7 +114,7 @@ export default async function WholesaleRegisterPage() {
                     <div className="px-8 space-y-4">
                         <p className="text-center text-sm text-muted-foreground">
                             {t('haveAccount')}{' '}
-                            <Link href="/login" className="underline underline-offset-4 hover:text-[#A80E13] font-medium transition-colors">
+                            <Link href="/login" className="underline underline-offset-4 hover:text-primary font-medium transition-colors">
                                 {t('loginHere')}
                             </Link>
                         </p>

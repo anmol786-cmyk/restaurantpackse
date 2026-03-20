@@ -42,7 +42,7 @@ export function WishlistIcon() {
     >
       <Heart
         className={`h-6 w-6 transition-all duration-300 ${
-          hasItems ? 'fill-current text-red-500' : 'text-gray-400'
+          hasItems ? 'fill-current text-red-500' : 'text-muted-foreground'
         }`}
       />
       {mounted && itemCount > 0 && (

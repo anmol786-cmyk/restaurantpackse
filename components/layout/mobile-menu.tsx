@@ -64,17 +64,17 @@ export function MobileMenu() {
     return (
         <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="hover:bg-slate-100 transition-colors">
-                    <Menu className="h-5 w-5 text-slate-700" />
+                <Button variant="ghost" size="icon" className="hover:bg-muted transition-colors">
+                    <Menu className="h-5 w-5 text-foreground" />
                     <span className="sr-only">Toggle menu</span>
                 </Button>
             </SheetTrigger>
             <SheetContent
                 side="right"
-                className="w-full max-w-[300px] p-0 bg-white border-l border-slate-100"
+                className="w-full max-w-[300px] p-0 bg-background border-l border-border"
             >
                 {/* Header with Logo */}
-                <div className="p-6 border-b border-slate-50">
+                <div className="p-6 border-b border-border">
                     <SheetHeader>
                         <div className="flex flex-col items-center justify-center gap-2">
                             <div className="relative h-16 w-16">
@@ -101,7 +101,7 @@ export function MobileMenu() {
                                 key={item.href}
                                 href={item.href}
                                 onClick={() => setOpen(false)}
-                                className="flex items-center gap-4 px-4 py-3 rounded-lg text-sm text-slate-600 hover:text-primary hover:bg-slate-50 transition-all font-medium"
+                                className="flex items-center gap-4 px-4 py-3 rounded-lg text-sm text-muted-foreground hover:text-primary hover:bg-muted transition-all font-medium"
                             >
                                 <Icon className="h-4 w-4" />
                                 {item.label}
@@ -111,17 +111,17 @@ export function MobileMenu() {
                 </nav>
 
                 {/* Footer / Contact */}
-                <div className="absolute bottom-0 left-0 right-0 p-6 bg-slate-50/50 border-t border-slate-100">
+                <div className="absolute bottom-0 left-0 right-0 p-6 bg-muted/50 border-t border-border">
                     <div className="space-y-4">
                         <a
                             href={`tel:${brandConfig.contact.phone}`}
-                            className="flex items-center gap-3 text-sm font-semibold text-slate-900 hover:text-primary transition-colors"
+                            className="flex items-center gap-3 text-sm font-semibold text-foreground hover:text-primary transition-colors"
                         >
                             <Phone className="h-4 w-4 text-primary" />
                             {brandConfig.contact.phone}
                         </a>
 
-                        <div className="flex items-center gap-3 text-sm text-slate-500">
+                        <div className="flex items-center gap-3 text-sm text-muted-foreground">
                             <MapPin className="h-4 w-4" />
                             <span>Spånga, Stockholm</span>
                         </div>

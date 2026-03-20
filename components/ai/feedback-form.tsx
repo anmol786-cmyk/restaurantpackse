@@ -141,7 +141,7 @@ export function FeedbackForm({ onClose, onSuccess }: FeedbackFormProps) {
                                         'h-8 w-8 transition-colors',
                                         (hoveredRating || rating) >= star
                                             ? 'fill-yellow-400 text-yellow-400'
-                                            : 'text-gray-300 dark:text-gray-600'
+                                            : 'text-muted-foreground'
                                     )}
                                 />
                             </button>

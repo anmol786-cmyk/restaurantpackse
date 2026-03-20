@@ -18,7 +18,7 @@ export default async function QuickOrderPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
       {/* Hero Section */}
-      <div className="bg-gradient-to-r from-[#A80E13] to-[#7A0A0E] py-16 text-white">
+      <div className="bg-gradient-to-r from-primary to-primary/70 py-16 text-white">
         <div className="site-container px-4">
           <div className="max-w-3xl">
             <div className="inline-block mb-4">

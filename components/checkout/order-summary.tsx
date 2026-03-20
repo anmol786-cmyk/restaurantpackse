@@ -59,8 +59,8 @@ export function OrderSummary({
         return (
             <Card className={className}>
                 <div className="flex flex-col items-center justify-center p-8 text-center">
-                    <ShoppingBag className="mb-4 h-12 w-12 text-neutral-400" />
-                    <p className="text-neutral-600 dark:text-neutral-400">Your cart is empty</p>
+                    <ShoppingBag className="mb-4 h-12 w-12 text-muted-foreground" />
+                    <p className="text-muted-foreground">Your cart is empty</p>
                 </div>
             </Card>
         );
@@ -78,7 +78,7 @@ export function OrderSummary({
                     {items.map((item) => (
                         <div key={item.key} className="flex gap-4">
                             {/* Product Image */}
-                            <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-lg border bg-neutral-100 dark:bg-neutral-800">
+                            <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-lg border bg-muted">
                                 {item.product.images && item.product.images.length > 0 ? (
                                     <Image
                                         src={item.product.images[0].src}
@@ -89,7 +89,7 @@ export function OrderSummary({
                                     />
                                 ) : (
                                     <div className="flex h-full items-center justify-center">
-                                        <ShoppingBag className="h-6 w-6 text-neutral-400" />
+                                        <ShoppingBag className="h-6 w-6 text-muted-foreground" />
                                     </div>
                                 )}
                                 <Badge className="absolute -right-2 -top-2 h-5 w-5 rounded-full p-0 text-xs">
@@ -104,7 +104,7 @@ export function OrderSummary({
                                         {item.product.name}
                                     </p>
                                     {item.variation && (
-                                        <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                                        <p className="text-sm text-muted-foreground">
                                             Variation: {item.variation.id}
                                         </p>
                                     )}
@@ -131,7 +131,7 @@ export function OrderSummary({
                 <div className="space-y-3">
                     {/* Subtotal without tax */}
                     <div className="flex justify-between text-sm">
-                        <span className="text-neutral-600 dark:text-neutral-400">
+                        <span className="text-muted-foreground">
                             Subtotal (excl. tax)
                         </span>
                         <span className="font-medium">{formatPrice(subtotalWithoutTax, 'SEK')}</span>
@@ -141,7 +141,7 @@ export function OrderSummary({
                     {taxBreakdown.length === 1 ? (
                         // Single tax rate - simple display
                         <div className="flex justify-between text-sm">
-                            <span className="text-neutral-600 dark:text-neutral-400">
+                            <span className="text-muted-foreground">
                                 Tax ({taxBreakdown[0].rate}% included)
                             </span>
                             <span className="font-medium">{formatPrice(includedTax, 'SEK')}</span>
@@ -150,15 +150,15 @@ export function OrderSummary({
                         // Multiple tax rates - show breakdown
                         <div className="space-y-2">
                             <div className="flex justify-between text-sm">
-                                <span className="text-neutral-600 dark:text-neutral-400">
+                                <span className="text-muted-foreground">
                                     Tax (mixed rates included)
                                 </span>
                                 <span className="font-medium">{formatPrice(includedTax, 'SEK')}</span>
                             </div>
                             {/* Show individual rates */}
-                            <div className="pl-4 space-y-1 border-l-2 border-neutral-200 dark:border-neutral-700">
+                            <div className="pl-4 space-y-1 border-l-2 border-border">
                                 {taxBreakdown.map((item) => (
-                                    <div key={item.rate} className="flex justify-between text-xs text-neutral-500 dark:text-neutral-500">
+                                    <div key={item.rate} className="flex justify-between text-xs text-muted-foreground">
                                         <span>{item.rate}% VAT</span>
                                         <span>{formatPrice(item.taxAmount, 'SEK')}</span>
                                     </div>
@@ -176,7 +176,7 @@ export function OrderSummary({
 
                     {shippingCost > 0 && (
                         <div className="flex justify-between text-sm">
-                            <span className="text-neutral-600 dark:text-neutral-400">Shipping</span>
+                            <span className="text-muted-foreground">Shipping</span>
                             <span className="font-medium">{formatPrice(shippingCost, 'SEK')}</span>
                         </div>
                     )}
@@ -216,8 +216,8 @@ export function OrderSummary({
                 </div>
 
                 {/* Additional Info */}
-                <div className="mt-4 rounded-lg bg-neutral-50 p-4 text-sm dark:bg-neutral-900">
-                    <p className="text-neutral-600 dark:text-neutral-400">
+                <div className="mt-4 rounded-lg bg-muted p-4 text-sm">
+                    <p className="text-muted-foreground">
                         <strong>Note:</strong> Prices include VAT where applicable. Final shipping costs will be calculated based on your location.
                     </p>
                 </div>

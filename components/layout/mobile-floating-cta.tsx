@@ -15,7 +15,7 @@ export function MobileFloatingCTA() {
             setIsVisible(window.scrollY > 100);
         };
 
-        window.addEventListener('scroll', handleScroll);
+        window.addEventListener('scroll', handleScroll, { passive: true });
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
@@ -30,7 +30,7 @@ export function MobileFloatingCTA() {
                 >
                     <Button
                         asChild
-                        className="flex-1 bg-primary-900/95 text-white shadow-lg backdrop-blur-sm hover:bg-primary-800 border border-primary-700/50"
+                        className="flex-1 bg-primary/95 text-primary-foreground shadow-lg backdrop-blur-sm hover:bg-primary border border-primary/50"
                         size="lg"
                     >
                         <Link href="/bookings">
@@ -40,7 +40,7 @@ export function MobileFloatingCTA() {
                     </Button>
                     <Button
                         asChild
-                        className="flex-1 bg-secondary-500/95 text-primary-950 shadow-lg backdrop-blur-sm hover:bg-secondary-400 font-bold"
+                        className="flex-1 bg-accent/95 text-accent-foreground shadow-lg backdrop-blur-sm hover:bg-accent font-bold"
                         size="lg"
                     >
                         <Link href="/shop">

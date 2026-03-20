@@ -1,6 +1,8 @@
 import { Metadata } from "next";
 import { Link } from "@/i18n/navigation";
 import { brandConfig } from "@/config/brand.config";
+import { SchemaScript } from '@/lib/schema/schema-script';
+import { anmolWholesaleOrganizationSchema } from '@/lib/schema';
 import { MapPin, Phone, Mail, Clock, MessageSquare, ExternalLink, Warehouse } from "lucide-react";
 import { ContactForm } from "@/components/forms/contact-form";
 import { GoogleMapCompact } from "@/components/shared/google-map";
@@ -240,6 +242,7 @@ export default async function ContactPage() {
           </div>
         </div>
       </section>
+      <SchemaScript id="contact-org-schema" schema={anmolWholesaleOrganizationSchema()} />
     </main>
   );
 }

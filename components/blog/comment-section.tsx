@@ -64,7 +64,7 @@ export async function CommentSection({ postId }: CommentSectionProps) {
                                             </Button>
                                         </div>
                                         <div
-                                            className="text-sm text-neutral-700 dark:text-neutral-300 prose-sm max-w-none"
+                                            className="text-sm text-foreground prose-sm max-w-none"
                                             dangerouslySetInnerHTML={{ __html: comment.content.rendered }}
                                         />
                                     </div>

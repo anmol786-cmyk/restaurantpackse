@@ -71,7 +71,7 @@ export function ShippingMethodSelector({
       <Card className={cn('p-6', className)}>
         <div className="flex items-center justify-center space-x-2">
           <Loader2 className="h-5 w-5 animate-spin text-primary-600" />
-          <span className="text-neutral-600">
+          <span className="text-muted-foreground">
             Calculating shipping rates...
           </span>
         </div>
@@ -119,7 +119,7 @@ export function ShippingMethodSelector({
         <h2 className="font-heading text-2xl font-bold text-primary-950 dark:text-primary-50">
           Shipping Method
         </h2>
-        <p className="mt-1 text-sm text-neutral-600 dark:text-neutral-400">
+        <p className="mt-1 text-sm text-muted-foreground">
           Shipping to {effectivePostcode || shippingAddress?.postcode}
           {shippingAddress?.city && `, ${shippingAddress.city}`}
         </p>
@@ -151,7 +151,7 @@ export function ShippingMethodSelector({
                 'cursor-pointer transition-all hover:border-primary-500',
                 (selectedMethod || selectedShippingMethod?.id) === method.id
                   ? 'border-primary-500 bg-primary-50/50 ring-2 ring-primary-500 dark:bg-primary-950/20'
-                  : 'border-neutral-200 dark:border-neutral-800'
+                  : 'border-border'
               )}
               onClick={() => {
                 if (onMethodChange) {

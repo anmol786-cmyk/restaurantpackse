@@ -170,7 +170,7 @@ export function PaymentMethodSelector({
             <Card className={cn('p-6', className)}>
                 <div className="flex items-center justify-center space-x-2">
                     <Loader2 className="h-5 w-5 animate-spin text-primary-600" />
-                    <span className="text-neutral-600">Loading payment methods...</span>
+                    <span className="text-muted-foreground">Loading payment methods...</span>
                 </div>
             </Card>
         );
@@ -199,7 +199,7 @@ export function PaymentMethodSelector({
                                 'cursor-pointer transition-all hover:border-primary-500',
                                 selectedMethod === method.id
                                     ? 'border-primary-500 bg-primary-50/50 ring-2 ring-primary-500 dark:bg-primary-950/20'
-                                    : 'border-neutral-200 dark:border-neutral-800'
+                                    : 'border-border'
                             )}
                             onClick={() => onMethodChange(method.id)}
                         >
@@ -232,14 +232,14 @@ export function PaymentMethodSelector({
                                                 </Badge>
                                             )}
                                         </div>
-                                        <p className="mt-1 text-sm text-neutral-600 dark:text-neutral-400">
+                                        <p className="mt-1 text-sm text-muted-foreground">
                                             {method.description}
                                         </p>
 
                                         {/* Display additional payment details from WooCommerce */}
                                         {selectedMethod === method.id && method.description && (
                                             <div
-                                                className="mt-3 rounded-lg bg-neutral-100 p-3 text-sm dark:bg-neutral-800 prose prose-sm max-w-none"
+                                                className="mt-3 rounded-lg bg-muted p-3 text-sm prose prose-sm max-w-none"
                                                 dangerouslySetInnerHTML={{ __html: method.description }}
                                             />
                                         )}
@@ -253,7 +253,7 @@ export function PaymentMethodSelector({
 
             {enabledMethods.length === 0 && (
                 <div className="rounded-lg border border-dashed p-8 text-center">
-                    <p className="text-neutral-600 dark:text-neutral-400">
+                    <p className="text-muted-foreground">
                         No payment methods are currently available. Please contact support.
                     </p>
                 </div>

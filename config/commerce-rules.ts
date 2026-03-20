@@ -191,7 +191,7 @@ export const SHIPPING_RESTRICTIONS: ShippingRestriction = {
   restrictedCategories: [
     'fresh-produce',
     'frozen-foods',
-    'tradional-sweets', // Note: Matches backend typo
+    'traditional-sweets',
   ],
   restrictedProductIds: [],
 };

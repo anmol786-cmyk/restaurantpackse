@@ -74,7 +74,11 @@
       "Bash(taskkill:*)",
       "Bash(wc:*)",
       "Bash(git log:*)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(for f:*)",
+      "Bash(do echo:*)",
+      "Read(//d/Visual codes/Anmol Project/restaurantpack.se/**)",
+      "Bash(tail:*)"
     ]
   }
 }

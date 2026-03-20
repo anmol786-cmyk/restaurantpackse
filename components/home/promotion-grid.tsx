@@ -15,7 +15,7 @@ export function PromotionGrid() {
 
 
                     {/* Card 3: Europe-Wide Delivery via DHL */}
-                    <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary to-primary-700 text-white shadow-sm group hover:shadow-lg transition-all min-h-[200px]">
+                    <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary to-primary/70 text-white shadow-sm group hover:shadow-lg transition-all min-h-[200px]">
                         <div className="p-6 sm:p-10 relative z-10 h-full flex flex-col sm:flex-row items-center justify-between gap-6">
                             <div className="space-y-4 max-w-2xl">
                                 <div className="flex items-center gap-2 mb-2">

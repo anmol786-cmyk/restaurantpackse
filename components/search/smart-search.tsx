@@ -115,7 +115,7 @@ export function SmartSearch({
         <div ref={searchRef} className={cn('relative', className)}>
             {/* Search Input */}
             <div className="relative">
-                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-400" />
+                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                 <Input
                     type="search"
                     placeholder={placeholder}
@@ -154,14 +154,14 @@ export function SmartSearch({
                         {/* Loading State */}
                         {isLoading && (
                             <div className="flex items-center justify-center p-8">
-                                <Loader2 className="h-6 w-6 animate-spin text-primary-600" />
+                                <Loader2 className="h-6 w-6 animate-spin text-primary" />
                             </div>
                         )}
 
                         {/* Search Results */}
                         {!isLoading && results.length > 0 && (
                             <div className="p-2">
-                                <p className="mb-2 px-2 text-xs font-semibold uppercase tracking-wide text-neutral-500">
+                                <p className="mb-2 px-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                                     Results ({results.length})
                                 </p>
                                 {results.map((result) => (
@@ -172,10 +172,10 @@ export function SmartSearch({
                                             setIsOpen(false);
                                             setQuery('');
                                         }}
-                                        className="flex items-center gap-3 rounded-lg p-2 transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-800"
+                                        className="flex items-center gap-3 rounded-lg p-2 transition-colors hover:bg-muted"
                                     >
                                         {result.image ? (
-                                            <div className="relative h-12 w-12 flex-shrink-0 overflow-hidden rounded bg-neutral-100 dark:bg-neutral-800">
+                                            <div className="relative h-12 w-12 flex-shrink-0 overflow-hidden rounded bg-muted">
                                                 <Image
                                                     src={result.image}
                                                     alt={result.name}
@@ -185,16 +185,16 @@ export function SmartSearch({
                                                 />
                                             </div>
                                         ) : (
-                                            <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded bg-neutral-100 dark:bg-neutral-800">
-                                                <Search className="h-5 w-5 text-neutral-400" />
+                                            <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded bg-muted">
+                                                <Search className="h-5 w-5 text-muted-foreground" />
                                             </div>
                                         )}
                                         <div className="flex-1 overflow-hidden">
-                                            <p className="truncate font-medium text-primary-950 dark:text-primary-50">
+                                            <p className="truncate font-medium text-foreground">
                                                 {decodeHtmlEntities(result.name)}
                                             </p>
                                             <div className="flex items-center gap-2">
-                                                <p className="text-sm font-semibold text-primary-700 dark:text-primary-400">
+                                                <p className="text-sm font-semibold text-primary">
                                                     {result.price} SEK
                                                 </p>
                                                 {result.categories.length > 0 && (
@@ -212,10 +212,10 @@ export function SmartSearch({
                         {/* No Results */}
                         {!isLoading && query.length >= 2 && results.length === 0 && (
                             <div className="p-8 text-center">
-                                <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                                <p className="text-sm text-muted-foreground">
                                     No results found for &quot;{query}&quot;
                                 </p>
-                                <p className="mt-1 text-xs text-neutral-500">
+                                <p className="mt-1 text-xs text-muted-foreground">
                                     Try different keywords or browse our menu
                                 </p>
                             </div>
@@ -225,14 +225,14 @@ export function SmartSearch({
                         {!query && recentSearches.length > 0 && (
                             <div className="border-t p-2">
                                 <div className="mb-2 flex items-center justify-between px-2">
-                                    <p className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
+                                    <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                                         Recent Searches
                                     </p>
                                     <Button
                                         variant="ghost"
                                         size="sm"
                                         onClick={clearRecentSearches}
-                                        className="h-auto p-0 text-xs text-neutral-500 hover:text-neutral-700"
+                                        className="h-auto p-0 text-xs text-muted-foreground hover:text-foreground"
                                     >
                                         Clear
                                     </Button>
@@ -244,9 +244,9 @@ export function SmartSearch({
                                             setQuery(search);
                                             handleSearch(search);
                                         }}
-                                        className="flex w-full items-center gap-2 rounded-lg p-2 text-left transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-800"
+                                        className="flex w-full items-center gap-2 rounded-lg p-2 text-left transition-colors hover:bg-muted"
                                     >
-                                        <Clock className="h-4 w-4 text-neutral-400" />
+                                        <Clock className="h-4 w-4 text-muted-foreground" />
                                         <span className="text-sm">{search}</span>
                                     </button>
                                 ))}
@@ -256,7 +256,7 @@ export function SmartSearch({
                         {/* Trending Searches */}
                         {!query && showTrending && (
                             <div className="border-t p-2">
-                                <p className="mb-2 px-2 text-xs font-semibold uppercase tracking-wide text-neutral-500">
+                                <p className="mb-2 px-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                                     Trending Searches
                                 </p>
                                 <div className="flex flex-wrap gap-2 px-2">
@@ -267,7 +267,7 @@ export function SmartSearch({
                                                 setQuery(trend);
                                                 handleSearch(trend);
                                             }}
-                                            className="flex items-center gap-1 rounded-full bg-neutral-100 px-3 py-1 text-sm transition-colors hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700"
+                                            className="flex items-center gap-1 rounded-full bg-muted px-3 py-1 text-sm transition-colors hover:bg-muted/80"
                                         >
                                             <TrendingUp className="h-3 w-3" />
                                             {trend}

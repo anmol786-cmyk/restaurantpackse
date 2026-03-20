@@ -58,7 +58,7 @@ export function WishlistButton({
       className={cn(
         'group relative transition-all duration-300',
         isInList && 'text-red-500 hover:text-red-600',
-        !isInList && 'text-gray-400 hover:text-red-500',
+        !isInList && 'text-muted-foreground hover:text-red-500',
         className
       )}
       aria-label={isInList ? 'Remove from wishlist' : 'Add to wishlist'}
@@ -120,7 +120,7 @@ export function WishlistToggle({
         'rounded-full p-2 transition-all duration-300 hover:scale-110',
         isInList
           ? 'bg-red-500/10 text-red-500 hover:bg-red-500/20'
-          : 'bg-white/80 text-gray-400 hover:bg-white hover:text-red-500',
+          : 'bg-white/80 text-muted-foreground hover:bg-background hover:text-red-500',
         className
       )}
       aria-label={isInList ? 'Remove from wishlist' : 'Add to wishlist'}

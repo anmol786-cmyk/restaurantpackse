@@ -4,6 +4,8 @@ import { Link } from '@/i18n/navigation';
 import { brandConfig } from "@/config/brand.config";
 import { getTranslations } from 'next-intl/server';
 import { ShoppingBag, Heart, Users, Award, Truck, Globe, Warehouse, Building2 } from "lucide-react";
+import { SchemaScript } from '@/lib/schema/schema-script';
+import { anmolWholesaleOrganizationSchema } from '@/lib/schema';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
@@ -253,6 +255,7 @@ export default async function AboutPage() {
           </div>
         </div>
       </section>
+      <SchemaScript id="about-org-schema" schema={anmolWholesaleOrganizationSchema()} />
     </main>
   );
 }

@@ -115,7 +115,7 @@ export function StripePaymentForm({
                     </div>
 
                     {/* Stripe Payment Element */}
-                    <div className="rounded-lg border border-neutral-200 p-4 dark:border-neutral-800">
+                    <div className="rounded-lg border border-border p-4">
                         <PaymentElement
                             options={{
                                 layout: {
@@ -185,7 +185,7 @@ export function StripePaymentForm({
                     </Button>
 
                     {/* Payment Security Notice */}
-                    <p className="text-center text-xs text-neutral-500 dark:text-neutral-400">
+                    <p className="text-center text-xs text-muted-foreground">
                         Your payment information is encrypted and secure. Powered by{' '}
                         <span className="font-semibold">Stripe</span>.
                     </p>

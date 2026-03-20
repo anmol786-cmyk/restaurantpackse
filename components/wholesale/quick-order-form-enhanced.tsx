@@ -17,6 +17,8 @@ import {
   Building2,
   Tag,
   AlertCircle,
+  Cloud,
+  HardDrive,
 } from 'lucide-react';
 import { ProductAutocomplete } from './product-autocomplete';
 import { CSVUpload } from './csv-upload';
@@ -25,11 +27,13 @@ import { toast } from 'sonner';
 import type { Product } from '@/types/woocommerce';
 import { downloadOrderPDF } from '@/lib/pdf/order-pdf';
 import {
-  getOrderTemplates,
-  saveOrderTemplate,
-  deleteOrderTemplate,
   type OrderTemplate,
 } from '@/lib/storage/order-templates';
+import {
+  getTemplatesWithSync,
+  saveTemplateWithSync,
+  deleteTemplateWithSync,
+} from '@/lib/storage/order-templates-sync';
 import {
   Dialog,
   DialogContent,
@@ -40,7 +44,7 @@ import {
 } from '@/components/ui/dialog';
 import { useAuthStore } from '@/store/auth-store';
 import { getWholesaleStatus } from '@/lib/auth';
-import { WHOLESALE_TIERS, CommerceRules } from '@/config/commerce-rules';
+import { WHOLESALE_TIERS, CommerceRules, GLOBAL_MOQ } from '@/config/commerce-rules';
 import Link from 'next/link';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 
@@ -60,6 +64,7 @@ export function QuickOrderFormEnhanced() {
   const [customerPhone, setCustomerPhone] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [templates, setTemplates] = useState<OrderTemplate[]>([]);
+  const [syncedToAccount, setSyncedToAccount] = useState(false);
   const [saveDialogOpen, setSaveDialogOpen] = useState(false);
   const [loadDialogOpen, setLoadDialogOpen] = useState(false);
   const [templateName, setTemplateName] = useState('');
@@ -70,10 +75,19 @@ export function QuickOrderFormEnhanced() {
   const wholesaleStatus = getWholesaleStatus(user);
   const isApprovedWholesale = wholesaleStatus === 'approved';
 
-  // Load templates on mount
+  // Load templates on mount — sync from server if logged in
   useEffect(() => {
-    setTemplates(getOrderTemplates());
-  }, []);
+    let cancelled = false;
+    async function loadTemplates() {
+      const loaded = await getTemplatesWithSync();
+      if (!cancelled) {
+        setTemplates(loaded);
+        setSyncedToAccount(isAuthenticated);
+      }
+    }
+    loadTemplates();
+    return () => { cancelled = true; };
+  }, [isAuthenticated]);
 
   // Pre-fill customer info if authenticated
   useEffect(() => {
@@ -174,6 +188,33 @@ export function QuickOrderFormEnhanced() {
       return;
     }
 
+    // MOQ validation — warn if any non-exempt item is below the global MOQ
+    const moqViolations = validLines.filter((line) => {
+      const productId = line.product!.id;
+      const moq = CommerceRules.getMOQ(productId);
+      return line.quantity < moq;
+    });
+
+    if (moqViolations.length > 0) {
+      const violationList = moqViolations
+        .map((line) => {
+          const moq = CommerceRules.getMOQ(line.product!.id);
+          return `${line.product!.name} (qty: ${line.quantity}, min: ${moq})`;
+        })
+        .join('\n');
+
+      const confirmed = window.confirm(
+        `The following items are below the minimum order quantity (MOQ of ${GLOBAL_MOQ}):\n\n${violationList}\n\nDo you want to submit anyway?`
+      );
+
+      if (!confirmed) {
+        toast.warning('Order cancelled. Please update quantities to meet MOQ requirements.');
+        return;
+      }
+
+      toast.warning('Submitting order with below-MOQ quantities — our team will review and confirm.');
+    }
+
     setIsSubmitting(true);
 
     try {
@@ -245,7 +286,7 @@ export function QuickOrderFormEnhanced() {
     toast.success('PDF downloaded successfully!');
   };
 
-  const handleSaveTemplate = () => {
+  const handleSaveTemplate = async () => {
     const validLines = orderLines.filter((line) => line.product && line.quantity > 0);
     if (validLines.length === 0) {
       toast.error('Please add at least one product to save template');
@@ -264,11 +305,14 @@ export function QuickOrderFormEnhanced() {
       price: line.price,
     }));
 
-    saveOrderTemplate(templateName, templateItems);
-    setTemplates(getOrderTemplates());
+    const captured = templateName;
     setTemplateName('');
     setSaveDialogOpen(false);
-    toast.success(`Template "${templateName}" saved successfully!`);
+
+    await saveTemplateWithSync(captured, templateItems);
+    const refreshed = await getTemplatesWithSync();
+    setTemplates(refreshed);
+    toast.success(`Template "${captured}" saved successfully!`);
   };
 
   const handleLoadTemplate = async (template: OrderTemplate) => {
@@ -303,10 +347,11 @@ export function QuickOrderFormEnhanced() {
     }
   };
 
-  const handleDeleteTemplate = (id: string, name: string) => {
+  const handleDeleteTemplate = async (id: string, name: string) => {
     if (confirm(`Are you sure you want to delete template "${name}"?`)) {
-      deleteOrderTemplate(id);
-      setTemplates(getOrderTemplates());
+      await deleteTemplateWithSync(id);
+      const refreshed = await getTemplatesWithSync();
+      setTemplates(refreshed);
       toast.success('Template deleted');
     }
   };
@@ -343,6 +388,21 @@ export function QuickOrderFormEnhanced() {
               Volume discounts applied automatically
             </span>
           </div>
+        </div>
+      )}
+
+      {/* Template Sync Status */}
+      {isAuthenticated ? (
+        <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+          <Cloud className="h-3.5 w-3.5 text-primary/60" />
+          <span className={syncedToAccount ? 'text-primary/70' : 'text-muted-foreground'}>
+            {syncedToAccount ? 'Templates synced to account' : 'Syncing templates…'}
+          </span>
+        </div>
+      ) : (
+        <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+          <HardDrive className="h-3.5 w-3.5" />
+          <span>Templates saved locally only</span>
         </div>
       )}
 
