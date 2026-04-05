@@ -1,0 +1,158 @@
+---
+name: seo-plan
+description: >
+  Strategic SEO planning for new or existing websites. Industry-specific
+  templates, competitive analysis, content strategy, and implementation
+  roadmap. Use when user says "SEO plan", "SEO strategy", "SEO planning",
+  "content strategy", "keyword strategy", "content calendar",
+  "site architecture", or "SEO roadmap".
+user-invokable: true
+argument-hint: "[business-type]"
+license: MIT
+metadata:
+  author: AgriciDaniel
+  version: "1.7.0"
+  category: seo
+---
+
+# Strategic SEO Planning
+
+## Process
+
+### 1. Discovery
+- Business type, target audience, competitors, goals
+- Current site assessment (if exists)
+- Budget and timeline constraints
+- Key performance indicators (KPIs)
+
+### 2. Competitive Analysis
+- Identify top 5 competitors
+- Analyze their content strategy, schema usage, technical setup
+- Identify keyword gaps and content opportunities
+- Assess their E-E-A-T signals
+- Estimate their domain authority
+
+### 3. Architecture Design
+- Load industry template from `assets/` directory
+- Design URL hierarchy and content pillars
+- Plan internal linking strategy
+- Sitemap structure with quality gates applied
+- Information architecture for user journeys
+
+### 4. Content Strategy
+- Content gaps vs competitors
+- Page types and estimated counts
+- Blog/resource topics and publishing cadence
+- E-E-A-T building plan (author bios, credentials, experience signals)
+- Content calendar with priorities
+
+### 5. Technical Foundation
+- Hosting and performance requirements
+- Schema markup plan per page type
+- Core Web Vitals baseline targets
+- AI search readiness requirements
+- Mobile-first considerations
+
+### 6. Implementation Roadmap (4 phases)
+
+#### Phase 1: Foundation (weeks 1-4)
+- Technical setup and infrastructure
+- Core pages (home, about, contact, main services)
+- Essential schema implementation
+- Analytics and tracking setup
+
+#### Phase 2: Expansion (weeks 5-12)
+- Content creation for primary pages
+- Blog launch with initial posts
+- Internal linking structure
+- Local SEO setup (if applicable)
+
+#### Phase 3: Scale (weeks 13-24)
+- Advanced content development
+- Link building and outreach
+- GEO optimization
+- Performance optimization
+
+#### Phase 4: Authority (months 7-12)
+- Thought leadership content
+- PR and media mentions
+- Advanced schema implementation
+- Continuous optimization
+
+## Industry Templates
+
+Load from `assets/` directory:
+- `saas.md`: SaaS/software companies
+- `local-service.md`: Local service businesses
+- `ecommerce.md`: E-commerce stores
+- `publisher.md`: Content publishers/media
+- `agency.md`: Agencies and consultancies
+- `generic.md`: General business template
+- `wholesale-b2b.md`: *(inline below — use for restaurantpack.se)*
+
+### Wholesale B2B Template (restaurantpack.se)
+
+**Content pillars:**
+1. **Product category hubs** — one pillar page per major category (spices, rice, packing, equipment)
+2. **B2B onboarding content** — how to become a wholesale customer, MOQ policy, payment terms, account benefits
+3. **Industry guides (Swedish)** — "restaurang grossist guide", "hur man väljer rätt kryddor för din restaurang", etc.
+4. **Product comparisons** — brand vs brand (e.g., India Gate vs Elephant Basmati)
+5. **Equipment guides** — "elektrisk tandoor guide", "välja rätt köksutrusning"
+
+**Priority keyword clusters (Swedish):**
+- Cluster 1: grossist + category (restaurang grossist, kryddor grossist, ris grossist)
+- Cluster 2: storpack + product (basmati ris storpack, kryddor storpack)
+- Cluster 3: leverantör + audience (restaurang leverantör stockholm, cateringleverantör)
+- Cluster 4: product name + brand (india gate basmati, haldiram snacks grossist)
+- Cluster 5: equipment (elektrisk tandoor, anmol tandoor, mini tandoor)
+
+**B2B-specific page types:**
+- `/wholesale` — landing page for new B2B customers (MISSING — HIGH PRIORITY)
+- `/leverantör` or `/bli-kund` — Swedish onboarding page
+- `/prislista` — pricing/catalog page
+- `/leverans` — delivery info with area map
+- `/om-oss` — About page with trust signals (org number, team, history)
+
+**Trust signals critical for B2B:**
+- Swedish org number (Anmol AB) visibly displayed
+- VAT registration number
+- Physical address verification
+- Business hours
+- Named contact person or account manager
+- Payment terms spelled out (30/60-day net for approved businesses)
+
+## Output
+
+### Deliverables
+- `SEO-STRATEGY.md`: Complete strategic plan
+- `COMPETITOR-ANALYSIS.md`: Competitive insights
+- `CONTENT-CALENDAR.md`: Content roadmap
+- `IMPLEMENTATION-ROADMAP.md`: Phased action plan
+- `SITE-STRUCTURE.md`: URL hierarchy and architecture
+
+### KPI Targets
+| Metric | Baseline | 3 Month | 6 Month | 12 Month |
+|--------|----------|---------|---------|----------|
+| Organic Traffic | ... | ... | ... | ... |
+| Keyword Rankings | ... | ... | ... | ... |
+| Domain Authority | ... | ... | ... | ... |
+| Indexed Pages | ... | ... | ... | ... |
+| Core Web Vitals | ... | ... | ... | ... |
+
+### Success Criteria
+- Clear, measurable goals per phase
+- Resource requirements defined
+- Dependencies identified
+- Risk mitigation strategies
+
+## DataForSEO Integration (Optional)
+
+If DataForSEO MCP tools are available, use `dataforseo_labs_google_competitors_domain` and `dataforseo_labs_google_domain_intersection` for real competitive intelligence, `dataforseo_labs_bulk_traffic_estimation` for traffic estimates, `kw_data_google_ads_search_volume` and `dataforseo_labs_bulk_keyword_difficulty` for keyword research, and `business_data_business_listings_search` for local business data.
+
+## Error Handling
+
+| Scenario | Action |
+|----------|--------|
+| Unrecognized business type | Fall back to `generic.md` template. Inform user that no industry-specific template was found and proceed with the general business template. |
+| No website URL provided | Proceed with new-site planning mode. Skip current site assessment and competitive gap analysis that require a live URL. |
+| Industry template not found | Check `assets/` directory for available templates. If the requested template file is missing, use `generic.md` and note the missing template in output. |

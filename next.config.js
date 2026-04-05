@@ -59,6 +59,80 @@ const nextConfig = {
         ],
     },
     // rewrites removed as we now use file-based sitemaps (app/sitemap.ts, etc.)
+
+    async redirects() {
+        return [
+            // ── Malformed URLs: old footer/nav bug where label was appended to href ──
+            {
+                source: '/delivery-informationLeveringsinfo',
+                destination: '/delivery-information',
+                permanent: true,
+            },
+            {
+                source: '/wholesalePartnerprogram',
+                destination: '/shop',
+                permanent: true,
+            },
+            {
+                source: '/europe-deliveryEuropafrakt',
+                destination: '/europe-delivery',
+                permanent: true,
+            },
+
+            // ── WooCommerce /brand/ taxonomy pages (not in Next.js) → relevant shop pages ──
+            {
+                source: '/brand/ocean-pearl',
+                destination: '/shop',
+                permanent: true,
+            },
+            {
+                source: '/brand/ocean-pearl/',
+                destination: '/shop',
+                permanent: true,
+            },
+            {
+                source: '/brand/nordzucker',
+                destination: '/shop',
+                permanent: true,
+            },
+            {
+                source: '/brand/nordzucker/',
+                destination: '/shop',
+                permanent: true,
+            },
+            {
+                source: '/brand/anmol',
+                destination: '/shop',
+                permanent: true,
+            },
+            {
+                source: '/brand/anmol/',
+                destination: '/shop',
+                permanent: true,
+            },
+            // Wildcard catch-all for any other /brand/* URLs
+            {
+                source: '/brand/:slug*',
+                destination: '/shop',
+                permanent: true,
+            },
+
+            // ── Old product URL missing /product/ prefix ──
+            {
+                source: '/professional-frying-oil-frityrolja-10-litre-commercial',
+                destination: '/product/professional-frying-oil-frityrolja-10-litre-commercial',
+                permanent: true,
+            },
+
+            // ── WordPress ?page_id= URLs from old WooCommerce/CRM site ──
+            {
+                source: '/',
+                has: [{ type: 'query', key: 'page_id' }],
+                destination: '/',
+                permanent: true,
+            },
+        ];
+    },
 };
 
 module.exports = withNextIntl(nextConfig);

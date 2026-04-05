@@ -21,10 +21,10 @@ export async function Footer() {
 
       <footer className="w-full bg-muted border-t border-border">
         <div className="site-container py-16">
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-12 mb-16">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-12 mb-16">
 
             {/* Column 1: Brand Identity */}
-            <div className="col-span-2 lg:col-span-2 space-y-6">
+            <div className="col-span-2 lg:col-span-2 space-y-6 min-w-0">
               <Link href="/" className="inline-flex items-center gap-3 transition-transform hover:scale-105">
                 <div className="relative h-14 w-14">
                   <Image
@@ -117,13 +117,40 @@ export async function Footer() {
                 ))}
               </ul>
             </div>
+
+            {/* Column 5: Company */}
+            <div>
+              <h4 className="text-sm font-bold uppercase tracking-widest text-foreground mb-6 underline decoration-primary decoration-2 underline-offset-8">
+                {t('company')}
+              </h4>
+              <ul className="space-y-4">
+                {[
+                  { label: tn('about'), href: '/about' },
+                  { label: tn('contact'), href: '/contact' },
+                  { label: tn('blog'), href: '/blog' },
+                  { label: t('deliveryInfo'), href: '/delivery-information' },
+                  { label: t('europeShipping'), href: '/europe-delivery' },
+                ].map((link) => (
+                  <li key={link.href}>
+                    <Link href={link.href} className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
 
           {/* Bottom Bar */}
           <div className="pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">
-              &copy; {new Date().getFullYear()} {brandProfile.name}. {t('copyright')}
-            </p>
+            <div className="flex flex-col items-center md:items-start gap-1">
+              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">
+                &copy; {new Date().getFullYear()} {brandProfile.name}. {t('copyright')}
+              </p>
+              <p className="text-[10px] text-muted-foreground/70">
+                Anmol AB &nbsp;|&nbsp; Org.nr: 559159-8726 &nbsp;|&nbsp; VAT: SE559159872601 &nbsp;|&nbsp; Fagerstagatan 13, 163 53 Spånga, Stockholm
+              </p>
+            </div>
             <div className="flex gap-8">
               {[
                 { label: t('privacyPolicy'), href: '/privacy-policy' },

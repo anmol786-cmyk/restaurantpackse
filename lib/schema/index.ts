@@ -24,6 +24,7 @@ export * from './faq';
 export * from './collection';
 export * from './delivery';
 export * from './speakable';
+export * from './policies';
 
 /**
  * QUICK START EXAMPLES

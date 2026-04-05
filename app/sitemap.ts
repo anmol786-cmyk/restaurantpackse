@@ -29,6 +29,7 @@ const CORE_ROUTES: CoreRoute[] = [
   { path: '/contact',               changeFrequency: 'monthly', priority: 0.7 },
   { path: '/faq',                   changeFrequency: 'monthly', priority: 0.7 },
   { path: '/blog',                  changeFrequency: 'daily',   priority: 0.6 },
+  { path: '/posts/elektrisk-tandoor-vs-koleldad-tandoor', changeFrequency: 'monthly', priority: 0.8 },
   { path: '/delivery-information',  changeFrequency: 'monthly', priority: 0.6 },
   { path: '/europe-delivery',       changeFrequency: 'monthly', priority: 0.6 },
 ];

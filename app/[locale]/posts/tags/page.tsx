@@ -10,6 +10,7 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/posts/tags",
   },
+  robots: { index: false, follow: true },
 };
 
 export default async function Page() {

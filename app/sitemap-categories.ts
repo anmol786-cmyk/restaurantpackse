@@ -28,6 +28,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             const localePath = altLocale === 'en' ? '' : `/${altLocale}`;
             alternates.languages[altLocale] = `${baseUrl}${localePath}/shop/category/${category.slug}`;
         });
+        alternates.languages['x-default'] = url; // English is default
 
         return {
             url,

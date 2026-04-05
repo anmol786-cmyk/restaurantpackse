@@ -148,7 +148,9 @@ export const CREDIT_TERMS = {
  * These products already come in bulk sets, so no MOQ needed
  */
 export const MOQ_EXEMPT_PRODUCTS: number[] = [
-  238, 234, 232, 230, 228, 224, 222, 220, 185, 184
+  238, 234, 232, 230, 228, 224, 222, 220, 185, 184,
+  270, // AC DC Fan
+  266, // Food Container
 ];
 
 /**

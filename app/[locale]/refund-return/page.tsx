@@ -3,6 +3,7 @@ import { brandProfile } from '@/config/brand-profile';
 import { getTranslations } from 'next-intl/server';
 import { RotateCcw, Package, Clock, CheckCircle2, XCircle, Mail, MessageCircle, MapPin } from 'lucide-react';
 import { Link } from '@/i18n/navigation';
+import { merchantReturnPolicySchema } from '@/lib/schema';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
     const { locale } = await params;
@@ -18,9 +19,14 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
 export default async function RefundReturnPage() {
     const t = await getTranslations('refundReturn');
+    const returnPolicyJsonLd = merchantReturnPolicySchema('https://restaurantpack.se');
 
     return (
         <main className="min-h-screen bg-background">
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(returnPolicyJsonLd) }}
+            />
             {/* Hero Section */}
             <section className="bg-gradient-to-br from-muted/30 via-background to-background border-b">
                 <div className="site-container py-16 md:py-20">

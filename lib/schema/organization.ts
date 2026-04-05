@@ -26,6 +26,18 @@ export function organizationSchema(config: OrganizationInput): Organization {
     schema.alternateName = config.alternateName;
   }
 
+  if (config.legalName) {
+    (schema as Record<string, unknown>).legalName = config.legalName;
+  }
+
+  if (config.taxID) {
+    (schema as Record<string, unknown>).taxID = config.taxID;
+  }
+
+  if (config.vatID) {
+    (schema as Record<string, unknown>).vatID = config.vatID;
+  }
+
   if (config.description) {
     schema.description = config.description;
   }
@@ -101,6 +113,9 @@ export function anmolWholesaleOrganizationSchema(baseUrl: string = 'https://rest
   return organizationSchema({
     name: 'Anmol Wholesale',
     alternateName: 'Anmol AB | Restaurang Grossist Stockholm',
+    legalName: 'Anmol AB',
+    taxID: '559159-8726',
+    vatID: 'SE559159872601',
     description: 'Sveriges ledande B2B restaurang grossist. Anmol Wholesale erbjuder 15% lägre priser på indiska kryddor, basmati ris, storköksvaror och elektrisk tandoor. Snabb leverans i Stockholm och hela Sverige.',
     url: baseUrl,
     logo: 'https://crm.restaurantpack.se/wp-content/uploads/2025/03/ANMOL-WHOLESALE-1.png',
@@ -114,10 +129,10 @@ export function anmolWholesaleOrganizationSchema(baseUrl: string = 'https://rest
       postalCode: '163 53',
       country: 'SE',
     },
-    // Geo coordinates for Spånga, Stockholm
+    // Geo coordinates for Spånga, Stockholm (5 decimal places recommended)
     geo: {
-      latitude: 59.3833,
-      longitude: 17.8981,
+      latitude: 59.38330,
+      longitude: 17.89810,
     },
     openingHours: [
       { day: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], opens: '10:00', closes: '20:00' },

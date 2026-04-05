@@ -175,7 +175,8 @@
     "privacyPolicy": "Personvernpolicy",
     "terms": "Vilkår",
     "returns": "Returer",
-    "brandDescription": "Sveriges pålitelige B2B-grossistleverandør for restauranter, dagligvarebutikker og cateringselskaper. Støttet av Anmol Sweets & Restaurants kulinariske ekspertise. Autentiske Indo-Pak-produkter, bulkingredienser og produsent av Anmol Electric Tandoor."
+    "brandDescription": "Sveriges pålitelige B2B-grossistleverandør for restauranter, dagligvarebutikker og cateringselskaper. Støttet av Anmol Sweets & Restaurants kulinariske ekspertise. Autentiske Indo-Pak-produkter, bulkingredienser og produsent av Anmol Electric Tandoor.",
+    "company": "Selskap"
   },
   "topBar": {
     "anmolAdvantage": "Anmol Fordel",
@@ -262,8 +263,8 @@
     "signIn": "Logg inn"
   },
   "shop": {
-    "title": "Butikk",
-    "description": "Bla gjennom vår deilige meny med autentisk mat, gourmetretter og mer.",
+    "title": "Engros Restaurantrekvisita | B2B-butikk",
+    "description": "Bla gjennom 150+ engros produkter — indiske krydder, basmatiris, oljer, emballasje & mer. B2B-priser med MOQ fra 6 enheter. Rask levering i Sverige og Skandinavia.",
     "breadcrumb": "Butikk"
   },
   "product": {

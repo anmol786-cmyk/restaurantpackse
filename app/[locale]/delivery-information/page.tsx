@@ -6,7 +6,7 @@ import { Truck, Package, Clock, ShieldCheck, MapPin, ExternalLink, Globe, Info, 
 import { Link } from '@/i18n/navigation';
 import { getTranslations } from 'next-intl/server';
 import { SchemaScript } from "@/lib/schema/schema-script";
-import { stockholmDeliveryServiceSchema, deliveryFAQSchema } from "@/lib/schema";
+import { stockholmDeliveryServiceSchema, deliveryFAQSchema, offerShippingDetailsSchema } from "@/lib/schema";
 import { GoogleMapCompact } from "@/components/shared/google-map";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
@@ -288,6 +288,11 @@ export default async function DeliveryInformationPage() {
             <SchemaScript
                 id="delivery-faq-schema"
                 schema={deliveryFAQSchema()}
+            />
+            {/* OfferShippingDetails — required by Google Merchant Center / GSC */}
+            <SchemaScript
+                id="shipping-details-schema"
+                schema={offerShippingDetailsSchema()}
             />
         </main >
     );

@@ -42,10 +42,16 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "postsPage" });
+  const localePath = locale === 'en' ? '' : `/${locale}`;
 
   return {
     title: t("metaTitle"),
     description: t("metaDescription"),
+    // /posts is a legacy route — canonical points to /blog to consolidate SEO signals
+    alternates: {
+      canonical: `https://restaurantpack.se${localePath}/blog`,
+    },
+    robots: { index: false, follow: true },
   };
 }
 

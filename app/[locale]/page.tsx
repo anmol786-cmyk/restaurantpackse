@@ -32,6 +32,13 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     description: t('homeDescription'),
     alternates: {
       canonical: `https://restaurantpack.se${locale === 'en' ? '' : `/${locale}`}`,
+      languages: {
+        'en':        'https://restaurantpack.se',
+        'sv':        'https://restaurantpack.se/sv',
+        'no':        'https://restaurantpack.se/no',
+        'da':        'https://restaurantpack.se/da',
+        'x-default': 'https://restaurantpack.se',
+      },
     },
     openGraph: {
       title: t('homeTitle'),

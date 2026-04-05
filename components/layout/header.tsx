@@ -79,6 +79,8 @@ export function Header({ className, categories = [], locale = 'en' }: HeaderProp
                 <NavLink href="/wholesale/quick-order">{t('quickOrder')}</NavLink>
                 <NavLink href="/wholesale/quote">{t('quotes')}</NavLink>
                 <NavLink href="/wholesale/register">{t('b2bAccount')}</NavLink>
+                <NavLink href="/about">{t('about')}</NavLink>
+                <NavLink href="/contact">{t('contact')}</NavLink>
               </nav>
 
               <div className="h-6 w-px bg-border hidden xl:block" />

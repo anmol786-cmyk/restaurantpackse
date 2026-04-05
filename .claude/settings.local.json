@@ -78,7 +78,8 @@
       "Bash(for f:*)",
       "Bash(do echo:*)",
       "Read(//d/Visual codes/Anmol Project/restaurantpack.se/**)",
-      "Bash(tail:*)"
+      "Bash(tail:*)",
+      "WebFetch(domain:restaurantpack.se)"
     ]
   }
 }

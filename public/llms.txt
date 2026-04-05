@@ -1,0 +1,47 @@
+# Anmol Wholesale — B2B Restaurant Supply Sweden
+> Sweden's leading wholesale supplier for restaurants and professional kitchens. Authentic Indo-Pak ingredients, bulk food supplies, packing materials, and the Anmol Mini Electric Tandoor. B2B-only, MOQ 6 units. Physical warehouse in Spånga, Stockholm.
+
+## Core Pages
+- [Wholesale Hub](https://restaurantpack.se/wholesale): B2B account registration, wholesale pricing tiers, and partner information
+- [Shop](https://restaurantpack.se/shop): Full product catalog — 150+ wholesale products
+- [FAQ](https://restaurantpack.se/faq): Wholesale ordering, MOQ policy, delivery terms, and payment terms (21 Q&As)
+- [Delivery Information](https://restaurantpack.se/delivery-information): Stockholm own-fleet delivery, DHL Sweden, EU shipping, free delivery over 5,000 SEK
+- [Europe Delivery](https://restaurantpack.se/europe-delivery): B2B wholesale shipping to Germany, Norway, Finland, Denmark, and 28+ EU countries
+- [About](https://restaurantpack.se/about): Company background — founded 2010 by restaurateurs, 15+ years experience, manufacturer of Anmol Electric Tandoor
+- [Contact](https://restaurantpack.se/contact): Warehouse address, phone, email, WhatsApp, opening hours
+
+## Product Categories
+- [Spices & Flavouring](https://restaurantpack.se/shop/category/spices-flavouring): Indian spices and masala wholesale
+- [Rice / Basmati Rice](https://restaurantpack.se/shop/category/basmati-rice): Wholesale basmati rice (India Gate, Ocean Pearl, etc.)
+- [Oils & Fats](https://restaurantpack.se/shop/category/oils-fats): Bulk cooking oils (10L), pomace olive oil, frying oil
+- [Packing](https://restaurantpack.se/shop/category/packing): Disposable food containers, kraft paper bags, sweet boxes
+- [Electronics / Tandoor](https://restaurantpack.se/shop/category/tandoor-oven): Anmol Mini Electric Tandoor ovens
+- [Flours](https://restaurantpack.se/shop/category/flours): Wheat flour, gram flour (besan), wholesale 25kg bags
+- [Dry Goods & Pantry](https://restaurantpack.se/shop/category/dry-goods-pantry-staples): Sugar, glucose syrup, bakers ammonia, milk powder
+
+## Key Products
+- [Anmol Mini Electric Tandoor](https://restaurantpack.se/product/mini-electric-tandoor-oven): Own-manufactured electric tandoor oven, 450 SEK wholesale, MOQ 6 units, designed for European restaurants
+- [Ocean Pearl Basmati Rice 5kg](https://restaurantpack.se/product/ocean-pearl-basmati-rice): Premium basmati rice wholesale pack, 115 SEK, MOQ 6
+- [Nordic Sugar 25kg](https://restaurantpack.se/product/nordic-sugar-25kg): Professional bulk sugar for commercial kitchens
+- [Whole Milk Powder 26% 25kg](https://restaurantpack.se/product/whole-milk-powder-26-percent-25kg): Commercial grade milk powder
+- [Hamdard Rooh Afza Syrup](https://restaurantpack.se/product/hamdard-rooh-afza-syrup-wholesale): Wholesale rose syrup
+- [Kope Olive Pomace Oil 5L](https://restaurantpack.se/product/kope-olive-pomace-oil-5-litre): Commercial cooking oil wholesale
+
+## Key Facts
+- **Business type**: B2B Wholesale Distributor (Wholesaler + LocalBusiness)
+- **Physical address**: Fagerstagatan 13, Spånga, 163 53 Stockholm, Sweden
+- **Phone**: +46769178456
+- **Email**: info@restaurantpack.se | wholesale@restaurantpack.se
+- **Hours**: Monday–Friday 10:00–20:00, Saturday–Sunday 11:00–19:00
+- **Default MOQ**: 6 units per product (some packing items exempt)
+- **Free Stockholm delivery**: Orders over 5,000 SEK via own fleet
+- **Delivery times**: Stockholm 1–2 days (own fleet), Sweden 2–4 days (DHL), EU 3–10 days
+- **Service area**: Sweden (primary), Norway, Denmark, Finland, Germany, 28+ EU countries
+- **Founded**: 2010 by restaurateurs with 15+ years in the food industry
+- **Products**: 150+ brands including Haldiram, India Gate, TRS, MTR, Hamdard, Ocean Pearl
+- **Manufacturer**: Anmol Mini Electric Tandoor (own product, SKU: AE-1001)
+- **Payment**: Credit/debit card, Stripe, bank transfer, Net 30/60 invoice for verified businesses
+- **Languages**: Swedish (primary), English, Norwegian, Danish
+
+## About
+Anmol Wholesale (trading as Anmol AB) is a Stockholm-based B2B wholesale distributor founded by restaurateurs in 2010. The company specialises in authentic Indo-Pakistani ingredients and professional kitchen equipment for restaurants, catering companies, hotels, and food service businesses across Scandinavia and Europe. Anmol Wholesale is the manufacturer of the Anmol Mini Electric Tandoor, a professional-grade electric tandoor oven designed specifically for European commercial kitchens. Parent company: Anmol Sweets & Restaurant (anmolsweets.se).

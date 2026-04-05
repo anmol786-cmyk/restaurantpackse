@@ -175,7 +175,8 @@
     "privacyPolicy": "Privacy Policy",
     "terms": "Terms",
     "returns": "Returns",
-    "brandDescription": "Sweden's trusted B2B wholesale supplier for restaurants, grocery stores, and caterers. Backed by Anmol Sweets & Restaurant's culinary expertise. Authentic Indo-Pak products, bulk ingredients, and manufacturer of the Anmol Electric Tandoor."
+    "brandDescription": "Sweden's trusted B2B wholesale supplier for restaurants, grocery stores, and caterers. Backed by Anmol Sweets & Restaurant's culinary expertise. Authentic Indo-Pak products, bulk ingredients, and manufacturer of the Anmol Electric Tandoor.",
+    "company": "Company"
   },
   "tandoorShowcase": {
     "badge": "Official Anmol Brand",
@@ -289,8 +290,8 @@
     "signIn": "Sign in"
   },
   "shop": {
-    "title": "Shop",
-    "description": "Browse our delicious menu featuring authentic cuisine, gourmet dishes, and more.",
+    "title": "Wholesale Restaurant Supplies | B2B Shop",
+    "description": "Browse 150+ wholesale products for restaurants — Indian spices, basmati rice, bulk oils, packing & more. B2B pricing with MOQ from 6 units. Fast delivery across Sweden.",
     "breadcrumb": "Shop"
   },
   "product": {

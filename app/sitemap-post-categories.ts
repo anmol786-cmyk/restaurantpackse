@@ -19,28 +19,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         return [];
     }
 
-    return categories.map((category) => {
-        // Default URL (English)
-        const url = `${baseUrl}/posts/categories?category=${category.slug}`;
-
-        // Create alternate language links
-        const alternates = {
-            languages: {} as Record<string, string>,
-        };
-
-        LOCALES.forEach((altLocale) => {
-            const localePath = altLocale === 'en' ? '' : `/${altLocale}`;
-            alternates.languages[altLocale] = `${baseUrl}${localePath}/posts/categories?category=${category.slug}`;
-        });
-
-        return {
-            url,
-            lastModified: new Date(),
-            changeFrequency: 'weekly',
-            priority: 0.6,
-            alternates,
-        };
-    });
+    // Blog post category filter URLs (/posts/categories?category=X) are thin query-parameter
+    // pages that are noindexed. Exclude from sitemap to avoid wasting crawl budget.
+    return [];
 }
 
 export const revalidate = 86400; // Revalidate daily

@@ -290,6 +290,9 @@ export interface OrganizationInput {
   socialMedia?: string[];
   foundingDate?: string;
   types?: string[];
+  legalName?: string;
+  taxID?: string;
+  vatID?: string;
 }
 
 export interface ProductInput {
@@ -315,6 +318,7 @@ export interface ProductInput {
   highPrice?: number | string;
   seller?: string;
   condition?: 'NewCondition' | 'UsedCondition' | 'RefurbishedCondition';
+  minQuantity?: number;
 }
 
 export interface BreadcrumbInput {

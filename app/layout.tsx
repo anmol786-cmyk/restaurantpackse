@@ -4,7 +4,6 @@ import { DM_Sans, Sora } from "next/font/google";
 import { getLocale } from "next-intl/server";
 import { GoogleTagManager, GoogleTagManagerNoScript, FacebookPixel } from "@/components/analytics";
 import { GeoMetaTags } from "@/components/seo/geo-meta-tags";
-import { HreflangTags } from "@/components/seo/hreflang-tags";
 import { siteConfig } from "@/site.config";
 import { cn } from "@/lib/utils";
 
@@ -43,13 +42,16 @@ export const metadata: Metadata = {
       { url: '/apple-icon.png', sizes: '180x180', type: 'image/png' },
     ],
   },
-  verification: {
-    google: "ADD_YOUR_GOOGLE_VERIFICATION_CODE_HERE",
-  },
+  // TODO: Add real Google Search Console verification code
+  // Steps: GSC → Add Property → URL prefix → https://restaurantpack.se → HTML tag method
+  // Copy the content="" value and paste below
+  // verification: {
+  //   google: "YOUR_GSC_VERIFICATION_CODE_HERE",
+  // },
   openGraph: {
     type: "website",
     locale: "sv_SE",
-    alternateLocale: ["en_US"],
+    alternateLocale: ["en_US", "nb_NO", "da_DK"],
     url: siteConfig.site_domain,
     siteName: siteConfig.site_name,
     title: siteConfig.site_name,
@@ -62,6 +64,11 @@ export const metadata: Metadata = {
         alt: siteConfig.site_name,
       },
     ],
+  },
+  // Links this website to the Anmol Wholesale Facebook page
+  // Used by Facebook scraper and social sharing tools
+  other: {
+    "article:publisher": "https://www.facebook.com/AnmolWholesale",
   },
   twitter: {
     card: "summary_large_image",
@@ -127,9 +134,6 @@ export default async function RootLayout({
 
         {/* Geo-Targeting Meta Tags */}
         <GeoMetaTags />
-
-        {/* Hreflang Tags */}
-        <HreflangTags canonicalUrl={siteConfig.site_domain} />
 
         {/* Google Tag Manager */}
         <GoogleTagManager />

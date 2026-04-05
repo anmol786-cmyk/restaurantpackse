@@ -70,6 +70,18 @@ export function offerSchema(
   // Item condition
   offer.itemCondition = formatItemCondition(product.condition);
 
+  // B2B wholesale: signal this is for business customers only
+  offer.eligibleCustomerType = 'https://schema.org/Business';
+
+  // B2B wholesale: add MOQ if product has a minimum quantity
+  if (product.minQuantity && product.minQuantity > 1) {
+    offer.eligibleQuantity = {
+      '@type': 'QuantitativeValue',
+      minValue: product.minQuantity,
+      unitCode: 'C62',
+    };
+  }
+
   return cleanSchema(offer);
 }
 
@@ -169,22 +181,13 @@ export function productSchema(
     seller: options?.sellerName,
   });
 
-  // Aggregate Rating (if reviews exist, otherwise use brand baseline)
+  // Aggregate Rating — only include when real WooCommerce review data exists
+  // Never use fallback/hardcoded ratings: Google penalises fabricated aggregateRating in Product schema
   if (product.rating && product.reviewCount && product.reviewCount > 0) {
     schema.aggregateRating = {
       '@type': 'AggregateRating',
       ratingValue: product.rating,
       reviewCount: product.reviewCount,
-      bestRating: 5,
-      worstRating: 1,
-    };
-  } else {
-    // Fallback to Business/Brand rating to satisfy rich snippet requirements and improve CTR
-    // Based on Google Business Profile: 4.7 stars, 17 reviews
-    schema.aggregateRating = {
-      '@type': 'AggregateRating',
-      ratingValue: 4.7,
-      reviewCount: 17,
       bestRating: 5,
       worstRating: 1,
     };

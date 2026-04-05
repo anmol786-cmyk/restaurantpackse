@@ -22,7 +22,7 @@ export const revalidate = 3600;
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ locale: string; slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
   const post = await getPostBySlug(slug);
@@ -37,14 +37,19 @@ export async function generateMetadata({
   const description = post.excerpt.rendered.replace(/<[^>]*>/g, "").trim();
   ogUrl.searchParams.append("description", description);
 
+  const postUrl = `${siteConfig.site_domain}/posts/${post.slug}`;
+
   return {
     title: post.title.rendered,
     description: description,
+    alternates: {
+      canonical: postUrl,
+    },
     openGraph: {
       title: post.title.rendered,
       description: description,
       type: "article",
-      url: `${siteConfig.site_domain}/posts/${post.slug}`,
+      url: postUrl,
       images: [
         {
           url: ogUrl.toString(),
