@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import { motion, useMotionValue, useAnimationFrame } from 'framer-motion';
 import { formatPrice } from '@/lib/woocommerce';
 import type { Product } from '@/types/woocommerce';

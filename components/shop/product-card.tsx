@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import Link from 'next/link';
+import { Link, useRouter } from '@/i18n/navigation';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import type { Product } from '@/types/woocommerce';
@@ -22,6 +22,7 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product, className }: ProductCardProps) {
+  const router = useRouter();
   const [imageError, setImageError] = useState(false);
   const discount = getDiscountPercentage(product);
   const { addItem, openCart } = useCartStore();
@@ -34,7 +35,7 @@ export function ProductCard({ product, className }: ProductCardProps) {
 
     // For variable products, redirect to product page to select variation
     if (hasVariations(product)) {
-      window.location.href = `/product/${product.slug}`;
+      router.push(`/product/${product.slug}`);
       return;
     }
 

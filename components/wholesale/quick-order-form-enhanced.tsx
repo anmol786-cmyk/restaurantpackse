@@ -45,7 +45,7 @@ import {
 import { useAuthStore } from '@/store/auth-store';
 import { getWholesaleStatus } from '@/lib/auth';
 import { WHOLESALE_TIERS, CommerceRules, GLOBAL_MOQ } from '@/config/commerce-rules';
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 
 interface OrderLine {

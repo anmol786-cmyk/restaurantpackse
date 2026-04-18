@@ -32,7 +32,7 @@ import {
   Download
 } from 'lucide-react';
 import { toast } from 'sonner';
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 
 // Helper function to download Credit Agreement PDF
 async function downloadCreditAgreement(businessInfo: { companyName?: string | null; vatNumber?: string | null }, user: any) {

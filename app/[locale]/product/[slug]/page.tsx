@@ -46,11 +46,19 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
         const localePath = resolvedParams.locale === 'en' ? '' : `/${resolvedParams.locale}`;
         const productUrl = `https://restaurantpack.se${localePath}/product/${resolvedParams.slug}`;
 
+        const slug = resolvedParams.slug;
         return {
             title: t('metaTitle', { name: product.name }),
             description: metaDescription,
             alternates: {
                 canonical: productUrl,
+                languages: {
+                    'en':        `https://restaurantpack.se/product/${slug}`,
+                    'sv':        `https://restaurantpack.se/sv/product/${slug}`,
+                    'no':        `https://restaurantpack.se/no/product/${slug}`,
+                    'da':        `https://restaurantpack.se/da/product/${slug}`,
+                    'x-default': `https://restaurantpack.se/product/${slug}`,
+                },
             },
             openGraph: {
                 title: t('ogTitle', { name: product.name }),

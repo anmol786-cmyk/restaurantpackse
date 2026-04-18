@@ -25,7 +25,7 @@ import { cn } from '@/lib/utils';
 import { useCurrency } from '@/hooks/use-currency';
 import type { Product } from '@/types/woocommerce';
 import Image from 'next/image';
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import { CommerceRules, GLOBAL_MOQ } from '@/config/commerce-rules';
 
 // Schema for quote form

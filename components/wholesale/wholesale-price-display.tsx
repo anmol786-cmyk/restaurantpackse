@@ -4,7 +4,7 @@ import { useAuthStore } from '@/store/auth-store';
 import { WHOLESALE_TIERS, QUANTITY_DISCOUNT_ENABLED_PRODUCTS } from '@/config/commerce-rules';
 import { useCurrency } from '@/hooks/use-currency';
 import { Tag, Building2, ChevronRight, Clock, CheckCircle2 } from 'lucide-react';
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import { getWholesaleStatus, getCreditStatus } from '@/lib/auth';
 
 interface WholesalePriceDisplayProps {

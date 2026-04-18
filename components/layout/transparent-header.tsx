@@ -1,6 +1,6 @@
 'use client';
 
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import Image from 'next/image';
 import { UserNav } from '@/components/layout/user-nav';
 import { CartIcon } from '@/components/cart/cart-icon';

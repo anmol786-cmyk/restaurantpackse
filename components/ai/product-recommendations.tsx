@@ -8,7 +8,7 @@ import { Sparkles, ThumbsUp, ThumbsDown, RefreshCw, Loader2, Plus } from 'lucide
 import { cn } from '@/lib/utils';
 import { formatPrice } from '@/lib/woocommerce';
 import Image from 'next/image';
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import type { Product } from '@/types/woocommerce';
 
 interface Recommendation {

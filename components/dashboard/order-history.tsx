@@ -21,7 +21,7 @@ import { formatPrice } from '@/lib/utils';
 import { useAuthStore } from '@/store/auth-store';
 import { useCartStore } from '@/store/cart-store';
 import { toast } from 'sonner';
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import type { Order, OrderStatus } from '@/types/woocommerce';
 
 const ORDER_STATUS_CONFIG: Record<OrderStatus, { label: string; icon: any; variant: any }> = {

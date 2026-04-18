@@ -6,7 +6,7 @@ import { loadStripe } from '@stripe/stripe-js';
 import { Loader2, CheckCircle, XCircle, AlertCircle } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import { createOrderAction } from '@/app/actions/order';
 import { useCartStore } from '@/store/cart-store';
 

@@ -43,11 +43,20 @@ export async function generateMetadata({ params }: ProductCategoryPageProps): Pr
             alt: 'Anmol Wholesale - Restaurant Supply Stockholm',
         };
 
+        const catPath = resolvedParams.slug?.join('/') || '';
+        const catCanonical = `https://restaurantpack.se${resolvedParams.locale === 'en' ? '' : `/${resolvedParams.locale}`}/product-category/${catPath}`;
         return {
             title: `${category.name} | Anmol Wholesale`,
             description: category.description?.replace(/\<[^>]*>/g, '').substring(0, 160) || t('shopProducts', { name: category.name }),
             alternates: {
-                canonical: `https://restaurantpack.se${resolvedParams.locale === 'en' ? '' : `/${resolvedParams.locale}`}/product-category/${resolvedParams.slug?.join('/') || ''}`,
+                canonical: catCanonical,
+                languages: {
+                    'en':        `https://restaurantpack.se/product-category/${catPath}`,
+                    'sv':        `https://restaurantpack.se/sv/product-category/${catPath}`,
+                    'no':        `https://restaurantpack.se/no/product-category/${catPath}`,
+                    'da':        `https://restaurantpack.se/da/product-category/${catPath}`,
+                    'x-default': `https://restaurantpack.se/product-category/${catPath}`,
+                },
             },
             openGraph: {
                 title: category.name,

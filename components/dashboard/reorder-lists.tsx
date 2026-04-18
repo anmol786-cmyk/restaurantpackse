@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import { useReorderListsStore, type ReorderList } from '@/store/reorder-lists-store';
 import { useCartStore } from '@/store/cart-store';
 import { Button } from '@/components/ui/button';

@@ -36,9 +36,13 @@ Allow: /blog
 Allow: /wholesale
 
 # --------------------------------------------------
-# Sitemap
+# Sitemaps
 # --------------------------------------------------
 Sitemap: https://restaurantpack.se/sitemap.xml
+Sitemap: https://restaurantpack.se/sitemap-products.xml
+Sitemap: https://restaurantpack.se/sitemap-categories.xml
+Sitemap: https://restaurantpack.se/sitemap-pages.xml
+Sitemap: https://restaurantpack.se/sitemap-posts.xml
 
 # --------------------------------------------------
 # Explicit allow for major crawlers & AI systems

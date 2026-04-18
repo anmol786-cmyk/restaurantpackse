@@ -79,41 +79,31 @@ const nextConfig = {
                 permanent: true,
             },
 
-            // ── WooCommerce /brand/ taxonomy pages (not in Next.js) → relevant shop pages ──
+            // ── WooCommerce /brand/ taxonomy pages (not in Next.js) → shop ──
+            // English (no locale prefix)
+            { source: '/brand/:slug*', destination: '/shop', permanent: true },
+            // Swedish locale
+            { source: '/sv/brand/:slug*', destination: '/sv/shop', permanent: true },
+            // Norwegian locale
+            { source: '/no/brand/:slug*', destination: '/no/shop', permanent: true },
+            // Danish locale
+            { source: '/da/brand/:slug*', destination: '/da/shop', permanent: true },
+
+            // ── Legacy WordPress shop-archive → shop ──
+            { source: '/shop-archive', destination: '/shop', permanent: true },
+            { source: '/shop-archive/', destination: '/shop', permanent: true },
+            { source: '/sv/shop-archive', destination: '/sv/shop', permanent: true },
+            { source: '/sv/shop-archive/', destination: '/sv/shop', permanent: true },
+            { source: '/no/shop-archive', destination: '/no/shop', permanent: true },
+            { source: '/no/shop-archive/', destination: '/no/shop', permanent: true },
+            { source: '/da/shop-archive', destination: '/da/shop', permanent: true },
+            { source: '/da/shop-archive/', destination: '/da/shop', permanent: true },
+
+            // ── Strip ?add-to-cart= query parameters (WooCommerce links being indexed) ──
             {
-                source: '/brand/ocean-pearl',
-                destination: '/shop',
-                permanent: true,
-            },
-            {
-                source: '/brand/ocean-pearl/',
-                destination: '/shop',
-                permanent: true,
-            },
-            {
-                source: '/brand/nordzucker',
-                destination: '/shop',
-                permanent: true,
-            },
-            {
-                source: '/brand/nordzucker/',
-                destination: '/shop',
-                permanent: true,
-            },
-            {
-                source: '/brand/anmol',
-                destination: '/shop',
-                permanent: true,
-            },
-            {
-                source: '/brand/anmol/',
-                destination: '/shop',
-                permanent: true,
-            },
-            // Wildcard catch-all for any other /brand/* URLs
-            {
-                source: '/brand/:slug*',
-                destination: '/shop',
+                source: '/:path*',
+                has: [{ type: 'query', key: 'add-to-cart' }],
+                destination: '/:path*',
                 permanent: true,
             },
 
