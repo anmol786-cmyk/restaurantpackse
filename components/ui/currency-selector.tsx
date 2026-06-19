@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Check, ChevronDown, Globe, RefreshCw } from 'lucide-react';
+import { Check, ChevronDown, Coins, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -57,7 +57,7 @@ export function CurrencySelector({ variant = 'default', className }: CurrencySel
             className={cn("h-9 w-9", className)}
             aria-label="Select currency"
           >
-            <Globe className="h-4 w-4" />
+            <Coins className="h-4 w-4" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-[200px]">
@@ -132,7 +132,7 @@ export function CurrencySelector({ variant = 'default', className }: CurrencySel
           variant="outline"
           className={cn("h-10 gap-2", className)}
         >
-          <Globe className="h-4 w-4" />
+          <Coins className="h-4 w-4" />
           <span className="text-lg">{currentCurrency.flag}</span>
           <span className="font-medium">{currentCurrency.code}</span>
           <span className="text-muted-foreground">({currentCurrency.symbol})</span>

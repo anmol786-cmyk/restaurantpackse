@@ -44,7 +44,7 @@ export function Header({ className, categories = [], locale = 'en' }: HeaderProp
       <header className={cn("w-full bg-background/95 backdrop-blur-md border-b border-border sticky top-0 z-50 transition-all duration-300 shadow-sm", className)}>
         <div className="site-container">
           {/* Desktop Header Row */}
-          <div className="hidden xl:flex items-center h-20 gap-8">
+          <div className="hidden min-[1440px]:flex items-center h-20 gap-4 min-w-0">
 
             {/* Logo */}
             <div className="flex-shrink-0">
@@ -59,21 +59,21 @@ export function Header({ className, categories = [], locale = 'en' }: HeaderProp
                     priority
                   />
                 </div>
-                <span className="font-heading font-bold text-lg text-primary uppercase tracking-wide">
+                <span className="font-heading font-bold text-lg text-primary uppercase tracking-wide whitespace-nowrap">
                   Anmol Wholesale
                 </span>
               </Link>
             </div>
 
-            {/* Search Bar area - Expands to fill space */}
-            <div className="flex-1 max-w-xl">
+            {/* Search Bar area - Expands to fill space, shrinks before pushing icons */}
+            <div className="flex-1 min-w-0 max-w-md">
               <SearchModal />
             </div>
 
-            {/* Right side navigation and actions */}
-            <div className="flex items-center gap-8">
+            {/* Right side navigation and actions - never shrinks, stays on screen */}
+            <div className="flex items-center gap-4 flex-shrink-0">
               {/* Navigation Links */}
-              <nav className="flex items-center gap-6">
+              <nav className="flex items-center gap-4">
                 <NavLink href="/shop">{t('shop')}</NavLink>
                 <NavLink href="/wholesale">{t('wholesale')}</NavLink>
                 <NavLink href="/wholesale/quick-order">{t('quickOrder')}</NavLink>
@@ -83,10 +83,10 @@ export function Header({ className, categories = [], locale = 'en' }: HeaderProp
                 <NavLink href="/contact">{t('contact')}</NavLink>
               </nav>
 
-              <div className="h-6 w-px bg-border hidden xl:block" />
+              <div className="h-6 w-px bg-border" />
 
               {/* Action Buttons */}
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-1.5">
                 <button
                   onClick={openChat}
                   className="flex items-center justify-center p-2 text-muted-foreground hover:text-primary hover:bg-muted rounded-lg transition-all"
@@ -102,7 +102,7 @@ export function Header({ className, categories = [], locale = 'en' }: HeaderProp
                 <WishlistIcon />
 
                 {/* Cart with distinct B2B look */}
-                <div className="pl-2">
+                <div className="pl-1">
                   <CartIcon />
                 </div>
               </div>
@@ -110,10 +110,10 @@ export function Header({ className, categories = [], locale = 'en' }: HeaderProp
           </div>
 
           {/* Mobile/Tablet Header Row */}
-          <div className="xl:hidden flex h-16 items-center justify-between gap-4">
-            <div className="flex items-center gap-2">
+          <div className="min-[1440px]:hidden flex h-16 items-center justify-between gap-2">
+            <div className="flex items-center min-w-0">
               <Link href="/">
-                <div className="relative h-12 w-32">
+                <div className="relative h-12 w-28 sm:w-32">
                   <Image
                     src={logoUrl}
                     alt={brandProfile.name}
@@ -125,7 +125,7 @@ export function Header({ className, categories = [], locale = 'en' }: HeaderProp
               </Link>
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-0.5 sm:gap-1.5 flex-shrink-0">
               <LanguageSelector variant="icon-only" currentLocale={locale} />
               <CurrencySelector variant="icon-only" />
               <SearchModal variant="icon" />
