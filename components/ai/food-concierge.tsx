@@ -20,7 +20,7 @@ export function FoodConcierge() {
         {
             id: '1',
             role: 'assistant',
-            content: 'Hello! I\'m your **Royal Food Concierge**. I can help you find the perfect dish, suggest pairings, or assist with reservations. What are you craving today?',
+            content: 'Hello! I\'m your **Anmol Concierge**. I can help you find the perfect dish, suggest pairings, or assist with reservations. What are you craving today?',
             timestamp: new Date(),
         },
     ]);
@@ -84,7 +84,7 @@ export function FoodConcierge() {
             return "You can explore our full menu here: [Restaurant Menu](/menu/restaurant) and [Sweets & Desserts](/menu). We have something for every palate!";
         }
         if (lowerInput.includes('hello') || lowerInput.includes('hi') || lowerInput.includes('hey')) {
-            return "Hello! Welcome to Royal Sweets & Restaurant. How can I assist you today? Feel free to ask about our dishes, reservations, or catering services!";
+            return "Hello! Welcome to Anmol Wholesale. How can I assist you today? Feel free to ask about our dishes, reservations, or catering services!";
         }
 
         return "That sounds delicious! We have an extensive menu with dishes to satisfy every craving. Have a look at our [Chef's Specials](/menu) or tell me more about what you're in the mood for!";
@@ -144,7 +144,7 @@ export function FoodConcierge() {
                                 <ChefHat className="h-7 w-7 text-white" />
                             </div>
                             <div className="flex-1">
-                                <h3 className="font-heading text-lg font-bold" style={{ color: '#1a3d35' }}>Royal Concierge</h3>
+                                <h3 className="font-heading text-lg font-bold" style={{ color: '#1a3d35' }}>Anmol Concierge</h3>
                                 <p className="flex items-center gap-1.5 text-xs text-white/90">
                                     <span className="h-2 w-2 animate-pulse rounded-full shadow-lg" style={{ backgroundColor: '#1a3d35', boxShadow: '0 0 10px rgba(26, 61, 53, 0.5)' }} />
                                     Online & Ready to Assist

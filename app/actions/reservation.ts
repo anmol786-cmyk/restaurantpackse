@@ -3,6 +3,7 @@
 import nodemailer from 'nodemailer';
 import { ReservationFormData } from '@/components/forms/reservation-form';
 import { generateEmailTemplate, createInfoRow, createInfoBox } from '@/lib/email-template';
+import { brandConfig } from '@/config/brand.config';
 
 export async function submitReservation(data: ReservationFormData) {
     const { name, email, phone, bookingType, date, time, guests, message } = data;
@@ -113,9 +114,9 @@ export async function submitReservation(data: ReservationFormData) {
 
             // Try to send customer confirmation
             await transporter.sendMail({
-                from: `"Royal Sweets & Restaurant" <${fromEmail}>`,
+                from: `"${brandConfig.businessName}" <${fromEmail}>`,
                 to: email,
-                subject: 'Reservation Request Received - Royal Sweets',
+                subject: `Reservation Request Received - ${brandConfig.businessName}`,
                 html: customerEmailHtml,
             });
 

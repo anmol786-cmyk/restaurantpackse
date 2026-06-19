@@ -29,7 +29,7 @@ export function generateEmailTemplate(options: EmailTemplateOptions): string {
           <tr>
             <td style="background: linear-gradient(135deg, #8B1538 0%, #5A0F25 100%); padding: 40px 30px; text-align: center;">
               <h1 style="color: #ffffff; margin: 0; font-size: 28px; font-weight: 700; letter-spacing: -0.5px;">
-                Royal Sweets & Restaurant
+                ${brandConfig.businessName}
               </h1>
               <p style="color: #f3d7a0; margin: 8px 0 0 0; font-size: 14px; font-weight: 500;">
                 ${brandConfig.tagline}
@@ -123,7 +123,7 @@ export function generateEmailTemplate(options: EmailTemplateOptions): string {
           <tr>
             <td style="background-color: #8B1538; padding: 20px 30px; text-align: center;">
               <p style="margin: 0; color: #f3d7a0; font-size: 12px;">
-                © ${new Date().getFullYear()} Royal Sweets & Restaurant. All rights reserved.
+                © ${new Date().getFullYear()} ${brandConfig.businessName}. All rights reserved.
               </p>
               <p style="margin: 8px 0 0 0; color: #f3d7a0; font-size: 11px; opacity: 0.8;">
                 Sent on ${new Date().toLocaleString('en-US', {
