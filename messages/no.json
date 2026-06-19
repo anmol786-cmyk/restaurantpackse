@@ -42,8 +42,8 @@
     "title": "Grossist Asiatiske Matvarer & Restaurantutstyr Norge",
     "subtitle": "Anmol Wholesale er din totaldestinasjon for alle dine restaurantbehov, spesialisert på Indo-Pak kjøkkeningredienser og utstyr. Fra elektriske tandoors til krydder og emballasje, vi har alt du trenger.",
     "badge": "Direktpriser fra Lageret",
-    "ctaPrimary": "Bla Gjennom Produkter",
-    "ctaSecondary": "Åpne B2B-konto",
+    "ctaPrimary": "Få grossistpriser",
+    "ctaSecondary": "Bla i katalogen",
     "trustHalal": "Halalsertifisert",
     "trustDelivery": "Stockholms Flåtelevering",
     "trustEurope": "Europalevering",
@@ -1155,6 +1155,12 @@
     "downloaded": "Lastet ned!",
     "noRegistration": "Ingen registrering nødvendig • Umiddelbar nedlasting",
     "successToast": "Katalogen ble lastet ned!",
-    "errorToast": "Kunne ikke laste ned katalogen. Prøv igjen."
+    "errorToast": "Kunne ikke laste ned katalogen. Prøv igjen.",
+    "formNamePlaceholder": "Ditt navn",
+    "formCompanyPlaceholder": "Restaurant / firmanavn",
+    "formEmailPlaceholder": "Jobb-e-post",
+    "privacyNote": "Vi sender katalogen på e-post. Ingen spam — meld deg av når som helst.",
+    "validationRequired": "Fyll inn navn, firma og e-post.",
+    "validationEmail": "Oppgi en gyldig e-postadresse."
   }
 }

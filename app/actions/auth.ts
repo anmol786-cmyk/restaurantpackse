@@ -116,7 +116,8 @@ export async function registerBusinessAction(data: BusinessRegisterData) {
         // Send notification email to Admin
         try {
             const { sendEmail } = await import('@/lib/email/smtp');
-            const { generateEmailTemplate, createInfoRow } = await import('@/lib/email-template');
+            const { generateEmailTemplate, createInfoRow, createInfoBox } = await import('@/lib/email-template');
+            const { brandConfig } = await import('@/config/brand.config');
 
             const adminEmail = process.env.SMTP_USER || 'info@restaurantpack.se';
 
@@ -160,6 +161,53 @@ export async function registerBusinessAction(data: BusinessRegisterData) {
                 to: adminEmail,
                 subject: `New Wholesale Registration: ${data.company_name}`,
                 html: emailHtml
+            });
+
+            // Send a welcome email to the new business with the first-order delivery offer.
+            const welcomeHtml = generateEmailTemplate({
+                title: 'Welcome to Anmol Wholesale',
+                heading: '🎉 Welcome to Anmol Wholesale',
+                contentSections: [
+                    {
+                        title: `Hi ${data.first_name}, your account is on its way!`,
+                        content: `
+                            <p style="margin:0 0 15px 0;color:#333333;font-size:14px;line-height:1.6;">
+                                Thanks for registering <strong>${data.company_name}</strong>. Our team is reviewing your
+                                application and will activate your wholesale pricing within 24 hours.
+                            </p>
+                        `
+                    },
+                    {
+                        title: '🚚 Free Delivery on Your First Order',
+                        content: `
+                            <p style="margin:0 0 12px 0;color:#333333;font-size:14px;line-height:1.6;">
+                                As a welcome, your first order ships <strong>free of delivery charge</strong>. Use this code at checkout:
+                            </p>
+                            <div style="text-align:center;margin:0 0 12px 0;">
+                                <span style="display:inline-block;background-color:#fff5e6;border:2px dashed #8B1538;color:#8B1538;font-size:20px;font-weight:700;letter-spacing:2px;padding:12px 24px;border-radius:6px;">
+                                    FRIFRAKT
+                                </span>
+                            </div>
+                            ${createInfoBox('Terms: Valid on your first order only. Stockholm delivery area. Minimum order 3,000 kr. One use per customer.')}
+                        `
+                    },
+                    {
+                        title: 'What happens next?',
+                        content: `
+                            <table width="100%" cellpadding="0" cellspacing="0">
+                                ${createInfoRow('1. Approval', 'We verify your business (within 24h)')}
+                                ${createInfoRow('2. Trade pricing', 'Wholesale prices unlock on your account')}
+                                ${createInfoRow('3. Order', 'Use FRIFRAKT on your first delivery')}
+                            </table>
+                        `
+                    }
+                ]
+            });
+
+            await sendEmail({
+                to: data.email,
+                subject: `Welcome to ${brandConfig.businessName} - Free delivery on your first order`,
+                html: welcomeHtml
             });
 
         } catch (emailError) {

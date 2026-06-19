@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, ShoppingBag, Truck, CheckCircle2 } from "lucide-react";
+import { ArrowRight, ShoppingBag, UserPlus, Truck, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { useTranslations } from 'next-intl';
@@ -94,9 +94,9 @@ export function Hero({ title, subtitle, badge }: HeroProps) {
                             className="bg-primary hover:bg-primary/90 text-primary-foreground h-12 px-7 text-base font-bold rounded-lg shadow-lg shadow-primary/25 hover:-translate-y-0.5 transition-all duration-200"
                             asChild
                         >
-                            <Link href="/shop">
-                                <ShoppingBag className="mr-2 w-4 h-4" />
-                                {tc('startShopping')}
+                            <Link href="/wholesale/register">
+                                <UserPlus className="mr-2 w-4 h-4" />
+                                {t('ctaPrimary')}
                             </Link>
                         </Button>
                         <Button
@@ -105,9 +105,9 @@ export function Hero({ title, subtitle, badge }: HeroProps) {
                             className="bg-background/80 border-border text-foreground hover:bg-muted h-12 px-7 text-base font-semibold rounded-lg"
                             asChild
                         >
-                            <Link href="/shop?sort=new">
-                                {tc('viewNewArrivals')}
-                                <ArrowRight className="ml-2 w-4 h-4" />
+                            <Link href="/shop">
+                                <ShoppingBag className="mr-2 w-4 h-4" />
+                                {t('ctaSecondary')}
                             </Link>
                         </Button>
                     </motion.div>

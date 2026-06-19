@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { Download, FileText, Loader2, CheckCircle } from 'lucide-react';
 import { toast } from 'sonner';
 import { useTranslations } from 'next-intl';
@@ -14,6 +15,9 @@ export function CatalogueCTA() {
     const t = useTranslations('catalogueCTA');
     const [isDownloading, setIsDownloading] = useState(false);
     const [downloaded, setDownloaded] = useState(false);
+    const [name, setName] = useState('');
+    const [company, setCompany] = useState('');
+    const [email, setEmail] = useState('');
 
     const features = [
         { label: t('feature1'), icon: '📦' },
@@ -21,31 +25,49 @@ export function CatalogueCTA() {
         { label: t('feature3'), icon: '🔄' },
     ];
 
-    const handleDownload = async () => {
+    const triggerPdfDownload = async () => {
+        const response = await fetch('/api/catalog/pdf?lang=sv');
+        if (!response.ok) {
+            throw new Error('Failed to generate catalogue');
+        }
+        const blob = await response.blob();
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `Anmol-Wholesale-Catalogue-${new Date().getFullYear()}.pdf`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    };
+
+    const handleDownload = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        // Lightweight client-side validation; the API validates again server-side.
+        if (!name.trim() || !company.trim() || !email.trim()) {
+            toast.error(t('validationRequired'));
+            return;
+        }
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+            toast.error(t('validationEmail'));
+            return;
+        }
+
         setIsDownloading(true);
         try {
-            const response = await fetch('/api/catalog/pdf?lang=sv');
+            // Capture the lead first (stores to CRM + emails the catalogue), then download.
+            await fetch('/api/leads/catalogue', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, company, email }),
+            });
 
-            if (!response.ok) {
-                throw new Error('Failed to generate catalogue');
-            }
-
-            const blob = await response.blob();
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = `Anmol-Wholesale-Catalogue-${new Date().getFullYear()}.pdf`;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            URL.revokeObjectURL(url);
+            await triggerPdfDownload();
 
             setDownloaded(true);
             toast.success(t('successToast'));
-
-            // Reset after 5 seconds
             setTimeout(() => setDownloaded(false), 5000);
-
         } catch (error) {
             console.error('Error downloading catalogue:', error);
             toast.error(t('errorToast'));
@@ -100,40 +122,73 @@ export function CatalogueCTA() {
                             ))}
                         </div>
 
-                        {/* Download Button */}
-                        <Button
-                            onClick={handleDownload}
-                            disabled={isDownloading}
-                            size="lg"
-                            className={`
-                                h-14 px-8 text-base font-semibold shadow-xl
-                                ${downloaded
-                                    ? 'bg-green-500 hover:bg-green-600 text-white'
-                                    : 'bg-accent hover:bg-accent/90 text-primary'
-                                }
-                                transition-all duration-300
-                            `}
-                        >
-                            {isDownloading ? (
-                                <>
-                                    <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                                    {t('downloading')}
-                                </>
-                            ) : downloaded ? (
-                                <>
-                                    <CheckCircle className="w-5 h-5 mr-2" />
-                                    {t('downloaded')}
-                                </>
-                            ) : (
-                                <>
-                                    <Download className="w-5 h-5 mr-2" />
-                                    {t('downloadButton')}
-                                </>
-                            )}
-                        </Button>
+                        {/* Lead-capture form + download */}
+                        <form onSubmit={handleDownload} className="max-w-xl mx-auto lg:mx-0">
+                            <div className="grid sm:grid-cols-2 gap-3 mb-3">
+                                <Input
+                                    type="text"
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                    placeholder={t('formNamePlaceholder')}
+                                    aria-label={t('formNamePlaceholder')}
+                                    className="h-12 bg-white/95 border-0 text-primary placeholder:text-muted-foreground"
+                                    required
+                                />
+                                <Input
+                                    type="text"
+                                    value={company}
+                                    onChange={(e) => setCompany(e.target.value)}
+                                    placeholder={t('formCompanyPlaceholder')}
+                                    aria-label={t('formCompanyPlaceholder')}
+                                    className="h-12 bg-white/95 border-0 text-primary placeholder:text-muted-foreground"
+                                    required
+                                />
+                            </div>
+                            <div className="flex flex-col sm:flex-row gap-3">
+                                <Input
+                                    type="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    placeholder={t('formEmailPlaceholder')}
+                                    aria-label={t('formEmailPlaceholder')}
+                                    className="h-14 flex-1 bg-white/95 border-0 text-primary placeholder:text-muted-foreground"
+                                    required
+                                />
+                                <Button
+                                    type="submit"
+                                    disabled={isDownloading}
+                                    size="lg"
+                                    className={`
+                                        h-14 px-8 text-base font-semibold shadow-xl shrink-0
+                                        ${downloaded
+                                            ? 'bg-green-500 hover:bg-green-600 text-white'
+                                            : 'bg-accent hover:bg-accent/90 text-primary'
+                                        }
+                                        transition-all duration-300
+                                    `}
+                                >
+                                    {isDownloading ? (
+                                        <>
+                                            <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                                            {t('downloading')}
+                                        </>
+                                    ) : downloaded ? (
+                                        <>
+                                            <CheckCircle className="w-5 h-5 mr-2" />
+                                            {t('downloaded')}
+                                        </>
+                                    ) : (
+                                        <>
+                                            <Download className="w-5 h-5 mr-2" />
+                                            {t('downloadButton')}
+                                        </>
+                                    )}
+                                </Button>
+                            </div>
+                        </form>
 
                         <p className="text-white/60 text-sm mt-4">
-                            {t('noRegistration')}
+                            {t('privacyNote')}
                         </p>
                     </div>
 

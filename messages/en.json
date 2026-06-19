@@ -42,8 +42,8 @@
     "title": "Wholesale Asian Groceries & Restaurant Supplies Sweden",
     "subtitle": "Anmol Wholesale is your one-stop destination for all your restaurant supply needs, specializing in Indo-Pak cuisine ingredients and equipment. From electric tandoors to spices and packing boxes, we have everything you need.",
     "badge": "Direct-to-Warehouse Pricing",
-    "ctaPrimary": "Browse Products",
-    "ctaSecondary": "Open B2B Account",
+    "ctaPrimary": "Get Wholesale Pricing",
+    "ctaSecondary": "Browse Catalogue",
     "trustHalal": "Halal Certified",
     "trustDelivery": "Stockholm Fleet Delivery",
     "trustEurope": "Europe Shipping",
@@ -203,7 +203,13 @@
     "downloaded": "Downloaded!",
     "noRegistration": "No registration required • Instant download",
     "successToast": "Catalogue downloaded successfully!",
-    "errorToast": "Failed to download catalogue. Please try again."
+    "errorToast": "Failed to download catalogue. Please try again.",
+    "formNamePlaceholder": "Your name",
+    "formCompanyPlaceholder": "Restaurant / company name",
+    "formEmailPlaceholder": "Work email",
+    "privacyNote": "We'll email you the catalogue. No spam — unsubscribe anytime.",
+    "validationRequired": "Please fill in your name, company and email.",
+    "validationEmail": "Please enter a valid email address."
   },
   "topBar": {
     "anmolAdvantage": "Anmol Advantage",

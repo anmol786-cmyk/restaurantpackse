@@ -42,8 +42,8 @@
     "title": "Grossist Asiatiska Livsmedel & Restaurangvaror Sverige",
     "subtitle": "Anmol Wholesale är din enda destination för alla dina restaurangbehov, specialiserade på Indo-Pak kökingredienser och utrustning. Från elektriska tandoors till kryddor och förpackningsboxar, vi har allt du behöver.",
     "badge": "Direktpriser från Lagret",
-    "ctaPrimary": "Bläddra Produkter",
-    "ctaSecondary": "Öppna B2B-konto",
+    "ctaPrimary": "Få grossistpriser",
+    "ctaSecondary": "Bläddra i katalogen",
     "trustHalal": "Halalcertifierad",
     "trustDelivery": "Stockholms Flottleverans",
     "trustEurope": "Europaleverans",
@@ -1155,6 +1155,12 @@
     "downloaded": "Nedladdad!",
     "noRegistration": "Ingen registrering krävs • Omedelbar nedladdning",
     "successToast": "Katalogen har laddats ner!",
-    "errorToast": "Kunde inte ladda ner katalogen. Försök igen."
+    "errorToast": "Kunde inte ladda ner katalogen. Försök igen.",
+    "formNamePlaceholder": "Ditt namn",
+    "formCompanyPlaceholder": "Restaurang / företagsnamn",
+    "formEmailPlaceholder": "Jobbmejl",
+    "privacyNote": "Vi mejlar katalogen till dig. Ingen spam — avregistrera när som helst.",
+    "validationRequired": "Fyll i namn, företag och e-post.",
+    "validationEmail": "Ange en giltig e-postadress."
   }
 }

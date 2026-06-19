@@ -42,8 +42,8 @@
     "title": "Grossist Asiatiske Fødevarer & Restaurantudstyr Danmark",
     "subtitle": "Anmol Wholesale er din samlede destination for alle dine restaurantbehov, specialiseret i Indo-Pak køkkeningredienser og udstyr. Fra elektriske tandoors til krydderier og emballage, vi har alt hvad du behøver.",
     "badge": "Direktpriser fra Lageret",
-    "ctaPrimary": "Gennemse Produkter",
-    "ctaSecondary": "Åbn B2B-konto",
+    "ctaPrimary": "Få engrospriser",
+    "ctaSecondary": "Gennemse kataloget",
     "trustHalal": "Halalcertificeret",
     "trustDelivery": "Stockholms Flådelevering",
     "trustEurope": "Europalevering",
@@ -1155,6 +1155,12 @@
     "downloaded": "Downloadet!",
     "noRegistration": "Ingen registrering påkrævet • Øjeblikkelig download",
     "successToast": "Kataloget blev downloadet!",
-    "errorToast": "Kunne ikke downloade kataloget. Prøv igen."
+    "errorToast": "Kunne ikke downloade kataloget. Prøv igen.",
+    "formNamePlaceholder": "Dit navn",
+    "formCompanyPlaceholder": "Restaurant / firmanavn",
+    "formEmailPlaceholder": "Arbejdsmail",
+    "privacyNote": "Vi sender kataloget på mail. Ingen spam — afmeld når som helst.",
+    "validationRequired": "Udfyld navn, firma og e-mail.",
+    "validationEmail": "Indtast en gyldig e-mailadresse."
   }
 }
