@@ -79,7 +79,29 @@
       "Bash(do echo:*)",
       "Read(//d/Visual codes/Anmol Project/restaurantpack.se/**)",
       "Bash(tail:*)",
-      "WebFetch(domain:restaurantpack.se)"
+      "WebFetch(domain:restaurantpack.se)",
+      "Bash(grep -rin \"royal\\\\|SMTP_FROM_NAME\" .env*)",
+      "Bash(ls -la .env*)",
+      "Bash(node scripts/send-test-email.cjs)",
+      "Bash(grep -qiE \"ready|started server|localhost:3000|Local:\" /tmp/nextdev.log)",
+      "Bash(break)",
+      "Read(//tmp/**)",
+      "Bash(node scripts/overflow-check.cjs)",
+      "Bash(node scripts/probe360.cjs)",
+      "Bash(PATH_=/en/login node scripts/overflow-check.cjs)",
+      "Bash(PATH_=/en/shop node scripts/overflow-check.cjs)",
+      "Bash(node scripts/shots.cjs)",
+      "Bash(node scripts/rects.cjs)",
+      "Bash(rm -f scripts/overflow-check.cjs scripts/probe360.cjs scripts/shots.cjs scripts/rects.cjs scripts/_shot_*.png)",
+      "Bash(pkill -f \"next dev\")",
+      "Bash(pkill -f \"next-server\")",
+      "Bash(ls scripts/_shot_*)",
+      "Bash(node scripts/verify-shots.cjs)",
+      "Bash(rm -f scripts/verify-shots.cjs scripts/create-welcome-coupon.cjs scripts/_v_*.png scripts/_shot_*.png)",
+      "Bash(ls scripts/_v_* scripts/_shot_* scripts/verify-shots.cjs scripts/create-welcome-coupon.cjs)",
+      "Bash(rm -f ./nul)",
+      "Bash(ls nul *)",
+      "Bash(git merge *)"
     ]
   }
 }
