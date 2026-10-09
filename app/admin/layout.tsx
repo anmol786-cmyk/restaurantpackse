@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Package, Users, BarChart3, Settings, ShieldCheck } from 'lucide-react';
 
 export const metadata: Metadata = {
-    title: 'Admin Dashboard | Anmol Wholesale',
+    title: 'Admin Dashboard',
     description: 'Wholesale Management Dashboard',
 };
 

@@ -277,7 +277,7 @@
     "shippingAddress": "Shipping Address"
   },
   "metadata": {
-    "homeTitle": "Wholesale Asian Groceries for Restaurants | Sweden",
+    "homeTitle": "Wholesale Asian Groceries for Restaurants",
     "homeDescription": "Premium wholesale supplier for restaurants. Indian spices, basmati rice, tandoor ovens & bulk ingredients. Fast delivery across Sweden & Europe."
   },
   "notFound": {
@@ -304,7 +304,7 @@
     "notFound": "Product Not Found",
     "buyWholesale": "Buy Wholesale",
     "metaFallback": "Buy {name} from Anmol Wholesale Stockholm. Wholesale prices for restaurants and catering. Fast delivery in Sweden.",
-    "metaTitle": "{name} | Buy Wholesale | Anmol Wholesale",
+    "metaTitle": "{name}",
     "ogTitle": "{name} - Wholesale Price Stockholm"
   },
   "productCategory": {
@@ -321,7 +321,7 @@
     "backToAll": "\u2190 Back to all articles"
   },
   "dashboardPage": {
-    "metaTitle": "Business Dashboard - Anmol Wholesale",
+    "metaTitle": "Business Dashboard",
     "metaDescription": "Manage your wholesale orders, track shipments, and access business tools.",
     "title": "Business Dashboard",
     "subtitle": "Manage your wholesale orders, reorder quickly, and track your business account.",
@@ -333,7 +333,7 @@
     "accountInfoDesc": "Account management features coming soon. Contact support for account changes."
   },
   "contactPage": {
-    "metaTitle": "Contact Anmol Wholesale | B2B Support & Sp\u00e5nga Warehouse",
+    "metaTitle": "Contact | B2B Support & Spånga Warehouse",
     "metaDescription": "Get in touch with Anmol Wholesale for bulk orders, 15% lower wholesale pricing, and B2B inquiries. Visit our Sp\u00e5nga warehouse or contact our expert team for professional restaurant supply in Scandinavia.",
     "heroTitle": "Contact Our B2B Team",
     "heroSubtitle": "Get in touch for wholesale orders, bulk pricing, logistics questions, or to schedule a warehouse visit. Our team is ready to support your professional kitchen.",
@@ -384,7 +384,7 @@
     "taxesNote": "Taxes and shipping calculated at checkout"
   },
   "checkoutSuccess": {
-    "metaTitle": "Order Confirmed - Anmol Wholesale",
+    "metaTitle": "Order Confirmed",
     "metaDescription": "Your order has been successfully placed",
     "title": "Order Confirmed!",
     "thankYou": "Thank you for your order. We've sent a confirmation email with your order details.",
@@ -410,7 +410,7 @@
     "returnHome": "Return to Home"
   },
   "aboutPage": {
-    "metaTitle": "About Anmol Wholesale | Restaurant Expertise & Wholesale Power",
+    "metaTitle": "About Us | Restaurant Supply Experts",
     "metaDescription": "Discover Anmol Wholesale, Stockholm's leading B2B supplier. With 5+ years of restaurant experience, we provide authentic Indo-Pak ingredients and manufacture the Electric Mini Tandoor. Quality guaranteed by chefs, for chefs.",
     "heroTitle": "About {businessName}",
     "heroSubtitle": "{tagline} - Your trusted B2B wholesale partner for professional kitchens across Sweden and Europe.",
@@ -467,7 +467,7 @@
     "ctaButton": "Open Business Account"
   },
   "quickOrderPage": {
-    "metaTitle": "Quick Order - Bulk Ordering Made Easy | Anmol Wholesale",
+    "metaTitle": "Quick Order | Fast Bulk Ordering",
     "metaDescription": "Speed up your wholesale ordering with our quick order form. Search products, enter quantities, and submit your order in minutes. Perfect for regular reordering and bulk purchases.",
     "badge": "From Our Restaurant Kitchen to Yours",
     "title": "Quick Order Form",
@@ -495,7 +495,7 @@
     "helpDesc": "Our team is here to assist you with your wholesale orders. Contact us anytime:"
   },
   "quotePage": {
-    "metaTitle": "Request Wholesale Quote | Anmol Wholesale - Bulk Pricing for Restaurants & Grocery Stores",
+    "metaTitle": "Request a Wholesale Quote",
     "metaDescription": "Get customized wholesale pricing for bulk orders, pallet quantities, and recurring supplies. Our B2B team provides competitive rates for restaurants, grocery stores, and caterers across Sweden and Europe.",
     "badge": "From Our Restaurant Kitchen to Yours",
     "title": "Request a Wholesale Quote",
@@ -520,7 +520,7 @@
     "registerAccount": "Register Business Account"
   },
   "wholesaleRegister": {
-    "metaTitle": "Open a B2B Wholesale Account | Anmol Wholesale - Restaurant & Grocery Supply",
+    "metaTitle": "Open a B2B Wholesale Account",
     "metaDescription": "Register your restaurant, grocery store, or catering business for wholesale pricing on authentic Indo-Pak ingredients and equipment. Competitive B2B rates, flexible delivery, and dedicated support.",
     "badge": "From Our Restaurant Kitchen to Yours",
     "heroTitle": "Become a B2B Partner",
@@ -548,7 +548,7 @@
     "step4": "You can start ordering with flexible delivery options"
   },
   "deliveryPage": {
-    "metaTitle": "B2B Wholesale Delivery Stockholm | 15% Lower Prices | Anmol Wholesale",
+    "metaTitle": "Wholesale Delivery in Stockholm & Sweden",
     "metaDescription": "Reliable B2B delivery across Sweden & Scandinavia. Own fleet for Stockholm, 15% lower wholesale prices, and Ex-Warehouse pickup in Sp\u00e5nga. Built for professional kitchens.",
     "badge": "Logistics & Supply Chain",
     "heroTitle": "B2B Wholesale",
@@ -591,7 +591,7 @@
     "emailSupport": "Email Support"
   },
   "faqPage": {
-    "metaTitle": "B2B Wholesale FAQ | 15% Lower Prices | Anmol Wholesale Stockholm",
+    "metaTitle": "Wholesale FAQ | Ordering & Delivery",
     "metaDescription": "Expert answers to wholesale ordering, 15% lower B2B pricing, and bulk logistics. Serving restaurants across Sweden & Europe with authentic Indo-Pak ingredients and the Electric Mini Tandoor.",
     "title": "B2B Wholesale FAQ",
     "subtitle": "Everything you need to know about wholesale ordering, B2B accounts, bulk delivery, tiered pricing, and our Indo-Pak products for professional kitchens. Can't find your answer? Our team is here to help.",
@@ -742,7 +742,7 @@
     "satSun": "Saturday - Sunday"
   },
   "europePage": {
-    "metaTitle": "European B2B Wholesale Shipping | 15% Lower Prices | Anmol Wholesale",
+    "metaTitle": "Wholesale Shipping to Europe",
     "metaDescription": "Wholesale shipping of authentic Indo-Pak ingredients across Europe. 15% lower B2B pricing for Germany, Norway, Finland & EU. Reliable bulk logistics for professional kitchens.",
     "badge": "European Export",
     "heroTitle": "European B2B Wholesale Shipping",
@@ -805,7 +805,7 @@
     "viewCatalog": "View Wholesale Catalog"
   },
   "privacyPolicy": {
-    "metaTitle": "Privacy Policy | Anmol Wholesale",
+    "metaTitle": "Privacy Policy",
     "metaDescription": "Our commitment to protecting your privacy and handling your personal data with transparency and care, in full GDPR compliance.",
     "title": "Privacy Policy",
     "subtitle": "Your privacy and data protection are our priority. Learn how we handle your personal data with transparency and care.",
@@ -850,7 +850,7 @@
     "otherPolicies": "Other Policies"
   },
   "termsConditions": {
-    "metaTitle": "Terms & Conditions | Anmol Wholesale",
+    "metaTitle": "Terms & Conditions",
     "metaDescription": "Terms and conditions for using restaurantpack.se. Learn about our B2B wholesale policies on orders, payments, delivery, and more.",
     "title": "Terms & Conditions",
     "subtitle": "Please read these terms carefully before using our services. Your use of our website constitutes agreement to these terms.",
@@ -880,7 +880,7 @@
     "relatedPolicies": "Related Policies"
   },
   "refundReturn": {
-    "metaTitle": "Refund & Return Policy | Anmol Wholesale",
+    "metaTitle": "Refund & Return Policy",
     "metaDescription": "14-day return policy for eligible items. Learn about our return process for wholesale customers in Sweden and Europe.",
     "title": "Refund & Return Policy",
     "subtitle": "Your satisfaction is our top priority. We are committed to providing a clear and fair return process for our customers across Sweden and Europe.",
@@ -1067,7 +1067,7 @@
     "downloadPresentation": "Download Presentation"
   },
   "wholesaleLanding": {
-    "metaTitle": "B2B Wholesale Hub | 15% Lower Prices | Anmol Wholesale Stockholm",
+    "metaTitle": "B2B Wholesale for Restaurants | Stockholm",
     "metaDescription": "The primary B2B hub for authentic Indo-Pak ingredients & equipment. 15% lower prices, restaurateur-backed quality, and own delivery fleet. Direct manufacturer of Anmol Electric Tandoor. Partner with Stockholm's experts.",
     "badge": "From Our Restaurant Kitchen to Yours",
     "heroTitle": "Power Your Business with",
@@ -1140,7 +1140,7 @@
     "responseWithin24h": "Response within 24h"
   },
   "blogPage": {
-    "metaTitle": "Blog - Anmol Wholesale",
+    "metaTitle": "Blog",
     "metaDescription": "Stay tuned for the latest articles, recipes, and news from Anmol Wholesale.",
     "title": "Our Blog",
     "comingSoon": "We are currently crafting amazing content for you. Check back soon!"

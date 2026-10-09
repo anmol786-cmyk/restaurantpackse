@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
         }
 
         return {
-            title: `${category.name} | Anmol Wholesale Blog`,
+            title: `${category.name} | Blog`,
             description: category.description || t('readAbout', { name: category.name }),
             openGraph: {
                 title: category.name,

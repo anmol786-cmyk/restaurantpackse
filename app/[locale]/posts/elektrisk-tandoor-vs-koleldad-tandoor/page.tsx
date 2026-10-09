@@ -11,7 +11,7 @@ const PRODUCT_URL = 'https://restaurantpack.se/product/mini-electric-tandoor-ove
 const IMAGE_URL   = 'https://crm.restaurantpack.se/wp-content/uploads/2025/03/front-graphics.png';
 
 export const metadata: Metadata = {
-  title: 'Elektrisk Tandoor vs. Koleldad Tandoor – Vilket passar din restaurang?',
+  title: { absolute: 'Elektrisk vs. koleldad tandoor – vilken passar din restaurang?' },
   description:
     'Funderar du på att köpa en tandoor till din restaurang? Vi jämför elektrisk och koleldad tandoor – brandkrav, driftkostnad, underhåll och smak. Se vilket alternativ som passar bäst för svenska restauranger.',
   alternates: {

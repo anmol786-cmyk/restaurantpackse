@@ -48,7 +48,10 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
 
         const slug = resolvedParams.slug;
         return {
-            title: t('metaTitle', { name: product.name }),
+            // Long product names drop the " | Anmol Wholesale" suffix to stay near 60 chars
+            title: product.name.length > 42
+                ? { absolute: product.name }
+                : t('metaTitle', { name: product.name }),
             description: metaDescription,
             alternates: {
                 canonical: productUrl,

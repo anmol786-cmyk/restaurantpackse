@@ -1,0 +1,55 @@
+{
+  "summary": {
+    "health_score": 46,
+    "business_type": "B2B e-commerce wholesale (hybrid local pickup, Stockholm)",
+    "top_findings": [
+      "No caching: debug cache:'no-store' + force-dynamic; every page ~1s TTFB and live WooCommerce calls",
+      "Pages randomly 404 or render empty (canonical to homepage) under crawler load; API errors mapped to notFound()",
+      "Wrong canonicals: wholesale subpages and /sv/shop/* point to homepage; translations point to English",
+      "Submitted sitemap.xml has no products or categories; two/three competing category URL schemes",
+      "Only 46 indexed vs 115 not indexed; 83 Discovered-not-indexed"
+    ],
+    "quick_wins": [
+      "Remove cache:'no-store' and force-dynamic, enable ISR",
+      "Submit a sitemap index including products and categories",
+      "Remove duplicated Product JSON-LD (fixes GSC Duplicate field brand)",
+      "Remove doubled '| Anmol Wholesale' from titles",
+      "Redirect /posts to /blog, add www DNS + 301"
+    ]
+  },
+  "categories": [
+    {"name": "Technical SEO", "score": 30, "what_works": ["HTTPS + redirects", "robots.txt allows AI crawlers", "SSR HTML"], "findings": [
+      {"title": "No caching on any page", "severity": "Critical", "description": "297/297 URLs cache-control private no-store, x-vercel-cache MISS, median TTFB 1.03s. lib/woocommerce/api.ts:97 cache:'no-store' (debug), app/[locale]/layout.tsx:21 force-dynamic.", "recommendation": "Enable ISR with revalidate and on-demand revalidation via WooCommerce webhook."},
+      {"title": "Intermittent 404 / empty pages under load", "severity": "Critical", "description": "8 product URLs 404 and 44 pages without H1 (28 canonical to /) at 6 concurrent requests; all 200 when re-tested singly. Product page maps any API error to notFound().", "recommendation": "Only notFound() on confirmed missing item; rethrow other errors (5xx)."},
+      {"title": "Canonicals pointing to homepage or English version", "severity": "Critical", "description": "12 wholesale subpages and 23 /sv/shop/* URLs canonical to /; sv/no/da category and post pages canonical to English.", "recommendation": "Self-referencing canonicals + hreflang."},
+      {"title": "Sitemap omits products and categories", "severity": "High", "description": "Submitted sitemap.xml (52 URLs) has no products/categories; product/category sitemaps unsubmitted; /sv sitemap lists cart and soft-404 /posts.", "recommendation": "Sitemap index, resubmit in GSC."},
+      {"title": "Duplicate category URL schemes", "severity": "High", "description": "/shop/category/x, /shop/x and /product-category/x all 200.", "recommendation": "301 to /shop/category/x."},
+      {"title": "hreflang missing on 184 URLs", "severity": "Medium", "description": "shop, wholesale, about and translations lack hreflang.", "recommendation": "Add alternates on all page types."}
+    ]},
+    {"name": "Content Quality", "score": 50, "what_works": ["Real NAP, org.nr, VAT", "Restaurant heritage E-E-A-T"], "findings": [
+      {"title": "Thin category and product pages", "severity": "Medium", "description": "15/23 English category pages and 5 products under 300 words.", "recommendation": "Expand to 300-500 words with buying guides and FAQs."},
+      {"title": "Swedish versions largely unindexed", "severity": "High", "description": "sv product/category/info pages Discovered-not-indexed.", "recommendation": "Fix canonicals/caching, strengthen Swedish copy."}
+    ]},
+    {"name": "On-Page SEO", "score": 50, "what_works": ["All pages have meta descriptions"], "findings": [
+      {"title": "Long and doubled titles", "severity": "High", "description": "230/253 titles over 60 chars; brand appended twice; category titles untranslated.", "recommendation": "Rewrite title template."},
+      {"title": "Duplicate H1", "severity": "Medium", "description": "101 pages have two identical H1s.", "recommendation": "Render one H1."}
+    ]},
+    {"name": "Schema / Structured Data", "score": 55, "what_works": ["Organization/LocalBusiness", "FAQPage", "BreadcrumbList on products"], "findings": [
+      {"title": "Duplicate Product JSON-LD", "severity": "High", "description": "Product schema output twice per product page; GSC: Duplicate field brand (4 invalid).", "recommendation": "Single Product block with manufacturer brand, shippingDetails, hasMerchantReturnPolicy."}
+    ]},
+    {"name": "Performance (CWV)", "score": 35, "what_works": [], "findings": [
+      {"title": "Slow server response", "severity": "High", "description": "TTFB 1.0-1.4s everywhere due to no caching; no CrUX data.", "recommendation": "Caching fix; re-run PageSpeed."}
+    ]},
+    {"name": "AI Search Readiness", "score": 60, "what_works": ["llms.txt", "AI crawlers allowed"], "findings": []},
+    {"name": "Images", "score": 50, "what_works": [], "findings": [
+      {"title": "Missing alt text and og:image", "severity": "Medium", "description": "253 img without alt; 82 pages without og:image.", "recommendation": "Add alt text and default og:image."}
+    ]}
+  ],
+  "action_plan": {"phases": [
+    {"name": "Phase 1: Critical Fixes", "timeframe": "Week 1", "items": ["Enable caching/ISR", "Stop API errors becoming 404", "Fix canonicals", "Sitemap index + resubmit"]},
+    {"name": "Phase 2: High-Impact Improvements", "timeframe": "Weeks 2-3", "items": ["Single category URL scheme", "hreflang everywhere", "Product schema fix", "Title template", "Duplicate H1", "Redirect cleanups"]},
+    {"name": "Phase 3: Content & Authority", "timeframe": "Month 2", "items": ["Expand thin categories/products", "Swedish-first content", "Blog posts for impression queries", "Alt text/og:image"]},
+    {"name": "Phase 4: Monitoring & Iteration", "timeframe": "Ongoing", "items": ["Re-crawl", "PageSpeed/CrUX", "Weekly GSC review"]}
+  ]},
+  "artifacts": {"findings_dir": "findings/", "screenshots_dir": "screenshots/"}
+}

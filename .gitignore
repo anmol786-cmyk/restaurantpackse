@@ -55,3 +55,6 @@ Thumbs.db
 /playwright/.cache/
 /screenshots/
 test-results.json
+
+# SEO audit raw crawl data (regenerable)
+restaurantpack.se-audit/raw/

@@ -3,7 +3,10 @@ import { localeAlternates } from '@/lib/seo/alternates';
 import { getProductsByCategory, getProductCategoryBySlug } from '@/lib/woocommerce';
 import { ArchiveTemplate } from '@/components/templates';
 import type { Metadata } from 'next';
+import { ORDERING_BLOCK, WHOLESALE_WORD, categoryCopy, categoryName, toContentLocale } from '@/lib/content/category-content';
 
+const SHOP_LABEL = { en: 'Shop', sv: 'Butik', no: 'Butikk', da: 'Butik' } as const;
+const CATEGORIES_LABEL = { en: 'Categories', sv: 'Kategorier', no: 'Kategorier', da: 'Kategorier' } as const;
 
 interface CategoryPageProps {
   params: Promise<{
@@ -24,13 +27,18 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
 
     if (!category) {
       return {
-        title: 'Category Not Found | Anmol Wholesale',
+        title: 'Category Not Found',
       };
     }
 
-    const seoTitle = `${category.name} Wholesale Stockholm | Anmol Wholesale`;
+    // Localized name + "<name> <wholesale> Stockholm"; the root title template appends the brand
+    const locale = toContentLocale(resolvedParams.locale);
+    const name = categoryName(resolvedParams.slug, locale, category.name.replace(/&amp;/g, '&'));
+    const seoTitle = `${name} ${WHOLESALE_WORD[locale]} Stockholm`;
+    const copy = categoryCopy(resolvedParams.slug, locale);
     const plainDescription = category.description?.replace(/<[^>]*>/g, '').substring(0, 100) || '';
-    const seoDescription = `Browse our professional-grade ${category.name} at 15% lower wholesale prices. Anmol Wholesale: Stockholm-based B2B restaurant supplier with own Scandinavian delivery. ${plainDescription}`;
+    const seoDescription = copy?.intro
+      ?? `Browse our professional-grade ${name} at wholesale prices. Anmol Wholesale: Stockholm-based B2B restaurant supplier with own Scandinavian delivery. ${plainDescription}`;
 
     return {
       title: seoTitle,
@@ -51,7 +59,7 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
     };
   } catch {
     return {
-      title: 'Category Not Found | Anmol Wholesale',
+      title: 'Category Not Found',
     };
   }
 }
@@ -77,25 +85,53 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
     status: 'publish',
   });
 
+  const locale = toContentLocale(resolvedParams.locale);
+  const name = categoryName(resolvedParams.slug, locale, category.name.replace(/&amp;/g, '&'));
+  const copy = categoryCopy(resolvedParams.slug, locale);
+  const ordering = ORDERING_BLOCK[locale];
+  // English keeps the WooCommerce description when one exists; other locales use the translated intro
+  const headerDescription = locale === 'en' && category.description
+    ? <div dangerouslySetInnerHTML={{ __html: category.description }} />
+    : copy?.intro;
+
   return (
-    <ArchiveTemplate
-      title={category.name}
-      description={
-        category.description ? (
-          <div dangerouslySetInnerHTML={{ __html: category.description }} />
-        ) : undefined
-      }
-      breadcrumbs={[
-        { label: 'Shop', href: '/shop' },
-        { label: 'Categories', href: '/shop/categories' },
-        { label: category.name },
-      ]}
-      products={products}
-      totalProducts={total}
-      currentPage={page}
-      totalPages={totalPages}
-      basePath={`/shop/category/${resolvedParams.slug}`}
-      gridColumns={5}
-    />
+    <>
+      <ArchiveTemplate
+        title={name}
+        description={headerDescription}
+        breadcrumbs={[
+          { label: SHOP_LABEL[locale], href: '/shop' },
+          { label: CATEGORIES_LABEL[locale], href: '/shop/categories' },
+          { label: name },
+        ]}
+        products={products}
+        totalProducts={total}
+        currentPage={page}
+        totalPages={totalPages}
+        basePath={`/shop/category/${resolvedParams.slug}`}
+        gridColumns={5}
+      />
+
+      {/* Category guide: unique copy per category + shared ordering info (fixes thin category pages) */}
+      {copy && page === 1 && (
+        <section className="site-container pb-12 md:pb-16">
+          <div className="max-w-3xl border-t border-border pt-8 md:pt-10 space-y-4 text-muted-foreground leading-relaxed">
+            <h2 className="font-heading text-xl md:text-2xl font-semibold text-foreground">{name}</h2>
+            {(locale !== 'en' || category.description) && <p>{copy.intro}</p>}
+            {copy.body.map((paragraph) => (
+              <p key={paragraph.slice(0, 32)}>{paragraph}</p>
+            ))}
+            <h3 className="font-heading text-lg font-semibold text-foreground pt-2">{ordering.pointsHeading}</h3>
+            <ul className="list-disc pl-5 space-y-1">
+              {copy.points.map((point) => (
+                <li key={point}>{point}</li>
+              ))}
+            </ul>
+            <h3 className="font-heading text-lg font-semibold text-foreground pt-2">{ordering.heading}</h3>
+            <p>{ordering.text}</p>
+          </div>
+        </section>
+      )}
+    </>
   );
 }

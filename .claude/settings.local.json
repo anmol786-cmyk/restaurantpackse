@@ -101,7 +101,10 @@
       "Bash(ls scripts/_v_* scripts/_shot_* scripts/verify-shots.cjs scripts/create-welcome-coupon.cjs)",
       "Bash(rm -f ./nul)",
       "Bash(ls nul *)",
-      "Bash(git merge *)"
+      "Bash(git merge *)",
+      "Bash(head -40 worksofar.md)",
+      "Bash(ls .claude/milestones/)",
+      "Bash(git check-ignore *)"
     ]
   }
 }
