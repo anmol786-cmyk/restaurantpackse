@@ -1,4 +1,5 @@
 import { getProducts, getProductCategories } from '@/lib/woocommerce';
+import { localeAlternates } from '@/lib/seo/alternates';
 
 export const revalidate = 1800; // ISR: revalidate shop listing every 30 min
 import { getProductBrands } from '@/lib/woocommerce/brands';
@@ -17,9 +18,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   return {
     title: t('title'),
     description: t('description'),
-    alternates: {
-      canonical: `https://restaurantpack.se${locale === 'en' ? '' : `/${locale}`}/shop`,
-    },
+    alternates: localeAlternates(locale, '/shop'),
   };
 }
 

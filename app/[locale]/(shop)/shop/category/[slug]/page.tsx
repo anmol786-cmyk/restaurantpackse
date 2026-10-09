@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation';
+import { localeAlternates } from '@/lib/seo/alternates';
 import { getProductsByCategory, getProductCategoryBySlug } from '@/lib/woocommerce';
 import { ArchiveTemplate } from '@/components/templates';
 import type { Metadata } from 'next';
@@ -6,6 +7,7 @@ import type { Metadata } from 'next';
 
 interface CategoryPageProps {
   params: Promise<{
+    locale: string;
     slug: string;
   }>;
   searchParams: Promise<{
@@ -45,9 +47,7 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
         title: seoTitle,
         description: seoDescription.substring(0, 160),
       },
-      alternates: {
-        canonical: `https://restaurantpack.se/shop/category/${resolvedParams.slug}`,
-      },
+      alternates: localeAlternates(resolvedParams.locale, `/shop/category/${resolvedParams.slug}`),
     };
   } catch {
     return {
@@ -62,13 +62,8 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
   const page = Number(resolvedSearchParams.page) || 1;
   const perPage = 20;
 
-  let category;
-
-  try {
-    category = await getProductCategoryBySlug(resolvedParams.slug);
-  } catch (error) {
-    notFound();
-  }
+  // API errors propagate (5xx) instead of becoming a 404 - only a confirmed missing category is notFound
+  const category = await getProductCategoryBySlug(resolvedParams.slug);
 
   if (!category) {
     notFound();

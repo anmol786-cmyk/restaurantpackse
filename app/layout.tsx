@@ -31,9 +31,8 @@ export const metadata: Metadata = {
   },
   description: siteConfig.site_description,
   metadataBase: new URL(siteConfig.site_domain),
-  alternates: {
-    canonical: "/",
-  },
+  // No canonical here: it would be inherited by every page that doesn't set its own
+  // and mark it as a duplicate of the homepage. Pages use localeAlternates() instead.
   icons: {
     icon: [
       { url: '/icon.png', sizes: '512x512', type: 'image/png' },

@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import { localeAlternates } from '@/lib/seo/alternates';
 import { getTranslations } from 'next-intl/server';
 import { SchemaScript } from '@/lib/schema/schema-script';
 import { anmolWholesaleOrganizationSchema } from '@/lib/schema';
@@ -31,9 +32,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   return {
     title: t('metaTitle'),
     description: t('metaDescription'),
-    alternates: {
-      canonical: `https://restaurantpack.se${locale === 'en' ? '' : `/${locale}`}/blog`,
-    },
+    alternates: localeAlternates(locale, '/blog'),
   };
 }
 

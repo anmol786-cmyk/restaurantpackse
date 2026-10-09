@@ -9,15 +9,14 @@ import { generateSitemapIndexXml } from '@/lib/sitemap-generator';
  */
 export async function GET() {
     const baseUrl = siteConfig.site_domain;
-    const locales = ['sv', 'no', 'da'];
 
+    // Each sub-sitemap already lists all 4 locales with hreflang.
+    // Posts/post-categories are empty (the one blog post is a static page in sitemap-pages);
+    // add them back when WordPress posts are published.
     const sitemaps = [
         `${baseUrl}/sitemap-pages.xml`,
         `${baseUrl}/sitemap-products.xml`,
         `${baseUrl}/sitemap-categories.xml`,
-        `${baseUrl}/sitemap-posts.xml`,
-        `${baseUrl}/sitemap-post-categories.xml`,
-        ...locales.map(locale => `${baseUrl}/${locale}/sitemap.xml`)
     ];
 
     const xml = generateSitemapIndexXml(sitemaps);

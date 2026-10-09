@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import { localeAlternates } from '@/lib/seo/alternates';
 import { brandProfile } from '@/config/brand-profile';
 import { getTranslations } from 'next-intl/server';
 import { FileText, ShoppingCart, CreditCard, Truck, Scale, Shield, Mail, MessageCircle, MapPin } from 'lucide-react';
@@ -10,9 +11,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   return {
     title: t('metaTitle'),
     description: t('metaDescription'),
-    alternates: {
-      canonical: '/terms-conditions',
-    },
+    alternates: localeAlternates(locale, '/terms-conditions'),
   };
 }
 

@@ -329,13 +329,16 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
           }
           return product;
         }
+        return null;
       } catch (fallbackError) {
         console.error('Fallback slug fetch failed:', fallbackError);
+        throw fallbackError;
       }
     }
 
+    // Don't turn a WordPress timeout into a 404 - let the page fail with a 5xx so crawlers retry
     console.error(`Error fetching product by slug ${slug}:`, error);
-    return null;
+    throw error;
   }
 }
 
@@ -707,8 +710,9 @@ export async function getProductCategoryBySlug(slug: string): Promise<ProductCat
 
     return categories[0];
   } catch (error) {
+    // Don't turn a WordPress timeout into a 404 - let the page fail with a 5xx so crawlers retry
     console.error(`Error fetching category by slug ${slug}:`, error);
-    return null;
+    throw error;
   }
 }
 

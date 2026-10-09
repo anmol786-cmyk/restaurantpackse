@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import { localeAlternates } from '@/lib/seo/alternates';
 import { brandProfile } from '@/config/brand-profile';
 import { getTranslations } from 'next-intl/server';
 import { Truck, MapPin, Package, Clock, Euro, ShieldCheck, Globe, MessageCircle, Mail, ExternalLink, Info, Building2 } from 'lucide-react';
@@ -14,9 +15,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     return {
         title: t('metaTitle'),
         description: t('metaDescription'),
-        alternates: {
-            canonical: `https://restaurantpack.se${locale === 'en' ? '' : `/${locale}`}/europe-delivery`,
-        },
+        alternates: localeAlternates(locale, '/europe-delivery'),
     };
 }
 

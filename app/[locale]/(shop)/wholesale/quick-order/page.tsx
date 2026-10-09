@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import { localeAlternates } from '@/lib/seo/alternates';
 import { getTranslations } from 'next-intl/server';
 import { QuickOrderFormEnhanced } from '@/components/wholesale/quick-order-form-enhanced';
 import { Zap, Package, Clock, CheckCircle, FileSpreadsheet, Save } from 'lucide-react';
@@ -9,6 +10,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   return {
     title: t('metaTitle'),
     description: t('metaDescription'),
+    alternates: localeAlternates(locale, '/wholesale/quick-order'),
   };
 }
 

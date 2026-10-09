@@ -2,13 +2,12 @@ import { MetadataRoute } from 'next';
 import { siteConfig } from '@/site.config';
 
 /**
- * Legal / Support Pages Sitemap
- * Route: /sitemap-pages.xml
+ * Static Pages Sitemap
+ * Route: /sitemap-pages.xml (listed in the /sitemap.xml index)
  *
- * Submits one URL entry per locale per page (4 × N pages).
- * Core pages (homepage, shop, wholesale, about, contact, faq, blog,
- * delivery, europe-delivery) are already in sitemap.xml — this file
- * covers legal and support pages only.
+ * Submits one URL entry per locale per page (4 × N pages), with reciprocal hreflang.
+ * Core pages used to live in app/sitemap.ts, which shadowed the sitemap index
+ * route and kept products/categories out of the submitted sitemap.
  */
 
 const LOCALES = ['en', 'sv', 'no', 'da'] as const;
@@ -20,18 +19,31 @@ interface PageConfig {
 }
 
 const PAGES: PageConfig[] = [
+    { slug: '',                       priority: 1.0, changefreq: 'daily'   },
+    { slug: 'shop',                   priority: 0.9, changefreq: 'daily'   },
+    { slug: 'wholesale',              priority: 0.9, changefreq: 'weekly'  },
+    { slug: 'wholesale/register',     priority: 0.8, changefreq: 'monthly' },
+    { slug: 'wholesale/quick-order',  priority: 0.8, changefreq: 'weekly'  },
+    { slug: 'wholesale/quote',        priority: 0.7, changefreq: 'monthly' },
+    { slug: 'about',                  priority: 0.7, changefreq: 'monthly' },
+    { slug: 'contact',                priority: 0.7, changefreq: 'monthly' },
+    { slug: 'faq',                    priority: 0.7, changefreq: 'monthly' },
+    { slug: 'blog',                   priority: 0.6, changefreq: 'weekly'  },
+    { slug: 'posts/elektrisk-tandoor-vs-koleldad-tandoor', priority: 0.8, changefreq: 'monthly' },
+    { slug: 'delivery-information',   priority: 0.6, changefreq: 'monthly' },
+    { slug: 'europe-delivery',        priority: 0.6, changefreq: 'monthly' },
     { slug: 'privacy-policy',   priority: 0.3, changefreq: 'yearly'  },
     { slug: 'refund-return',    priority: 0.4, changefreq: 'yearly'  },
     { slug: 'terms-conditions', priority: 0.3, changefreq: 'yearly'  },
     // Removed: 'cart' — blocked by robots.txt
     // Removed: 'posts' — noindexed, canonical → /blog
-    // Core pages already in sitemap.ts
 ];
 
 function localeUrl(baseUrl: string, locale: string, slug: string): string {
+    const path = slug ? `/${slug}` : '';
     return locale === 'en'
-        ? `${baseUrl}/${slug}`
-        : `${baseUrl}/${locale}/${slug}`;
+        ? `${baseUrl}${path}`
+        : `${baseUrl}/${locale}${path}`;
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {

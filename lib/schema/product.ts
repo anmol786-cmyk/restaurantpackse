@@ -248,6 +248,11 @@ export function wooCommerceProductSchema(
   // Determine if variable product
   const isVariable = wooProduct.type === 'variable';
 
+  // Manufacturer brand from the WooCommerce Brands taxonomy (Hamdard, Nordzucker, Kope...).
+  // Own-label items are tagged "ANMOL" and map to the store brand.
+  const wooBrand = (wooProduct.brands as { name?: string }[] | undefined)?.[0]?.name;
+  const brand = wooBrand && wooBrand.toUpperCase() !== 'ANMOL' ? wooBrand : undefined;
+
   // Build ProductInput
   const productInput: ProductInput = {
     name: wooProduct.name,
@@ -262,6 +267,7 @@ export function wooCommerceProductSchema(
     url: productUrl,
     images: wooProduct.images,
     category: wooProduct.categories?.[0]?.name,
+    brand,
     rating: wooProduct.average_rating ? Number(wooProduct.average_rating) : undefined,
     reviewCount: wooProduct.rating_count,
     isVariable,

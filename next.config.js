@@ -99,13 +99,22 @@ const nextConfig = {
             { source: '/da/shop-archive', destination: '/da/shop', permanent: true },
             { source: '/da/shop-archive/', destination: '/da/shop', permanent: true },
 
-            // ── Strip ?add-to-cart= query parameters (WooCommerce links being indexed) ──
-            {
-                source: '/:path*',
-                has: [{ type: 'query', key: 'add-to-cart' }],
-                destination: '/:path*',
-                permanent: true,
-            },
+            // ── Legacy WooCommerce /product-category/ URLs → /shop/category/<leaf slug> ──
+            { source: '/product-category/:a/:b/:c', destination: '/shop/category/:c', permanent: true },
+            { source: '/product-category/:a/:b', destination: '/shop/category/:b', permanent: true },
+            { source: '/product-category/:a', destination: '/shop/category/:a', permanent: true },
+            { source: '/product-category', destination: '/shop', permanent: true },
+            { source: '/:locale(sv|no|da)/product-category/:a/:b/:c', destination: '/:locale/shop/category/:c', permanent: true },
+            { source: '/:locale(sv|no|da)/product-category/:a/:b', destination: '/:locale/shop/category/:b', permanent: true },
+            { source: '/:locale(sv|no|da)/product-category/:a', destination: '/:locale/shop/category/:a', permanent: true },
+            { source: '/:locale(sv|no|da)/product-category', destination: '/:locale/shop', permanent: true },
+
+            // ── Empty /posts index (soft 404) → blog ──
+            { source: '/posts', destination: '/blog', permanent: true },
+            { source: '/:locale(sv|no|da)/posts', destination: '/:locale/blog', permanent: true },
+
+            // ?add-to-cart= and ?page_id= are stripped in middleware.ts
+            // (a next.config redirect keeps the query string, so it looped onto itself)
 
             // ── Old product URL missing /product/ prefix ──
             {
@@ -114,13 +123,6 @@ const nextConfig = {
                 permanent: true,
             },
 
-            // ── WordPress ?page_id= URLs from old WooCommerce/CRM site ──
-            {
-                source: '/',
-                has: [{ type: 'query', key: 'page_id' }],
-                destination: '/',
-                permanent: true,
-            },
         ];
     },
 };

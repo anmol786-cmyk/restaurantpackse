@@ -48,9 +48,10 @@ export function ArchiveTemplate({
               {breadcrumbs && breadcrumbs.length > 0 && (
                 <Breadcrumbs items={breadcrumbs} />
               )}
-              <h1 className="font-heading text-2xl font-semibold text-primary">
+              {/* Mobile-only copy of the title: ARIA heading so the page has a single <h1> (the desktop one) */}
+              <p role="heading" aria-level={1} className="font-heading text-2xl font-semibold text-primary">
                 {title}
-              </h1>
+              </p>
             </div>
 
             {/* Column 2: Description */}

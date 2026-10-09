@@ -68,7 +68,7 @@ export async function Footer() {
                 </li>
                 {categories?.map((category) => (
                   <li key={category.id}>
-                    <Link href={`/product-category/${category.slug}`} className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                    <Link href={`/shop/category/${category.slug}`} className="text-sm text-muted-foreground hover:text-primary transition-colors">
                       {category.name}
                     </Link>
                   </li>

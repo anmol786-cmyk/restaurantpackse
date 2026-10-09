@@ -6,7 +6,7 @@ import { ProductTemplate } from '@/components/templates';
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import { SchemaScript } from '@/lib/schema/schema-script';
-import { wooCommerceProductSchema, breadcrumbSchema } from '@/lib/schema';
+import { breadcrumbSchema } from '@/lib/schema';
 import { siteConfig } from '@/site.config';
 
 interface ProductPageProps {
@@ -90,14 +90,8 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
 
 export default async function ProductPage({ params }: ProductPageProps) {
     const resolvedParams = await params;
-    let product;
-
-    try {
-        product = await getProductBySlug(resolvedParams.slug);
-    } catch (error) {
-        console.error('Failed to fetch product:', resolvedParams.slug, error);
-        notFound();
-    }
+    // API errors propagate (5xx) instead of becoming a 404 - only a confirmed missing product is notFound
+    const product = await getProductBySlug(resolvedParams.slug);
 
     if (!product) {
         console.error('Product not found:', resolvedParams.slug);
@@ -119,16 +113,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
     ];
 
     const baseUrl = siteConfig.site_domain;
-    const productSchema = wooCommerceProductSchema(product, {
-        baseUrl,
-        brandName: 'Anmol Wholesale',
-        sellerName: 'Anmol Wholesale',
-    });
+    // Product JSON-LD is rendered once by <ProductSchema> inside ProductTemplate
+    // (a second copy here caused GSC "Duplicate field brand")
     const breadcrumbJsonLd = breadcrumbSchema([
         { name: 'Home', url: baseUrl },
         { name: 'Shop', url: `${baseUrl}/shop` },
         ...(product.categories && product.categories.length > 0
-            ? [{ name: product.categories[0].name, url: `${baseUrl}/product-category/${product.categories[0].slug}` }]
+            ? [{ name: product.categories[0].name, url: `${baseUrl}/shop/category/${product.categories[0].slug}` }]
             : []),
         { name: product.name, url: `${baseUrl}/product/${product.slug}` },
     ]);
@@ -140,7 +131,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 breadcrumbs={breadcrumbs}
                 relatedProducts={relatedProducts}
             />
-            <SchemaScript id="product-schema" schema={productSchema} />
             <SchemaScript id="product-breadcrumb-schema" schema={breadcrumbJsonLd} />
         </>
     );

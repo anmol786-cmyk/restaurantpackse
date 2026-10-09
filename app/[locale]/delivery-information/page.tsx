@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import { localeAlternates } from '@/lib/seo/alternates';
 import { brandProfile } from '@/config/brand-profile';
 import { CTASection } from "@/components/home/cta-banner";
 import Image from 'next/image';
@@ -15,9 +16,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     return {
         title: t('metaTitle'),
         description: t('metaDescription'),
-        alternates: {
-            canonical: `https://restaurantpack.se${locale === 'en' ? '' : `/${locale}`}/delivery-information`,
-        },
+        alternates: localeAlternates(locale, '/delivery-information'),
     };
 }
 

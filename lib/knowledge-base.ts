@@ -219,7 +219,7 @@ function getPackagingInfo(): KnowledgeBaseResponse {
     if (packagingCategory) {
         const examples = packagingCategory.examples.join(', ');
         return {
-            answer: `**Packaging Supplies:**\n\n${packagingCategory.description}\n\n**Available products:** ${examples}\n\nPerfect for sweet shops, restaurants, and catering businesses!\n\n[Browse Packaging](/product-category/packing)`,
+            answer: `**Packaging Supplies:**\n\n${packagingCategory.description}\n\n**Available products:** ${examples}\n\nPerfect for sweet shops, restaurants, and catering businesses!\n\n[Browse Packaging](/shop/category/packing)`,
             confidence: 'high',
             category: 'products'
         };

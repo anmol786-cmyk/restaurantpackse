@@ -101,7 +101,7 @@ export function productCategorySchema(
     return collectionPageSchema({
         name: category.name,
         description: category.description,
-        url: `${baseUrl}/product-category/${category.slug}`,
+        url: `${baseUrl}/shop/category/${category.slug}`,
         items: products.map(product => ({
             url: `${baseUrl}/product/${product.slug}`,
             name: product.name,

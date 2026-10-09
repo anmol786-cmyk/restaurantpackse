@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { localeAlternates } from '@/lib/seo/alternates';
 import Image from "next/image";
 import { Link } from '@/i18n/navigation';
 import { brandConfig } from "@/config/brand.config";
@@ -13,9 +14,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   return {
     title: t('metaTitle'),
     description: t('metaDescription'),
-    alternates: {
-      canonical: `https://restaurantpack.se${locale === 'en' ? '' : `/${locale}`}/about`,
-    },
+    alternates: localeAlternates(locale, '/about'),
   };
 }
 

@@ -1,5 +1,6 @@
 import { revalidatePath, revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
+import { CATALOG_CACHE_TAG } from "@/lib/woocommerce/api";
 
 export const maxDuration = 30;
 
@@ -60,6 +61,8 @@ export async function POST(request: NextRequest) {
           revalidateTag(`posts-tag-${contentId}`);
           revalidateTag(`tag-${contentId}`);
         }
+      } else if (contentType === "product") {
+        revalidateTag(CATALOG_CACHE_TAG);
       } else if (contentType === "author" || contentType === "user") {
         revalidateTag("authors");
         if (contentId) {

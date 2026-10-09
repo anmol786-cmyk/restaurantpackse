@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import { localeAlternates } from '@/lib/seo/alternates';
 import { Link } from '@/i18n/navigation';
 import { getTranslations } from 'next-intl/server';
 import { BusinessRegisterForm } from '@/components/auth/business-register-form';
@@ -10,6 +11,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     return {
         title: t('metaTitle'),
         description: t('metaDescription'),
+        alternates: localeAlternates(locale, '/wholesale/register'),
     };
 }
 

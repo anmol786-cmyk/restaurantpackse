@@ -5,6 +5,7 @@
  * Handles authentication, caching, error handling, and response parsing.
  */
 
+import { unstable_cache } from 'next/cache';
 import { WC_API_CONFIG, getWooCommerceAuthHeader, buildQueryString } from './config';
 import type { WooCommerceError } from '@/types/woocommerce';
 
@@ -57,6 +58,27 @@ function parseWooCommerceError(status: number, errorData: any): WooCommerceAPIEr
  * @param options - Fetch options
  * @returns Parsed JSON response
  */
+/**
+ * Catalogue reads (products, categories, variations) are cached in the Next.js data cache.
+ * Without this every page view and every Googlebot hit made live calls to WordPress,
+ * which timed out under crawl load and surfaced as random 404s.
+ * Purge early via revalidateTag(CATALOG_CACHE_TAG) (see app/api/revalidate).
+ */
+export const CATALOG_CACHE_TAG = 'woocommerce-catalog';
+const CATALOG_CACHE_SECONDS = 300;
+
+function isCacheableCatalogRead(endpoint: string, options: RequestInit): boolean {
+  const method = (options.method || 'GET').toUpperCase();
+  // fetchWooCommerceCached passes next.revalidate; it lands here too (the live fetch below forces no-store)
+  return method === 'GET' && endpoint.startsWith('/products') && options.cache !== 'no-store';
+}
+
+const fetchCatalogCached = unstable_cache(
+  async (endpoint: string): Promise<unknown> => fetchWooCommerceUncached(endpoint, {}),
+  ['woocommerce-catalog-v1'],
+  { revalidate: CATALOG_CACHE_SECONDS, tags: [CATALOG_CACHE_TAG, 'woocommerce'] }
+);
+
 export async function fetchWooCommerceAPI<T>(
   endpoint: string,
   options: RequestInit = {}
@@ -68,6 +90,45 @@ export async function fetchWooCommerceAPI<T>(
     );
   }
 
+  if (isCacheableCatalogRead(endpoint, options)) {
+    return fetchCatalogCached(endpoint) as Promise<T>;
+  }
+
+  return fetchWooCommerceUncached<T>(endpoint, options);
+}
+
+/**
+ * GET requests are retried on transient failures: under concurrent load the Hostinger
+ * WordPress returns "Error establishing a database connection" (500) or drops connections.
+ */
+const RETRY_DELAYS_MS = [400, 1200];
+
+function isTransientFailure(error: unknown): boolean {
+  if (!(error instanceof WooCommerceAPIError)) return false;
+  return error.status === 0 || error.status === 429 || error.status >= 500;
+}
+
+async function fetchWooCommerceUncached<T>(
+  endpoint: string,
+  options: RequestInit
+): Promise<T> {
+  const isGet = (options.method || 'GET').toUpperCase() === 'GET';
+  for (let attempt = 0; ; attempt++) {
+    try {
+      return await fetchWooCommerceOnce<T>(endpoint, options);
+    } catch (error) {
+      if (!isGet || attempt >= RETRY_DELAYS_MS.length || !isTransientFailure(error)) {
+        throw error;
+      }
+      await new Promise((resolve) => setTimeout(resolve, RETRY_DELAYS_MS[attempt]));
+    }
+  }
+}
+
+async function fetchWooCommerceOnce<T>(
+  endpoint: string,
+  options: RequestInit
+): Promise<T> {
   const url = `${WC_API_CONFIG.baseUrl}${endpoint}`;
 
   try {
@@ -94,7 +155,7 @@ export async function fetchWooCommerceAPI<T>(
     const response = await fetch(url, {
       ...options,
       headers,
-      cache: 'no-store', // Disable cache for debugging
+      cache: 'no-store', // Live request; catalogue reads are cached one level up via unstable_cache
     });
 
     // Log response status

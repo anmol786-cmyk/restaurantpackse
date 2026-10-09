@@ -24,6 +24,14 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(url, 301);
   }
 
+  // Strip legacy WooCommerce/WordPress query params (?add-to-cart=, ?page_id=) that got indexed
+  if (request.nextUrl.searchParams.has('add-to-cart') || request.nextUrl.searchParams.has('page_id')) {
+    const url = request.nextUrl.clone();
+    url.searchParams.delete('add-to-cart');
+    url.searchParams.delete('page_id');
+    return NextResponse.redirect(url, 301);
+  }
+
   // Let next-intl handle locale detection and routing
   return intlMiddleware(request);
 }

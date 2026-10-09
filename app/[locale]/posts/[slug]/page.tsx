@@ -1,3 +1,4 @@
+import { localeAlternates } from '@/lib/seo/alternates';
 import {
   getPostBySlug,
   getFeaturedMediaById,
@@ -24,7 +25,7 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string; slug: string }>;
 }): Promise<Metadata> {
-  const { slug } = await params;
+  const { locale, slug } = await params;
   const post = await getPostBySlug(slug);
 
   if (!post) {
@@ -42,9 +43,7 @@ export async function generateMetadata({
   return {
     title: post.title.rendered,
     description: description,
-    alternates: {
-      canonical: postUrl,
-    },
+    alternates: localeAlternates(locale, `/posts/${post.slug}`),
     openGraph: {
       title: post.title.rendered,
       description: description,

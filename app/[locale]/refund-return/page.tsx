@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import { localeAlternates } from '@/lib/seo/alternates';
 import { brandProfile } from '@/config/brand-profile';
 import { getTranslations } from 'next-intl/server';
 import { RotateCcw, Package, Clock, CheckCircle2, XCircle, Mail, MessageCircle, MapPin } from 'lucide-react';
@@ -11,9 +12,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     return {
         title: t('metaTitle'),
         description: t('metaDescription'),
-        alternates: {
-            canonical: '/refund-return',
-        },
+        alternates: localeAlternates(locale, '/refund-return'),
     };
 }
 
