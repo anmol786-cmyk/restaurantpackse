@@ -36,6 +36,7 @@ export function QuantitySelector({
 
   // Carton products step by full cartons (12, 24, 36...)
   const packSize = productId ? CommerceRules.getPackSize(productId) : 1;
+  const packLabel = productId ? CommerceRules.getPackLabel(productId) : 'carton';
   const effectiveMax = packSize > 1 ? Math.max(effectiveMin, Math.floor(max / packSize) * packSize) : max;
 
   // Ensure initial quantity respects MOQ
@@ -155,14 +156,14 @@ export function QuantitySelector({
 
         <span className="text-sm text-muted-foreground">
           {quantity === 1 ? '1 item' : `${quantity} items`}
-          {packSize > 1 && ` (${quantity / packSize} ${quantity / packSize === 1 ? 'carton' : 'cartons'})`}
+          {packSize > 1 && ` (${quantity / packSize} ${packLabel}${quantity / packSize === 1 ? '' : 's'})`}
         </span>
       </div>
 
       {/* MOQ Notice */}
       {packSize > 1 ? (
         <p className="text-xs text-accent-foreground">
-          Sold in full cartons of {packSize} units
+          Sold in full {packLabel}s of {packSize} units
         </p>
       ) : moq > 1 && quantity === effectiveMin && (
         <p className="text-xs text-accent-foreground">

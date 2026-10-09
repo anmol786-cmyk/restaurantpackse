@@ -135,12 +135,12 @@ export const QUANTITY_DISCOUNT_ENABLED_PRODUCTS = [
 export const GLOBAL_MOQ = 1;
 
 /**
- * Carton products
- * Priced per single unit in WooCommerce, but only sold in full cartons:
- * MOQ = packSize and quantity steps by packSize (12, 24, 36...).
- * UPDATED: 2026-10-10 - prices converted from per-carton to per-unit
+ * Carton / pack products
+ * Priced per single unit (bottle, bag, container...) in WooCommerce, but only sold
+ * in full cartons or packs: MOQ = packSize and quantity steps by packSize (12, 24, 36...).
+ * UPDATED: 2026-10-10 - prices converted from per-carton/pack to per-unit
  */
-export const CARTON_PRODUCTS: { productId: number; packSize: number; name?: string }[] = [
+export const CARTON_PRODUCTS: { productId: number; packSize: number; packLabel?: 'carton' | 'pack'; name?: string }[] = [
   { productId: 254, packSize: 12, name: 'Hamdard Rooh Afza Syrup (12 x 800ml)' },
   { productId: 224, packSize: 12, name: 'ANYTIME Mango Chaunsa Nectar (12 x 1L)' },
   { productId: 228, packSize: 24, name: 'ANYTIME Mango Chaunsa Nectar (24 x 200ml)' },
@@ -148,6 +148,14 @@ export const CARTON_PRODUCTS: { productId: number; packSize: number; name?: stri
   { productId: 220, packSize: 12, name: 'Medjool Dates (12 pack set)' },
   { productId: 185, packSize: 6, name: 'TRS Gram Flour (6 x 2kg)' },
   { productId: 184, packSize: 6, name: 'Lazzat Kesar Mango Pulp (6 x 850g)' },
+  // Packaging - sold per pack, priced per piece
+  { productId: 275, packSize: 800, packLabel: 'pack', name: 'Clear Plastic Shopping Bags 45x55 (800 pcs)' },
+  { productId: 277, packSize: 100, packLabel: 'pack', name: 'Dressing Cup 50ml with Lid (100 pcs)' },
+  { productId: 230, packSize: 250, packLabel: 'pack', name: 'Pappers Plant Kasse Brun 11L (250 pcs)' },
+  { productId: 270, packSize: 250, packLabel: 'pack', name: 'MICROFORM Black Container 650ml (250 pcs)' },
+  { productId: 238, packSize: 50, packLabel: 'pack', name: "'Celebration' Sweet Boxes (50 pcs, all sizes)" },
+  { productId: 232, packSize: 50, packLabel: 'pack', name: 'MICROFORM PP svart 750ml (50 pcs)' },
+  { productId: 234, packSize: 50, packLabel: 'pack', name: 'LOCK till Microform 500-960ml (50 pcs)' },
 ];
 
 /**
@@ -317,6 +325,13 @@ export const CommerceRules = {
    */
   getPackSize(productId: number): number {
     return CARTON_PRODUCTS.find(c => c.productId === productId)?.packSize ?? 1;
+  },
+
+  /**
+   * 'carton' or 'pack' - how the product's bundle is described to customers
+   */
+  getPackLabel(productId: number): 'carton' | 'pack' {
+    return CARTON_PRODUCTS.find(c => c.productId === productId)?.packLabel ?? 'carton';
   },
 
   /**

@@ -147,7 +147,7 @@ export const useCartStore = create<CartState>()(
           if (snappedTotal !== currentQuantity + finalQuantity) {
             set({
               notification: {
-                message: `Sold in full cartons of ${packSize} units. Quantity adjusted to ${snappedTotal}.`,
+                message: `Sold in full ${CommerceRules.getPackLabel(product.id)}s of ${packSize} units. Quantity adjusted to ${snappedTotal}.`,
                 type: 'info',
                 timestamp: Date.now(),
               },

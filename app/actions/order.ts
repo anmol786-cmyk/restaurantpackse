@@ -10,7 +10,7 @@ export async function createOrderAction(orderData: CreateOrderData) {
         if (packSize > 1 && line.quantity % packSize !== 0) {
             return {
                 success: false,
-                error: `Some items are sold in full cartons of ${packSize} units. Please update the quantity in your cart.`,
+                error: `Some items are sold in full ${CommerceRules.getPackLabel(line.product_id)}s of ${packSize} units. Please update the quantity in your cart.`,
             };
         }
     }

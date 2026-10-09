@@ -157,7 +157,7 @@ export function ProductCard({ product, className }: ProductCardProps) {
             {packSize > 1 ? (
               <div className="flex items-center gap-1.5 mt-2">
                 <span className="text-xs text-accent-foreground bg-accent/20 px-2 py-0.5 rounded-full font-medium">
-                  Carton of {packSize} · {formatCurrency(parseFloat(String(product.price || '0')) * packSize)}
+                  {CommerceRules.getPackLabel(product.id) === 'pack' ? 'Pack' : 'Carton'} of {packSize} · {formatCurrency(parseFloat(String(product.price || '0')) * packSize)}
                 </span>
               </div>
             ) : CommerceRules.getMOQ(product.id) > 1 && (
