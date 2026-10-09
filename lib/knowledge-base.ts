@@ -107,7 +107,7 @@ function getShippingInfo(query: string): KnowledgeBaseResponse {
 
     if (query.includes('stockholm')) {
         return {
-            answer: `**Stockholm Delivery:**\n\n🚚 **Same-day delivery** available via our own fleet\n📍 **Pickup available** at Fagerstagatan 13, Spånga\n💰 **Free shipping** for wholesale orders\n\nFor the fastest service, schedule a pickup from our warehouse!`,
+            answer: `**Stockholm Delivery:**\n\n🚚 **Same-day delivery** available via our own fleet\n📍 **Pickup available** at Fagerstagatan 11, Spånga\n💰 **Free shipping** for wholesale orders\n\nFor the fastest service, schedule a pickup from our warehouse!`,
             confidence: 'high',
             category: 'shipping'
         };

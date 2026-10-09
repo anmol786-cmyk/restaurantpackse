@@ -265,7 +265,7 @@ async function generateCompanyPresentation(): Promise<Buffer> {
         'Phone: +46 8 XXX XXXX',
         '',
         'Address:',
-        'Fagerstagatan 13',
+        'Fagerstagatan 11',
         '163 53 Spånga, Sweden',
     ].join('\n');
 

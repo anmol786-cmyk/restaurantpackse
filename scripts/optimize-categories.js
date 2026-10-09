@@ -11,7 +11,7 @@ const categories = [
 <h2>Wholesale Rice Supply for the Professional Scandinavian Kitchen</h2>
 <p>At <strong>Anmol Wholesale</strong>, we provide the foundational grain for your restaurant's success. Based in Stockholm, we specialize in high-quality, professional-grade rice varieties, including our premium aroma-aged <strong>Basmati Rice</strong>. We understand that in a high-volume kitchen, you need rice that remains separate, fluffy, and aromatic across every service. Our "Locally Stocked + Imported" model ensures that restaurants in Sweden, Norway, and Finland have access to the same elite grains used in our own <strong>Anmol Sweets & Restaurant</strong>.</p>
 <h3>The Anmol Advantage: 15% Lower Prices, Own Delivery</h3>
-<p>By bypassing traditional retail markups and operating directly from our Spånga warehouse at Fagerstagatan 13, we offer wholesale rice at prices typically <strong>15% lower</strong> than standard market rates. We manage our <strong>own delivery fleet</strong> to ensure your pallet-level stock arrives in perfect condition. Whether you need 5kg packs or 20kg bulk bags, our logistics network provides the reliability your business depends on.</p>
+<p>By bypassing traditional retail markups and operating directly from our Spånga warehouse at Fagerstagatan 11, we offer wholesale rice at prices typically <strong>15% lower</strong> than standard market rates. We manage our <strong>own delivery fleet</strong> to ensure your pallet-level stock arrives in perfect condition. Whether you need 5kg packs or 20kg bulk bags, our logistics network provides the reliability your business depends on.</p>
     `
     },
     {
@@ -27,7 +27,7 @@ const categories = [
         id: 28, // Flour & Grains
         description: `
 <h2>Bulk Flour & Grains: The Strength Behind Your Bakery and Bread</h2>
-<p>Success in baking begins with the protein and purity of your grain. At <strong>Anmol Wholesale</strong>, we supply professional bakeries, pizzerias, and ethnic restaurants throughout Northern Europe with <strong>25kg bulk Wheat Flour (Type 550)</strong> and authentic <strong>TRS Gram Flour (Besan)</strong>. Our flours are stored in a temperature-controlled Stockholm warehouse (Fagerstagatan 13) to ensure consistent behavior in your commercial ovens. We sell the same high-performance ingredients we use at <strong>Anmol Sweets & Restaurant</strong>.</p>
+<p>Success in baking begins with the protein and purity of your grain. At <strong>Anmol Wholesale</strong>, we supply professional bakeries, pizzerias, and ethnic restaurants throughout Northern Europe with <strong>25kg bulk Wheat Flour (Type 550)</strong> and authentic <strong>TRS Gram Flour (Besan)</strong>. Our flours are stored in a temperature-controlled Stockholm warehouse (Fagerstagatan 11) to ensure consistent behavior in your commercial ovens. We sell the same high-performance ingredients we use at <strong>Anmol Sweets & Restaurant</strong>.</p>
 <h3>Direct Wholesaling: 15% Savings on Professional Staples</h3>
 <p>Stop paying retail markups for your most used ingredients. Anmol Wholesale provides B2B partners in Sweden with prices that are <strong>15% lower</strong> than traditional distributors. We leverage our own <strong>Scandinavian distribution network</strong> to provide safe, timely delivery of heavy 25kg bags directly to your door. Join the growing list of Nordic bakers who trust Anmol for their foundation ingredients.</p>
     `
@@ -36,7 +36,7 @@ const categories = [
         id: 22, // Dry Goods
         description: `
 <h2>Essential Dry Goods & Pantry Staples: Reliable Bulk Supply for B2B</h2>
-<p>A well-stocked pantry is the heart of an efficient kitchen. <strong>Anmol Wholesale</strong> is Stockholm’s authority on bulk specialty ingredients, including <strong>Dried Whole Milk Powder (26% Fat)</strong> and traditional South Asian staples. Based in Spånga at Fagerstagatan 13, we bridge the gap between imported traditional knowledge and Swedish logistical reliability. We provide the "Locally Stocked + Imported" advantage that gives your restaurant a competitive edge.</p>
+<p>A well-stocked pantry is the heart of an efficient kitchen. <strong>Anmol Wholesale</strong> is Stockholm’s authority on bulk specialty ingredients, including <strong>Dried Whole Milk Powder (26% Fat)</strong> and traditional South Asian staples. Based in Spånga at Fagerstagatan 11, we bridge the gap between imported traditional knowledge and Swedish logistical reliability. We provide the "Locally Stocked + Imported" advantage that gives your restaurant a competitive edge.</p>
 <h3>Expert Sourcing from Stockholm's Culinary Leaders</h3>
 <p>Our product selection is informed by 5 years of success running our own <strong>Anmol Sweets & Restaurant</strong>. We offer our pantry staples at <strong>15% lower</strong> prices, backed by our <strong>own delivery fleet</strong> serving Sweden, Norway, Finland, and Denmark. Whether you need bulk milk powder, spices, or specialty grains, Anmol Wholesale is your partner for professional kitchen consistency and cost-effective B2B sourcing.</p>
     `

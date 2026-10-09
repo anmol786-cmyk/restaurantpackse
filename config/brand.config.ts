@@ -21,7 +21,7 @@ export const brandConfig = {
 
   // Contact Information
   contact: {
-    address: "Fagerstagatan 13, 163 53 Spånga, Sweden",
+    address: "Fagerstagatan 11, 163 53 Spånga, Sweden",
     phone: "+46769178456",
     phoneSecondary: "+46769178456",
     whatsapp: "+46769178456",

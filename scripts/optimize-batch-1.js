@@ -16,12 +16,12 @@ const products = [
 <p>We are not just wholesalers; we are restaurateurs. Having operated <strong>Anmol Sweets & Restaurant</strong> in Stockholm for over 5 years, we have first-hand experience with how food colours behave under high heat (like in our own manufactured Electric Tandoors). We selected this Rangkat formula because it maintains its brilliance without becoming bitter or fading during the cooking process. When you use our Rangkat, you are using the same secret ingredient that makes our Stockholm restaurant's dishes visually stunning.</p>
 
 <h3>Stockholm’s Wholesale Advantage: 15% Lower Prices</h3>
-<p>As a B2B partner based in Spånga (Fagerstagatan 13), we are committed to helping Swedish restaurants maximize their ROI. By sourcing in bulk and leveraging our direct distribution model, we offer our Rangkat powder at prices that are <strong>15% lower</strong> than traditional grocery distributors. For a high-volume restaurant, these savings on pantry staples add up significantly over the year, allowing you to reinvest in your kitchen and staff.</p>
+<p>As a B2B partner based in Spånga (Fagerstagatan 11), we are committed to helping Swedish restaurants maximize their ROI. By sourcing in bulk and leveraging our direct distribution model, we offer our Rangkat powder at prices that are <strong>15% lower</strong> than traditional grocery distributors. For a high-volume restaurant, these savings on pantry staples add up significantly over the year, allowing you to reinvest in your kitchen and staff.</p>
 
 <h3>Logistics Excellence: Own Delivery across Scandinavia</h3>
 <p>When you order from Anmol Wholesale, you aren't just getting a product; you're getting a reliable supply chain. We operate our <strong>own delivery fleet</strong> across Sweden and have a robust network covering <strong>Norway, Finland, and Denmark</strong>. Unlike generic couriers, our drivers understand the importance of careful handling for wholesale tubs.
 <ul>
-  <li><strong>Local Spånga Pickup:</strong> Visit us at Fagerstagatan 13 for immediate ex-warehouse collection.</li>
+  <li><strong>Local Spånga Pickup:</strong> Visit us at Fagerstagatan 11 for immediate ex-warehouse collection.</li>
   <li><strong>Custom Freight Options:</strong> Choose from our own delivery service or your preferred third-party provider like DHL, PostNord, or DB Schenker.</li>
 </ul>
 </p>
@@ -49,7 +49,7 @@ const products = [
 <p>Drawing from our own journey at <strong>Anmol Sweets & Restaurant</strong> in Stockholm, we understand that oil consistency is vital for flavor integrity. We have personally tested this Matolja in our Spånga-based operations to ensure it doesn't impart unwanted flavors or break down under prolonged heat. Whether you are preparing traditional Swedish dishes or authentic South Asian cuisine, our oil provides the clean foundation your recipes deserve.</p>
 
 <h3>Wholesale Pricing: 15% Below Market Rate</h3>
-<p>In the current economic climate, food cost management is critical. Anmol Wholesale offers this 10L bulk Matolja at <strong>15% lower</strong> prices than standard wholesale competitors. We achieve this by sourcing direct and operating out of our specialized warehouse at Fagerstagatan 13. By reducing intermediary costs, we pass the savings directly to you, helping your restaurant maintain profitability without compromising on the quality of your base ingredients.</p>
+<p>In the current economic climate, food cost management is critical. Anmol Wholesale offers this 10L bulk Matolja at <strong>15% lower</strong> prices than standard wholesale competitors. We achieve this by sourcing direct and operating out of our specialized warehouse at Fagerstagatan 11. By reducing intermediary costs, we pass the savings directly to you, helping your restaurant maintain profitability without compromising on the quality of your base ingredients.</p>
 
 <h3>Reliable Logistics: Serving Sweden and Beyond</h3>
 <p>Running out of oil during a busy service is a nightmare. That is why we provide a reliable, <strong>owned delivery system</strong> that covers the Stockholm region and extends throughout <strong>Scandinavia (Sweden, Norway, Finland, Denmark)</strong>. We treat every delivery with the professionalism you expect from a partner who has been in the restaurant business for over 5 years.
@@ -79,7 +79,7 @@ const products = [
 <p>Crispy, golden, and perfectly textured—that is the standard for high-quality fried food. At <strong>Anmol Wholesale</strong>, we provide professionals with the <strong>10 Litre Professional Frying Oil (Frityrolja)</strong> necessary to achieve these results consistently. Specially formulated for a longer fry life and a higher smoke point, our oil is designed to withstand the intense, continuous heat of industrial deep fryers in busy Swedish restaurants and takeaway outlets.</p>
 
 <h3>Chef-Approved: The Anmol Sweets Experience</h3>
-<p>Fried specialties are a cornerstone of our heritage at <strong>Anmol Sweets & Restaurant</strong> in Stockholm. We have spent over 5 years perfecting the art of the samosa and pakora, and we know that the secret lies in the oil. We developed this Frityrolja profile to ensure zero flavor transfer and minimal absorption, so your food stays light and crispy. Our Spånga warehouse (Fagerstagatan 13) carries only the oils that pass our own "Kitchen Integrity Test."</p>
+<p>Fried specialties are a cornerstone of our heritage at <strong>Anmol Sweets & Restaurant</strong> in Stockholm. We have spent over 5 years perfecting the art of the samosa and pakora, and we know that the secret lies in the oil. We developed this Frityrolja profile to ensure zero flavor transfer and minimal absorption, so your food stays light and crispy. Our Spånga warehouse (Fagerstagatan 11) carries only the oils that pass our own "Kitchen Integrity Test."</p>
 
 <h3>Exceptional B2B Savings: 15% Lower Wholesale Prices</h3>
 <p>For restaurants where frying is a primary cooking method, oil is one of the largest recurring expenses. At Anmol Wholesale, we help you slash that cost by providing Frityrolja at <strong>15% lower</strong> prices than the market average. By buying in bulk from our Stockholm hub, you benefit from our direct-to-business model that eliminates retail markups, allowing your café or pizzeria to operate more efficiently.</p>
@@ -87,7 +87,7 @@ const products = [
 <h3>Logistics You Can Trust: Owned Scandinavian Delivery</h3>
 <p>Timely delivery of bulk liquids is a specialized task. Anmol Wholesale manages its <strong>own logistics network</strong>, ensuring your oil arrives sealed and ready for use. We deliver across <strong>Sweden, Norway, Finland, and Denmark</strong>, giving you the peace of mind that your supply chain is managed by professionals who understand the industry.
 <ul>
-  <li><strong>Local Pickup:</strong> Available directly from our Fagerstagatan 13 warehouse in Spånga.</li>
+  <li><strong>Local Pickup:</strong> Available directly from our Fagerstagatan 11 warehouse in Spånga.</li>
   <li><strong>Flexible Sourcing:</strong> Use our delivery fleet or your own preferred freight partner (DB Schenker, PostNord, DHL).</li>
 </ul>
 </p>
@@ -115,12 +115,12 @@ const products = [
 <p>At our sister establishment, <strong>Anmol Sweets & Restaurant</strong> in Stockholm, we have used Hjorthornsalt for over 5 years to perfect our traditional bakery items. We know that in a commercial setting, you need a product that is concentrated and reliable. Our 2kg tub is designed for the European bakery market, providing the high-heat reaction necessary for the crispest possible results. Our Spånga-based expert team ensures every batch meets the exacting standards required by professional pastry chefs.</p>
 
 <h3>Direct B2B Pricing: 15% Below the Competition</h3>
-<p>Professional baking ingredients shouldn't come with a retail premium. Anmol Wholesale provides Hjorthornsalt at <strong>15% lower</strong> prices than standard wholesale suppliers. By operating our own import and distribution hub at Fagerstagatan 13, we minimize overhead and pass those savings directly to our restaurant and bakery partners in Sweden. It is professional-grade quality at ex-warehouse prices.</p>
+<p>Professional baking ingredients shouldn't come with a retail premium. Anmol Wholesale provides Hjorthornsalt at <strong>15% lower</strong> prices than standard wholesale suppliers. By operating our own import and distribution hub at Fagerstagatan 11, we minimize overhead and pass those savings directly to our restaurant and bakery partners in Sweden. It is professional-grade quality at ex-warehouse prices.</p>
 
 <h3>Exclusive Logistics: Serving All of Scandinavia</h3>
 <p>We understand that specialty ingredients like Hjorthornsalt are the "missing link" in many kitchen inventories. We ensure your pantry is never empty through our <strong>own delivery system</strong>, covering <strong>Sweden, Norway, Finland, and Denmark</strong>. We provide the reliability of a local partner with the reach of a major distributor.
 <ul>
-  <li><strong>Local Spånga Pickup:</strong> Collect your order directly from our Fagerstagatan 13 warehouse.</li>
+  <li><strong>Local Spånga Pickup:</strong> Collect your order directly from our Fagerstagatan 11 warehouse.</li>
   <li><strong>Choice of Freight:</strong> We coordinate with major logistics partners like DHL, PostNord, and DB Schenker for your convenience.</li>
 </ul>
 </p>
@@ -145,7 +145,7 @@ const products = [
 <p>Controlling texture, sweetness, and shelf-life is the hallmark of professional food production. At <strong>Anmol Wholesale</strong>, we provide our <strong>12.5kg Glucose Syrup (Glykos)</strong> to restaurants, bakeries, and food manufacturers throughout Scandinavia. Whether you are tempering chocolate, baking moist cakes, or preventing crystallization in artisanal ice creams, our high-purity Glykos is the industry-standard choice for demanding professional applications.</p>
 
 <h3>Real-World Expertise from Anmol Sweets & Restaurant</h3>
-<p>Confectionery is in our DNA. At <strong>Anmol Sweets & Restaurant</strong> in Stockholm, we have spent 5 years perfecting traditional South Asian sweets where glucose control is critical for the perfect glaze and bite. We carry this 12.5kg tub because it is the exact size and quality we use in our own commercial production. Based at Fagerstagatan 13, we are uniquely positioned to offer advice on how to integrate Glykos into your existing recipes to improve consistency and quality.</p>
+<p>Confectionery is in our DNA. At <strong>Anmol Sweets & Restaurant</strong> in Stockholm, we have spent 5 years perfecting traditional South Asian sweets where glucose control is critical for the perfect glaze and bite. We carry this 12.5kg tub because it is the exact size and quality we use in our own commercial production. Based at Fagerstagatan 11, we are uniquely positioned to offer advice on how to integrate Glykos into your existing recipes to improve consistency and quality.</p>
 
 <h3>Wholesale Value: 15% Lower Prices for B2B Partners</h3>
 <p>As a specialized wholesaler, we cut out the middlemen to offer Glykos at <strong>15% lower</strong> prices than the competition. We understand that in high-volume food production, ingredient costs are a major factor in your bottom line. By sourcing your glucose directly from our Stockholm hub, you benefit from our collective buying power and efficient "Locally Stocked + Imported" model, keeping your café or bakery profitable.</p>

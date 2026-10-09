@@ -604,7 +604,7 @@
         },
         {
           "q": "Kan jag arrangera egen fraktlösning?",
-          "a": "Ja! Vi stödjer tredjepartsfraktarrangemang. Din transportör kan hämta Ex-Lager från Fagerstagatan 13, Spånga. Ordrar prissätts Ex-Lager för självhämtning. Schemalägg under våra öppettider: Mån-Fre 10-20, Lör-Sön 11-19."
+          "a": "Ja! Vi stödjer tredjepartsfraktarrangemang. Din transportör kan hämta Ex-Lager från Fagerstagatan 11, Spånga. Ordrar prissätts Ex-Lager för självhämtning. Schemalägg under våra öppettider: Mån-Fre 10-20, Lör-Sön 11-19."
         },
         {
           "q": "Erbjuder ni pall- och kollileverans?",
@@ -763,7 +763,7 @@
     "freightCalculationDesc": "Baserat på vikt och destination. Beräknas automatiskt i kassan.",
     "bulkOrders": "Bulkbeställningar",
     "bulkOrdersDesc": "Kontakta oss för förmånliga pallpriser och rabatter för återkommande beställningar.",
-    "shippingFrom": "Skickas från: Fagerstagatan 13, 163 53 Spånga, Sverige",
+    "shippingFrom": "Skickas från: Fagerstagatan 11, 163 53 Spånga, Sverige",
     "europeanSupport": "Europeisk B2B-support",
     "europeanSupportDesc": "Frågor om frakt till ditt land eller bulkpriser?",
     "emailB2B": "Maila B2B-teamet",
@@ -859,7 +859,7 @@
     "nonReturnableItems": "Färskvaror och mejeriprodukter.|Frysta varor (paneer, parathas).|Öppnade eller brutna förseglingar.|Rea- eller slutförsäljningsvaror.",
     "howToReturnTitle": "Så Returnerar du",
     "inPersonTitle": "Personligen (Stockholms Lager)",
-    "inPersonDesc": "Du är välkommen att returnera berättigade varor direkt till vårt lager på Fagerstagatan 13, Spånga. Ta med ditt köpbevis (faktura eller orderbekräftelse).",
+    "inPersonDesc": "Du är välkommen att returnera berättigade varor direkt till vårt lager på Fagerstagatan 11, Spånga. Ta med ditt köpbevis (faktura eller orderbekräftelse).",
     "byPostTitle": "Per Post (Sverige & Europa)",
     "byPostStep1": "1. Kontakta oss först via WhatsApp eller e-post för att meddela din returbegäran.",
     "byPostStep2": "2. När det bekräftats, packa varorna säkert och skicka dem till vår Stockholmsadress.",
@@ -1095,7 +1095,7 @@
     "dhlTitle": "DHL-partnerskap - Europa",
     "dhlDesc": "Pålitlig frakt i Sverige, Skandinavien och viktiga europeiska marknader inklusive Tyskland, Norge, Finland, Storbritannien och Spanien.",
     "exWarehouseTitle": "Ex-Lager - Spånga",
-    "exWarehouseDesc": "Hämta direkt från vårt lager på Fagerstagatan 13, Spånga. Använd din egen logistikpartner för maximal kostnadseffektivitet.",
+    "exWarehouseDesc": "Hämta direkt från vårt lager på Fagerstagatan 11, Spånga. Använd din egen logistikpartner för maximal kostnadseffektivitet.",
     "ctaTitle": "Redo att Samarbeta med Anmol Wholesale?",
     "ctaDesc": "Gå med i vårt nätverk av professionella kockar, krögare, livsmedelsbutiker och cateringföretag. Upplev skillnaden av att arbeta med leverantörer som verkligen förstår livsmedelsbranschen.",
     "ctaOpenAccount": "Öppna B2B-konto",

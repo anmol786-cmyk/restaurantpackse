@@ -213,7 +213,7 @@ export default async function EuropeDeliveryPage() {
                                                 {t('exWarehouseDesc')}
                                             </p>
                                             <ul className="text-sm space-y-1 text-muted-foreground">
-                                                <li>&#x2022; Orders priced Ex-Warehouse (Fagerstagatan 13, Sp&aring;nga)</li>
+                                                <li>&#x2022; Orders priced Ex-Warehouse (Fagerstagatan 11, Sp&aring;nga)</li>
                                                 <li>&#x2022; Coordinate pickup Mon-Fri: 10 AM - 8 PM | Sat-Sun: 11 AM - 7 PM</li>
                                                 <li>&#x2022; Maximum cost control for large international shipments</li>
                                             </ul>

@@ -398,7 +398,7 @@ export default async function WholesaleLandingPage({ params }: { params: Promise
                                     <span className="text-xs font-bold uppercase tracking-widest">{t('warehousePickup')}</span>
                                 </div>
                                 <p className="text-sm text-white leading-relaxed">
-                                    Fagerstagatan 13,<br />
+                                    Fagerstagatan 11,<br />
                                     163 53 Sp&aring;nga, Sweden
                                 </p>
                             </div>

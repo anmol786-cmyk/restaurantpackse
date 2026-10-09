@@ -27,12 +27,12 @@ export const brandProfile = {
 
     // Physical Warehouse Address
     address: {
-        street: "Fagerstagatan 13",
+        street: "Fagerstagatan 11",
         area: "Spånga",
         postalCode: "163 53",
         city: "Stockholm",
         country: "Sweden",
-        formatted: "Fagerstagatan 13, 163 53 Spånga, Stockholm, Sweden",
+        formatted: "Fagerstagatan 11, 163 53 Spånga, Stockholm, Sweden",
     },
 
     // Business Hours
@@ -99,7 +99,7 @@ export const brandProfile = {
         },
         exWarehouse: {
             available: true,
-            location: "Fagerstagatan 13, 163 53 Spånga",
+            location: "Fagerstagatan 11, 163 53 Spånga",
             instructions: "Customers can arrange their own logistics and pickup at warehouse",
         },
     },

@@ -202,7 +202,7 @@ export default async function DeliveryInformationPage() {
                                                 <div className="flex items-start gap-4">
                                                     <MapPin className="w-5 h-5 text-primary flex-shrink-0 mt-1" />
                                                     <div>
-                                                        <p className="font-bold text-lg">Fagerstagatan 13</p>
+                                                        <p className="font-bold text-lg">Fagerstagatan 11</p>
                                                         <p className="text-neutral-400">163 53 Sp&aring;nga, Sweden</p>
                                                     </div>
                                                 </div>

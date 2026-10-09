@@ -21,7 +21,7 @@ Competitive B2B Pricing: We are structured to offer competitive wholesale pricin
 Primary Market: Sweden
 Key Expansion Markets: Germany, Norway, Finland.
 Mentioned Markets of Interest: United Kingdom (UK), Spain.
-Physical Location / Warehouse: Fagerstagatan 13, 163 53 Spånga, Sweden.
+Physical Location / Warehouse: Fagerstagatan 11, 163 53 Spånga, Sweden.
 4. Target Audience
 Primary Audience: Indo-Pak (Indian, Pakistani) food-related businesses.
 Key Customer Segments:
@@ -54,7 +54,7 @@ Reliable & Professional: Our language is clear, direct, and focused on the needs
 Authentic & Passionate: We share a genuine passion for high-quality food and authentic flavours.
 Partner-Oriented: We use collaborative language ("your partner," "your success") to show we are invested in our clients' businesses.
 8. Contact Details
-Physical Address: Fagerstagatan 13, 163 53 Spånga, Sweden
+Physical Address: Fagerstagatan 11, 163 53 Spånga, Sweden
 Email: info@restaurantpack.se | wholesale@restaurantpack.se
 Phone Number: +46 76 917 84 56
 

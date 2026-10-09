@@ -57,7 +57,7 @@ export function TopInfoBar() {
           <div className="flex items-center gap-1.5 group">
             <MapPin className="h-3 w-3 text-white/60 group-hover:text-white transition-colors" />
             <a href={contact.googleMapsUrl} target="_blank" rel="noopener noreferrer" className="hover:text-primary-foreground transition-colors">
-              Fagerstagatan 13, Spånga
+              Fagerstagatan 11, Spånga
             </a>
           </div>
         </div>

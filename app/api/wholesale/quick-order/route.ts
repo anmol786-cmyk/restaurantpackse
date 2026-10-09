@@ -374,7 +374,7 @@ function generateOrderEmailHTML(
 
         <div style="text-align: center; padding: 20px; color: #6b7280; font-size: 14px;">
           <p>Anmol Wholesale - Restaurant Supply & Foodservice Distribution</p>
-          <p>Fagerstagatan 13, 163 53 Spånga, Sweden | +46769178456</p>
+          <p>Fagerstagatan 11, 163 53 Spånga, Sweden | +46769178456</p>
         </div>
       </body>
     </html>
@@ -456,7 +456,7 @@ function generateCustomerConfirmationHTML(
 
         <div style="text-align: center; padding: 20px; color: #6b7280; font-size: 14px;">
           <p>Anmol Wholesale - From Our Restaurant Kitchen to Yours</p>
-          <p>Fagerstagatan 13, 163 53 Spånga, Sweden</p>
+          <p>Fagerstagatan 11, 163 53 Spånga, Sweden</p>
         </div>
       </body>
     </html>

@@ -205,7 +205,7 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
                   <GoogleMapCompact />
                   <div className="p-4 border border-t-0 rounded-b-lg bg-muted/10">
                     <p className="text-xs text-center text-muted-foreground">
-                      Fagerstagatan 13, 163 53 Spånga, Stockholm
+                      Fagerstagatan 11, 163 53 Spånga, Stockholm
                     </p>
                   </div>
                 </div>

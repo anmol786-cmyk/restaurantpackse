@@ -16,7 +16,7 @@
 
 | Field | Value |
 |-------|-------|
-| **Address** | Fagerstagatan 13, Spånga, Stockholm 163 53, Sweden |
+| **Address** | Fagerstagatan 11, Spånga, Stockholm 163 53, Sweden |
 | **Phone** | +46769178456 |
 | **Email** | info@restaurantpack.se |
 | **Coordinates** | 59.3833, 17.8981 |

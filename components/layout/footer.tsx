@@ -148,7 +148,7 @@ export async function Footer() {
                 &copy; {new Date().getFullYear()} {brandProfile.name}. {t('copyright')}
               </p>
               <p className="text-[10px] text-muted-foreground/70">
-                Anmol AB &nbsp;|&nbsp; Org.nr: 559159-8726 &nbsp;|&nbsp; VAT: SE559159872601 &nbsp;|&nbsp; Fagerstagatan 13, 163 53 Spånga, Stockholm
+                Anmol AB &nbsp;|&nbsp; Org.nr: 559159-8726 &nbsp;|&nbsp; VAT: SE559159872601 &nbsp;|&nbsp; Fagerstagatan 11, 163 53 Spånga, Stockholm
               </p>
             </div>
             <div className="flex gap-8">

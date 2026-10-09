@@ -123,7 +123,7 @@ export function anmolWholesaleOrganizationSchema(baseUrl: string = 'https://rest
     telephone: '+46769178456',
     email: 'info@restaurantpack.se',
     address: {
-      street: 'Fagerstagatan 13',
+      street: 'Fagerstagatan 11',
       city: 'Spånga',
       region: 'Stockholm',
       postalCode: '163 53',

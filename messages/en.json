@@ -637,7 +637,7 @@
         },
         {
           "q": "Can I arrange my own freight carrier?",
-          "a": "Yes! We support third-party freight arrangements. Your carrier can collect Ex-warehouse from Fagerstagatan 13, Sp\u00e5nga. Orders are priced Ex-warehouse for self-arranged pickup. Schedule during our operating hours: Mon-Fri 10 AM-8 PM, Sat-Sun 11 AM-7 PM."
+          "a": "Yes! We support third-party freight arrangements. Your carrier can collect Ex-warehouse from Fagerstagatan 11, Sp\u00e5nga. Orders are priced Ex-warehouse for self-arranged pickup. Schedule during our operating hours: Mon-Fri 10 AM-8 PM, Sat-Sun 11 AM-7 PM."
         },
         {
           "q": "Do you offer pallet and case delivery?",
@@ -796,7 +796,7 @@
     "freightCalculationDesc": "Based on weight & destination. Calculated automatically at checkout.",
     "bulkOrders": "Bulk Orders",
     "bulkOrdersDesc": "Contact us for preferential pallet rates and recurring order discounts.",
-    "shippingFrom": "Shipping from: Fagerstagatan 13, 163 53 Sp\u00e5nga, Sweden",
+    "shippingFrom": "Shipping from: Fagerstagatan 11, 163 53 Sp\u00e5nga, Sweden",
     "europeanSupport": "European B2B Support",
     "europeanSupportDesc": "Questions about shipping to your country or bulk pricing?",
     "emailB2B": "Email B2B Team",
@@ -892,7 +892,7 @@
     "nonReturnableItems": "Fresh produce and dairy.|Frozen items (paneer, parathas).|Opened or broken seals.|Clearance or final sale items.",
     "howToReturnTitle": "How to Return",
     "inPersonTitle": "In-Person (Stockholm Warehouse)",
-    "inPersonDesc": "You are welcome to return eligible items directly to our warehouse at Fagerstagatan 13, Sp\u00e5nga. Please bring your proof of purchase (invoice or order confirmation) with you.",
+    "inPersonDesc": "You are welcome to return eligible items directly to our warehouse at Fagerstagatan 11, Sp\u00e5nga. Please bring your proof of purchase (invoice or order confirmation) with you.",
     "byPostTitle": "By Post (Sweden & Europe)",
     "byPostStep1": "1. Contact us first via WhatsApp or email to notify us of your return request.",
     "byPostStep2": "2. Once confirmed, pack the items securely and ship them to our Stockholm address.",
@@ -1128,7 +1128,7 @@
     "dhlTitle": "DHL Partnership - Europe",
     "dhlDesc": "Reliable shipping across Sweden, Scandinavia, and key European markets including Germany, Norway, Finland, UK, and Spain.",
     "exWarehouseTitle": "Ex-Warehouse - Sp\u00e5nga",
-    "exWarehouseDesc": "Pickup directly from our warehouse at Fagerstagatan 13, Sp\u00e5nga. Use your own logistics partner for maximum cost efficiency.",
+    "exWarehouseDesc": "Pickup directly from our warehouse at Fagerstagatan 11, Sp\u00e5nga. Use your own logistics partner for maximum cost efficiency.",
     "ctaTitle": "Ready to Partner with Anmol Wholesale?",
     "ctaDesc": "Join our network of professional chefs, restaurateurs, grocery stores, and caterers. Experience the difference of working with suppliers who truly understand the food business.",
     "ctaOpenAccount": "Open B2B Account",

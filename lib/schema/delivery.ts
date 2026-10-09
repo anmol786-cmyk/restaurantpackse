@@ -165,7 +165,7 @@ export function deliveryFAQSchema(baseUrl: string = 'https://restaurantpack.se')
         name: 'Can I pick up my wholesale order directly?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'Absolutely. We offer Ex-Warehouse pickup from our facility at Fagerstagatan 13, Spånga. This is often the most cost-effective option for local restaurants and grocery stores.',
+          text: 'Absolutely. We offer Ex-Warehouse pickup from our facility at Fagerstagatan 11, Spånga. This is often the most cost-effective option for local restaurants and grocery stores.',
         },
       },
       {

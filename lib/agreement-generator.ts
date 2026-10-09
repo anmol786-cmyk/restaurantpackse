@@ -14,7 +14,7 @@ import { format, addDays, addMonths } from 'date-fns';
 const COMPANY_INFO = {
     name: 'Anmol Wholesale',
     legalName: 'Anmol Wholesale AB',
-    address: 'Fagerstagatan 13',
+    address: 'Fagerstagatan 11',
     city: '163 53 Spånga',
     country: 'Sweden',
     vat: 'SE559253806901',

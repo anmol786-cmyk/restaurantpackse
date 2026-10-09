@@ -134,7 +134,7 @@ export const contentConfig = {
         title: 'Work With Us',
         content: [
           `Opening a business account with ${brandConfig.businessName} gives you access to wholesale pricing, flexible payment terms, and dedicated account management. Whether you need regular weekly deliveries or one-time bulk orders, we're your reliable partner.`,
-          `Visit our warehouse at Fagerstagatan 13 in Spånga, or place orders online 24/7. We also offer ex-warehouse pickup for customers who prefer to arrange their own logistics.`,
+          `Visit our warehouse at Fagerstagatan 11 in Spånga, or place orders online 24/7. We also offer ex-warehouse pickup for customers who prefer to arrange their own logistics.`,
         ],
       },
     },

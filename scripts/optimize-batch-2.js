@@ -16,12 +16,12 @@ const products = [
 <p>We are restaurateurs before we are wholesalers. At <strong>Anmol Sweets & Restaurant</strong> in Stockholm, we have used this exact 26% fat whole milk powder for over 5 years. In traditional South Asian sweets and professional pastry, the fat content is non-negotiable for achieving that smooth, creamy mouthfeel. We have tested this powder across hundreds of batches to ensure it dissolves perfectly and maintains its rich profile under heat. When you buy from Anmol Wholesale, you are buying a product we trust in our own restaurant every single day.</p>
 
 <h3>Unbeatable Wholesale Pricing: 15% Lower Than Market</h3>
-<p>Operating a profitable food business in Sweden requires securing your base ingredients at the best possible price. Anmol Wholesale offers this 25kg bulk bag at <strong>15% lower</strong> prices than standard wholesale distributors. By operating out of our specialized hub in Spånga (Fagerstagatan 13), we eliminate high retail markups and pass those savings directly to our B2B partners. It is the quality you need at a price that respects your budget.</p>
+<p>Operating a profitable food business in Sweden requires securing your base ingredients at the best possible price. Anmol Wholesale offers this 25kg bulk bag at <strong>15% lower</strong> prices than standard wholesale distributors. By operating out of our specialized hub in Spånga (Fagerstagatan 11), we eliminate high retail markups and pass those savings directly to our B2B partners. It is the quality you need at a price that respects your budget.</p>
 
 <h3>Dedicated Logistics: Own Delivery Fleet Across Scandinavia</h3>
 <p>Large 25kg bags of milk powder require dry, stable, and timely transport. Anmol Wholesale manages its <strong>own delivery network</strong>, providing a more reliable service than third-party couriers. We deliver to <strong>Sweden, Norway, Finland, and Denmark</strong>, ensuring your bulk dairy supply is managed by professionals who understand the food industry.
 <ul>
-  <li><strong>Local Pickup:</strong> Available directly from our Fagerstagatan 13 warehouse in Spånga.</li>
+  <li><strong>Local Pickup:</strong> Available directly from our Fagerstagatan 11 warehouse in Spånga.</li>
   <li><strong>Freight Flexibility:</strong> Use our fleet or specify your own shipping partner (DB Schenker, PostNord, DHL).</li>
 </ul>
 </p>
@@ -46,7 +46,7 @@ const products = [
 <p>The secret to every great loaf of bread or pizza crust lies in the strength of the flour. At <strong>Anmol Wholesale</strong>, we provide professional artisans with our <strong>25kg Wheat Flour Type 550</strong>. This premium-grade white flour is characterized by its high protein content and excellent water absorption, making it the versatile "workhorse" ingredient for restaurants, pizzerias, and traditional bakeries throughout Scandinavia.</p>
 
 <h3>Experienced Baking: The Anmol Sweets & Restaurant Connection</h3>
-<p>We know flour because we use it every day. At <strong>Anmol Sweets & Restaurant</strong> in Stockholm, our flatbreads and pastries are world-renowned, and we have perfected our recipes using this exact Type 550 flour for over 5 years. We understand the critical importance of gluten development and consistent behavior under heat. Based at Fagerstagatan 13, our team is not just selling bags; we are sharing the same high-performance ingredient that we use in our own commercial ovens.</p>
+<p>We know flour because we use it every day. At <strong>Anmol Sweets & Restaurant</strong> in Stockholm, our flatbreads and pastries are world-renowned, and we have perfected our recipes using this exact Type 550 flour for over 5 years. We understand the critical importance of gluten development and consistent behavior under heat. Based at Fagerstagatan 11, our team is not just selling bags; we are sharing the same high-performance ingredient that we use in our own commercial ovens.</p>
 
 <h3>B2B Wholesale Advantage: 15% Below the Competition</h3>
 <p>Grain staples shouldn't break your budget. Anmol Wholesale offers Type 550 flour at <strong>15% lower</strong> prices than standard grocery wholesalers. We achieve this through our direct "Locally Stocked + Imported" model, operating from our efficient warehouse in Spånga. By bypassing multi-level distribution chains, we ensure that your Stockholm-based bakery or restaurant gets the best possible margins on its highest-volume ingredient.</p>
@@ -54,7 +54,7 @@ const products = [
 <h3>Logistics You Can Depend On: Owned Scandinavian Network</h3>
 <p>Pallet-level flour orders require heavy-duty, reliable transport. Anmol Wholesale manages its <strong>own logistics network</strong>, delivering across <strong>Sweden, Norway, Finland, and Denmark</strong>. We pride ourselves on the integrity of our delivery, ensuring bags arrive dry and free from damage.
 <ul>
-  <li><strong>Local Pickup:</strong> Collect your order directly from Fagerstagatan 13, Spånga, for immediate ex-warehouse rates.</li>
+  <li><strong>Local Pickup:</strong> Collect your order directly from Fagerstagatan 11, Spånga, for immediate ex-warehouse rates.</li>
   <li><strong>Flexible Sourcing:</strong> Use our dedicated fleet or coordinate with your own logistics partner (DHL, PostNord, DB Schenker).</li>
 </ul>
 </p>
@@ -82,7 +82,7 @@ const products = [
 <p>We are the experts in Besan because it is at the heart of our own heritage. At <strong>Anmol Sweets & Restaurant</strong> in Stockholm, we have used TRS products for over 5 years. We chose this specific wholesale case format because it offers the perfect balance of volume and freshness for a busy commercial station. Whether you are tempering spices or building a batter, our Besan provides the consistent result that our own customers have loved at our Stockholm establishment for years.</p>
 
 <h3>Wholesale Value: 15% Lower Prices for B2B Clients</h3>
-<p>Specialty ingredients often carry a high markup at local retailers. Anmol Wholesale breaks that cycle by offering TRS Gram Flour cases at <strong>15% lower</strong> prices than typical wholesale competitors. By stocking our Spånga warehouse (Fagerstagatan 13) with direct imports, we provide your restaurant or catering business with superior margins, allowing you to serve top-tier authentic dishes at a more profitable price point.</p>
+<p>Specialty ingredients often carry a high markup at local retailers. Anmol Wholesale breaks that cycle by offering TRS Gram Flour cases at <strong>15% lower</strong> prices than typical wholesale competitors. By stocking our Spånga warehouse (Fagerstagatan 11) with direct imports, we provide your restaurant or catering business with superior margins, allowing you to serve top-tier authentic dishes at a more profitable price point.</p>
 
 <h3>Reliable Logistics: Own Delivery across Scandinavia</h3>
 <p>Maintaining a steady supply of specialty flours is critical for menu consistency. We operate our <strong>own delivery fleet</strong> across Sweden and have a dedicated network covering <strong>Norway, Finland, and Denmark</strong>. We treat every wholesale case with the care it deserves, ensuring your Besan arrives dry and ready for use.
@@ -115,7 +115,7 @@ const products = [
 <p>Mango lassis and traditional sweets are a cornerstone of our success at <strong>Anmol Sweets & Restaurant</strong> in Stockholm. We have tested numerous brands over the last 5 years and have selected this Kesar pulp for its purity and lack of artificial fillers. It tastes like a fresh mango picked at the peak of ripeness. When you buy from us, you aren't just getting a canned product; you are getting a chef-approved ingredient that we use ourselves to delight our Stockholm customers every day.</p>
 
 <h3>B2B Wholesale Value: 15% Lower Prices</h3>
-<p>Specialty fruit pulps can be a high-cost overhead. Anmol Wholesale helps you keep your dessert and beverage menus profitable by offering our Kesar pulp at <strong>15% lower</strong> prices than standard wholesale market rates. By stocking our hub in Spånga (Fagerstagatan 13) with high-volume imports, we pass the "direct-to-chef" savings on to you, allowing your café or catering business to serve premium quality without premium costs.</p>
+<p>Specialty fruit pulps can be a high-cost overhead. Anmol Wholesale helps you keep your dessert and beverage menus profitable by offering our Kesar pulp at <strong>15% lower</strong> prices than standard wholesale market rates. By stocking our hub in Spånga (Fagerstagatan 11) with high-volume imports, we pass the "direct-to-chef" savings on to you, allowing your café or catering business to serve premium quality without premium costs.</p>
 
 <h3>Owned Logistics: Safe Delivery Across Scandinavia</h3>
 <p>Canned goods are heavy and sensitive to rough handling. We manage our <strong>own delivery fleet</strong> to ensure your wholesale cases arrive in perfect condition. We deliver throughout <strong>Sweden, Norway, Finland, and Denmark</strong>, giving you the reliability of a local Stockholm partner with international reach.
@@ -145,7 +145,7 @@ const products = [
 <p>In the world of professional baking and gastronomy, sugar is more than just sweetness—it’s about texture, coloration, and structural integrity. At <strong>Anmol Wholesale</strong>, we supply the industry-standard <strong>Nordic Sugar 25kg Bulk Bag</strong> to bakeries, restaurants, and confectioners throughout Scandinavia. This high-purity, even-grained granulated sugar is the essential building block for everything from artisanal breads and pizzerias to traditional Swedish pastries.</p>
 
 <h3>The Professional Standard: Anmol Sweets & Restaurant Verified</h3>
-<p>At <strong>Anmol Sweets & Restaurant</strong> in Stockholm, sugar is the lifeblood of our confectionery production. For over 5 years, we have relied on Nordic Sugar for our most delicate recipes because of its consistent dissolve rate and neutral profile. Based at Fagerstagatan 13, our team understands that in a professional kitchen, you cannot afford "surprise" results from your base ingredients. We sell what we use, ensuring your Stockholm-based business gets a product we trust in our own ovens every day.</p>
+<p>At <strong>Anmol Sweets & Restaurant</strong> in Stockholm, sugar is the lifeblood of our confectionery production. For over 5 years, we have relied on Nordic Sugar for our most delicate recipes because of its consistent dissolve rate and neutral profile. Based at Fagerstagatan 11, our team understands that in a professional kitchen, you cannot afford "surprise" results from your base ingredients. We sell what we use, ensuring your Stockholm-based business gets a product we trust in our own ovens every day.</p>
 
 <h3>Unbeatable B2B Value: 15% Below Retail Wholesalers</h3>
 <p>For high-volume producers, the cost of sugar is a major budget driver. Anmol Wholesale offers Nordic Sugar at <strong>15% lower</strong> prices than standard wholesale competitors. Our "Locally Stocked + Imported" model, operating out of our specialized Spånga warehouse, allows us to cut through the multi-layered distribution chains common in Sweden. We pass those savings directly to our B2B partners, keeping your café or restaurant profitable.</p>
@@ -153,7 +153,7 @@ const products = [
 <h3>Owned Logistics: Reliable Delivery Across Scandinavia</h3>
 <p>Large 25kg bags require sturdy, timely, and professional transport. Anmol Wholesale manages its <strong>own delivery network</strong>, providing a much higher level of service than generic couriers. We serve <strong>Sweden, Norway, Finland, and Denmark</strong>, ensuring your bulk sugar supply is managed by professionals who understand the urgency of commercial food production.
 <ul>
-  <li><strong>Local Pickup:</strong> Visit us at Fagerstagatan 13 in Spånga for ex-warehouse rates and immediate collection.</li>
+  <li><strong>Local Pickup:</strong> Visit us at Fagerstagatan 11 in Spånga for ex-warehouse rates and immediate collection.</li>
   <li><strong>Flexible Sourcing:</strong> Use our dedicated delivery fleet or specify your own freight partner (DHL, PostNord, DB Schenker).</li>
 </ul>
 </p>

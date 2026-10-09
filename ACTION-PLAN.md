@@ -118,7 +118,7 @@ Add 150-250 word intro paragraphs to these categories (in Swedish AND English):
 - [Contact](https://restaurantpack.se/contact): Warehouse address, phone, email, opening hours
 
 ## Key Facts
-- Physical warehouse: Fagerstagatan 13, Spånga, Stockholm 163 53, Sweden
+- Physical warehouse: Fagerstagatan 11, Spånga, Stockholm 163 53, Sweden
 - Phone: +46769178456
 - Email: info@restaurantpack.se
 - Minimum order: 6 units (MOQ) on most products

@@ -118,7 +118,7 @@ export default async function FAQPage() {
                                             <MapPin className="w-5 h-5 text-primary" />
                                             <div>
                                                 <p className="text-sm font-medium">{t('visitWarehouse')}</p>
-                                                <p className="text-xs text-muted-foreground">Fagerstagatan 13, Sp&aring;nga</p>
+                                                <p className="text-xs text-muted-foreground">Fagerstagatan 11, Sp&aring;nga</p>
                                             </div>
                                         </a>
                                     </div>

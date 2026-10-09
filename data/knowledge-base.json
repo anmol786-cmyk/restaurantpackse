@@ -7,7 +7,7 @@
     "type": "B2B Wholesale Food Supplier"
   },
   "contact": {
-    "address": "Fagerstagatan 13, 163 53 Spånga, Sweden",
+    "address": "Fagerstagatan 11, 163 53 Spånga, Sweden",
     "phone": "+46769178456",
     "email": "info@restaurantpack.se",
     "wholesaleEmail": "wholesale@restaurantpack.se"
@@ -77,7 +77,7 @@
     },
     {
       "question": "Can I visit your warehouse?",
-      "answer": "Yes! Our warehouse is located at **Fagerstagatan 13, 163 53 Spånga, Sweden**. You can visit during business hours for ex-warehouse pickup and better rates. Contact us to arrange a visit.",
+      "answer": "Yes! Our warehouse is located at **Fagerstagatan 11, 163 53 Spånga, Sweden**. You can visit during business hours for ex-warehouse pickup and better rates. Contact us to arrange a visit.",
       "category": "location"
     },
     {
@@ -200,7 +200,7 @@
         "courier": "Standard Shipping"
       }
     ],
-    "pickup": "Available at Fagerstagatan 13, Spånga - Ex-warehouse pricing"
+    "pickup": "Available at Fagerstagatan 11, Spånga - Ex-warehouse pricing"
   },
   "payment": {
     "methods": [
