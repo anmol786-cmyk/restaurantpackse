@@ -34,6 +34,10 @@ export function QuantitySelector({
   const moq = productId ? CommerceRules.getMOQ(productId) : min;
   const effectiveMin = Math.max(min, moq);
 
+  // Carton products step by full cartons (12, 24, 36...)
+  const packSize = productId ? CommerceRules.getPackSize(productId) : 1;
+  const effectiveMax = packSize > 1 ? Math.max(effectiveMin, Math.floor(max / packSize) * packSize) : max;
+
   // Ensure initial quantity respects MOQ
   const [quantity, setQuantity] = useState(Math.max(initialQuantity, effectiveMin));
 
@@ -56,15 +60,15 @@ export function QuantitySelector({
 
   const handleDecrease = () => {
     if (quantity > effectiveMin) {
-      const newQuantity = quantity - 1;
+      const newQuantity = Math.max(effectiveMin, quantity - packSize);
       setQuantity(newQuantity);
       onChange?.(newQuantity);
     }
   };
 
   const handleIncrease = () => {
-    if (quantity < max) {
-      const newQuantity = quantity + 1;
+    if (quantity < effectiveMax) {
+      const newQuantity = Math.min(effectiveMax, quantity + packSize);
       setQuantity(newQuantity);
       onChange?.(newQuantity);
     }
@@ -76,18 +80,19 @@ export function QuantitySelector({
     if (isNaN(value) || value < effectiveMin) {
       setQuantity(effectiveMin);
       onChange?.(effectiveMin);
-    } else if (value > max) {
-      setQuantity(max);
-      onChange?.(max);
+    } else if (value > effectiveMax) {
+      setQuantity(effectiveMax);
+      onChange?.(effectiveMax);
     } else {
-      setQuantity(value);
-      onChange?.(value);
+      const snapped = productId ? CommerceRules.snapToPack(productId, value, 'up') : value;
+      setQuantity(snapped);
+      onChange?.(snapped);
     }
   };
 
   const handleAddToNextTier = () => {
     if (discountResult?.quantityToNextTier) {
-      const newQuantity = Math.min(quantity + discountResult.quantityToNextTier, max);
+      const newQuantity = Math.min(quantity + discountResult.quantityToNextTier, effectiveMax);
       setQuantity(newQuantity);
       onChange?.(newQuantity);
     }
@@ -123,7 +128,8 @@ export function QuantitySelector({
         <input
           type="number"
           min={effectiveMin}
-          max={max}
+          max={effectiveMax}
+          step={packSize}
           value={quantity}
           onChange={handleInputChange}
           className={cn(
@@ -140,7 +146,7 @@ export function QuantitySelector({
           size="icon"
           className={sizeClasses[size]}
           onClick={handleIncrease}
-          disabled={quantity >= max}
+          disabled={quantity >= effectiveMax}
           type="button"
           aria-label="Increase quantity"
         >
@@ -149,11 +155,16 @@ export function QuantitySelector({
 
         <span className="text-sm text-muted-foreground">
           {quantity === 1 ? '1 item' : `${quantity} items`}
+          {packSize > 1 && ` (${quantity / packSize} ${quantity / packSize === 1 ? 'carton' : 'cartons'})`}
         </span>
       </div>
 
       {/* MOQ Notice */}
-      {moq > 1 && quantity === effectiveMin && (
+      {packSize > 1 ? (
+        <p className="text-xs text-accent-foreground">
+          Sold in full cartons of {packSize} units
+        </p>
+      ) : moq > 1 && quantity === effectiveMin && (
         <p className="text-xs text-accent-foreground">
           Minimum order: {moq} units
         </p>

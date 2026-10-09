@@ -14,7 +14,7 @@ import { cn, decodeHtmlEntities } from '@/lib/utils';
 import { WishlistToggle } from '@/components/wishlist/wishlist-button';
 import { WholesalePriceDisplay } from '@/components/wholesale/wholesale-price-display';
 import { useCurrency } from '@/hooks/use-currency';
-import { CommerceRules, GLOBAL_MOQ } from '@/config/commerce-rules';
+import { CommerceRules } from '@/config/commerce-rules';
 
 interface ProductCardProps {
   product: Product;
@@ -28,6 +28,7 @@ export function ProductCard({ product, className }: ProductCardProps) {
   const { addItem, openCart } = useCartStore();
   const [isAdding, setIsAdding] = useState(false);
   const { format: formatCurrency } = useCurrency();
+  const packSize = CommerceRules.getPackSize(product.id);
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -152,8 +153,14 @@ export function ProductCard({ product, className }: ProductCardProps) {
 
             <WholesalePriceDisplay basePrice={product.price ? parseFloat(String(product.price)) : 0} />
 
-            {/* MOQ Badge */}
-            {GLOBAL_MOQ > 1 && (
+            {/* MOQ / Carton Badge */}
+            {packSize > 1 ? (
+              <div className="flex items-center gap-1.5 mt-2">
+                <span className="text-xs text-accent-foreground bg-accent/20 px-2 py-0.5 rounded-full font-medium">
+                  Carton of {packSize} · {formatCurrency(parseFloat(String(product.price || '0')) * packSize)}
+                </span>
+              </div>
+            ) : CommerceRules.getMOQ(product.id) > 1 && (
               <div className="flex items-center gap-1.5 mt-2">
                 <span className="text-xs text-accent-foreground bg-accent/20 px-2 py-0.5 rounded-full font-medium">
                   Min. {CommerceRules.getMOQ(product.id)} units
@@ -172,6 +179,7 @@ export function ProductCard({ product, className }: ProductCardProps) {
                     <span className="text-xs text-muted-foreground line-through">
                       {formatCurrency(parseFloat(String(product.regular_price)))}
                     </span>
+                    {packSize > 1 && <span className="text-xs text-muted-foreground">/ unit</span>}
                   </div>
                 ) : (
                   <div className="flex items-baseline gap-1">
@@ -181,6 +189,7 @@ export function ProductCard({ product, className }: ProductCardProps) {
                     <span className="text-lg font-bold text-foreground">
                       {formatCurrency(parseFloat(String(product.price || '0')))}
                     </span>
+                    {packSize > 1 && <span className="text-xs text-muted-foreground">/ unit</span>}
                   </div>
                 )}
               </div>

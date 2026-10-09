@@ -345,6 +345,15 @@ export function ProductTemplate({
                     </span>
                   );
                 })()}
+                {CommerceRules.getPackSize(product.id) > 1 && (
+                  <span className="text-sm text-muted-foreground">
+                    per unit · carton of {CommerceRules.getPackSize(product.id)} ={' '}
+                    {formatPrice(
+                      String(parseFloat(String(selectedVariation?.price || product.price || '0')) * CommerceRules.getPackSize(product.id)),
+                      'SEK'
+                    )}
+                  </span>
+                )}
               </div>
 
               {/* Stock Status */}

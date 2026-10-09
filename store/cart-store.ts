@@ -140,6 +140,22 @@ export const useCartStore = create<CartState>()(
           });
         }
 
+        // Carton products: keep the cart total at a whole number of cartons
+        const packSize = CommerceRules.getPackSize(product.id);
+        if (packSize > 1) {
+          const snappedTotal = CommerceRules.snapToPack(product.id, currentQuantity + finalQuantity, 'up');
+          if (snappedTotal !== currentQuantity + finalQuantity) {
+            set({
+              notification: {
+                message: `Sold in full cartons of ${packSize} units. Quantity adjusted to ${snappedTotal}.`,
+                type: 'info',
+                timestamp: Date.now(),
+              },
+            });
+          }
+          finalQuantity = snappedTotal - currentQuantity;
+        }
+
         // Check if product has quantity discount - show info
         if (currentQuantity === 0 && CommerceRules.hasQuantityDiscount(product.id)) {
           const discountInfo = CommerceRules.calculateQuantityDiscount(product.id, finalQuantity);
@@ -193,8 +209,19 @@ export const useCartStore = create<CartState>()(
         const state = get();
         const existingItem = state.items.find((item) => item.key === key);
 
-        const price = parseFloat(lineItem.price) || 0;
-        const quantity = lineItem.quantity || 1;
+        let price = parseFloat(lineItem.price) || 0;
+        let quantity = lineItem.quantity || 1;
+
+        // Carton products: orders placed before per-unit pricing have quantity in cartons
+        // (always below one carton's worth of units), so convert them to units.
+        const packSize = CommerceRules.getPackSize(lineItem.product_id);
+        if (packSize > 1) {
+          if (quantity < packSize) {
+            quantity *= packSize;
+            price = Math.round(price / packSize);
+          }
+          quantity = CommerceRules.snapToPack(lineItem.product_id, quantity, 'up');
+        }
 
         // Create a minimal product object
         const minimalProduct = {
@@ -303,6 +330,15 @@ export const useCartStore = create<CartState>()(
         const item = state.items.find((i) => i.key === key);
 
         if (!item) return;
+
+        // Carton products: +/- moves a whole carton, typed values snap to full cartons
+        if (CommerceRules.getPackSize(item.productId) > 1 && quantity > 0) {
+          quantity = CommerceRules.snapToPack(item.productId, quantity, quantity < item.quantity ? 'down' : 'up');
+          if (quantity <= 0) {
+            get().removeItem(key);
+            return;
+          }
+        }
 
         // Check MOQ - don't allow going below minimum
         const moqRequirement = CommerceRules.getMOQ(item.productId);
@@ -529,6 +565,17 @@ export const useCartStore = create<CartState>()(
     }),
     {
       name: 'cart-storage',
+      version: 1,
+      // v1: carton products switched from per-carton to per-unit pricing.
+      // Drop them from saved carts so stale carton prices and quantities never reach checkout.
+      migrate: (persistedState: any, version) => {
+        if (version < 1 && Array.isArray(persistedState?.items)) {
+          persistedState.items = persistedState.items.filter(
+            (item: CartItem) => CommerceRules.getPackSize(item.productId) <= 1
+          );
+        }
+        return persistedState;
+      },
     }
   )
 );

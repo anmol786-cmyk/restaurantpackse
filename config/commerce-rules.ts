@@ -129,9 +129,26 @@ export const QUANTITY_DISCOUNT_ENABLED_PRODUCTS = [
 
 /**
  * Global Minimum Order Quantity (MOQ)
- * Default MOQ applied to all products unless overridden
+ * Default MOQ applied to all products unless overridden.
+ * Single items (5kg+ bags, tubs, containers) can be bought one at a time.
  */
-export const GLOBAL_MOQ = 6;
+export const GLOBAL_MOQ = 1;
+
+/**
+ * Carton products
+ * Priced per single unit in WooCommerce, but only sold in full cartons:
+ * MOQ = packSize and quantity steps by packSize (12, 24, 36...).
+ * UPDATED: 2026-10-10 - prices converted from per-carton to per-unit
+ */
+export const CARTON_PRODUCTS: { productId: number; packSize: number; name?: string }[] = [
+  { productId: 254, packSize: 12, name: 'Hamdard Rooh Afza Syrup (12 x 800ml)' },
+  { productId: 224, packSize: 12, name: 'ANYTIME Mango Chaunsa Nectar (12 x 1L)' },
+  { productId: 228, packSize: 24, name: 'ANYTIME Mango Chaunsa Nectar (24 x 200ml)' },
+  { productId: 222, packSize: 6, name: 'Khanum Pure Ghee (6 x 2kg)' },
+  { productId: 220, packSize: 12, name: 'Medjool Dates (12 pack set)' },
+  { productId: 185, packSize: 6, name: 'TRS Gram Flour (6 x 2kg)' },
+  { productId: 184, packSize: 6, name: 'Lazzat Kesar Mango Pulp (6 x 850g)' },
+];
 
 /**
  * Credit Terms Configuration
@@ -296,6 +313,26 @@ export const CommerceRules = {
   },
 
   /**
+   * Units per carton (1 = sold individually)
+   */
+  getPackSize(productId: number): number {
+    return CARTON_PRODUCTS.find(c => c.productId === productId)?.packSize ?? 1;
+  },
+
+  /**
+   * Snap a quantity to a whole number of cartons.
+   * 'up' rounds to the next full carton, 'down' to the previous one (may return 0).
+   */
+  snapToPack(productId: number, quantity: number, direction: 'up' | 'down' = 'up'): number {
+    const packSize = this.getPackSize(productId);
+    if (packSize <= 1) return quantity;
+    const cartons = direction === 'up'
+      ? Math.ceil(quantity / packSize)
+      : Math.floor(quantity / packSize);
+    return cartons * packSize;
+  },
+
+  /**
    * Check if product is exempt from MOQ (already comes in bulk sets)
    */
   isMOQExempt(productId: number): boolean {
@@ -307,6 +344,11 @@ export const CommerceRules = {
    * Returns 1 for exempt products, product-specific MOQ, or global MOQ
    */
   getMOQ(productId: number, _categories?: string[]): number {
+    // Carton products: minimum is one full carton
+    const packSize = this.getPackSize(productId);
+    if (packSize > 1) {
+      return packSize;
+    }
     // Check if product is exempt from MOQ (already comes in bulk sets)
     if (MOQ_EXEMPT_PRODUCTS.includes(productId)) {
       return 1;

@@ -1,8 +1,20 @@
 'use server';
 
 import { createOrder, type CreateOrderData } from '@/lib/woocommerce/orders';
+import { CommerceRules } from '@/config/commerce-rules';
 
 export async function createOrderAction(orderData: CreateOrderData) {
+    // Carton products are priced per unit but only sold in full cartons
+    for (const line of orderData.line_items || []) {
+        const packSize = CommerceRules.getPackSize(line.product_id);
+        if (packSize > 1 && line.quantity % packSize !== 0) {
+            return {
+                success: false,
+                error: `Some items are sold in full cartons of ${packSize} units. Please update the quantity in your cart.`,
+            };
+        }
+    }
+
     try {
         const order = await createOrder(orderData);
 
